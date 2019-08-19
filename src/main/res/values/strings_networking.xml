@@ -1,0 +1,9 @@
+<resources>
+    <!--server errors-->
+    <string name="internet_connection_error">Kijk na of je een werkende netwerkverbinding hebt.</string>
+    <string name="internal_server_error">Er is iets mis met de server. Probeer later opnieuw.</string>
+    <string name="network_error">Kijk je internet na.</string>
+    <string name="login_error">Uw gebruikersnaam en/of wachtwoord is fout</string>
+    <string name="api_error_fallback">We konden je verzoek niet uitvoeren. Probeer later opnieuw.</string>
+    <string name="api_error_authentication">Foute gebruikersnaam of wachtwoord.</string>
+</resources>

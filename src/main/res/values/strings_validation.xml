@@ -1,0 +1,8 @@
+
+<resources>
+   <string name="validation_not_empty">Dit veld mag niet leeg zijn.</string>
+    <string name="validation_phonenumber">Dit is geen geldig telefoonnummer</string>
+    <string name="validation_numeric">Dit veld is geen nummer</string>
+    <string name="validation_alpha">Dit veld mag alleen letters bevatten</string>
+
+</resources>

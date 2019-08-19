@@ -1,0 +1,8 @@
+
+<resources>
+    <!--server errors-->
+    <string name="permission_dialog_title">Permissies</string>
+    <string name="permission_dialog_body">Deze app heeft uw toestemming nodig</string>
+    <string name="permission_go_to_settings">Ga naar instellingen</string>
+
+</resources>
