@@ -1,4 +1,4 @@
-package com.shahar91.core.networking.newNetwork
+package com.shahar91.core.networking
 
 import io.reactivex.Observable
 import okhttp3.Response
@@ -17,7 +17,7 @@ interface NetworkingFacade {
 
     class EmptyNetworkingFacade() : NetworkingFacade {
         override fun logout() {
-            //TODO: throw error???
+            throw Exception("Unable to logout, Networking hasn't been able to build")
         }
 
         override fun <T> doCallRx(call: Call<T>): Observable<T> {
@@ -25,33 +25,31 @@ interface NetworkingFacade {
         }
 
         override suspend fun <T> doCallCr(call: Call<T>): T {
-            throw Exception("Something went wrong")
+            throw Exception("Can't do any calls, initialize Networking in Application class first")
         }
 
         override fun getAccessToken(): AccessToken? {
-            return null
+            throw Exception("Initialize Networking in Application class first")
         }
 
         override fun saveAccessToken(accessToken: AccessToken) {
-            throw Exception("Something went wrong")
+            throw Exception("Initialize Networking in Application class first")
         }
 
         override fun responseCount(responseMethod: Response?): Int {
-            throw Exception("Something went wrong")
+            throw Exception("Initialize Networking in Application class first")
         }
 
         override fun <T> getProtectedApiManager(): T? {
-            return null
+            throw Exception("Initialize Networking in Application class first")
         }
 
         override fun <T> getUnProtectedApiManager(): T? {
-            return null
+            throw Exception("Initialize Networking in Application class first")
         }
 
         override fun isLoggedIn(): Boolean {
-            return false
+            throw Exception("Initialize Networking in Application class first")
         }
     }
-
 }
-

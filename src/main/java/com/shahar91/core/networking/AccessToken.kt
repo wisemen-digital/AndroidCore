@@ -1,12 +1,9 @@
-package com.shahar91.core.networking.newNetwork
+package com.shahar91.core.networking
 
 import com.google.gson.annotations.Expose
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
-/**
- * Created by dietervaesen on 24/01/18.
- */
 open class AccessToken : RealmObject() {
     @PrimaryKey
     var id: Int = 0

@@ -1,10 +1,10 @@
-package com.shahar91.core.networking.newNetwork
+package com.shahar91.core.networking
 
 import android.os.ConditionVariable
 import android.text.TextUtils
 import android.util.Log
 import com.orhanobut.hawk.Hawk
-import com.shahar91.core.networking.newNetwork.NetworkConstants.Companion.HAWK_ACCESS_TOKEN_KEY
+import com.shahar91.core.networking.NetworkConstants.HAWK_ACCESS_TOKEN_KEY
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
@@ -12,12 +12,12 @@ import okhttp3.Route
 import java.util.concurrent.atomic.AtomicBoolean
 
 class Authenticator(private val clientIdValue: String, private val clientSecretValue: String) : Authenticator {
-    // these two variables provide a way to sync refresh calls between multiple calls on different threads.
-    private val LOCK = ConditionVariable(true)
-    private val mIsRefreshing = AtomicBoolean(false)
-
     companion object {
         private val TAG = Authenticator::class.simpleName
+
+        // this variable provides a way to sync refresh calls between multiple calls on different threads.
+        private val LOCK = ConditionVariable(true)
+        private val mIsRefreshing = AtomicBoolean(false)
     }
 
     override fun authenticate(route: Route?, response: Response): Request? {
@@ -44,8 +44,9 @@ class Authenticator(private val clientIdValue: String, private val clientSecretV
             val refreshToken = accessToken.refresh_token
 
             if (!TextUtils.isEmpty(refreshToken)) {
-                val newToken = Networking.getProtectedApiManager<ApiManagerService>()?.refreshToken(
-                    NetworkConstants.REFRESH_TOKEN,
+                val newToken = Networking.getProtectedApiManager<ApiManagerService>()
+                    ?.refreshToken(
+                        NetworkConstants.REFRESH_TOKEN,
                     clientIdValue,
                     clientSecretValue,
                     refreshToken!!

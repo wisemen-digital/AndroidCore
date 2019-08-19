@@ -1,4 +1,4 @@
-package com.shahar91.core.networking.newNetwork
+package com.shahar91.core.networking
 
 class ApiError() {
     var exception:String = ""

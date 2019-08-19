@@ -1,4 +1,4 @@
-package com.shahar91.core.networking.newNetwork
+package com.shahar91.core.networking
 
 import retrofit2.Call
 import retrofit2.http.Field

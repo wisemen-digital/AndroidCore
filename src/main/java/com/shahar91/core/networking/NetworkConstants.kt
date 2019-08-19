@@ -1,4 +1,4 @@
-package com.shahar91.core.networking.newNetwork
+package com.shahar91.core.networking
 
 object NetworkConstants {
     const val CLIENT_ID_KEY = "client_id"

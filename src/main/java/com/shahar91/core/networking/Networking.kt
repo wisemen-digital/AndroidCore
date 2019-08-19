@@ -1,4 +1,4 @@
-package com.shahar91.core.networking.newNetwork
+package com.shahar91.core.networking
 
 import android.content.Context
 import io.reactivex.Observable

@@ -1,9 +1,8 @@
-package com.shahar91.core.networking.newNetwork
+package com.shahar91.core.networking
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.ContentResolver
-import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -44,7 +43,7 @@ class DefaultNetworkingFacade<T>(
     private val packageName = networkingBuilder.getPackageName()
     private val clientIdValue = networkingBuilder.getClientIdValue()
     private val clientSecretValue = networkingBuilder.getClientSecretValue()
-    private val appName  = networkingBuilder.getAppName()
+    private val appName = networkingBuilder.getAppName()
     private val versionName = networkingBuilder.getVersionName()
     private val versionCode = networkingBuilder.getVersionCode()
     private val apiVersion = networkingBuilder.getApiVersion()
@@ -100,7 +99,15 @@ class DefaultNetworkingFacade<T>(
 
         val client = OkHttpClient().newBuilder()
             .addInterceptor(logging)
-            .addInterceptor(HeaderInterceptor(appName, versionName, versionCode, apiVersion, applicationId))
+            .addInterceptor(
+                HeaderInterceptor(
+                    appName,
+                    versionName,
+                    versionCode,
+                    apiVersion,
+                    applicationId
+                )
+            )
 
         if (protected) {
             client.authenticator(Authenticator(clientIdValue, clientSecretValue))
