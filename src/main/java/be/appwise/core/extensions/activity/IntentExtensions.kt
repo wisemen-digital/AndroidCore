@@ -55,7 +55,9 @@ interface IMapsAddress {
     var postal_code: String
 
     fun getLocationString(queryIfNoCoordinates : String? = null) : String{
-        return "google.navigation:q=" + if(longitude != null && latitude != null) "$latitude,$longitude" else  Uri.encode(queryIfNoCoordinates)
+        return "google.navigation:q=$latitude,$longitude"
+        // longitude and latitude cannot be null...
+//        return "google.navigation:q=" + if(longitude != null && latitude != null) "$latitude,$longitude" else  Uri.encode(queryIfNoCoordinates)
     }
 }
 
@@ -85,7 +87,6 @@ fun Activity.startIntentGoogleMaps(address: IMapsAddress) {
     }
 }
 
-
 /**
  * @see startIntentOpenFileFromUrl
  * @param url this is the url of the file you want to open
@@ -106,7 +107,6 @@ fun Activity.startIntentOpenFileFromUrl(url: String?) {
         } catch (ex: Exception) {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://docs.google.com/viewer?url=$url")))
         }
-
     }
 }
 
@@ -140,11 +140,9 @@ fun Activity.startIntentTakePhoto() {
  * starts the pick photo intent
  */
 const val PICK_IMAGE = 102
-fun Activity.startIntentpickPhoto(title: String = "Select Image") {
+fun Activity.startIntentPickPhoto(title: String = "Select Image") {
     val getIntent = Intent(Intent.ACTION_GET_CONTENT)
     getIntent.type = "image/*"
     val chooserIntent = Intent.createChooser(getIntent, title)
     startActivityForResult(chooserIntent, PICK_IMAGE)
 }
-
-
