@@ -9,9 +9,10 @@ import android.util.DisplayMetrics
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.annotation.RequiresPermission
+import be.appwise.core.extensions.snackBar
 
 fun Activity.snackBar(message: String, textColor: Int = android.R.color.white, viewID: Int = android.R.id.content) =
-    be.appwise.core.extensions.snackBar(findViewById(viewID), message, textColor).show()
+    snackBar(findViewById(viewID), message, textColor).show()
 
 //keyboard management
 fun Activity.openKeyBoard(edittext: EditText) {

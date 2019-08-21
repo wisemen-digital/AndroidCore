@@ -8,20 +8,20 @@ import be.appwise.core.extensions.snackBar
 
 fun Fragment.snackBar(message: String, textColor: Int = android.R.color.white, viewID: Int = android.R.id.content) {
     activity ?: return
-    snackBar(
-        activity!!.findViewById(viewID),
-        message,
-        textColor
-    ).show()
+    snackBar(activity!!.findViewById(viewID), message, textColor).show()
 }
 
 fun Fragment.openKeyBoard(editText: EditText) {
+    activity ?: return
+
     editText.requestFocus()
     val imm = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
 }
 
 fun Fragment.hideKeyboard() {
+    activity ?: return
+
     // Check if no view has focus:
     val view = activity!!.currentFocus
     if (view != null) {

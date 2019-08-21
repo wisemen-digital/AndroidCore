@@ -14,11 +14,11 @@ import android.webkit.MimeTypeMap
  * @see startIntentAddToCalendar(calenderItem : ICalendarItem) function.
  */
 interface ICalendarItem {
-    fun getBeginTime (): Long
-    fun getEndTime (): Long
-    fun getItemTitle (): String
-    fun getItemDescription (): String?
-    fun getEventLocation (): String?
+    fun getBeginTime(): Long
+    fun getEndTime(): Long
+    fun getItemTitle(): String
+    fun getItemDescription(): String?
+    fun getEventLocation(): String?
 }
 
 //start the google calendar app and send a calendarItem with it
@@ -46,30 +46,30 @@ fun Activity.startIntentAddToCalendar(calendarItem: ICalendarItem?) {
  * @see startIntentGoogleMaps function.
  */
 interface IMapsAddress {
-    var longitude : Double
-    var latitude : Double
+    var longitude: Double
+    var latitude: Double
     var street: String
     var house_number: String?
     var city: String
     var country: String
     var postal_code: String
 
-    fun getLocationString(queryIfNoCoordinates : String? = null) : String{
+    fun getLocationString(queryIfNoCoordinates: String? = null): String {
         return "google.navigation:q=$latitude,$longitude"
         // longitude and latitude cannot be null...
-//        return "google.navigation:q=" + if(longitude != null && latitude != null) "$latitude,$longitude" else  Uri.encode(queryIfNoCoordinates)
+        //        return "google.navigation:q=" + if(longitude != null && latitude != null) "$latitude,$longitude" else  Uri.encode(queryIfNoCoordinates)
     }
 }
 
 /**
- * this function starts a google maps intent and you can pass on a object that inherits from the
- * @see IMapsAddress
- * @param latitude
- * @param longitude
- * @param queryIfNoCoordinates
+ * This function starts a google maps intent using the longitude and latitude or a query if the previous are not available
+ *
+ * @param latitude The latitude coördinates of the point on the map
+ * @param longitude The longitude coördinates of the point on the map
+ * @param queryIfNoCoordinates Location query if no coördinates available
  */
 fun Activity.startIntentGoogleMaps(latitude: Double? = null, longitude: Double? = null, queryIfNoCoordinates: String? = "") {
-    val locationString = "google.navigation:q=" + if(longitude != null && latitude != null) "$latitude,$longitude" else  Uri.encode(queryIfNoCoordinates)
+    val locationString = "google.navigation:q=" + if (longitude != null && latitude != null) "$latitude,$longitude" else Uri.encode(queryIfNoCoordinates)
     val gmmIntentUri = Uri.parse(locationString)
     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
     mapIntent.setPackage("com.google.android.apps.maps")
@@ -78,6 +78,12 @@ fun Activity.startIntentGoogleMaps(latitude: Double? = null, longitude: Double? 
     }
 }
 
+/**
+ * This function starts a google maps intent using an object which encapsulates all common address variables (i.e. city, longitude, country, ...)
+ *
+ * @see IMapsAddress
+ * @param address Object derived from the IMapsAddress interface.
+ */
 fun Activity.startIntentGoogleMaps(address: IMapsAddress) {
     val gmmIntentUri = Uri.parse(address.getLocationString())
     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
@@ -88,9 +94,10 @@ fun Activity.startIntentGoogleMaps(address: IMapsAddress) {
 }
 
 /**
+ * With this function you can open a file with the right app if available
+ *
  * @see startIntentOpenFileFromUrl
  * @param url this is the url of the file you want to open
- * With this function you can open a file with the right app if available
  */
 fun Activity.startIntentOpenFileFromUrl(url: String?) {
     url?.let {
@@ -111,7 +118,7 @@ fun Activity.startIntentOpenFileFromUrl(url: String?) {
 }
 
 /**
- * starts de app details intent of this app
+ * Starts the app details intent of this app
  */
 fun Activity.startIntentInstalledAppDetails() {
     if (baseContext == null) {
@@ -127,19 +134,19 @@ fun Activity.startIntentInstalledAppDetails() {
     baseContext.startActivity(i)
 }
 
+const val TAKE_PICTURE = 101
 /**
  * starts the take image capture intent for result
  */
-const val TAKE_PICTURE = 101
 fun Activity.startIntentTakePhoto() {
     val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
     startActivityForResult(intent, TAKE_PICTURE)
 }
 
+const val PICK_IMAGE = 102
 /**
  * starts the pick photo intent
  */
-const val PICK_IMAGE = 102
 fun Activity.startIntentPickPhoto(title: String = "Select Image") {
     val getIntent = Intent(Intent.ACTION_GET_CONTENT)
     getIntent.type = "image/*"

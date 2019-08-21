@@ -8,6 +8,7 @@ import android.view.ViewGroup
 
 /**
  * Set view visibility to View.GONE
+ *
  * @param animated animates the visibility change
  * @param duration duration of the animation
  */
@@ -23,11 +24,11 @@ fun View.hide(animated: Boolean = false, duration: Long = 350L) {
     } else {
         visibility = View.GONE
     }
-
 }
 
 /**
  * Set view visibility to View.INVISIBLE
+ *
  * @param animated animates the visibility change
  * @param duration duration of the animation
  */
@@ -47,6 +48,7 @@ fun View.invisible(animated: Boolean = false, duration: Long = 350L) {
 
 /**
  * Set view visibility to View.VISIBLE
+ *
  * @param animated animates the visibility change
  * @param duration duration of the animation
  */
@@ -60,7 +62,6 @@ fun View.show(animated: Boolean = false, duration: Long = 350L) {
         visibility = View.VISIBLE
     }
 }
-
 
 /**
  * @return Bitmap of the view and its children
