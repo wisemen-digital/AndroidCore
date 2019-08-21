@@ -1,4 +1,4 @@
-package be.appwise.core.base
+package be.appwise.core.data.base
 
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable

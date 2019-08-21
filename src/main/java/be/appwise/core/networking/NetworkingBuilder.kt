@@ -12,7 +12,6 @@ class NetworkingBuilder(internal val context: Context) {
     private var versionCode = ""
     private var apiVersion = ""
     private var applicationId = ""
-//    private lateinit var apiManagerService: Class<ApiManagerService>
 
     fun setPackageName(packageName: String): NetworkingBuilder {
         this.packageName = packageName
@@ -94,16 +93,6 @@ class NetworkingBuilder(internal val context: Context) {
     internal fun getApplicationId(): String {
         return applicationId
     }
-
-
-//    fun <T> setApiManagerService(apiManagerService: Class<T>): NetworkingBuilder {
-//        this.apiManagerService = apiManagerService
-//        return this
-//    }
-//
-//    internal fun getApiManagerService(): Class<ApiManagerService> {
-//        return apiManagerService
-//    }
 
     fun <T> build(apiManagerService: Class<T>? = null) {
         Networking.build(this, apiManagerService)

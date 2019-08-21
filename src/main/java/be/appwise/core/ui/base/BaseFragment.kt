@@ -1,4 +1,4 @@
-package be.appwise.core.base
+package be.appwise.core.ui.base
 
 import android.os.Bundle
 import android.view.View

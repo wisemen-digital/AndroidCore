@@ -7,14 +7,12 @@ import android.provider.CalendarContract
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
 
-
 /**
  * @see ICalendarItem item interface
  * other models can inherit from it and override the functions defined in the interface
  * Like this you can use different models in different places to start the google calendar intent with the
  * @see startIntentAddToCalendar(calenderItem : ICalendarItem) function.
  */
-
 interface ICalendarItem {
     fun getBeginTime (): Long
     fun getEndTime (): Long
@@ -23,8 +21,7 @@ interface ICalendarItem {
     fun getEventLocation (): String?
 }
 
-
-//start the google calendar app and send a calendaritem with it
+//start the google calendar app and send a calendarItem with it
 fun Activity.startIntentAddToCalendar(calendarItem: ICalendarItem?) {
     calendarItem?.let {
 
@@ -42,14 +39,12 @@ fun Activity.startIntentAddToCalendar(calendarItem: ICalendarItem?) {
     }
 }
 
-
 /**
  * @see IMapsAddress item interface
  * other models can inherit from it and override the functions defined in the interface
  * Like this you can use different models in different places to start the google calendar intent with the
  * @see startIntentGoogleMaps function.
  */
-
 interface IMapsAddress {
     var longitude : Double
     var latitude : Double

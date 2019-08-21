@@ -1,5 +1,6 @@
 package be.appwise.core.extensions.activity
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
@@ -7,13 +8,10 @@ import android.os.Build
 import android.util.DisplayMetrics
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.annotation.RequiresPermission
 
 fun Activity.snackBar(message: String, textColor: Int = android.R.color.white, viewID: Int = android.R.id.content) =
-    be.appwise.core.extensions.snackBar(
-        findViewById(viewID),
-        message,
-        textColor
-    ).show()
+    be.appwise.core.extensions.snackBar(findViewById(viewID), message, textColor).show()
 
 //keyboard management
 fun Activity.openKeyBoard(edittext: EditText) {
@@ -47,8 +45,15 @@ fun Activity.getDeviceHeight() = with(this) {
     displayMetrics.heightPixels
 }
 
+/**
+ * Returns if the app is currently connected to the internet.
+ *
+ * @return true if connected to the internet
+ */
+@RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
 fun Activity.isNetworkAvailable(): Boolean {
     val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
     val activeNetworkInfo = connectivityManager.activeNetworkInfo
     return activeNetworkInfo != null && activeNetworkInfo.isConnected
 }

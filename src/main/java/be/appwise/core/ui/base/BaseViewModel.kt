@@ -1,4 +1,4 @@
-package be.appwise.core.base
+package be.appwise.core.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

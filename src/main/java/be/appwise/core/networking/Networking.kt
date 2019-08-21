@@ -54,7 +54,7 @@ object Networking {
         return networkingFacade!!.getUnProtectedApiManager()
     }
 
-    fun isLoggedIn() : Boolean {
+    fun isLoggedIn(): Boolean {
         return networkingFacade!!.isLoggedIn()
     }
 }
