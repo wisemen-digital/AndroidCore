@@ -69,6 +69,16 @@ interface IMapsAddress {
  * @param queryIfNoCoordinates Location query if no coördinates available
  */
 fun Activity.startIntentGoogleMaps(latitude: Double? = null, longitude: Double? = null, queryIfNoCoordinates: String? = "") {
+    /*
+        //TODO: check and test
+        //TODO: This could be used to let the user choose between google Maps and Waze
+
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse("geo:" + latitude + "," + longitude + "?q=" + Uri.encode(queryIfNoCoordinates))
+        startActivity(Intent.createChooser(intent, ""))
+    */
+
+
     val locationString = "google.navigation:q=" + if (longitude != null && latitude != null) "$latitude,$longitude" else Uri.encode(queryIfNoCoordinates)
     val gmmIntentUri = Uri.parse(locationString)
     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
@@ -90,6 +100,32 @@ fun Activity.startIntentGoogleMaps(address: IMapsAddress) {
     mapIntent.setPackage("com.google.android.apps.maps")
     if (mapIntent.resolveActivity(packageManager) != null) {
         startActivity(mapIntent)
+    }
+}
+
+//TODO: check and test
+fun Activity.startIntentTelephone(phoneNumber: String) {
+    try {
+        val intent = Intent(Intent.ACTION_DIAL)
+        intent.data = Uri.parse("tel:$phoneNumber")
+        startActivity(Intent.createChooser(intent, "Select an app"))
+    } catch (e: java.lang.Exception) {
+        e.printStackTrace()
+        snackBar("It seems like your device is unable to make any calls")
+    }
+}
+
+//TODO: check and test
+fun Activity.startIntentMail(email: String) {
+    try {
+        val emails = arrayOf(email)
+        val intent = Intent(Intent.ACTION_SENDTO)
+        intent.data = Uri.parse("mailto:")
+        intent.putExtra(Intent.EXTRA_EMAIL, emails)
+        startActivity(Intent.createChooser(intent, "Select an app"))
+    } catch (ex: Exception) {
+        ex.printStackTrace()
+        snackBar("It seems like your device is unable to make any calls")
     }
 }
 
