@@ -5,7 +5,7 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
-interface ApiManagerService {
+internal interface ApiManagerService {
     //OAuth Refresh Token
     @FormUrlEncoded
     @POST("oauth/token")
