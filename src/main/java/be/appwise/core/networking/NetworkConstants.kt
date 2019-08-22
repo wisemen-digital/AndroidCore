@@ -26,6 +26,4 @@ object NetworkConstants {
     const val HEADER_AUTHORIZATION_KEY = "Authorization"
     const val ACCEPT = "ACCEPT"
     const val ACCEPT_APPLICATION_JSON_VALUE = "application/json"
-
-    const val HAWK_CURENT_USER_ID = "hawk_current_user_id"
 }

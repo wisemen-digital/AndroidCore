@@ -12,17 +12,11 @@ fun Activity.openEasyImageChooser(title: String) {
     EasyImage.openChooserWithGallery(this, title, 0)
 }
 
-
 fun Fragment.openEasyImageChooser(title: String) {
     EasyImage.openChooserWithGallery(this, title, 0)
 }
 
-fun Fragment.handlePictureResult(
-    requestCode: Int,
-    resultCode: Int,
-    data: Intent?,
-    processImages: (imageFiles: MutableList<File>) -> Unit
-) {
+fun Fragment.handlePictureResult(requestCode: Int, resultCode: Int, data: Intent?, processImages: (imageFiles: MutableList<File>) -> Unit) {
     EasyImage.handleActivityResult(requestCode, resultCode, data, activity, object : DefaultCallback() {
         override fun onImagePickerError(e: Exception?, source: EasyImage.ImageSource?, type: Int) {
             Logger.d(e?.message)

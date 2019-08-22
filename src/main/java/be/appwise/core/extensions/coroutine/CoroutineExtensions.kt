@@ -7,7 +7,6 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import kotlinx.coroutines.*
 
-
 fun launchAsync(block: suspend CoroutineScope.() -> Unit): Job {
     return GlobalScope.launch(Dispatchers.Main, CoroutineStart.DEFAULT) { block() }
 }
@@ -29,4 +28,3 @@ class UiLifecycleScope : CoroutineScope, LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun destroy() = job.cancel()
 }
-

@@ -68,7 +68,6 @@ class DefaultNetworkingFacade<T>(
     private val protectedApiManager = protectedRetrofit.create(apiManagerService!!)
     private val unProtectedApiManager = unprotectedRetrofit.create(apiManagerService!!)
 
-
     override fun <T> getProtectedApiManager(): T? {
         return protectedApiManager as T
     }
@@ -153,14 +152,14 @@ class DefaultNetworkingFacade<T>(
             404 -> error.message = context.resources.getString(R.string.internet_connection_error)
             401 -> error.message = context.resources.getString(R.string.api_error_authentication)
             422 -> try {
-                val hashmapConverter = protectedRetrofit.responseBodyConverter<HashMap<*, *>>(
+                val hashMapConverter = protectedRetrofit.responseBodyConverter<HashMap<*, *>>(
                     HashMap::class.java,
                     arrayOfNulls<Annotation>(0)
                 )
 
                 var message = ""
-                val hashMapresponseBody = response.errorBody()
-                val hashMap = hashmapConverter.convert(hashMapresponseBody!!)
+                val hashMapResponseBody = response.errorBody()
+                val hashMap = hashMapConverter.convert(hashMapResponseBody!!)
                 if (hashMap?.containsKey("errors") == true) {
                     val errorMaps = jsonToMap(hashMap["errors"].toString())
                     for (key in errorMaps.keys) {

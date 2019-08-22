@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
+@Suppress("PropertyName")
 open class AccessToken : RealmObject() {
     @PrimaryKey
     var id: Int = 0
@@ -15,5 +16,4 @@ open class AccessToken : RealmObject() {
     var access_token: String? = null
     @Expose
     var refresh_token: String? = null
-
 }
