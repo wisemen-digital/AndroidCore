@@ -15,7 +15,7 @@ interface NetworkingFacade {
     fun <T> getUnProtectedApiManager(): T?
     fun isLoggedIn(): Boolean
 
-    class EmptyNetworkingFacade() : NetworkingFacade {
+    class EmptyNetworkingFacade : NetworkingFacade {
         override fun logout() {
             throw Exception("Unable to logout, Networking hasn't been able to build")
         }

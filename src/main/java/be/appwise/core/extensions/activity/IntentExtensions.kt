@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package be.appwise.core.extensions.activity
 
 import android.app.Activity
@@ -49,10 +51,10 @@ interface IMapsAddress {
     var longitude: Double
     var latitude: Double
     var street: String
-    var house_number: String?
+    var houseNumber: String?
     var city: String
     var country: String
-    var postal_code: String
+    var postalCode: String
 
     fun getLocationString(queryIfNoCoordinates: String? = null): String {
         return "google.navigation:q=$latitude,$longitude"
@@ -64,9 +66,9 @@ interface IMapsAddress {
 /**
  * This function starts a google maps intent using the longitude and latitude or a query if the previous are not available
  *
- * @param latitude The latitude coördinates of the point on the map
- * @param longitude The longitude coördinates of the point on the map
- * @param queryIfNoCoordinates Location query if no coördinates available
+ * @param latitude The latitude coordinates of the point on the map
+ * @param longitude The longitude coordinates of the point on the map
+ * @param queryIfNoCoordinates Location query if no coordinates available
  */
 fun Activity.startIntentGoogleMaps(latitude: Double? = null, longitude: Double? = null, queryIfNoCoordinates: String? = "") {
     /*
