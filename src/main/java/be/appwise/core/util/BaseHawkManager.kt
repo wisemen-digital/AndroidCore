@@ -3,12 +3,7 @@ package be.appwise.core.util
 import com.orhanobut.hawk.Hawk
 import kotlin.reflect.KProperty
 
-class HawkManager {
-    companion object {
-        @JvmStatic
-        var currentUserId: Int by HawkValueDelegate(HawkConstants.HAWK_CURRENT_USER_ID, -1)
-    }
-
+open class BaseHawkManager {
     class HawkBooleanDelegate<R>(private val key: String) {
         operator fun getValue(thisRef: R, property: KProperty<*>): Boolean = Hawk.contains(key)
         operator fun setValue(thisRef: R, property: KProperty<*>, newValue: Boolean) {
