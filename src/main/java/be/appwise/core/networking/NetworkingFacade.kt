@@ -27,7 +27,7 @@ interface NetworkingFacade {
     val protectedClient: OkHttpClient
     val unProtectedClient: OkHttpClient
 
-    class EmptyNetworkingFacade() : NetworkingFacade {
+    class EmptyNetworkingFacade : NetworkingFacade {
         override val protectedClient: OkHttpClient
             get() = throw Exception("Initialize Networking in Application class first")
         override val unProtectedClient: OkHttpClient
