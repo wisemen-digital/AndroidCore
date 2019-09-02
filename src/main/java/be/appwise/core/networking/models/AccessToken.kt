@@ -1,4 +1,4 @@
-package be.appwise.core.networking
+package be.appwise.core.networking.models
 
 import com.google.gson.annotations.Expose
 import io.realm.RealmObject

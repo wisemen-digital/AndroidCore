@@ -1,14 +1,14 @@
 package be.appwise.core.networking
 
 import android.annotation.SuppressLint
-import android.app.PendingIntent
 import android.content.ContentResolver
 import android.content.Context
-import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.webkit.MimeTypeMap
 import be.appwise.core.R
+import be.appwise.core.networking.models.AccessToken
+import be.appwise.core.networking.models.ApiError
 import com.google.gson.ExclusionStrategy
 import com.google.gson.FieldAttributes
 import com.google.gson.Gson
@@ -19,7 +19,6 @@ import io.reactivex.Observable
 import io.reactivex.internal.functions.Functions
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
-import io.realm.Realm
 import io.realm.RealmObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -36,9 +35,13 @@ import java.net.UnknownHostException
 class DefaultNetworkingFacade<T>(networkingBuilder: NetworkingBuilder, apiManagerService: Class<T>?) :
     NetworkingFacade {
 
+    //<editor-fold desc="Variables">
+    /**
+     * These are all variables that are needed to make this class/library work.
+     * They have to be in this order as well, else things won't compile and break.
+     */
     private val context = networkingBuilder.context
     private val endPoint = networkingBuilder.getEndPoint()
-    private val packageName = networkingBuilder.getPackageName()
     private val clientIdValue = networkingBuilder.getClientIdValue()
     private val clientSecretValue = networkingBuilder.getClientSecretValue()
     private val appName = networkingBuilder.getAppName()
@@ -46,40 +49,32 @@ class DefaultNetworkingFacade<T>(networkingBuilder: NetworkingBuilder, apiManage
     private val versionCode = networkingBuilder.getVersionCode()
     private val apiVersion = networkingBuilder.getApiVersion()
     private val applicationId = networkingBuilder.getApplicationId()
-
     private val listener: NetworkingListeners = networkingBuilder.getNetworkingListeners()
 
-    // backing property, this can only be used to initialize the property and only in this class
-    private val _unprotectedRetrofit by lazy {
+    override val packageName = networkingBuilder.getPackageName()
+
+    override val unProtectedRetrofit by lazy {
         getRetro(false)
     }
 
-    // backing property, this can only be used to initialize the property and only in this class
-    private val _protectedRetrofit by lazy {
+    override val protectedRetrofit by lazy {
         getRetro(true)
     }
 
-    private val protectedClient by lazy {
+    override val protectedClient by lazy {
         getClient(true)
     }
 
-    private val unProtectedClient by lazy {
+    override val unProtectedClient by lazy {
         getClient(false)
     }
 
-    private val protectedApiManager = _protectedRetrofit.create(apiManagerService!!)
-    private val unProtectedApiManager = _unprotectedRetrofit.create(apiManagerService!!)
+    private val protectedApiManager = protectedRetrofit.create(apiManagerService!!)
+    private val unProtectedApiManager = unProtectedRetrofit.create(apiManagerService!!)
+    //</editor-fold>
 
     override fun getContext(): Context {
         return context
-    }
-
-    override fun getProtectedRetrofit(): Retrofit {
-        return _protectedRetrofit
-    }
-
-    override fun getUnProtectedRetrofit(): Retrofit {
-        return _unprotectedRetrofit
     }
 
     override fun <T> getProtectedApiManager(): T? {
@@ -147,33 +142,6 @@ class DefaultNetworkingFacade<T>(networkingBuilder: NetworkingBuilder, apiManage
         }
     }
 
-    private fun parseError(response: retrofit2.Response<*>): ApiError {
-        return listener.errorListener(response)
-    }
-
-    override fun logout() {
-        val realm = Realm.getDefaultInstance()
-
-        val errorActivity = Intent("$packageName.logout")
-        errorActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        val pendingIntent = PendingIntent.getActivity(context, 22, errorActivity, 0)
-
-        unProtectedClient.dispatcher().cancelAll()
-
-        try {
-            if (Hawk.isBuilt()) {
-                Hawk.deleteAll()
-            }
-
-            realm.executeTransaction { it.deleteAll() }
-            pendingIntent.send()
-
-            //OneSignal.deleteTag(Constants.ONESIGNAL_USER_ID)
-        } catch (e: PendingIntent.CanceledException) {
-            e.printStackTrace()
-        }
-    }
-
     private fun getGson(): Gson {
         val builder = GsonBuilder()
         builder.setExclusionStrategies(object : ExclusionStrategy {
@@ -205,7 +173,7 @@ class DefaultNetworkingFacade<T>(networkingBuilder: NetworkingBuilder, apiManage
     }
 
     @SuppressLint("DefaultLocale")
-    fun getMimeType(file: File): String {
+    private fun getMimeType(file: File): String {
         val uri = Uri.fromFile(file)
         val mimeType: String? = if (uri.scheme == ContentResolver.SCHEME_CONTENT) {
             val cr = context.contentResolver
@@ -259,4 +227,14 @@ class DefaultNetworkingFacade<T>(networkingBuilder: NetworkingBuilder, apiManage
     override fun isLoggedIn(): Boolean {
         return getAccessToken() != null
     }
+
+    // Implementation of listeners
+    private fun parseError(response: retrofit2.Response<*>): ApiError {
+        return listener.errorListener(response)
+    }
+
+    override fun logout() {
+        listener.logout()
+    }
+
 }

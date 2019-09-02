@@ -1,15 +1,20 @@
 package be.appwise.core.networking
 
+import android.app.PendingIntent
+import android.content.Intent
+import be.appwise.core.networking.models.ApiError
+import com.orhanobut.hawk.Hawk
+import io.realm.Realm
 import org.json.JSONException
 import retrofit2.Response
 
-interface NetworkingListeners{
-    companion object{
-        val NONE = object: NetworkingListeners{
-            override fun errorListener(response: Response<*>): ApiError {
-                throw Exception("Not implemented yet")
-            }
-        }
+/**
+ * Implement this interface and add it to the initial builder pattern to override the functions.
+ * You can choose which function to implement and which may still use the default implementation.
+ */
+interface NetworkingListeners {
+    companion object {
+        val DEFAULT = object : NetworkingListeners {}
     }
 
     fun errorListener(response: Response<*>): ApiError {
@@ -73,5 +78,28 @@ interface NetworkingListeners{
         }
 
         return myMap
+    }
+
+    fun logout() {
+        val realm = Realm.getDefaultInstance()
+
+        val errorActivity = Intent("${Networking.getPackageName()}.logout")
+        errorActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        val pendingIntent = PendingIntent.getActivity(Networking.getContext(), 22, errorActivity, 0)
+
+        Networking.getUnProtectedClient().dispatcher().cancelAll()
+
+        try {
+            if (Hawk.isBuilt()) {
+                Hawk.deleteAll()
+            }
+
+            realm.executeTransaction { it.deleteAll() }
+            pendingIntent.send()
+
+            //OneSignal.deleteTag(Constants.ONESIGNAL_USER_ID)
+        } catch (e: PendingIntent.CanceledException) {
+            e.printStackTrace()
+        }
     }
 }

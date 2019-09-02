@@ -1,7 +1,9 @@
 package be.appwise.core.networking
 
 import android.content.Context
+import be.appwise.core.networking.models.AccessToken
 import io.reactivex.Observable
+import okhttp3.OkHttpClient
 import okhttp3.Response
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -15,19 +17,27 @@ interface NetworkingFacade {
     fun responseCount(responseMethod: Response?): Int
     fun <T> getProtectedApiManager(): T?
     fun <T> getUnProtectedApiManager(): T?
-    fun getProtectedRetrofit(): Retrofit
-    fun getUnProtectedRetrofit(): Retrofit
     fun isLoggedIn(): Boolean
+
     fun getContext(): Context
 
-    class EmptyNetworkingFacade : NetworkingFacade {
-        override fun getProtectedRetrofit(): Retrofit {
-            throw Exception("Initialize Networking in Application class first")
-        }
+    val packageName: String
+    val protectedRetrofit: Retrofit
+    val unProtectedRetrofit: Retrofit
+    val protectedClient: OkHttpClient
+    val unProtectedClient: OkHttpClient
 
-        override fun getUnProtectedRetrofit(): Retrofit {
-            throw Exception("Initialize Networking in Application class first")
-        }
+    class EmptyNetworkingFacade() : NetworkingFacade {
+        override val protectedClient: OkHttpClient
+            get() = throw Exception("Initialize Networking in Application class first")
+        override val unProtectedClient: OkHttpClient
+            get() = throw Exception("Initialize Networking in Application class first")
+        override val packageName: String
+            get() = throw Exception("Initialize Networking in Application class first")
+        override val protectedRetrofit: Retrofit
+            get() = throw Exception("Initialize Networking in Application class first")
+        override val unProtectedRetrofit: Retrofit
+            get() = throw Exception("Initialize Networking in Application class first")
 
         override fun logout() {
             throw Exception("Unable to logout, Networking hasn't been able to build")

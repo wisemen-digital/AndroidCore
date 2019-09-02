@@ -1,5 +1,6 @@
 package be.appwise.core.networking
 
+import be.appwise.core.networking.models.AccessToken
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded

@@ -12,7 +12,7 @@ class NetworkingBuilder(internal val context: Context) {
     private var versionCode = ""
     private var apiVersion = ""
     private var applicationId = ""
-    private var networkingListeners = NetworkingListeners.NONE
+    private var networkingListeners = NetworkingListeners.DEFAULT
 
     fun setNetworkingListeners(customNetworkingListeners: NetworkingListeners): NetworkingBuilder {
         this.networkingListeners = customNetworkingListeners
@@ -20,10 +20,6 @@ class NetworkingBuilder(internal val context: Context) {
     }
 
     fun getNetworkingListeners(): NetworkingListeners {
-        if (networkingListeners == NetworkingListeners.NONE){
-            networkingListeners = ImplNetworkingListeners()
-        }
-
         return networkingListeners
     }
 
