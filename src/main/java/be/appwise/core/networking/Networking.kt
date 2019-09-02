@@ -4,6 +4,7 @@ import android.content.Context
 import io.reactivex.Observable
 import okhttp3.Response
 import retrofit2.Call
+import retrofit2.Retrofit
 
 object Networking {
     private var networkingFacade: NetworkingFacade? =
@@ -56,5 +57,17 @@ object Networking {
 
     fun isLoggedIn(): Boolean {
         return networkingFacade!!.isLoggedIn()
+    }
+
+    fun getProtectedRetrofit(): Retrofit{
+        return networkingFacade!!.getProtectedRetrofit()
+    }
+
+    fun getUnProtectedRetrofit():Retrofit{
+        return networkingFacade!!.getUnProtectedRetrofit()
+    }
+
+    fun getContext(): Context{
+        return networkingFacade!!.getContext()
     }
 }

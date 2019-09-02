@@ -1,8 +1,10 @@
 package be.appwise.core.networking
 
+import android.content.Context
 import io.reactivex.Observable
 import okhttp3.Response
 import retrofit2.Call
+import retrofit2.Retrofit
 
 interface NetworkingFacade {
     fun logout()
@@ -13,9 +15,20 @@ interface NetworkingFacade {
     fun responseCount(responseMethod: Response?): Int
     fun <T> getProtectedApiManager(): T?
     fun <T> getUnProtectedApiManager(): T?
+    fun getProtectedRetrofit(): Retrofit
+    fun getUnProtectedRetrofit(): Retrofit
     fun isLoggedIn(): Boolean
+    fun getContext(): Context
 
     class EmptyNetworkingFacade : NetworkingFacade {
+        override fun getProtectedRetrofit(): Retrofit {
+            throw Exception("Initialize Networking in Application class first")
+        }
+
+        override fun getUnProtectedRetrofit(): Retrofit {
+            throw Exception("Initialize Networking in Application class first")
+        }
+
         override fun logout() {
             throw Exception("Unable to logout, Networking hasn't been able to build")
         }
@@ -49,6 +62,10 @@ interface NetworkingFacade {
         }
 
         override fun isLoggedIn(): Boolean {
+            throw Exception("Initialize Networking in Application class first")
+        }
+
+        override fun getContext(): Context {
             throw Exception("Initialize Networking in Application class first")
         }
     }

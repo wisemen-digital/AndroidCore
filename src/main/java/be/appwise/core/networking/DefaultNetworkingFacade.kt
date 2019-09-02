@@ -3,16 +3,17 @@ package be.appwise.core.networking
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.ContentResolver
+import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.webkit.MimeTypeMap
+import be.appwise.core.R
 import com.google.gson.ExclusionStrategy
 import com.google.gson.FieldAttributes
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.orhanobut.hawk.Hawk
-import be.appwise.core.R
 import id.zelory.compressor.Compressor
 import io.reactivex.Observable
 import io.reactivex.internal.functions.Functions
@@ -24,7 +25,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
-import org.json.JSONException
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -33,10 +33,8 @@ import java.io.File
 import java.io.IOException
 import java.net.UnknownHostException
 
-class DefaultNetworkingFacade<T>(
-    networkingBuilder: NetworkingBuilder,
-    apiManagerService: Class<T>?
-) : NetworkingFacade {
+class DefaultNetworkingFacade<T>(networkingBuilder: NetworkingBuilder, apiManagerService: Class<T>?) :
+    NetworkingFacade {
 
     private val context = networkingBuilder.context
     private val endPoint = networkingBuilder.getEndPoint()
@@ -49,11 +47,15 @@ class DefaultNetworkingFacade<T>(
     private val apiVersion = networkingBuilder.getApiVersion()
     private val applicationId = networkingBuilder.getApplicationId()
 
-    private val unprotectedRetrofit by lazy {
+    private val listener: NetworkingListeners = networkingBuilder.getNetworkingListeners()
+
+    // backing property, this can only be used to initialize the property and only in this class
+    private val _unprotectedRetrofit by lazy {
         getRetro(false)
     }
 
-    private val protectedRetrofit by lazy {
+    // backing property, this can only be used to initialize the property and only in this class
+    private val _protectedRetrofit by lazy {
         getRetro(true)
     }
 
@@ -65,8 +67,20 @@ class DefaultNetworkingFacade<T>(
         getClient(false)
     }
 
-    private val protectedApiManager = protectedRetrofit.create(apiManagerService!!)
-    private val unProtectedApiManager = unprotectedRetrofit.create(apiManagerService!!)
+    private val protectedApiManager = _protectedRetrofit.create(apiManagerService!!)
+    private val unProtectedApiManager = _unprotectedRetrofit.create(apiManagerService!!)
+
+    override fun getContext(): Context {
+        return context
+    }
+
+    override fun getProtectedRetrofit(): Retrofit {
+        return _protectedRetrofit
+    }
+
+    override fun getUnProtectedRetrofit(): Retrofit {
+        return _unprotectedRetrofit
+    }
 
     override fun <T> getProtectedApiManager(): T? {
         return protectedApiManager as T
@@ -83,11 +97,8 @@ class DefaultNetworkingFacade<T>(
             unProtectedClient
         }
 
-        return Retrofit.Builder()
-            .baseUrl(endPoint)
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(getFactory())
-            .client(client).build()
+        return Retrofit.Builder().baseUrl(endPoint).addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(getFactory()).client(client).build()
     }
 
     private fun getClient(protected: Boolean): OkHttpClient {
@@ -96,17 +107,8 @@ class DefaultNetworkingFacade<T>(
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
 
-        val client = OkHttpClient().newBuilder()
-            .addInterceptor(logging)
-            .addInterceptor(
-                HeaderInterceptor(
-                    appName,
-                    versionName,
-                    versionCode,
-                    apiVersion,
-                    applicationId
-                )
-            )
+        val client = OkHttpClient().newBuilder().addInterceptor(logging)
+            .addInterceptor(HeaderInterceptor(appName, versionName, versionCode, apiVersion, applicationId))
 
         if (protected) {
             client.authenticator(Authenticator(clientIdValue, clientSecretValue))
@@ -146,54 +148,7 @@ class DefaultNetworkingFacade<T>(
     }
 
     private fun parseError(response: retrofit2.Response<*>): ApiError {
-        var error = ApiError()
-        when (response.code()) {
-            500 -> error.message = context.resources.getString(R.string.api_error_fallback)
-            404 -> error.message = context.resources.getString(R.string.internet_connection_error)
-            401 -> error.message = context.resources.getString(R.string.api_error_authentication)
-            422 -> try {
-                val hashMapConverter = protectedRetrofit.responseBodyConverter<HashMap<*, *>>(
-                    HashMap::class.java,
-                    arrayOfNulls<Annotation>(0)
-                )
-
-                var message = ""
-                val hashMapResponseBody = response.errorBody()
-                val hashMap = hashMapConverter.convert(hashMapResponseBody!!)
-                if (hashMap?.containsKey("errors") == true) {
-                    val errorMaps = jsonToMap(hashMap["errors"].toString())
-                    for (key in errorMaps.keys) {
-                        message += errorMaps[key]
-                    }
-                    error.message = message.replace("[", "").replace("]", "")
-                } else {
-                    for (entry in hashMap!!.keys) {
-                        val value = hashMap[entry].toString()
-                        message = if (value.contains("verplicht") || value.contains("required")) {
-                            "$value $entry"
-                        } else value
-                    }
-                    error.message = message
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            else -> {
-                val converter = protectedRetrofit.responseBodyConverter<ApiError>(
-                    ApiError::class.java,
-                    arrayOfNulls<Annotation>(0)
-                )
-
-                val responseBody = response.errorBody()
-                error = try {
-                    converter.convert(responseBody!!)!!
-                } catch (e: Exception) {
-                    ApiError()
-                }
-            }
-        }
-
-        return error
+        return listener.errorListener(response)
     }
 
     override fun logout() {
@@ -262,19 +217,6 @@ class DefaultNetworkingFacade<T>(
         return mimeType ?: ""
     }
 
-    @Throws(JSONException::class)
-    fun jsonToMap(t: String): HashMap<String, String> {
-        val myMap = HashMap<String, String>()
-        val pairs = t.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        for (i in pairs.indices) {
-            val pair = pairs[i]
-            val keyValue = pair.split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            myMap[keyValue[0]] = keyValue[1]
-        }
-
-        return myMap
-    }
-
     suspend fun getBodyForImage(key: String, file: File): MultipartBody.Part = withContext(Dispatchers.Default) {
         val requestFile = RequestBody.create(MediaType.parse(getMimeType(file)), resizeFile(file))
         MultipartBody.Part.createFormData(key, file.name, requestFile)
@@ -292,7 +234,7 @@ class DefaultNetworkingFacade<T>(
         //720p is 1280 x 720 px
         val newHeight: Double
         val newWidth: Double
-        if (imageHeight > imageWidth) {//portrait-->720p
+        if (imageHeight > imageWidth) { //portrait-->720p
             val ratio = imageHeight / 720
             newWidth = imageWidth / ratio
             newHeight = 720.0
