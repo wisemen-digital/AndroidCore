@@ -2,6 +2,7 @@ package be.appwise.core.networking
 
 import android.app.PendingIntent
 import android.content.Intent
+import be.appwise.core.R
 import be.appwise.core.networking.models.ApiError
 import com.orhanobut.hawk.Hawk
 import io.realm.Realm
@@ -21,11 +22,11 @@ interface NetworkingListeners {
         var error = ApiError()
 
         when (response.code()) {
-            500 -> error.message = Networking.getContext().getString(be.appwise.core.R.string.api_error_fallback)
+            500 -> error.message = Networking.getContext().getString(R.string.api_error_fallback)
             404 -> error.message = Networking.getContext()
-                .resources.getString(be.appwise.core.R.string.internet_connection_error)
+                .resources.getString(R.string.internet_connection_error)
             401 -> error.message = Networking.getContext()
-                .resources.getString(be.appwise.core.R.string.api_error_authentication)
+                .resources.getString(R.string.api_error_authentication)
             422 -> try {
                 val hashMapConverter = Networking.getProtectedRetrofit()
                     .responseBodyConverter<HashMap<*, *>>(HashMap::class.java, arrayOfNulls<Annotation>(0))
