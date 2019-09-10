@@ -12,6 +12,16 @@ class NetworkingBuilder(internal val context: Context) {
     private var versionCode = ""
     private var apiVersion = ""
     private var applicationId = ""
+    private var networkingListeners = NetworkingListeners.DEFAULT
+
+    fun setNetworkingListeners(customNetworkingListeners: NetworkingListeners): NetworkingBuilder {
+        this.networkingListeners = customNetworkingListeners
+        return this
+    }
+
+    fun getNetworkingListeners(): NetworkingListeners {
+        return networkingListeners
+    }
 
     fun setPackageName(packageName: String): NetworkingBuilder {
         this.packageName = packageName
