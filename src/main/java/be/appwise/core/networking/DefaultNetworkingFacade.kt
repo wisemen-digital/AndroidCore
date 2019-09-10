@@ -1,30 +1,29 @@
 package be.appwise.core.networking
 
 import android.annotation.SuppressLint
-import android.app.PendingIntent
 import android.content.ContentResolver
-import android.content.Intent
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.webkit.MimeTypeMap
+import be.appwise.core.R
+import be.appwise.core.networking.models.AccessToken
+import be.appwise.core.networking.models.ApiError
 import com.google.gson.ExclusionStrategy
 import com.google.gson.FieldAttributes
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.orhanobut.hawk.Hawk
-import be.appwise.core.R
 import id.zelory.compressor.Compressor
 import io.reactivex.Observable
 import io.reactivex.internal.functions.Functions
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
-import io.realm.Realm
 import io.realm.RealmObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
-import org.json.JSONException
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -33,14 +32,16 @@ import java.io.File
 import java.io.IOException
 import java.net.UnknownHostException
 
-class DefaultNetworkingFacade<T>(
-    networkingBuilder: NetworkingBuilder,
-    apiManagerService: Class<T>?
-) : NetworkingFacade {
+class DefaultNetworkingFacade<T>(networkingBuilder: NetworkingBuilder, apiManagerService: Class<T>?) :
+    NetworkingFacade {
 
+    //<editor-fold desc="Variables">
+    /**
+     * These are all variables that are needed to make this class/library work.
+     * They have to be in this order as well, else things won't compile and break.
+     */
     private val context = networkingBuilder.context
     private val endPoint = networkingBuilder.getEndPoint()
-    private val packageName = networkingBuilder.getPackageName()
     private val clientIdValue = networkingBuilder.getClientIdValue()
     private val clientSecretValue = networkingBuilder.getClientSecretValue()
     private val appName = networkingBuilder.getAppName()
@@ -48,25 +49,33 @@ class DefaultNetworkingFacade<T>(
     private val versionCode = networkingBuilder.getVersionCode()
     private val apiVersion = networkingBuilder.getApiVersion()
     private val applicationId = networkingBuilder.getApplicationId()
+    private val listener: NetworkingListeners = networkingBuilder.getNetworkingListeners()
 
-    private val unprotectedRetrofit by lazy {
+    override val packageName = networkingBuilder.getPackageName()
+
+    override val unProtectedRetrofit by lazy {
         getRetro(false)
     }
 
-    private val protectedRetrofit by lazy {
+    override val protectedRetrofit by lazy {
         getRetro(true)
     }
 
-    private val protectedClient by lazy {
+    override val protectedClient by lazy {
         getClient(true)
     }
 
-    private val unProtectedClient by lazy {
+    override val unProtectedClient by lazy {
         getClient(false)
     }
 
     private val protectedApiManager = protectedRetrofit.create(apiManagerService!!)
-    private val unProtectedApiManager = unprotectedRetrofit.create(apiManagerService!!)
+    private val unProtectedApiManager = unProtectedRetrofit.create(apiManagerService!!)
+    //</editor-fold>
+
+    override fun getContext(): Context {
+        return context
+    }
 
     override fun <T> getProtectedApiManager(): T? {
         return protectedApiManager as T
@@ -83,11 +92,8 @@ class DefaultNetworkingFacade<T>(
             unProtectedClient
         }
 
-        return Retrofit.Builder()
-            .baseUrl(endPoint)
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(getFactory())
-            .client(client).build()
+        return Retrofit.Builder().baseUrl(endPoint).addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(getFactory()).client(client).build()
     }
 
     private fun getClient(protected: Boolean): OkHttpClient {
@@ -96,17 +102,8 @@ class DefaultNetworkingFacade<T>(
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
 
-        val client = OkHttpClient().newBuilder()
-            .addInterceptor(logging)
-            .addInterceptor(
-                HeaderInterceptor(
-                    appName,
-                    versionName,
-                    versionCode,
-                    apiVersion,
-                    applicationId
-                )
-            )
+        val client = OkHttpClient().newBuilder().addInterceptor(logging)
+            .addInterceptor(HeaderInterceptor(appName, versionName, versionCode, apiVersion, applicationId))
 
         if (protected) {
             client.authenticator(Authenticator(clientIdValue, clientSecretValue))
@@ -145,80 +142,6 @@ class DefaultNetworkingFacade<T>(
         }
     }
 
-    private fun parseError(response: retrofit2.Response<*>): ApiError {
-        var error = ApiError()
-        when (response.code()) {
-            500 -> error.message = context.resources.getString(R.string.api_error_fallback)
-            404 -> error.message = context.resources.getString(R.string.internet_connection_error)
-            401 -> error.message = context.resources.getString(R.string.api_error_authentication)
-            422 -> try {
-                val hashMapConverter = protectedRetrofit.responseBodyConverter<HashMap<*, *>>(
-                    HashMap::class.java,
-                    arrayOfNulls<Annotation>(0)
-                )
-
-                var message = ""
-                val hashMapResponseBody = response.errorBody()
-                val hashMap = hashMapConverter.convert(hashMapResponseBody!!)
-                if (hashMap?.containsKey("errors") == true) {
-                    val errorMaps = jsonToMap(hashMap["errors"].toString())
-                    for (key in errorMaps.keys) {
-                        message += errorMaps[key]
-                    }
-                    error.message = message.replace("[", "").replace("]", "")
-                } else {
-                    for (entry in hashMap!!.keys) {
-                        val value = hashMap[entry].toString()
-                        message = if (value.contains("verplicht") || value.contains("required")) {
-                            "$value $entry"
-                        } else value
-                    }
-                    error.message = message
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            else -> {
-                val converter = protectedRetrofit.responseBodyConverter<ApiError>(
-                    ApiError::class.java,
-                    arrayOfNulls<Annotation>(0)
-                )
-
-                val responseBody = response.errorBody()
-                error = try {
-                    converter.convert(responseBody!!)!!
-                } catch (e: Exception) {
-                    ApiError()
-                }
-            }
-        }
-
-        return error
-    }
-
-    override fun logout() {
-        val realm = Realm.getDefaultInstance()
-
-        val errorActivity = Intent("$packageName.logout")
-        errorActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        val pendingIntent = PendingIntent.getActivity(context, 22, errorActivity, 0)
-
-        unProtectedClient.dispatcher().cancelAll()
-
-        try {
-            if (Hawk.isBuilt()) {
-                Hawk.deleteAll()
-            }
-
-            realm.executeTransaction { it.deleteAll() }
-            pendingIntent.send()
-
-            //OneSignal.deleteTag(Constants.ONESIGNAL_USER_ID)
-        } catch (e: PendingIntent.CanceledException) {
-            e.printStackTrace()
-        }
-    }
-
     private fun getGson(): Gson {
         val builder = GsonBuilder()
         builder.setExclusionStrategies(object : ExclusionStrategy {
@@ -250,7 +173,7 @@ class DefaultNetworkingFacade<T>(
     }
 
     @SuppressLint("DefaultLocale")
-    fun getMimeType(file: File): String {
+    private fun getMimeType(file: File): String {
         val uri = Uri.fromFile(file)
         val mimeType: String? = if (uri.scheme == ContentResolver.SCHEME_CONTENT) {
             val cr = context.contentResolver
@@ -260,19 +183,6 @@ class DefaultNetworkingFacade<T>(
             MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase())
         }
         return mimeType ?: ""
-    }
-
-    @Throws(JSONException::class)
-    fun jsonToMap(t: String): HashMap<String, String> {
-        val myMap = HashMap<String, String>()
-        val pairs = t.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        for (i in pairs.indices) {
-            val pair = pairs[i]
-            val keyValue = pair.split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            myMap[keyValue[0]] = keyValue[1]
-        }
-
-        return myMap
     }
 
     suspend fun getBodyForImage(key: String, file: File): MultipartBody.Part = withContext(Dispatchers.Default) {
@@ -292,7 +202,7 @@ class DefaultNetworkingFacade<T>(
         //720p is 1280 x 720 px
         val newHeight: Double
         val newWidth: Double
-        if (imageHeight > imageWidth) {//portrait-->720p
+        if (imageHeight > imageWidth) { //portrait-->720p
             val ratio = imageHeight / 720
             newWidth = imageWidth / ratio
             newHeight = 720.0
@@ -317,4 +227,14 @@ class DefaultNetworkingFacade<T>(
     override fun isLoggedIn(): Boolean {
         return getAccessToken() != null
     }
+
+    // Implementation of listeners
+    private fun parseError(response: retrofit2.Response<*>): ApiError {
+        return listener.errorListener(response)
+    }
+
+    override fun logout() {
+        listener.logout()
+    }
+
 }
