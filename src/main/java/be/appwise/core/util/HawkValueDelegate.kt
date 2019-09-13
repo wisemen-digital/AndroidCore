@@ -10,7 +10,6 @@ class HawkValueDelegate<in R, T>(private val key: String, private val defaultVal
             Hawk.put(key, newValue)
         } else {
             Hawk.delete(key)
-            
         }
     }
 }
