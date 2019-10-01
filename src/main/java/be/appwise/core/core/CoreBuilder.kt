@@ -21,7 +21,7 @@ class CoreBuilder(internal val context: Context) {
     /***
      * Initialize this logger
      */
-    fun initializeLogger(tag: String = "AndroidBase", formatStrategy: PrettyFormatStrategy = PrettyFormatStrategy.newBuilder().tag(tag).build() /*Set a tag*/, isLoggable: Boolean = BuildConfig.DEBUG): CoreBuilder {
+    fun initializeLogger(tag: String = "AndroidApp", formatStrategy: PrettyFormatStrategy = PrettyFormatStrategy.newBuilder().tag(tag).build() /*Set a tag*/, isLoggable: Boolean = BuildConfig.DEBUG): CoreBuilder {
         // Initialize Logger
         Logger.addLogAdapter(object : AndroidLogAdapter(formatStrategy) {
             override fun isLoggable(priority: Int, tag: String?): Boolean {
