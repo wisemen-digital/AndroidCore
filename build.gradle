@@ -26,6 +26,9 @@ android {
         }
     }
 
+    dataBinding {
+        enabled = true
+    }
 }
 
 // api in front of a dependency means it can be used in the main project as well.
