@@ -5,13 +5,13 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "29.0.1"
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
 
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
@@ -28,61 +28,51 @@ android {
 
 }
 
+// api in front of a dependency means it can be used in the main project as well.
+// https://developer.android.com/studio/build/dependencies
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation "androidx.core:core-ktx:1.0.2"
+    implementation "androidx.core:core-ktx:1.1.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     //Kotlin reflect
-    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version" //TODO: what does this thing do??
 
-    //Viewmodel
+    //ViewModel
     implementation "android.arch.lifecycle:extensions:1.1.1"
     implementation "android.arch.lifecycle:viewmodel:1.1.1"
 
     //AndroidX Support libraries
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation "androidx.constraintlayout:constraintlayout:2.0.0-beta1"
+    api 'androidx.appcompat:appcompat:1.1.0'
+    api 'com.google.android.material:material:1.0.0'
+    api "androidx.constraintlayout:constraintlayout:2.0.0-beta1"
 
     //coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.2.1'
-    implementation group: 'androidx.lifecycle', name: 'lifecycle-viewmodel-ktx', version: '2.2.0-alpha01'
-
-    //Glide Image Loading
-    implementation 'com.github.bumptech.glide:glide:4.8.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0'
+    api group: 'androidx.lifecycle', name: 'lifecycle-viewmodel-ktx', version: '2.2.0-alpha01'
 
     //networking
+    api 'com.squareup.retrofit2:converter-scalars:2.5.0'
     implementation "com.squareup.retrofit2:retrofit:2.5.0"
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.5.0"
     implementation "com.squareup.retrofit2:converter-gson:2.5.0"
-    implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.0'
 
-    // rx ==> RxAndroid does not replace rxjava. It is a small library of Android specific rxjava utilities.
-    // For example it makes the Android application main thread available as an rxjava scheduler.
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    // gson (https://github.com/google/gson)
+    api 'com.google.code.gson:gson:2.8.5'
 
-    //Hawk storage
-    implementation "com.orhanobut:hawk:2.0.1"
-
-    //Permissions
-    implementation 'pub.devrel:easypermissions:3.0.0'
+    // rx ==> RxAndroid does not replace rxJava. It is a small library of Android specific rxJava utilities.
+    // For example it makes the Android application main thread available as an rxJava scheduler.
+    api 'io.reactivex.rxjava2:rxjava:2.2.8'
+    api 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
     //Validation
-    implementation "com.wajahatkarim3.easyvalidation:easyvalidation-core:1.0.1"
-
-    //JetPack Navigation
-    implementation "android.arch.navigation:navigation-fragment-ktx:1.0.0"
-    implementation "android.arch.navigation:navigation-ui-ktx:1.0.0"
+    api "com.wajahatkarim3.easyvalidation:easyvalidation-core:1.0.1"
 
     // logger (https://github.com/orhanobut/logger)
     implementation 'com.orhanobut:logger:2.2.0'
@@ -91,26 +81,23 @@ dependencies {
     implementation "com.orhanobut:hawk:2.0.1"
 
     //open image chooser
-    implementation 'com.github.jkwiecien:EasyImage:2.0.2'
+    api 'com.github.jkwiecien:EasyImage:2.0.2'
 
     //image loading/caching
-    implementation 'com.github.bumptech.glide:glide:4.8.0'
-    kapt 'com.github.bumptech.glide:compiler:4.8.0'
+    api 'com.github.bumptech.glide:glide:4.9.0'
+    kapt 'com.github.bumptech.glide:compiler:4.9.0'
 
     //dialogs
-    implementation 'com.afollestad.material-dialogs:core:2.8.0'
-    //datepickers
-    implementation 'com.afollestad.material-dialogs:datetime:3.0.0-rc4'
+    api 'com.afollestad.material-dialogs:core:2.8.0'
+    //datePickers
+    api 'com.afollestad.material-dialogs:datetime:3.0.0-rc4'
 
     //Realm
-    implementation 'io.realm:android-adapters:3.1.0'
+    api 'io.realm:android-adapters:3.1.0'
     kapt 'dk.ilios:realmfieldnameshelper:1.1.1'
 
     // Time manipulation for Java 7
-    implementation 'joda-time:joda-time:2.10'
-
-    //Anko
-    implementation "org.jetbrains.anko:anko:0.10.8"
+    api 'joda-time:joda-time:2.10'
 
     //compress images for uploads
     implementation 'id.zelory:compressor:2.1.0'
