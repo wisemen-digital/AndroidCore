@@ -1,4 +1,4 @@
-package be.appwise.core.extensions.view
+ package be.appwise.core.extensions.view
 
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.TransitionDrawable
