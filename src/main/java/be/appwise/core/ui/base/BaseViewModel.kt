@@ -7,7 +7,7 @@ import io.realm.Realm
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.plus
 
-open class BaseViewModel(val compositeDisposable: CompositeDisposable = CompositeDisposable(), val realm : Realm = Realm.getDefaultInstance()) : ViewModel() {
+open class BaseViewModel(val compositeDisposable: CompositeDisposable = CompositeDisposable()) : ViewModel() {
 
     var vmScope = viewModelScope
 
@@ -24,7 +24,6 @@ open class BaseViewModel(val compositeDisposable: CompositeDisposable = Composit
 
     override fun onCleared() {
         super.onCleared()
-        realm.close()
         compositeDisposable.dispose()
     }
 }
