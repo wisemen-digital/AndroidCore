@@ -43,7 +43,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     //Kotlin reflect
-    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version" //TODO: what does this thing do??
+    api "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version" //TODO: what does this thing do??
 
     //ViewModel
     api "androidx.lifecycle:lifecycle-extensions:2.1.0"
