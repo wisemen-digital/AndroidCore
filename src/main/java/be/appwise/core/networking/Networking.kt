@@ -12,11 +12,6 @@ object Networking {
     private var networkingFacade: NetworkingFacade? =
         NetworkingFacade.EmptyNetworkingFacade()
 
-    fun init(context: Context): NetworkingBuilder {
-        networkingFacade = null
-        return NetworkingBuilder(context)
-    }
-
     internal fun <T> build(
         networkingBuilder: NetworkingBuilder,
         apiManagerService: Class<T>?
