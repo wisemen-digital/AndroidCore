@@ -11,9 +11,9 @@ fun logd(message: String, vararg args: Any, tag: String = "") {
         .d(message, args)
 }
 
-fun logd(args: Any, tag: String = "") {
+fun logd(anyObject: Any, tag: String = "") {
     Logger.t(tag)
-        .d(args)
+        .d(anyObject)
 }
 
 fun loge(message:String, vararg args: Any, tag:String = ""){

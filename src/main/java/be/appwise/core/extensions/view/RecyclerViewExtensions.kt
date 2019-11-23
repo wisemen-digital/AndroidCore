@@ -19,3 +19,10 @@ fun RecyclerView.addDivider(drawable: Int? = null, orientation: Int = LinearLayo
     }
     addItemDecoration(dividerItemDecoration)
 }
+
+fun RecyclerView.setupRecyclerView(decoration: DividerItemDecoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL), layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)) =
+    apply {
+        setHasFixedSize(true)
+        this.layoutManager = layoutManager
+        addItemDecoration(decoration)
+    }
