@@ -105,7 +105,7 @@ dependencies {
     implementation 'id.zelory:compressor:2.1.0'
 
     // https://github.com/Ereza/CustomActivityOnCrash
-    api 'cat.ereza:customactivityoncrash:2.2.0'
+    implementation 'cat.ereza:customactivityoncrash:2.2.0'
 
     // Progress/Loading Button
     api 'com.github.razir.progressbutton:progressbutton:1.0.3'
