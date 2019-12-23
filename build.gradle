@@ -42,6 +42,8 @@ dependencies {
     api "androidx.core:core-ktx:1.1.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    api 'androidx.multidex:multidex:2.0.0'
+
     //Kotlin reflect
     api "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version" //TODO: what does this thing do??
 
