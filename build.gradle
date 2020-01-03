@@ -54,7 +54,7 @@ dependencies {
 
     //AndroidX Support libraries
     api 'androidx.appcompat:appcompat:1.1.0'
-    api 'com.google.android.material:material:1.0.0'
+    api 'com.google.android.material:material:1.1.0-rc01'
     api "androidx.constraintlayout:constraintlayout:2.0.0-beta1"
 
     //coroutines
@@ -93,9 +93,8 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
 
     //dialogs
-    api 'com.afollestad.material-dialogs:core:2.8.0'
-    //datePickers
-    api 'com.afollestad.material-dialogs:datetime:3.0.0-rc4'
+    api 'com.afollestad.material-dialogs:core:3.1.1'
+    api 'com.afollestad.material-dialogs:datetime:3.1.1'
 
     //Realm
     api 'io.realm:android-adapters:3.1.0'
