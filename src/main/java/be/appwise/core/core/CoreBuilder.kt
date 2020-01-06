@@ -4,6 +4,7 @@ import android.content.Context
 import be.appwise.core.BuildConfig
 import be.appwise.core.networking.Networking
 import be.appwise.core.networking.NetworkingBuilder
+import cat.ereza.customactivityoncrash.config.CaocConfig
 import com.orhanobut.hawk.Hawk
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.LogStrategy
@@ -42,6 +43,14 @@ class CoreBuilder(internal val context: Context) {
     fun initializeHawk(): CoreBuilder {
         Hawk.init(context)
             .build()
+
+        return this
+    }
+
+    fun initializeErrorActivity(showErrorDetails: Boolean = false): CoreBuilder{
+        CaocConfig.Builder.create()
+            .showErrorDetails(showErrorDetails)
+            .apply()
 
         return this
     }

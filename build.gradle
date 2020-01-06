@@ -42,6 +42,8 @@ dependencies {
     api "androidx.core:core-ktx:1.1.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    api 'androidx.multidex:multidex:2.0.0'
+
     //Kotlin reflect
     api "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version" //TODO: what does this thing do??
 
@@ -52,7 +54,7 @@ dependencies {
 
     //AndroidX Support libraries
     api 'androidx.appcompat:appcompat:1.1.0'
-    api 'com.google.android.material:material:1.0.0'
+    api 'com.google.android.material:material:1.1.0-rc01'
     api "androidx.constraintlayout:constraintlayout:2.0.0-beta1"
 
     //coroutines
@@ -91,9 +93,8 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
 
     //dialogs
-    api 'com.afollestad.material-dialogs:core:2.8.0'
-    //datePickers
-    api 'com.afollestad.material-dialogs:datetime:3.0.0-rc4'
+    api 'com.afollestad.material-dialogs:core:3.1.1'
+    api 'com.afollestad.material-dialogs:datetime:3.1.1'
 
     //Realm
     api 'io.realm:android-adapters:3.1.0'
@@ -103,6 +104,9 @@ dependencies {
 
     //compress images for uploads
     implementation 'id.zelory:compressor:2.1.0'
+
+    // https://github.com/Ereza/CustomActivityOnCrash
+    implementation 'cat.ereza:customactivityoncrash:2.2.0'
 
     // Progress/Loading Button
     api 'com.github.razir.progressbutton:progressbutton:1.0.3'
