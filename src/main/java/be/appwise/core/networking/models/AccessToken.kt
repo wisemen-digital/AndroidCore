@@ -1,12 +1,10 @@
 package be.appwise.core.networking.models
 
 import com.google.gson.annotations.Expose
-import io.realm.RealmObject
-import io.realm.annotations.PrimaryKey
 
 @Suppress("PropertyName")
-open class AccessToken : RealmObject() {
-    @PrimaryKey
+open class AccessToken {
+    @Expose
     var id: Int = 0
     @Expose
     var token_type: String? = null
