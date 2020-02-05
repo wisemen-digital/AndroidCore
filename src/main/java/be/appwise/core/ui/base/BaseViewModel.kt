@@ -7,7 +7,7 @@ import io.realm.Realm
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.plus
 
-open class BaseViewModel(val compositeDisposable: CompositeDisposable = CompositeDisposable()) : ViewModel() {
+open class BaseViewModel(open val compositeDisposable: CompositeDisposable = CompositeDisposable()) : ViewModel() {
 
     var vmScope = viewModelScope
 
