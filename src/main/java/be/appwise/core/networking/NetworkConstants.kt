@@ -11,7 +11,6 @@ object NetworkConstants {
 
     const val LOGIN_USER_KEY = "username" //Todo: this could be "email" or "username"
 
-    const val HAWK_ACCESS_TOKEN_KEY = "access_token"
     const val REFRESH_TOKEN = "refresh_token"
 
     const val AUTHORIZATION = "Authorization"

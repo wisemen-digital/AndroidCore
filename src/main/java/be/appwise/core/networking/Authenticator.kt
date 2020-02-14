@@ -3,8 +3,7 @@ package be.appwise.core.networking
 import android.os.ConditionVariable
 import android.text.TextUtils
 import android.util.Log
-import com.orhanobut.hawk.Hawk
-import be.appwise.core.networking.NetworkConstants.HAWK_ACCESS_TOKEN_KEY
+import be.appwise.core.util.HawkUtils
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
@@ -63,7 +62,7 @@ class Authenticator(private val clientIdValue: String, private val clientSecretV
                         Log.d(TAG, "There is a new refresh token")
                         Networking.saveAccessToken(newToken)
 
-                        Log.d(TAG, "new token is saved " + Hawk.get<String>(HAWK_ACCESS_TOKEN_KEY))
+                        Log.d(TAG, "new token is saved " + HawkUtils.hawkAccessToken)
 
                         request.newBuilder()
                             .header(NetworkConstants.AUTHORIZATION, NetworkConstants.BEARER + newToken)
@@ -83,8 +82,8 @@ class Authenticator(private val clientIdValue: String, private val clientSecretV
             if (conditionOpened) {
 
                 // another thread has refreshed this for us! thanks!
-                val oauthTokenFromOtherThread = Hawk.get<String>(HAWK_ACCESS_TOKEN_KEY)
-                val newAccessToken = if (oauthTokenFromOtherThread == null) "" else oauthTokenFromOtherThread + ""
+                val oauthTokenFromOtherThread = HawkUtils.hawkAccessToken
+                val newAccessToken = if (oauthTokenFromOtherThread == null) "" else oauthTokenFromOtherThread.toString() + ""
 
                 // sign the request with the new token and proceed
                 val authRequestBuilder = request.newBuilder()
