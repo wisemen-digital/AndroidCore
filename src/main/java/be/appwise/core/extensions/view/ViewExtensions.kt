@@ -3,6 +3,7 @@ package be.appwise.core.extensions.view
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
 
@@ -79,3 +80,14 @@ val View.asBitmap: Bitmap
     }
 
 inline fun <reified T : ViewGroup.LayoutParams> View.getParams() = this.layoutParams as T
+
+fun View.setOnClickListenerWithDisableDelay(delay: Long = 500, onItemClickListener: () -> Unit) {
+    setOnClickListener {
+        onItemClickListener()
+
+        isEnabled = false
+        Handler().postDelayed({
+            isEnabled = true
+        }, delay)
+    }
+}

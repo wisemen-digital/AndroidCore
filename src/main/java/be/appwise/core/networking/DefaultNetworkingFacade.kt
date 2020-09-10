@@ -9,11 +9,11 @@ import android.webkit.MimeTypeMap
 import be.appwise.core.R
 import be.appwise.core.networking.models.AccessToken
 import be.appwise.core.networking.models.ApiError
+import be.appwise.core.util.HawkUtils
 import com.google.gson.ExclusionStrategy
 import com.google.gson.FieldAttributes
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.orhanobut.hawk.Hawk
 import id.zelory.compressor.Compressor
 import io.reactivex.Observable
 import io.reactivex.internal.functions.Functions
@@ -217,11 +217,11 @@ class DefaultNetworkingFacade<T>(networkingBuilder: NetworkingBuilder, apiManage
     }
 
     override fun getAccessToken(): AccessToken? {
-        return Hawk.get<AccessToken>(NetworkConstants.HAWK_ACCESS_TOKEN_KEY, null)
+        return HawkUtils.hawkAccessToken
     }
 
     override fun saveAccessToken(accessToken: AccessToken) {
-        Hawk.put(NetworkConstants.HAWK_ACCESS_TOKEN_KEY, accessToken)
+        HawkUtils.hawkAccessToken = accessToken
     }
 
     override fun isLoggedIn(): Boolean {

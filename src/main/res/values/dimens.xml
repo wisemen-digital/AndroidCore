@@ -1,0 +1,96 @@
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- font sizes -->
+    <dimen name="font_h1">96sp</dimen>
+    <dimen name="font_h2">60sp</dimen>
+    <dimen name="font_h3">48sp</dimen>
+    <dimen name="font_h4">34sp</dimen>
+    <dimen name="font_h5">24sp</dimen>
+    <dimen name="font_h6">20sp</dimen>
+    <dimen name="font_h7">18sp</dimen>
+    <dimen name="font_h8">15sp</dimen>
+    <dimen name="font_subtitle">14sp</dimen>
+    <dimen name="font_small_cap">11sp</dimen>
+    <dimen name="font_tiny_cap">8sp</dimen>
+    <dimen name="font_body">16sp</dimen>
+    <dimen name="font_body2">14sp</dimen>
+
+    <!--//bottombar-->
+    <dimen name="bottombartext">10sp</dimen>
+    <dimen name="bottombarIconSize">20dp</dimen>
+
+
+    <!-- typical spacing between two views -->
+    <dimen name="spacing_huge">40dp</dimen>
+    <dimen name="spacing_large">24dp</dimen>
+    <dimen name="spacing_normal_16dp">16dp</dimen>
+    <dimen name="spacing_normal">14dp</dimen>
+    <dimen name="spacing_small">10dp</dimen>
+    <dimen name="spacing_tiny">4dp</dimen>
+    <dimen name="spacing_micro">2dp</dimen>
+
+    <!-- typical sizes of views -->
+    <dimen name="button_height_tall">60dp</dimen>
+    <dimen name="button_height_normal">40dp</dimen>
+    <dimen name="button_height_short">32dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+
+
+    <dimen name="image_width">48dp</dimen>
+    <dimen name="watch_extra_idata">50dp</dimen>
+    <dimen name="chat_image_width">150dp</dimen>
+    <dimen name="chat_image_height">100dp</dimen>
+    <dimen name="contact_height">40dp</dimen>
+    <dimen name="profile_picture_height">220dp</dimen>
+
+
+    <dimen name="ticket_picture_height">75dp</dimen>
+    <dimen name="ticket_picture_width">75dp</dimen>
+
+    <dimen name="bottom_sheet_corner_radius">10dp</dimen>
+    <dimen name="bottom_sheet_top_padding">10dp</dimen>
+
+    <dimen name="button_corner_radius">8dp</dimen>
+
+    <dimen name="gantt_block_width">150dp</dimen>
+    <dimen name="gantt_time_header_height">50dp</dimen>
+    <dimen name="gantt_column_height">40dp</dimen>
+    <dimen name="header_item_width">70dp</dimen>
+
+    <!--timetablelayout--><!--initial values-->
+    <dimen name="columnWidth">130dp</dimen> <!--130dp-->
+    <dimen name="heightPerMinute">2dp</dimen> <!--3dp-->
+    <dimen name="timeLabelWidth">48dp</dimen>
+    <dimen name="timeLabelTextSize">10dp</dimen>
+
+    <dimen name="courtLabelHeight">32dp</dimen>
+    <dimen name="courtLabelTextSize">@dimen/timeLabelTextSize</dimen>
+
+    <dimen name="item_news_height">320dp</dimen>
+    <dimen name="item_event_height">330dp</dimen>
+    <dimen name="item_competition_height">190dp</dimen>
+    <dimen name="item_team_competition_height">180dp</dimen>
+
+    <dimen name="sponsorviewheight">50dp</dimen>
+    <dimen name="sponsorviewheight_splash">70dp</dimen>
+    <dimen name="player_picture_size_small">20dp</dimen>
+    <dimen name="player_picture_size_medium">40dp</dimen>
+
+    <dimen name="check_mark_size">18dp</dimen>
+    <dimen name="action_icon_size">24dp</dimen>
+
+    <dimen name="hour_block_margins">3px</dimen>
+    <dimen name="calendar_tile_height">32dp</dimen>
+
+    <dimen name="message_bottomsheet_height">100dp</dimen>
+    <dimen name="message_bottomsheet_height_expanded">150dp</dimen>
+
+
+    <dimen name="scanner_marker_size">150dp</dimen>
+    <dimen name="card_corner_radius">24dp</dimen>
+
+
+</resources>
