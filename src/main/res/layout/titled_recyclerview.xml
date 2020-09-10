@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle"
+            android:background="@android:color/white"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/primaryTitle"
+            tools:text="Title"
+            app:layout_constraintEnd_toStartOf="@+id/ivAction" />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="?selectableItemBackgroundBorderless"
+            tools:srcCompat="@android:drawable/ic_delete"
+            android:paddingTop="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_normal"
+            app:layout_constraintBottom_toBottomOf="@+id/tvTitle" />
+
+
+    <LinearLayout
+            android:id="@+id/llEmpty"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivEmptyIcon"
+                tools:srcCompat="@tools:sample/backgrounds/scenic"
+                android:scaleType="center"
+                android:layout_width="60dp"
+                android:layout_height="60dp"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvPrimaryText"
+                tools:text="Primary text"
+                style="@style/secondaryTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSecondaryText"
+                tools:text="Secondary text"
+                android:layout_marginTop="@dimen/spacing_small"
+                style="@style/secondaryText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvItems"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
