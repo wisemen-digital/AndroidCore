@@ -2,7 +2,8 @@ package be.appwise.core.networking
 
 import android.content.Context
 
-class NetworkingBuilder(internal val context: Context) {
+class NetworkingBuilder {
+    private lateinit var context: Context
     private var endPoint: String = ""
     private var packageName: String = ""
     private var clientSecretValue = ""
@@ -13,6 +14,15 @@ class NetworkingBuilder(internal val context: Context) {
     private var apiVersion = ""
     private var applicationId = ""
     private var networkingListeners = NetworkingListeners.DEFAULT
+
+    fun setContext(context: Context): NetworkingBuilder {
+        this.context = context
+        return this
+    }
+
+    fun getContext(): Context {
+        return context
+    }
 
     fun setNetworkingListeners(customNetworkingListeners: NetworkingListeners): NetworkingBuilder {
         this.networkingListeners = customNetworkingListeners

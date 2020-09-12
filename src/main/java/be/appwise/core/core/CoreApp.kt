@@ -6,6 +6,7 @@ import io.realm.RealmConfiguration
 object CoreApp {
     private var coreFacade: CoreFacade? = CoreFacade.EmptyCoreFacade()
 
+    @JvmStatic
     fun init(context: Context): CoreBuilder {
         coreFacade = null
         return CoreBuilder(context)

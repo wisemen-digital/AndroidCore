@@ -14,6 +14,7 @@ import com.google.gson.ExclusionStrategy
 import com.google.gson.FieldAttributes
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.orhanobut.hawk.Hawk
 import id.zelory.compressor.Compressor
 import io.reactivex.Observable
 import io.reactivex.internal.functions.Functions
@@ -40,7 +41,7 @@ class DefaultNetworkingFacade<T>(networkingBuilder: NetworkingBuilder, apiManage
      * These are all variables that are needed to make this class/library work.
      * They have to be in this order as well, else things won't compile and break.
      */
-    private val context = networkingBuilder.context
+    private val context = networkingBuilder.getContext()
     private val endPoint = networkingBuilder.getEndPoint()
     private val clientIdValue = networkingBuilder.getClientIdValue()
     private val clientSecretValue = networkingBuilder.getClientSecretValue()
@@ -217,11 +218,11 @@ class DefaultNetworkingFacade<T>(networkingBuilder: NetworkingBuilder, apiManage
     }
 
     override fun getAccessToken(): AccessToken? {
-        return HawkUtils.hawkAccessToken
+        return Hawk.get<AccessToken>(NetworkConstants.HAWK_ACCESS_TOKEN_KEY, null)
     }
 
     override fun saveAccessToken(accessToken: AccessToken) {
-        HawkUtils.hawkAccessToken = accessToken
+        Hawk.put(NetworkConstants.HAWK_ACCESS_TOKEN_KEY, accessToken)
     }
 
     override fun isLoggedIn(): Boolean {
@@ -236,5 +237,4 @@ class DefaultNetworkingFacade<T>(networkingBuilder: NetworkingBuilder, apiManage
     override fun logout() {
         listener.logout()
     }
-
 }

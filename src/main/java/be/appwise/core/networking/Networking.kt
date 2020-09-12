@@ -52,6 +52,7 @@ object Networking {
         return networkingFacade!!.getUnProtectedApiManager()
     }
 
+    @JvmStatic
     fun isLoggedIn(): Boolean {
         return networkingFacade!!.isLoggedIn()
     }
