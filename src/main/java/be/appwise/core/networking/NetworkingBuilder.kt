@@ -29,7 +29,7 @@ class NetworkingBuilder {
         return this
     }
 
-    fun getNetworkingListeners(): NetworkingListeners {
+    internal fun getNetworkingListeners(): NetworkingListeners {
         return networkingListeners
     }
 

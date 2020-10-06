@@ -9,21 +9,22 @@ import android.webkit.MimeTypeMap
 import be.appwise.core.R
 import be.appwise.core.networking.models.AccessToken
 import be.appwise.core.networking.models.ApiError
-import be.appwise.core.util.HawkUtils
 import com.google.gson.ExclusionStrategy
 import com.google.gson.FieldAttributes
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.orhanobut.hawk.Hawk
 import id.zelory.compressor.Compressor
-import io.reactivex.Observable
 import io.reactivex.internal.functions.Functions
 import io.reactivex.plugins.RxJavaPlugins
-import io.reactivex.schedulers.Schedulers
 import io.realm.RealmObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody
+import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -70,6 +71,7 @@ class DefaultNetworkingFacade<T>(networkingBuilder: NetworkingBuilder, apiManage
         getClient(false)
     }
 
+    //TODO: provide the RestClient by a Factory/Provide pattern
     private val protectedApiManager = protectedRetrofit.create(apiManagerService!!)
     private val unProtectedApiManager = unProtectedRetrofit.create(apiManagerService!!)
     //</editor-fold>
@@ -113,22 +115,7 @@ class DefaultNetworkingFacade<T>(networkingBuilder: NetworkingBuilder, apiManage
         return client.build()
     }
 
-    override fun <T> doCallRx(call: Call<T>): Observable<T> {
-        return Observable.fromCallable<T> {
-            try {
-                val response = call.execute()
-                if (response.isSuccessful) {
-                    return@fromCallable response.body()
-                } else {
-                    throw Exception(parseError(response).message, Throwable("${response.code()}"))
-                }
-            } catch (exception: UnknownHostException) {
-                throw Exception(context.getString(R.string.internet_connection_error))
-            }
-        }.subscribeOn(Schedulers.io())
-    }
-
-    override suspend fun <T : Any?> doCallCr(call: Call<T>): T {
+    override suspend fun <T : Any?> doCall(call: Call<T>): T? {
         return try {
             withContext(Dispatchers.IO) {
                 val response = call.execute()

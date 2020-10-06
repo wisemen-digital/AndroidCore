@@ -20,7 +20,7 @@ fun loge(tag: String? = "", message: String, vararg args: Any) {
     Logger.t(tag).e(message, args)
 }
 
-fun loge(tag: String? = "", throwable: Throwable?, message: String, vararg args: Any) {
+fun loge(tag: String? = "", throwable: Throwable?, message: String = "", vararg args: Any) {
     Logger.t(tag).e(throwable, message, args)
 }
 
