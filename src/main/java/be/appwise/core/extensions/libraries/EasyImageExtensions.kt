@@ -19,7 +19,7 @@ fun Fragment.openEasyImageChooser(title: String) {
 fun Fragment.handlePictureResult(requestCode: Int, resultCode: Int, data: Intent?, processImages: (imageFiles: MutableList<File>) -> Unit) {
     EasyImage.handleActivityResult(requestCode, resultCode, data, activity, object : DefaultCallback() {
         override fun onImagePickerError(e: Exception, source: EasyImage.ImageSource?, type: Int) {
-            logd(e.message ?: "An error occured")
+            logd(null, e.message ?: "An error occured")
         }
 
         override fun onImagesPicked(imageFiles: MutableList<File>, source: EasyImage.ImageSource?, type: Int) {

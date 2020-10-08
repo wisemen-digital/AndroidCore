@@ -6,4 +6,5 @@
     <string name="login_error">Uw gebruikersnaam en/of wachtwoord is fout</string>
     <string name="api_error_fallback">We konden je verzoek niet uitvoeren. Probeer later opnieuw.</string>
     <string name="api_error_authentication">Foute gebruikersnaam of wachtwoord.</string>
+    <string name="error_default">Er ging iets mis.</string>
 </resources>

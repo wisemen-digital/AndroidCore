@@ -5,7 +5,55 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerViewEmptyLoadingSupport : RecyclerView {
+/**
+ * ## Use as following: ##
+ *
+ * ```
+ *     recyclerView?.apply {
+ *       layoutManager = GridLayoutManager(context, 2)
+ *       emptyStateView = emptyView
+ *       loadingStateView = loadingView
+ *       adapter = adapterGrid
+ *     }
+ *
+ *     // you can set LoadingView or emptyView manual
+ *     recyclerView.stateView = RecyclerViewEnum.EMPTY_STATE
+ *     recyclerView.stateView = RecyclerViewEnum.LOADING
+ * ```
+ *
+ *
+ * ## An XML example: ##
+ *
+ * ```
+ *     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ *         android:layout_width="match_parent"
+ *         android:layout_height="match_parent"
+ *         android:gravity="center"
+ *         android:orientation="vertical">
+ *
+ *         <com.google.android.material.progressindicator.ProgressIndicator
+ *             android:id="@+id/loadingView"
+ *             android:layout_width="wrap_content"
+ *             android:layout_height="wrap_content" />
+ *
+ *         <TextView
+ *             android:id="@+id/emptyView"
+ *             android:layout_width="wrap_content"
+ *             android:layout_height="wrap_content" />
+ *
+ *         <be.appwise.core.ui.custom.RecyclerViewEmptyLoadingSupport
+ *             android:id="@+id/rvCategories"
+ *             android:layout_width="match_parent"
+ *             android:layout_height="match_parent" />
+ *     </LinearLayout>
+ * ```
+ * See [this SO post](https://stackoverflow.com/a/52716769/2263408) for more info
+ */
+class RecyclerViewEmptyLoadingSupport @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : RecyclerView(context, attrs, defStyleAttr) {
 
     var stateView: RecyclerViewEnum? = RecyclerViewEnum.LOADING
         set(value) {
@@ -14,12 +62,6 @@ class RecyclerViewEmptyLoadingSupport : RecyclerView {
         }
     var emptyStateView: View? = null
     var loadingStateView: View? = null
-
-    constructor(context: Context) : super(context) {}
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
-
-    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {}
 
     private val dataObserver = object : AdapterDataObserver() {
         override fun onChanged() {

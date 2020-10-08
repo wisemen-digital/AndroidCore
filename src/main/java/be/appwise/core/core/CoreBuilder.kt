@@ -7,15 +7,12 @@ import be.appwise.core.networking.NetworkingBuilder
 import cat.ereza.customactivityoncrash.config.CaocConfig
 import com.orhanobut.hawk.Hawk
 import com.orhanobut.logger.AndroidLogAdapter
-import com.orhanobut.logger.LogStrategy
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
-import io.realm.Realm
-import io.realm.RealmConfiguration
 
 class CoreBuilder(internal val context: Context) {
     fun <T> initializeNetworking(networkingBuilder: NetworkingBuilder, apiManagerService: Class<T>): CoreBuilder {
-        Networking.build(networkingBuilder, apiManagerService)
+        Networking.build(networkingBuilder.setContext(context), apiManagerService)
 
         return this
     }

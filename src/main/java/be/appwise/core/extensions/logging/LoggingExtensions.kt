@@ -6,32 +6,32 @@ import com.orhanobut.logger.Logger
 // should we ever need to change the Logging dependency to another one (i.e. Timber) then we only need to adjust it here, on one place
 
 
-fun logd(message: String, vararg args: Any, tag: String = "") {
+fun logd(tag: String? = "", message: String, vararg args: Any) {
     Logger.t(tag)
         .d(message, args)
 }
 
-fun logd(anyObject: Any, tag: String = "") {
+fun logd(tag: String? = "", anyObject: Any) {
     Logger.t(tag)
         .d(anyObject)
 }
 
-fun loge(message:String, vararg args: Any, tag:String = ""){
+fun loge(tag: String? = "", message: String, vararg args: Any) {
     Logger.t(tag).e(message, args)
 }
 
-fun loge(throwable: Throwable?, message: String, vararg args:Any, tag:String=""){
+fun loge(tag: String? = "", throwable: Throwable?, message: String = "", vararg args: Any) {
     Logger.t(tag).e(throwable, message, args)
 }
 
-fun logw(message:String, vararg args: Any, tag:String = ""){
+fun logw(tag: String? = "", message: String, vararg args: Any) {
     Logger.t(tag).w(message, args)
 }
 
-fun logv(message:String, vararg args: Any, tag:String = ""){
+fun logv(tag: String? = "", message: String, vararg args: Any) {
     Logger.t(tag).v(message, args)
 }
 
-fun logi(message:String, vararg args: Any, tag:String = ""){
+fun logi(tag: String? = "", message: String, vararg args: Any) {
     Logger.t(tag).i(message, args)
 }

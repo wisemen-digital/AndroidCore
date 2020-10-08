@@ -81,6 +81,38 @@ interface NetworkingListeners {
         return myMap
     }
 
+    //TODO: check out this way of using the JsonToMap function
+    //    val jsonObj = JSONObject(jsonString)
+    //    val map = jsonObj.toMap()
+    //
+    //    fun JSONObject.toMap(): Map<String, *> = keys().asSequence().associateWith {
+    //        when (val value = this[it])
+    //        {
+    //            is JSONArray ->
+    //            {
+    //                val map = (0 until value.length()).associate { Pair(it.toString(), value[it]) }
+    //                JSONObject(map).toMap().values.toList()
+    //            }
+    //            is JSONObject -> value.toMap()
+    //            JSONObject.NULL -> null
+    //            else            -> value
+    //        }
+    //    }
+
+    /**
+     * This logout function can be used to cleanup any resources the app is using.
+     * i.e. remove all entries from Hawk, delete all data from Realm, ...
+     *
+     * After that it will call a Deeplink in the app to return to the 'Starting Activity' without any backstack.
+     * For this to work, don't forget to add the intent filter to your 'Starting Activity' to make the deep
+     *
+     * ```
+     *    <intent-filter>
+     *        <action android:name="${applicationId}.logout" />
+     *        <category android:name="android.intent.category.DEFAULT" />
+     *    </intent-filter>
+     * ```
+     */
     fun logout() {
         // Using packageName for this so the application can differentiate between a develop, staging or production build and won't ask the user which to use
         val errorActivity = Intent("${Networking.getPackageName()}.logout")

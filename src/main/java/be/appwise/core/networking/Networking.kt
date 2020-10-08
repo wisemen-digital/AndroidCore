@@ -2,7 +2,6 @@ package be.appwise.core.networking
 
 import android.content.Context
 import be.appwise.core.networking.models.AccessToken
-import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import retrofit2.Call
@@ -20,16 +19,18 @@ object Networking {
             DefaultNetworkingFacade(networkingBuilder, apiManagerService)
     }
 
-    fun getContext(): Context{
+    internal fun getContext(): Context {
         return networkingFacade!!.getContext()
     }
 
-    fun <T> doCallRx(call: Call<T>): Observable<T> {
-        return networkingFacade!!.doCallRx(call)
-    }
-
-    suspend fun <T : Any?> doCallCr(call: Call<T>): T {
-        return networkingFacade!!.doCallCr(call)
+    /**
+     * Use this function to get the result of a network call.
+     * In case of any errors this will map the error using the ApiError object.
+     *
+     * This is a suspended function and is only useful for Coroutines.
+     */
+    suspend fun <T : Any?> doCall(call: Call<T>): T? {
+        return networkingFacade!!.doCall(call)
     }
 
     fun getAccessToken(): AccessToken? {
@@ -40,7 +41,7 @@ object Networking {
         networkingFacade!!.saveAccessToken(accessToken)
     }
 
-    fun responseCount(responseMethod: Response?): Int {
+    internal fun responseCount(responseMethod: Response?): Int {
         return networkingFacade!!.responseCount(responseMethod)
     }
 
@@ -52,29 +53,50 @@ object Networking {
         return networkingFacade!!.getUnProtectedApiManager()
     }
 
+    /**
+     * Check if the use is logged in
+     *
+     * Basically, if there is an AccessToken saved, the user is logged in
+     */
+    @JvmStatic
     fun isLoggedIn(): Boolean {
         return networkingFacade!!.isLoggedIn()
     }
 
-    fun getProtectedRetrofit(): Retrofit{
+    fun getProtectedRetrofit(): Retrofit {
         return networkingFacade!!.protectedRetrofit
     }
 
-    fun getUnProtectedRetrofit():Retrofit{
+    fun getUnProtectedRetrofit(): Retrofit {
         return networkingFacade!!.unProtectedRetrofit
     }
 
-    fun getProtectedClient(): OkHttpClient{
+    fun getProtectedClient(): OkHttpClient {
         return networkingFacade!!.protectedClient
     }
 
-    fun getUnProtectedClient(): OkHttpClient{
+    fun getUnProtectedClient(): OkHttpClient {
         return networkingFacade!!.unProtectedClient
     }
 
-    fun getPackageName(): String{
+    fun getPackageName(): String {
         return networkingFacade!!.packageName
     }
+
+    /**
+     * This logout function can be used to cleanup any resources the app is using.
+     * i.e. remove all entries from Hawk, delete all data from Realm, ...
+     *
+     * After that it will call a Deeplink in the app to return to the 'Starting Activity' without any backstack.
+     * For this to work, don't forget to add the intent filter to your 'Starting Activity' to make the deep
+     *
+     * ```
+     *    <intent-filter>
+     *        <action android:name="${applicationId}.logout" />
+     *        <category android:name="android.intent.category.DEFAULT" />
+     *    </intent-filter>
+     * ```
+     */
     fun logout() {
         networkingFacade!!.logout()
     }
