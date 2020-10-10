@@ -69,17 +69,11 @@ dependencies {
     //networking
     api 'com.squareup.retrofit2:converter-scalars:2.5.0'
     implementation "com.squareup.retrofit2:retrofit:2.6.0"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:2.5.0"
     implementation "com.squareup.retrofit2:converter-gson:2.6.0"
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.0'
 
     // gson (https://github.com/google/gson)
     api 'com.google.code.gson:gson:2.8.5'
-
-    // rx ==> RxAndroid does not replace rxJava. It is a small library of Android specific rxJava utilities.
-    // For example it makes the Android application main thread available as an rxJava scheduler.
-    api 'io.reactivex.rxjava2:rxjava:2.2.8'
-    api 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
     //Validation
     api "com.wajahatkarim3.easyvalidation:easyvalidation-core:1.0.1"
