@@ -105,7 +105,8 @@ class DefaultNetworkingFacade<T>(networkingBuilder: NetworkingBuilder, apiManage
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
 
-        val client = OkHttpClient().newBuilder().addInterceptor(logging)
+        val client = OkHttpClient().newBuilder()
+            .addInterceptor(logging)
             .addInterceptor(HeaderInterceptor(appName, versionName, versionCode, apiVersion, applicationId))
 
         if (protected) {
