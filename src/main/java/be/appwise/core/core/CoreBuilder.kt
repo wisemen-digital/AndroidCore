@@ -34,16 +34,6 @@ class CoreBuilder(internal val context: Context) {
         return this
     }
 
-    /***
-     * Initialize Hawk, This way you don't need to add the dependency to the 'real' application/project
-     */
-    fun initializeHawk(): CoreBuilder {
-        Hawk.init(context)
-            .build()
-
-        return this
-    }
-
     fun initializeErrorActivity(showErrorDetails: Boolean = false): CoreBuilder{
         CaocConfig.Builder.create()
             .showErrorDetails(showErrorDetails)
@@ -53,6 +43,9 @@ class CoreBuilder(internal val context: Context) {
     }
 
     fun build() {
+        Hawk.init(context)
+            .build()
+
         CoreApp.build(this)
     }
 }
