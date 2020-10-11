@@ -23,7 +23,11 @@ interface ICalendarItem {
     fun getEventLocation(): String?
 }
 
-//start the google calendar app and send a calendarItem with it
+/**
+ * This function starts an intent to a add an item to the calendar
+ *
+ * @param calendarItem Object derived from the ICalendarItem interface
+ */
 fun Activity.startIntentAddToCalendar(calendarItem: ICalendarItem?) {
     calendarItem?.let {
 
@@ -80,7 +84,6 @@ fun Activity.startIntentGoogleMaps(latitude: Double? = null, longitude: Double? 
         startActivity(Intent.createChooser(intent, ""))
     */
 
-
     val locationString = "google.navigation:q=" + if (longitude != null && latitude != null) "$latitude,$longitude" else Uri.encode(queryIfNoCoordinates)
     val gmmIntentUri = Uri.parse(locationString)
     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
@@ -105,7 +108,11 @@ fun Activity.startIntentGoogleMaps(address: IMapsAddress) {
     }
 }
 
-//TODO: check and test
+/**
+ * This function will open the app to make a call
+ *
+ * @param phoneNumber: The phoneNumber to make a call to
+ */
 fun Activity.startIntentTelephone(phoneNumber: String) {
     try {
         val intent = Intent(Intent.ACTION_DIAL)
@@ -117,7 +124,11 @@ fun Activity.startIntentTelephone(phoneNumber: String) {
     }
 }
 
-//TODO: check and test
+/**
+ * This function will open an app to send an email
+ *
+ * @param email: An email address to send a mail to
+ */
 fun Activity.startIntentMail(email: String) {
     try {
         val emails = arrayOf(email)
@@ -156,7 +167,7 @@ fun Activity.startIntentOpenFileFromUrl(url: String?) {
 }
 
 /**
- * Starts the app details intent of this app
+ * This function will show the details/settings of this app
  */
 fun Activity.startIntentInstalledAppDetails() {
     if (baseContext == null) {
@@ -172,18 +183,19 @@ fun Activity.startIntentInstalledAppDetails() {
     baseContext.startActivity(i)
 }
 
-const val TAKE_PICTURE = 101
+const val TAKE_PICTURE = 9999
 /**
- * starts the take image capture intent for result
+ * This function starts an intent with a result to capture an image.
  */
 fun Activity.startIntentTakePhoto() {
     val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
     startActivityForResult(intent, TAKE_PICTURE)
 }
 
-const val PICK_IMAGE = 102
+const val PICK_IMAGE = 9998
 /**
- * starts the pick photo intent
+ * This function starts an intent with a result to select an
+ * image from the device's storage.
  */
 fun Activity.startIntentPickPhoto(title: String = "Select Image") {
     val getIntent = Intent(Intent.ACTION_GET_CONTENT)

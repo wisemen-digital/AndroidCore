@@ -15,8 +15,6 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.orhanobut.hawk.Hawk
 import id.zelory.compressor.Compressor
-import io.reactivex.internal.functions.Functions
-import io.reactivex.plugins.RxJavaPlugins
 import io.realm.RealmObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -100,8 +98,6 @@ class DefaultNetworkingFacade<T>(networkingBuilder: NetworkingBuilder, apiManage
     }
 
     private fun getClient(protected: Boolean): OkHttpClient {
-        RxJavaPlugins.setErrorHandler(Functions.emptyConsumer())
-
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
 
