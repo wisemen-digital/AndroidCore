@@ -18,6 +18,16 @@ class CoreBuilder(internal val context: Context) {
     }
 
     /***
+     * Initialize Hawk, This way you don't need to add the dependency to the 'real' application/project
+     */
+    internal fun initializeHawk(): CoreBuilder {
+        Hawk.init(context)
+            .build()
+
+        return this
+    }
+
+    /***
      * Initialize this logger
      */
     fun initializeLogger(tag: String = "AndroidApp", isLoggable: Boolean = BuildConfig.DEBUG): CoreBuilder {
@@ -43,9 +53,6 @@ class CoreBuilder(internal val context: Context) {
     }
 
     fun build() {
-        Hawk.init(context)
-            .build()
-
         CoreApp.build(this)
     }
 }
