@@ -5,6 +5,8 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import be.appwise.core.R
+import be.appwise.core.extensions.activity.snackBar
+import be.appwise.core.extensions.logging.loge
 
 open class BaseActivity : AppCompatActivity() {
     /**
@@ -37,5 +39,10 @@ open class BaseActivity : AppCompatActivity() {
      */
     open fun onToolbarNavigationIconClicked() {
         onBackPressed()
+    }
+
+    open fun onError(throwable: Throwable) {
+        snackBar(throwable.message ?: getString(R.string.error_default))
+        loge(null, throwable)
     }
 }
