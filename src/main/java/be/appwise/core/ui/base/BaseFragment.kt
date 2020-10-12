@@ -13,13 +13,10 @@ import be.appwise.core.R
 import be.appwise.core.extensions.fragment.snackBar
 import be.appwise.core.extensions.logging.loge
 
-open class BaseFragment<VM : BaseViewModel> : Fragment() {
-
+open class BaseFragment : Fragment() {
     companion object {
         const val SHOW_BACK_ICON = "SHOW_BACK_ICON"
     }
-
-    protected lateinit var mViewModel: VM
 
     lateinit var parentActivity: AppCompatActivity
 

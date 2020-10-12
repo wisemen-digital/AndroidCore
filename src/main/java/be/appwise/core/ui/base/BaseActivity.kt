@@ -6,12 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import be.appwise.core.R
 
-open class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
-    /**
-     * The viewModel that will be used for this Activity
-     */
-    protected lateinit var viewModel: VM
-
+open class BaseActivity : AppCompatActivity() {
     /**
      * A default implementation to configure a toolbar
      * Included is an implementation to handle the onClick on the back icon.
