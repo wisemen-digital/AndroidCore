@@ -83,6 +83,14 @@ object Networking {
         return networkingFacade!!.packageName
     }
 
+    fun getClientSecret(): String {
+        return networkingFacade!!.clientSecret
+    }
+
+    fun getClientId(): String {
+        return networkingFacade!!.clientId
+    }
+
     /**
      * This logout function can be used to cleanup any resources the app is using.
      * i.e. remove all entries from Hawk, delete all data from Realm, ...
