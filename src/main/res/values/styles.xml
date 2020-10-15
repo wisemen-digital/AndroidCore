@@ -17,5 +17,7 @@
         <item name="android:layout_marginTop">@dimen/spacing_small</item>
     </style>
 
+    <style name="numberStepperEdittext" parent="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"/>
+
 
 </resources>

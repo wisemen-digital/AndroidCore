@@ -7,4 +7,8 @@
         <attr name="actionIcon" format="reference" />
         <attr name="title" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="NumberStepper">
+        <attr name="label" format="string" />
+    </declare-styleable>
 </resources>
