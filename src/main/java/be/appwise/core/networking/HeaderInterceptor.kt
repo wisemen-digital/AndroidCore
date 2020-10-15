@@ -11,7 +11,8 @@ class HeaderInterceptor(
     private val versionName: String,
     private val versionCode: String,
     private val apiVersion: String,
-    private val applicationId: String
+    private val applicationId: String,
+    private val protected: Boolean
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain?): Response {
         val request = chain?.request()
@@ -38,8 +39,13 @@ class HeaderInterceptor(
         )
         requestBuilder.addHeader(NetworkConstants.APP_ID, applicationId)
 
-        Networking.getAccessToken()?.let {
-            requestBuilder.addHeader(NetworkConstants.HEADER_AUTHORIZATION_KEY, "${it.token_type} ${it.access_token}")
+        if (protected) {
+            Networking.getAccessToken()?.let {
+                requestBuilder.addHeader(
+                    NetworkConstants.HEADER_AUTHORIZATION_KEY,
+                    "${it.token_type} ${it.access_token}"
+                )
+            }
         }
 
         val newRequest = requestBuilder.build()

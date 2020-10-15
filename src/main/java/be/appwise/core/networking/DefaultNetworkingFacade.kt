@@ -103,7 +103,7 @@ class DefaultNetworkingFacade<T>(networkingBuilder: NetworkingBuilder, apiManage
 
         val client = OkHttpClient().newBuilder()
             .addInterceptor(logging)
-            .addInterceptor(HeaderInterceptor(appName, versionName, versionCode, apiVersion, applicationId))
+            .addInterceptor(HeaderInterceptor(appName, versionName, versionCode, apiVersion, applicationId, protected))
 
         if (protected) {
             client.authenticator(Authenticator(clientId, clientSecret))
