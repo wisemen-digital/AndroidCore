@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class BaseAdapter<T, L, VH : BaseViewHolder<T>>() : RecyclerView.Adapter<VH>() {
 
     private val items: MutableList<T> = ArrayList()
-    //private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
 
     abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH
     override fun onBindViewHolder(holder: VH, position: Int) {
@@ -82,9 +81,4 @@ abstract class BaseAdapter<T, L, VH : BaseViewHolder<T>>() : RecyclerView.Adapte
     override fun setHasStableIds(hasStableIds: Boolean) {
         super.setHasStableIds(hasStableIds)
     }
-
-   /* protected fun inflate(@LayoutRes layout: Int, parent: ViewGroup,
-        attachToRoot: Boolean = false): View {
-        return layoutInflater.inflate(layout, parent, attachToRoot)
-    }*/
 }
