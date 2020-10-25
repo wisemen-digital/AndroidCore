@@ -7,16 +7,15 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseAdapter<T, L, VH : BaseViewHolder<T, L>>(context: Context, private val listener: L) :
-    RecyclerView.Adapter<VH>() {
+abstract class BaseAdapter<T, L, VH : BaseViewHolder<T>>() : RecyclerView.Adapter<VH>() {
 
     private val items: MutableList<T> = ArrayList()
-    private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
+    //private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
 
     abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH
     override fun onBindViewHolder(holder: VH, position: Int) {
         val item = items[position]
-        holder.bind(position, item, listener)
+        holder.bind(item)
     }
 
     override fun getItemCount(): Int {
@@ -84,8 +83,8 @@ abstract class BaseAdapter<T, L, VH : BaseViewHolder<T, L>>(context: Context, pr
         super.setHasStableIds(hasStableIds)
     }
 
-    protected fun inflate(@LayoutRes layout: Int, parent: ViewGroup,
+   /* protected fun inflate(@LayoutRes layout: Int, parent: ViewGroup,
         attachToRoot: Boolean = false): View {
         return layoutInflater.inflate(layout, parent, attachToRoot)
-    }
+    }*/
 }
