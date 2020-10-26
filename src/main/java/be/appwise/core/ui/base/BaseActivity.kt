@@ -35,7 +35,7 @@ open class BaseActivity : AppCompatActivity() {
 
     /**
      * Standard implementation to exit the activity upon pressing on the toolbar's "Home Icon"
-     * Can be overridden to have a project-specific implementation
+     * Can be overridden to have a project(or class)-specific implementation
      */
     open fun onToolbarNavigationIconClicked() {
         onBackPressed()
