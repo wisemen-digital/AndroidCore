@@ -10,6 +10,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import be.appwise.core.R
+import be.appwise.core.extensions.fragment.snackBar
+import be.appwise.core.extensions.logging.loge
 
 open class BaseFragment : Fragment() {
     companion object {
@@ -56,5 +58,10 @@ open class BaseFragment : Fragment() {
             DrawableCompat.setTint(wrapDrawable, color)
             item.icon = wrapDrawable
         }
+    }
+
+    open fun onError(throwable: Throwable) {
+        snackBar(throwable.message ?: getString(R.string.error_default))
+        loge(null, throwable)
     }
 }
