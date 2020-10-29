@@ -28,9 +28,4 @@ abstract class BaseVMActivity<VM : BaseViewModel> : BaseActivity() {
             setDefaultExceptionHandler(::onError)
         }
     }
-
-    open fun onError(throwable: Throwable) {
-        snackBar(throwable.message ?: getString(R.string.error_default))
-        loge(null, throwable)
-    }
 }
