@@ -17,4 +17,8 @@ object CoreApp {
     internal fun build(coreBuilder: CoreBuilder) {
         coreFacade = DefaultCoreFacade(coreBuilder)
     }
+
+    internal fun getContext() : Context {
+        return coreFacade!!.getContext()
+    }
 }

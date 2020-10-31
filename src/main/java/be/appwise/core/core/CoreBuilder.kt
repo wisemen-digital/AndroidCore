@@ -2,8 +2,6 @@ package be.appwise.core.core
 
 import android.content.Context
 import be.appwise.core.BuildConfig
-import be.appwise.core.networking.Networking
-import be.appwise.core.networking.NetworkingBuilder
 import cat.ereza.customactivityoncrash.config.CaocConfig
 import com.orhanobut.hawk.Hawk
 import com.orhanobut.logger.AndroidLogAdapter
@@ -12,12 +10,6 @@ import com.orhanobut.logger.PrettyFormatStrategy
 
 class CoreBuilder(internal val context: Context) {
     private var initializedErrorActivity = false
-
-    fun <T> initializeNetworking(networkingBuilder: NetworkingBuilder, apiManagerService: Class<T>): CoreBuilder {
-        Networking.build(networkingBuilder.setContext(context), apiManagerService)
-
-        return this
-    }
 
     /***
      * Initialize Hawk, This way you don't need to add the dependency to the 'real' application/project

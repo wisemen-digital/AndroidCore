@@ -1,5 +1,9 @@
 package be.appwise.core.core
 
-class DefaultCoreFacade(coreBuilder: CoreBuilder) : CoreFacade {
+import android.content.Context
 
+class DefaultCoreFacade(private var coreBuilder: CoreBuilder) : CoreFacade {
+    override fun getContext(): Context {
+        return coreBuilder.context
+    }
 }
