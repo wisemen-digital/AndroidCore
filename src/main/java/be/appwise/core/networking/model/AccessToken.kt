@@ -1,4 +1,4 @@
-package be.appwise.core.networking
+package be.appwise.core.networking.model
 
 import com.google.gson.annotations.Expose
 
