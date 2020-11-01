@@ -12,17 +12,19 @@ object Networking {
             DefaultNetworkingFacade(networkingBuilder)
     }
 
-    fun getPackageName() {
-        networkingFacade!!.packageName
-    }
+    fun getAppName() = networkingFacade!!.appName
 
-    fun getAccessToken(): AccessToken? {
-        return networkingFacade!!.getAccessToken()
-    }
+    fun versionName() = networkingFacade!!.versionName
 
-    fun saveAccessToken(accessToken: AccessToken) {
-        networkingFacade!!.saveAccessToken(accessToken)
-    }
+    fun versionCode() = networkingFacade!!.versionCode
+
+    fun apiVersion() = networkingFacade!!.apiVersion
+
+    fun getApplicationId() = networkingFacade!!.applicationId
+
+    fun getAccessToken() = networkingFacade!!.getAccessToken()
+
+    fun saveAccessToken(accessToken: AccessToken) = networkingFacade!!.saveAccessToken(accessToken)
 
     /**
      * This logout function can be used to cleanup any resources the app is using.

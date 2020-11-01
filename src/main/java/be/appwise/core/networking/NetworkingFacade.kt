@@ -4,26 +4,35 @@ import be.appwise.core.networking.model.AccessToken
 import okhttp3.Response
 
 interface NetworkingFacade {
-    fun logout()
+    val appName: String
+    val versionName: String
+    val versionCode: String
+    val apiVersion: String
+    val applicationId: String
+    val clientSecret: String
+    val clientId: String
+
     fun getAccessToken(): AccessToken?
     fun saveAccessToken(accessToken: AccessToken)
     fun responseCount(responseMethod: Response?): Int
     fun isLoggedIn(): Boolean
-
-    val packageName: String
-    val clientSecret: String
-    val clientId: String
+    fun logout()
 
     class EmptyNetworkingFacade : NetworkingFacade {
-        override val packageName: String
+        override val appName: String
+            get() = throw Exception("Initialize Networking in Application class first")
+        override val versionName: String
+            get() = throw Exception("Initialize Networking in Application class first")
+        override val versionCode: String
+            get() = throw Exception("Initialize Networking in Application class first")
+        override val apiVersion: String
+            get() = throw Exception("Initialize Networking in Application class first")
+        override val applicationId: String
             get() = throw Exception("Initialize Networking in Application class first")
         override val clientId: String
             get() = throw Exception("Initialize Networking in Application class first")
         override val clientSecret: String
             get() = throw Exception("Initialize Networking in Application class first")
-        override fun logout() {
-            throw Exception("Unable to logout, Networking hasn't been able to build")
-        }
 
         override fun getAccessToken(): AccessToken? {
             throw Exception("Initialize Networking in Application class first")
@@ -39,6 +48,10 @@ interface NetworkingFacade {
 
         override fun isLoggedIn(): Boolean {
             throw Exception("Initialize Networking in Application class first")
+        }
+
+        override fun logout() {
+            throw Exception("Unable to logout, Networking hasn't been able to build")
         }
     }
 }

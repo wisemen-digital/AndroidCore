@@ -1,5 +1,7 @@
 package be.appwise.core.networking.base
 
+import be.appwise.core.networking.HeaderInterceptor
+import be.appwise.core.networking.Networking
 import com.google.gson.ExclusionStrategy
 import com.google.gson.FieldAttributes
 import com.google.gson.Gson
@@ -14,6 +16,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 abstract class BaseRestClient<T> {
     protected abstract val apiService: Class<T>
 
+    protected abstract val protectedClient: Boolean
+
     protected abstract fun getBaseUrl(): String
 
     val getService: T by lazy {
@@ -26,6 +30,16 @@ abstract class BaseRestClient<T> {
 
         val client = OkHttpClient.Builder()
             .addInterceptor(logging)
+            .addInterceptor(
+                HeaderInterceptor(
+                    Networking.getAppName(),
+                    Networking.versionName(),
+                    Networking.versionCode(),
+                    Networking.apiVersion(),
+                    Networking.getApplicationId(),
+                    protectedClient
+                )
+            )
             .build()
 
         return Retrofit.Builder()
