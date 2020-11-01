@@ -1,5 +1,6 @@
 package be.appwise.core.networking.base
 
+import android.util.Log
 import be.appwise.core.networking.HeaderInterceptor
 import be.appwise.core.networking.Networking
 import com.google.gson.ExclusionStrategy
@@ -7,6 +8,7 @@ import com.google.gson.FieldAttributes
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import io.realm.RealmObject
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -14,6 +16,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
 abstract class BaseRestClient<T> {
+    companion object {
+        const val TAG = "BaseRestClient"
+    }
     protected abstract val apiService: Class<T>
 
     protected abstract val protectedClient: Boolean
@@ -21,15 +26,24 @@ abstract class BaseRestClient<T> {
     protected abstract fun getBaseUrl(): String
 
     val getService: T by lazy {
-        buildHttpClient().create(apiService)
+        Log.d(TAG, "getService()")
+        getRetrofit.create(apiService)
     }
 
-    open fun buildHttpClient(): Retrofit {
-        val logging = HttpLoggingInterceptor()
-        logging.level = HttpLoggingInterceptor.Level.BODY
+    val getHttpClient: OkHttpClient by lazy {
+        Log.d(TAG, "getHttpClient")
+        createHttpClient()
+    }
 
-        val client = OkHttpClient.Builder()
-            .addInterceptor(logging)
+    private val getRetrofit: Retrofit by lazy {
+        Log.d(TAG, "getRetrofit")
+        createRetrofit()
+    }
+
+    protected open fun createHttpClient(): OkHttpClient {
+        Log.d(TAG, "createHttpClient")
+        return OkHttpClient.Builder()
+            .addInterceptor(getHttpLogging())
             .addInterceptor(
                 HeaderInterceptor(
                     Networking.getAppName(),
@@ -39,19 +53,27 @@ abstract class BaseRestClient<T> {
                     Networking.getApplicationId(),
                     protectedClient
                 )
-            )
-            .build()
+            ).build()
+    }
 
+    protected open fun createRetrofit(): Retrofit {
+        Log.d(TAG, "createRetrofit")
         return Retrofit.Builder()
             .baseUrl(getBaseUrl())
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(getFactory())
-            .client(client)
+            .client(getHttpClient)
             .build()
     }
 
     protected fun getFactory(): GsonConverterFactory {
         return GsonConverterFactory.create(getGson())
+    }
+
+    protected fun getHttpLogging(): Interceptor {
+        return HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
     }
 
     private fun getGson(): Gson {
