@@ -19,11 +19,18 @@ abstract class BaseRestClient<T> {
     companion object {
         const val TAG = "BaseRestClient"
     }
+
     protected abstract val apiService: Class<T>
 
     protected abstract val protectedClient: Boolean
 
     protected abstract fun getBaseUrl(): String
+
+    protected open val appName = Networking.getAppName()
+    protected open val versionName = Networking.getVersionName()
+    protected open val versionCode = Networking.getVersionCode()
+    protected open val apiVersion = Networking.getApiVersion()
+    protected open val packageName = Networking.getPackageName()
 
     val getService: T by lazy {
         Log.d(TAG, "getService()")
@@ -46,14 +53,15 @@ abstract class BaseRestClient<T> {
             .addInterceptor(getHttpLogging())
             .addInterceptor(
                 HeaderInterceptor(
-                    Networking.getAppName(),
-                    Networking.versionName(),
-                    Networking.versionCode(),
-                    Networking.apiVersion(),
-                    Networking.getPackageName(),
+                    appName,
+                    versionName,
+                    versionCode,
+                    apiVersion,
+                    packageName,
                     protectedClient
                 )
-            ).build()
+            )
+            .build()
     }
 
     protected open fun createRetrofit(): Retrofit {

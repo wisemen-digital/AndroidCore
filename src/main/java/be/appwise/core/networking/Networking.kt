@@ -14,11 +14,11 @@ object Networking {
 
     fun getAppName() = networkingFacade!!.appName
 
-    fun versionName() = networkingFacade!!.versionName
+    fun getVersionName() = networkingFacade!!.versionName
 
-    fun versionCode() = networkingFacade!!.versionCode
+    fun getVersionCode() = networkingFacade!!.versionCode
 
-    fun apiVersion() = networkingFacade!!.apiVersion
+    fun getApiVersion() = networkingFacade!!.apiVersion
 
     fun getPackageName() = networkingFacade!!.packageName
 
