@@ -7,7 +7,7 @@ object Networking {
     private var networkingFacade: NetworkingFacade? =
         NetworkingFacade.EmptyNetworkingFacade()
 
-    internal fun build(networkingBuilder: NetworkBuilder) {
+    internal fun build(networkingBuilder: Builder) {
         networkingFacade =
             DefaultNetworkingFacade(networkingBuilder)
     }
@@ -20,7 +20,7 @@ object Networking {
 
     fun apiVersion() = networkingFacade!!.apiVersion
 
-    fun getApplicationId() = networkingFacade!!.applicationId
+    fun getPackageName() = networkingFacade!!.packageName
 
     fun getAccessToken() = networkingFacade!!.getAccessToken()
 
@@ -44,7 +44,7 @@ object Networking {
         networkingFacade!!.logout()
     }
 
-    class NetworkBuilder {
+    class Builder {
         private var packageName: String = ""
         private var clientSecretValue = ""
         private var clientIdValue = ""
@@ -52,10 +52,9 @@ object Networking {
         private var versionName = ""
         private var versionCode = ""
         private var apiVersion = ""
-        private var applicationId = ""
         private var networkingListeners = BaseNetworkingListeners.DEFAULT
 
-        fun setPackageName(packageName: String): NetworkBuilder {
+        fun setPackageName(packageName: String): Builder {
             this.packageName = packageName
             return this
         }
@@ -64,7 +63,7 @@ object Networking {
             return packageName
         }
 
-        fun setClientSecretValue(clientSecretValue: String): NetworkBuilder {
+        fun setClientSecretValue(clientSecretValue: String): Builder {
             this.clientSecretValue = clientSecretValue
             return this
         }
@@ -73,7 +72,7 @@ object Networking {
             return clientSecretValue
         }
 
-        fun setClientIdValue(clientIdValue: String): NetworkBuilder {
+        fun setClientIdValue(clientIdValue: String): Builder {
             this.clientIdValue = clientIdValue
             return this
         }
@@ -82,7 +81,7 @@ object Networking {
             return clientIdValue
         }
 
-        fun setAppName(appName: String): NetworkBuilder {
+        fun setAppName(appName: String): Builder {
             this.appName = appName
             return this
         }
@@ -91,7 +90,7 @@ object Networking {
             return appName
         }
 
-        fun setVersionName(versionName: String): NetworkBuilder {
+        fun setVersionName(versionName: String): Builder {
             this.versionName = versionName
             return this
         }
@@ -100,7 +99,7 @@ object Networking {
             return versionName
         }
 
-        fun setVersionCode(versionCode: String): NetworkBuilder {
+        fun setVersionCode(versionCode: String): Builder {
             this.versionCode = versionCode
             return this
         }
@@ -109,7 +108,7 @@ object Networking {
             return versionCode
         }
 
-        fun setApiVersion(apiVersion: String): NetworkBuilder {
+        fun setApiVersion(apiVersion: String): Builder {
             this.apiVersion = apiVersion
             return this
         }
@@ -118,16 +117,7 @@ object Networking {
             return apiVersion
         }
 
-        fun setApplicationId(applicationId: String): NetworkBuilder {
-            this.applicationId = applicationId
-            return this
-        }
-
-        internal fun getApplicationId(): String {
-            return applicationId
-        }
-
-        fun setNetworkingListeners(customNetworkingListeners: BaseNetworkingListeners): NetworkBuilder {
+        fun setNetworkingListeners(customNetworkingListeners: BaseNetworkingListeners): Builder {
             this.networkingListeners = customNetworkingListeners
             return this
         }

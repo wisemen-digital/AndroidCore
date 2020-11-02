@@ -8,7 +8,7 @@ interface NetworkingFacade {
     val versionName: String
     val versionCode: String
     val apiVersion: String
-    val applicationId: String
+    val packageName: String
     val clientSecret: String
     val clientId: String
 
@@ -27,7 +27,7 @@ interface NetworkingFacade {
             get() = throw Exception("Initialize Networking in Application class first")
         override val apiVersion: String
             get() = throw Exception("Initialize Networking in Application class first")
-        override val applicationId: String
+        override val packageName: String
             get() = throw Exception("Initialize Networking in Application class first")
         override val clientId: String
             get() = throw Exception("Initialize Networking in Application class first")

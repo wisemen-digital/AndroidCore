@@ -50,7 +50,7 @@ abstract class BaseRestClient<T> {
                     Networking.versionName(),
                     Networking.versionCode(),
                     Networking.apiVersion(),
-                    Networking.getApplicationId(),
+                    Networking.getPackageName(),
                     protectedClient
                 )
             ).build()

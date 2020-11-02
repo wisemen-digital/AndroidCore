@@ -6,7 +6,7 @@ import be.appwise.core.util.HawkUtils
 import com.orhanobut.hawk.Hawk
 import okhttp3.Response
 
-class DefaultNetworkingFacade(networkingBuilder: Networking.NetworkBuilder) :
+class DefaultNetworkingFacade(networkingBuilder: Networking.Builder) :
     NetworkingFacade {
 
     //<editor-fold desc="Variables">
@@ -18,7 +18,7 @@ class DefaultNetworkingFacade(networkingBuilder: Networking.NetworkBuilder) :
     override val versionName = networkingBuilder.getVersionName()
     override val versionCode = networkingBuilder.getVersionCode()
     override val apiVersion = networkingBuilder.getApiVersion()
-    override val applicationId = networkingBuilder.getApplicationId()
+    override val packageName = networkingBuilder.getPackageName()
     private val listener: BaseNetworkingListeners = networkingBuilder.getNetworkingListeners()
 
     override val clientId = networkingBuilder.getClientIdValue()
