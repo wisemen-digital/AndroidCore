@@ -45,7 +45,6 @@ object Networking {
     }
 
     class NetworkBuilder {
-        private var endPoint: String = ""
         private var packageName: String = ""
         private var clientSecretValue = ""
         private var clientIdValue = ""
@@ -55,15 +54,6 @@ object Networking {
         private var apiVersion = ""
         private var applicationId = ""
         private var networkingListeners = BaseNetworkingListeners.DEFAULT
-
-        fun setEndPoint(endPoint: String): NetworkBuilder {
-            this.endPoint = endPoint
-            return this
-        }
-
-        internal fun getEndPoint(): String {
-            return endPoint
-        }
 
         fun setPackageName(packageName: String): NetworkBuilder {
             this.packageName = packageName
