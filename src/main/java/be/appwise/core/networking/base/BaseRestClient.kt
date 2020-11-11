@@ -1,13 +1,10 @@
 package be.appwise.core.networking.base
 
 import android.util.Log
+import be.appwise.core.networking.Authenticator
 import be.appwise.core.networking.HeaderInterceptor
 import be.appwise.core.networking.Networking
-import com.google.gson.ExclusionStrategy
-import com.google.gson.FieldAttributes
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import io.realm.RealmObject
+import be.appwise.core.networking.NetworkingUtil
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -49,7 +46,7 @@ abstract class BaseRestClient<T> {
 
     protected open fun createHttpClient(): OkHttpClient {
         Log.d(TAG, "createHttpClient")
-        return OkHttpClient.Builder()
+        val builder = OkHttpClient.Builder()
             .addInterceptor(getHttpLogging())
             .addInterceptor(
                 HeaderInterceptor(
@@ -61,7 +58,12 @@ abstract class BaseRestClient<T> {
                     protectedClient
                 )
             )
-            .build()
+
+        if (protectedClient) {
+            builder.authenticator(Authenticator)
+        }
+
+        return builder.build()
     }
 
     protected open fun createRetrofit(): Retrofit {
@@ -75,26 +77,12 @@ abstract class BaseRestClient<T> {
     }
 
     protected fun getFactory(): GsonConverterFactory {
-        return GsonConverterFactory.create(getGson())
+        return GsonConverterFactory.create(NetworkingUtil.getGson())
     }
 
     protected fun getHttpLogging(): Interceptor {
         return HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
-    }
-
-    private fun getGson(): Gson {
-        val builder = GsonBuilder()
-        builder.setExclusionStrategies(object : ExclusionStrategy {
-            override fun shouldSkipField(f: FieldAttributes): Boolean {
-                return f.declaringClass == RealmObject::class.java
-            }
-
-            override fun shouldSkipClass(clazz: Class<*>): Boolean {
-                return false
-            }
-        })
-        return builder.create()
     }
 }

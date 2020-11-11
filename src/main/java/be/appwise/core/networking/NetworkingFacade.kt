@@ -1,7 +1,6 @@
 package be.appwise.core.networking
 
 import be.appwise.core.networking.model.AccessToken
-import okhttp3.Response
 
 interface NetworkingFacade {
     val appName: String
@@ -14,9 +13,9 @@ interface NetworkingFacade {
 
     fun getAccessToken(): AccessToken?
     fun saveAccessToken(accessToken: AccessToken)
-    fun responseCount(responseMethod: Response?): Int
     fun isLoggedIn(): Boolean
     fun logout()
+    fun refreshTokenCall(): AccessToken?
 
     class EmptyNetworkingFacade : NetworkingFacade {
         override val appName: String
@@ -42,16 +41,16 @@ interface NetworkingFacade {
             throw Exception("Initialize Networking in Application class first")
         }
 
-        override fun responseCount(responseMethod: Response?): Int {
-            throw Exception("Initialize Networking in Application class first")
-        }
-
         override fun isLoggedIn(): Boolean {
             throw Exception("Initialize Networking in Application class first")
         }
 
         override fun logout() {
             throw Exception("Unable to logout, Networking hasn't been able to build")
+        }
+
+        override fun refreshTokenCall(): AccessToken? {
+            throw Exception("Initialize Networking in Application class first")
         }
     }
 }

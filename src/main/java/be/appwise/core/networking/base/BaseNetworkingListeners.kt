@@ -4,13 +4,16 @@ import android.app.PendingIntent
 import android.content.Intent
 import be.appwise.core.core.CoreApp
 import be.appwise.core.networking.Networking
+import be.appwise.core.networking.model.AccessToken
 import com.orhanobut.hawk.Hawk
 import io.realm.Realm
 
 interface BaseNetworkingListeners {
     companion object {
         val DEFAULT = object :
-            BaseNetworkingListeners {}
+            BaseNetworkingListeners {
+            override fun refreshTokenCall(): AccessToken? = throw Exception("Required to override this function. Create an object and let it extend from 'BaseNetworkListeners.")
+        }
     }
 
     /**
@@ -48,4 +51,6 @@ interface BaseNetworkingListeners {
             e.printStackTrace()
         }
     }
+
+    fun refreshTokenCall(): AccessToken?
 }

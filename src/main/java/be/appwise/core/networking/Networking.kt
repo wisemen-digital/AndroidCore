@@ -26,6 +26,10 @@ object Networking {
 
     fun saveAccessToken(accessToken: AccessToken) = networkingFacade!!.saveAccessToken(accessToken)
 
+    fun getClientIdValue() = networkingFacade!!.clientId
+
+    fun getClientSecretValue() = networkingFacade!!.clientSecret
+
     /**
      * This logout function can be used to cleanup any resources the app is using.
      * i.e. remove all entries from Hawk, delete all data from Realm, ...
@@ -42,6 +46,10 @@ object Networking {
      */
     fun logout() {
         networkingFacade!!.logout()
+    }
+
+    internal fun refreshTokenCall(): AccessToken?{
+        return networkingFacade!!.refreshTokenCall()
     }
 
     class Builder {

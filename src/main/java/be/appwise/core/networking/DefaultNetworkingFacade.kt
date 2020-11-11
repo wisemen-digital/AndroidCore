@@ -3,8 +3,6 @@ package be.appwise.core.networking
 import be.appwise.core.networking.base.BaseNetworkingListeners
 import be.appwise.core.networking.model.AccessToken
 import be.appwise.core.util.HawkUtils
-import com.orhanobut.hawk.Hawk
-import okhttp3.Response
 
 class DefaultNetworkingFacade(networkingBuilder: Networking.Builder) :
     NetworkingFacade {
@@ -25,18 +23,6 @@ class DefaultNetworkingFacade(networkingBuilder: Networking.Builder) :
     override val clientSecret = networkingBuilder.getClientSecretValue()
     //</editor-fold>
 
-    override fun responseCount(responseMethod: Response?): Int {
-        var response = responseMethod
-        var result = 0
-        while (response != null) {
-            response = response.priorResponse()
-            if (response == response?.priorResponse()) {
-                result++
-            }
-        }
-        return result
-    }
-
     override fun getAccessToken() = HawkUtils.hawkAccessToken
 
     override fun saveAccessToken(accessToken: AccessToken) {
@@ -49,5 +35,9 @@ class DefaultNetworkingFacade(networkingBuilder: Networking.Builder) :
 
     override fun logout() {
         listener.logout()
+    }
+
+    override fun refreshTokenCall(): AccessToken? {
+        return listener.refreshTokenCall()
     }
 }
