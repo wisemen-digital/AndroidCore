@@ -1,6 +1,9 @@
-package be.appwise.core.networking
+package be.appwise.core.networking.interceptors
 
 import android.os.ConditionVariable
+import be.appwise.core.networking.NetworkConstants
+import be.appwise.core.networking.Networking
+import be.appwise.core.networking.NetworkingUtil
 import be.appwise.core.util.HawkUtils
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -27,6 +30,13 @@ object Authenticator : Authenticator {
             callsWithoutToken++
             return if (callsWithoutToken >= 2) null else request
         }
+
+
+        //TODO: this can be done better and more concise
+        // For an example with a 'synchronized' method look at
+        // https://blog.coinbase.com/okhttp-oauth-token-refreshes-b598f55dd3b2
+        // or
+        // https://objectpartners.com/2018/06/08/okhttp-authenticator-selectively-reauthorizing-requests/
 
         /*
           *  Because we send out multiple HTTP requests in parallel, they might all list a 401 at the same time.

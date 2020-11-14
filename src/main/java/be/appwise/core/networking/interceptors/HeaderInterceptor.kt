@@ -1,7 +1,9 @@
-package be.appwise.core.networking
+package be.appwise.core.networking.interceptors
 
 import android.content.res.Resources
 import android.os.Build
+import be.appwise.core.networking.NetworkConstants
+import be.appwise.core.networking.Networking
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.util.*
