@@ -4,9 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
+import be.appwise.core.R
+import be.appwise.core.core.CoreApp
+import be.appwise.core.networking.Networking
+import kotlinx.coroutines.*
+import retrofit2.Call
+import java.net.UnknownHostException
 
 abstract class BaseViewModel : ViewModel() {
     @Suppress("MemberVisibilityCanBePrivate")
@@ -39,4 +42,25 @@ abstract class BaseViewModel : ViewModel() {
             isLoading(false)
             onError(throwable)
         })
+
+    /**
+     * Wrap your network call with this function to have a centralized way to handle response errors
+     *
+     * @param call Retrofit call
+     * @return Type returned by the network call
+     */
+    suspend fun <T : Any?> doCall(call: Call<T>): T? {
+        return try {
+            withContext(Dispatchers.IO) {
+                val response = call.execute()
+                if (response.isSuccessful) {
+                    response.body()!!
+                } else {
+                    throw Exception(Networking.parseError(response).message)
+                }
+            }
+        } catch (ex: UnknownHostException) {
+            throw Exception(CoreApp.getContext().getString(R.string.internet_connection_error))
+        }
+    }
 }

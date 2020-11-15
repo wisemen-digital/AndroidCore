@@ -2,6 +2,8 @@ package be.appwise.core.networking
 
 import be.appwise.core.networking.base.BaseNetworkingListeners
 import be.appwise.core.networking.model.AccessToken
+import be.appwise.core.networking.model.ApiError
+import retrofit2.Response
 
 object Networking {
     private var networkingFacade: NetworkingFacade? =
@@ -50,6 +52,10 @@ object Networking {
 
     internal fun refreshTokenCall(): AccessToken?{
         return networkingFacade!!.refreshTokenCall()
+    }
+
+    fun parseError(response: Response<*>): ApiError {
+        return networkingFacade!!.parseError(response)
     }
 
     class Builder {

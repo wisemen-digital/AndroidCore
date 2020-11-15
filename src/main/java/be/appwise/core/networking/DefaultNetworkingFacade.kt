@@ -2,7 +2,9 @@ package be.appwise.core.networking
 
 import be.appwise.core.networking.base.BaseNetworkingListeners
 import be.appwise.core.networking.model.AccessToken
+import be.appwise.core.networking.model.ApiError
 import be.appwise.core.util.HawkUtils
+import retrofit2.Response
 
 class DefaultNetworkingFacade(networkingBuilder: Networking.Builder) :
     NetworkingFacade {
@@ -39,5 +41,9 @@ class DefaultNetworkingFacade(networkingBuilder: Networking.Builder) :
 
     override fun refreshTokenCall(): AccessToken? {
         return listener.refreshTokenCall()
+    }
+
+    override fun parseError(response: Response<*>): ApiError {
+        return listener.parseError(response)
     }
 }

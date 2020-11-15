@@ -1,6 +1,8 @@
 package be.appwise.core.networking
 
 import be.appwise.core.networking.model.AccessToken
+import be.appwise.core.networking.model.ApiError
+import retrofit2.Response
 
 interface NetworkingFacade {
     val appName: String
@@ -16,6 +18,7 @@ interface NetworkingFacade {
     fun isLoggedIn(): Boolean
     fun logout()
     fun refreshTokenCall(): AccessToken?
+    fun parseError(response: Response<*>): ApiError
 
     class EmptyNetworkingFacade : NetworkingFacade {
         override val appName: String
@@ -50,6 +53,10 @@ interface NetworkingFacade {
         }
 
         override fun refreshTokenCall(): AccessToken? {
+            throw Exception("Initialize Networking in Application class first")
+        }
+
+        override fun parseError(response: Response<*>): ApiError {
             throw Exception("Initialize Networking in Application class first")
         }
     }
