@@ -5,13 +5,10 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import be.appwise.core.R
+import be.appwise.core.extensions.activity.snackBar
+import be.appwise.core.extensions.logging.loge
 
-open class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
-    /**
-     * The viewModel that will be used for this Activity
-     */
-    protected lateinit var viewModel: VM
-
+open class BaseActivity : AppCompatActivity() {
     /**
      * A default implementation to configure a toolbar
      * Included is an implementation to handle the onClick on the back icon.
@@ -38,9 +35,14 @@ open class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
 
     /**
      * Standard implementation to exit the activity upon pressing on the toolbar's "Home Icon"
-     * Can be overridden to have a project-specific implementation
+     * Can be overridden to have a project(or class)-specific implementation
      */
     open fun onToolbarNavigationIconClicked() {
         onBackPressed()
+    }
+
+    open fun onError(throwable: Throwable) {
+        snackBar(throwable.message ?: getString(R.string.error_default))
+        loge(null, throwable)
     }
 }

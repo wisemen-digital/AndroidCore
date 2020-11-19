@@ -11,4 +11,10 @@
     <declare-styleable name="NumberStepper">
         <attr name="label" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="InitialsImageView">
+        <attr name="circleColor" format="integer" />
+        <attr name="android:textColor" />
+        <attr name="android:textSize" />
+    </declare-styleable>
 </resources>

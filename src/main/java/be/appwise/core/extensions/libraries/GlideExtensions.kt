@@ -45,6 +45,19 @@ fun ImageView.loadFile(file: File?, cropOptions: RequestOptions = RequestOptions
 }
 
 /**
+ * loads image in view from file
+ * @param file image file
+ * @param cropOptions transformation of the image (default RequestOptions.circleCrop())
+ * @param placeholder id of placeholder drawable
+ */
+fun ImageView.loadFileCircle(file: File?, placeholder: Int = 0) {
+    val cropOptions = RequestOptions().circleCrop()
+    if (placeholder != 0)
+        cropOptions.placeholder(placeholder)
+    loadFile(file, cropOptions)
+}
+
+/**
  * loads image in view as circle
  * @param url location of the image
  * @param placeholder id of placeholder drawable

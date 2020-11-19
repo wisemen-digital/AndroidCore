@@ -15,8 +15,6 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.orhanobut.hawk.Hawk
 import id.zelory.compressor.Compressor
-import io.reactivex.internal.functions.Functions
-import io.reactivex.plugins.RxJavaPlugins
 import io.realm.RealmObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -44,8 +42,6 @@ class DefaultNetworkingFacade<T>(networkingBuilder: NetworkingBuilder, apiManage
      */
     private val context = networkingBuilder.getContext()
     private val endPoint = networkingBuilder.getEndPoint()
-    private val clientIdValue = networkingBuilder.getClientIdValue()
-    private val clientSecretValue = networkingBuilder.getClientSecretValue()
     private val appName = networkingBuilder.getAppName()
     private val versionName = networkingBuilder.getVersionName()
     private val versionCode = networkingBuilder.getVersionCode()
@@ -53,6 +49,8 @@ class DefaultNetworkingFacade<T>(networkingBuilder: NetworkingBuilder, apiManage
     private val applicationId = networkingBuilder.getApplicationId()
     private val listener: NetworkingListeners = networkingBuilder.getNetworkingListeners()
 
+    override val clientId = networkingBuilder.getClientIdValue()
+    override val clientSecret = networkingBuilder.getClientSecretValue()
     override val packageName = networkingBuilder.getPackageName()
 
     override val unProtectedRetrofit by lazy {
@@ -100,16 +98,15 @@ class DefaultNetworkingFacade<T>(networkingBuilder: NetworkingBuilder, apiManage
     }
 
     private fun getClient(protected: Boolean): OkHttpClient {
-        RxJavaPlugins.setErrorHandler(Functions.emptyConsumer())
-
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
 
-        val client = OkHttpClient().newBuilder().addInterceptor(logging)
-            .addInterceptor(HeaderInterceptor(appName, versionName, versionCode, apiVersion, applicationId))
+        val client = OkHttpClient().newBuilder()
+            .addInterceptor(logging)
+            .addInterceptor(HeaderInterceptor(appName, versionName, versionCode, apiVersion, applicationId, protected))
 
         if (protected) {
-            client.authenticator(Authenticator(clientIdValue, clientSecretValue))
+            client.authenticator(Authenticator(clientId, clientSecret))
         }
 
         return client.build()

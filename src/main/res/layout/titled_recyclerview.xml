@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            style="@style/primaryTitle"
+            style="@style/ttr_primaryTitle"
             tools:text="Title"
             app:layout_constraintEnd_toStartOf="@+id/ivAction" />
 
@@ -53,7 +53,7 @@
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvPrimaryText"
                 tools:text="Primary text"
-                style="@style/secondaryTitle"
+                style="@style/ttr_secondaryTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -61,7 +61,7 @@
                 android:id="@+id/tvSecondaryText"
                 tools:text="Secondary text"
                 android:layout_marginTop="@dimen/spacing_small"
-                style="@style/secondaryText"
+                style="@style/ttr_secondaryText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
     </LinearLayout>

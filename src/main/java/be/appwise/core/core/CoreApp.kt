@@ -9,7 +9,9 @@ object CoreApp {
     @JvmStatic
     fun init(context: Context): CoreBuilder {
         coreFacade = null
-        return CoreBuilder(context)
+        return CoreBuilder(context).apply {
+            initializeHawk()
+        }
     }
 
     internal fun build(coreBuilder: CoreBuilder) {

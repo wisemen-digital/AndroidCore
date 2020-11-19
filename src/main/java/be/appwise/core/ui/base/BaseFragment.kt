@@ -13,13 +13,10 @@ import be.appwise.core.R
 import be.appwise.core.extensions.fragment.snackBar
 import be.appwise.core.extensions.logging.loge
 
-open class BaseFragment<VM : BaseViewModel> : Fragment() {
-
+open class BaseFragment : Fragment() {
     companion object {
         const val SHOW_BACK_ICON = "SHOW_BACK_ICON"
     }
-
-    protected lateinit var mViewModel: VM
 
     lateinit var parentActivity: AppCompatActivity
 
@@ -28,6 +25,7 @@ open class BaseFragment<VM : BaseViewModel> : Fragment() {
         parentActivity = requireActivity() as AppCompatActivity
     }
 
+    //TODO: test what this should be for!!!
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         for (fragment in childFragmentManager.fragments) {
@@ -35,6 +33,7 @@ open class BaseFragment<VM : BaseViewModel> : Fragment() {
         }
     }
 
+    @Deprecated("This method will be discontinued in the future, use a custom method or try to use the one from the BaseActivity at your own risk")
     protected fun configureToolbar(toolbar: Toolbar, color: Int? = null,
         showTitle: Boolean = true, showBackIcon: Boolean = false) {
         parentActivity.setSupportActionBar(toolbar)

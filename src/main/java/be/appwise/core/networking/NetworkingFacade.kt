@@ -20,6 +20,8 @@ interface NetworkingFacade {
     fun getContext(): Context
 
     val packageName: String
+    val clientSecret: String
+    val clientId: String
     val protectedRetrofit: Retrofit
     val unProtectedRetrofit: Retrofit
     val protectedClient: OkHttpClient
@@ -31,6 +33,10 @@ interface NetworkingFacade {
         override val unProtectedClient: OkHttpClient
             get() = throw Exception("Initialize Networking in Application class first")
         override val packageName: String
+            get() = throw Exception("Initialize Networking in Application class first")
+        override val clientId: String
+            get() = throw Exception("Initialize Networking in Application class first")
+        override val clientSecret: String
             get() = throw Exception("Initialize Networking in Application class first")
         override val protectedRetrofit: Retrofit
             get() = throw Exception("Initialize Networking in Application class first")
