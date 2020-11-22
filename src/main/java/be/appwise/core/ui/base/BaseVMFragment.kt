@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import be.appwise.core.R
 import be.appwise.core.extensions.fragment.snackBar
-import be.appwise.core.extensions.logging.loge
+import com.orhanobut.logger.Logger
 
 abstract class BaseVMFragment<VM : BaseViewModel> : Fragment() {
     /**
@@ -32,6 +32,6 @@ abstract class BaseVMFragment<VM : BaseViewModel> : Fragment() {
 
     open fun onError(throwable: Throwable) {
         snackBar(throwable.message ?: getString(R.string.error_default))
-        loge(null, throwable)
+        Logger.t("BaseVMFragment").e(throwable, throwable.message ?: getString(R.string.error_default))
     }
 }

@@ -11,7 +11,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import be.appwise.core.R
 import be.appwise.core.extensions.fragment.snackBar
-import be.appwise.core.extensions.logging.loge
+import com.orhanobut.logger.Logger
 
 open class BaseFragment : Fragment() {
     companion object {
@@ -62,6 +62,6 @@ open class BaseFragment : Fragment() {
 
     open fun onError(throwable: Throwable) {
         snackBar(throwable.message ?: getString(R.string.error_default))
-        loge(null, throwable)
+        Logger.t("BaseFragment").e(throwable, throwable.message ?: getString(R.string.error_default))
     }
 }

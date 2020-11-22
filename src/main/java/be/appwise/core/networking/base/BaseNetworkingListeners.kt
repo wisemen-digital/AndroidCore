@@ -2,6 +2,7 @@ package be.appwise.core.networking.base
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.util.Log
 import be.appwise.core.R
 import be.appwise.core.core.CoreApp
 import be.appwise.core.networking.Networking
@@ -16,7 +17,11 @@ import retrofit2.Retrofit
 interface BaseNetworkingListeners {
     companion object {
         val DEFAULT = object :
-            BaseNetworkingListeners {}
+            BaseNetworkingListeners {
+            override fun extraLogoutStep() {
+                Log.e("BaseNetworkListeners", "No extra logout steps needed at the moment")
+            }
+        }
     }
 
     //<editor-fold desc="ErrorHandling">
@@ -100,19 +105,28 @@ interface BaseNetworkingListeners {
         errorActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         val pendingIntent = PendingIntent.getActivity(CoreApp.getContext(), 22, errorActivity, 0)
 
-//        Networking.getUnProtectedClient().dispatcher().cancelAll()
+        if (Hawk.isBuilt()) {
+            Hawk.deleteAll()
+        }
+
+        extraLogoutStep()
+        Realm.getDefaultInstance().executeTransaction { it.deleteAll() }
 
         try {
-            if (Hawk.isBuilt()) {
-                Hawk.deleteAll()
-            }
-
-            Realm.getDefaultInstance().executeTransaction { it.deleteAll() }
             pendingIntent.send()
-
-            //OneSignal.deleteTag(Constants.ONESIGNAL_USER_ID)
         } catch (e: PendingIntent.CanceledException) {
+            e.initCause(Throwable("Make sure that the logout 'endpoint' got added as an intent-filter to your manifest!"))
             e.printStackTrace()
         }
     }
+
+    /**
+     * This function can be used when some extra things need to be reset, removed, deleted upon logout.
+     *
+     * For example, cancelling all network requests from all possible network clients can be listed in this function.
+     * ```
+     *      ProtectedRestClient.getHttpClient.dispatcher().cancelAll()
+     * ```
+     */
+    fun extraLogoutStep()
 }
