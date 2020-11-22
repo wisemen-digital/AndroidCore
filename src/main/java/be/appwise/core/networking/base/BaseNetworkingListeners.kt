@@ -5,7 +5,6 @@ import android.content.Intent
 import be.appwise.core.R
 import be.appwise.core.core.CoreApp
 import be.appwise.core.networking.Networking
-import be.appwise.core.networking.model.AccessToken
 import be.appwise.core.networking.model.ApiError
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
@@ -17,10 +16,7 @@ import retrofit2.Retrofit
 interface BaseNetworkingListeners {
     companion object {
         val DEFAULT = object :
-            BaseNetworkingListeners {
-            override fun refreshTokenCall(): AccessToken? =
-                throw Exception("Required to override this function. Create an object and let it extend from 'BaseNetworkListeners.")
-        }
+            BaseNetworkingListeners {}
     }
 
     //<editor-fold desc="ErrorHandling">
@@ -119,6 +115,4 @@ interface BaseNetworkingListeners {
             e.printStackTrace()
         }
     }
-
-    fun refreshTokenCall(): AccessToken?
 }

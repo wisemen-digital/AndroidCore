@@ -1,27 +1,17 @@
 package be.appwise.core.networking.base
 
 import android.util.Log
-import be.appwise.core.R
-import be.appwise.core.core.CoreApp
 import be.appwise.core.networking.Networking
 import be.appwise.core.networking.NetworkingUtil
 import be.appwise.core.networking.interceptors.Authenticator
 import be.appwise.core.networking.interceptors.HeaderInterceptor
-import be.appwise.core.networking.model.ApiError
-import com.google.gson.JsonArray
-import com.google.gson.JsonElement
-import com.google.gson.JsonObject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import be.appwise.core.networking.model.AccessToken
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import java.net.UnknownHostException
 
 abstract class BaseRestClient<T> {
     companion object {
@@ -39,6 +29,8 @@ abstract class BaseRestClient<T> {
     protected open val versionCode = Networking.getVersionCode()
     protected open val apiVersion = Networking.getApiVersion()
     protected open val packageName = Networking.getPackageName()
+    open val clientId = Networking.getClientIdValue()
+    open val clientSecret = Networking.getClientSecretValue()
 
     /**
      * Get the service attached to this retrofit object to do the network requests
@@ -73,10 +65,14 @@ abstract class BaseRestClient<T> {
         }
 
         if (protectedClient) {
-            builder.authenticator(Authenticator)
+            builder.authenticator(Authenticator { onRefreshToken(it) })
         }
 
         return builder.build()
+    }
+
+    protected open fun onRefreshToken(refreshToken: String): AccessToken? {
+        throw Exception("refreshToken should be overridden in order for this to work")
     }
 
     /**

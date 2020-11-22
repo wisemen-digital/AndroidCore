@@ -17,7 +17,6 @@ interface NetworkingFacade {
     fun saveAccessToken(accessToken: AccessToken)
     fun isLoggedIn(): Boolean
     fun logout()
-    fun refreshTokenCall(): AccessToken?
     fun parseError(response: Response<*>): ApiError
 
     class EmptyNetworkingFacade : NetworkingFacade {
@@ -50,10 +49,6 @@ interface NetworkingFacade {
 
         override fun logout() {
             throw Exception("Unable to logout, Networking hasn't been able to build")
-        }
-
-        override fun refreshTokenCall(): AccessToken? {
-            throw Exception("Initialize Networking in Application class first")
         }
 
         override fun parseError(response: Response<*>): ApiError {

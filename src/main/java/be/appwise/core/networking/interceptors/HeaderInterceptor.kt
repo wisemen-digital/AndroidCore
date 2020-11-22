@@ -27,7 +27,7 @@ class HeaderInterceptor(
         val requestBuilder = request!!.newBuilder()
         requestBuilder.addHeader(
             NetworkConstants.HEADER_KEY_USER_AGENT,
-            appName + "/" + versionName + "/" + versionCode + " (" + Build.MODEL + "; Android/" + Build.VERSION.SDK_INT + ")"
+            "$appName/$versionName/$versionCode (${Build.MODEL}; Android/${Build.VERSION.SDK_INT})"
         )
         requestBuilder.addHeader(
             NetworkConstants.HEADER_KEY_ACCEPT,
@@ -37,7 +37,7 @@ class HeaderInterceptor(
         requestBuilder.addHeader(NetworkConstants.HEADER_KEY_API_VERSION, apiVersion)
         requestBuilder.addHeader(
             NetworkConstants.HEADER_KEY_APP_PLATFORM,
-            NetworkConstants.ANDROID
+            NetworkConstants.HEADER_VALUE_PLATFORM_ANDROID
         )
         requestBuilder.addHeader(NetworkConstants.HEADER_KEY_APP_ID, applicationId)
 

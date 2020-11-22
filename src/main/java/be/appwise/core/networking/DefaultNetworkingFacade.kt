@@ -39,10 +39,6 @@ class DefaultNetworkingFacade(networkingBuilder: Networking.Builder) :
         listener.logout()
     }
 
-    override fun refreshTokenCall(): AccessToken? {
-        return listener.refreshTokenCall()
-    }
-
     override fun parseError(response: Response<*>): ApiError {
         return listener.parseError(response)
     }

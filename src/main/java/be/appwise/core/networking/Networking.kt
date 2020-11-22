@@ -50,10 +50,6 @@ object Networking {
         networkingFacade!!.logout()
     }
 
-    internal fun refreshTokenCall(): AccessToken?{
-        return networkingFacade!!.refreshTokenCall()
-    }
-
     fun parseError(response: Response<*>): ApiError {
         return networkingFacade!!.parseError(response)
     }

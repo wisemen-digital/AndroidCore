@@ -3,13 +3,15 @@ package be.appwise.core.networking.interceptors
 import be.appwise.core.networking.NetworkConstants
 import be.appwise.core.networking.Networking
 import be.appwise.core.networking.NetworkingUtil
+import be.appwise.core.networking.model.AccessToken
 import com.orhanobut.logger.Logger
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
 
-object Authenticator : Authenticator {
+class Authenticator(private val onRefreshToken: (refreshToken: String) -> AccessToken?) :
+    Authenticator {
     private var callsWithoutToken = 0
 
     override fun authenticate(route: Route?, response: Response): Request? {
@@ -35,24 +37,24 @@ object Authenticator : Authenticator {
             Logger.t("Authenticator").d("Synchronized")
 
             // Get the current AccessToken, this might be different as the previous one because of the 'synchronized' method
-            val newToken = Networking.getAccessToken()?.access_token
+            val newToken = Networking.getAccessToken()
 
             // Check if the request made was previously made as an authenticated request
             if (response.request().header(NetworkConstants.HEADER_KEY_AUTHORIZATION) != null) {
                 // If the token has changed since the request was made, use the new token
-                if (newToken != accessToken) {
+                if (newToken?.access_token != accessToken) {
                     Logger.t("Authenticator").d("Same tokens")
 
                     return request.newBuilder()
                         .header(
                             NetworkConstants.HEADER_KEY_AUTHORIZATION,
-                            NetworkConstants.BEARER + newToken
+                            "${newToken?.token_type} ${newToken?.access_token}"
                         )
                         .build()
                 }
 
                 // In case this is the first time this line gets hit refresh the AccessToken
-                val updatedToken = Networking.refreshTokenCall()
+                val updatedToken = onRefreshToken(newToken.refresh_token ?: "")
 
                 if (updatedToken == null || NetworkingUtil.responseCount(response) >= 2) {
                     // refresh failed , maybe you can logout user
@@ -68,7 +70,7 @@ object Authenticator : Authenticator {
                     return request.newBuilder()
                         .header(
                             NetworkConstants.HEADER_KEY_AUTHORIZATION,
-                            NetworkConstants.BEARER + updatedToken.access_token
+                            "${updatedToken.token_type} ${updatedToken.access_token}"
                         )
                         .build()
                 }
