@@ -26,25 +26,25 @@ class HeaderInterceptor(
 
         val requestBuilder = request!!.newBuilder()
         requestBuilder.addHeader(
-            NetworkConstants.USER_AGENT,
+            NetworkConstants.HEADER_KEY_USER_AGENT,
             appName + "/" + versionName + "/" + versionCode + " (" + Build.MODEL + "; Android/" + Build.VERSION.SDK_INT + ")"
         )
         requestBuilder.addHeader(
-            NetworkConstants.ACCEPT,
-            NetworkConstants.ACCEPT_APPLICATION_JSON_VALUE
+            NetworkConstants.HEADER_KEY_ACCEPT,
+            NetworkConstants.HEADER_VALUE_ACCEPT_APPLICATION_JSON
         )
-        requestBuilder.addHeader(NetworkConstants.ACCEPT_LANGUAGE, languageCode)
-        requestBuilder.addHeader(NetworkConstants.API_VERSION, apiVersion)
+        requestBuilder.addHeader(NetworkConstants.HEADER_KEY_ACCEPT_LANGUAGE, languageCode)
+        requestBuilder.addHeader(NetworkConstants.HEADER_KEY_API_VERSION, apiVersion)
         requestBuilder.addHeader(
-            NetworkConstants.APP_PLATFORM,
+            NetworkConstants.HEADER_KEY_APP_PLATFORM,
             NetworkConstants.ANDROID
         )
-        requestBuilder.addHeader(NetworkConstants.APP_ID, applicationId)
+        requestBuilder.addHeader(NetworkConstants.HEADER_KEY_APP_ID, applicationId)
 
         if (protected) {
             Networking.getAccessToken()?.let {
                 requestBuilder.addHeader(
-                    NetworkConstants.HEADER_AUTHORIZATION_KEY,
+                    NetworkConstants.HEADER_KEY_AUTHORIZATION,
                     "${it.token_type} ${it.access_token}"
                 )
             }
