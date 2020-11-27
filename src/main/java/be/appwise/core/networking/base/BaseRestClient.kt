@@ -3,6 +3,7 @@ package be.appwise.core.networking.base
 import android.util.Log
 import be.appwise.core.networking.Networking
 import be.appwise.core.networking.NetworkingUtil
+import be.appwise.core.networking.bagel.BagelInterceptor
 import be.appwise.core.networking.interceptors.Authenticator
 import be.appwise.core.networking.interceptors.HeaderInterceptor
 import be.appwise.core.networking.model.AccessToken
@@ -67,6 +68,9 @@ abstract class BaseRestClient<T> {
         if (protectedClient) {
             builder.authenticator(Authenticator { onRefreshToken(it) })
         }
+        //add it behind all the rest so we can send all the response/request data
+        if(enableBagelInterceptor())
+            builder.addInterceptor(getBagelInterceptor())
 
         return builder.build()
     }
@@ -95,8 +99,7 @@ abstract class BaseRestClient<T> {
     /**
      * Get the default HttpLoggingInterceptor that is being used in almost every project
      */
-    protected fun getHttpLoggingInterceptor() =
-        HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
+    protected fun getHttpLoggingInterceptor() = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
 
     /**
      * Get the default HeaderInterceptor that is being used in almost every project
@@ -110,6 +113,9 @@ abstract class BaseRestClient<T> {
         protectedClient
     )
 
+
+    protected fun getBagelInterceptor() = BagelInterceptor(packageName)
+
     /**
      * Get a default list of interceptors to be added to the restClient.
      *
@@ -121,7 +127,25 @@ abstract class BaseRestClient<T> {
             getHttpLoggingInterceptor(), getHeaderInterceptor()
         )
     }
+
+    /**
+     * Allows you to enable the Bagle interceptor for an instance of the BaseRestClient
+     *
+     * It will be added after all other interceptors so headers and other request/response data
+     * will be up to date when shown in Bagel
+     *
+     * Added it here so you can choose for each instance of a BaseRestclient
+     * can be move to networking so you enable it for all or disable it for all
+     * Maybe also limit it to DEBUG builds in future
+     */
+
+    open fun enableBagelInterceptor() : Boolean{
+        return false
+    }
     //</editor-fold>
+
+
+
 
     /**
      * Get the Gson Factory to handle all cases of type conversions from the responses
