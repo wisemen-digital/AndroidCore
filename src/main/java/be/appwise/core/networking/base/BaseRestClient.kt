@@ -1,6 +1,10 @@
 package be.appwise.core.networking.base
 
+import android.os.Build
+import android.provider.Settings
 import android.util.Log
+import be.appwise.core.core.CoreApp
+import be.appwise.core.networking.NetworkConstants
 import be.appwise.core.networking.Networking
 import be.appwise.core.networking.NetworkingUtil
 import be.appwise.core.networking.bagel.BagelInterceptor
@@ -13,6 +17,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.util.*
 
 abstract class BaseRestClient<T> {
     companion object {
@@ -113,8 +118,10 @@ abstract class BaseRestClient<T> {
         protectedClient
     )
 
-
-    protected fun getBagelInterceptor() = BagelInterceptor(packageName)
+    protected fun getBagelInterceptor() = BagelInterceptor(packageName,
+        Settings.Secure.getString(CoreApp.getContext().contentResolver, Settings.Secure.ANDROID_ID),
+        Settings.Secure.getString(CoreApp.getContext().contentResolver, NetworkConstants.BAGEL_INTERCEPTOR_DEVICE_BLUETOOTH_NAME),
+            Build.MANUFACTURER + "," + Build.MODEL + "; Android/" + Build.VERSION.SDK_INT)
 
     /**
      * Get a default list of interceptors to be added to the restClient.
@@ -143,9 +150,6 @@ abstract class BaseRestClient<T> {
         return false
     }
     //</editor-fold>
-
-
-
 
     /**
      * Get the Gson Factory to handle all cases of type conversions from the responses

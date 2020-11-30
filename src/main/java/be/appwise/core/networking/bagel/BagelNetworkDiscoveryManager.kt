@@ -3,10 +3,11 @@ package be.appwise.core.networking.bagel
 import android.content.Context
 import android.net.nsd.NsdManager
 import android.net.nsd.NsdServiceInfo
-import be.appwise.core.core.CoreApp
+import android.util.Log
 import com.google.gson.Gson
-import com.orhanobut.logger.Logger
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.net.InetAddress
 import java.net.Socket
@@ -15,14 +16,16 @@ import java.nio.ByteOrder
 
 object BagelNetworkDiscoveryManager {
 
-    private lateinit var nsdManager: NsdManager
-
     //port and tag that bagle uses
     private const val SERVICE_TYPE: String = "_Bagel._tcp."
     private const val PORT = 43434
-    private const val TAG = "BagelNetworkDiscoveryManager"
+    private const val TAG = "BagelDiscoveryManager"
+
+    private lateinit var nsdManager: NsdManager
 
     private var mServiceName: String? = null
+    private var sockets = mutableListOf<Socket>()
+    private var isRegistered = false
 
     private val registrationListener = object : NsdManager.RegistrationListener {
 
@@ -35,18 +38,19 @@ object BagelNetworkDiscoveryManager {
 
         override fun onRegistrationFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
             // Registration failed! Put debugging code here to determine why.
-            Logger.d("registrationfailed errorcode $errorCode")
+            Log.d(TAG, "Registration failed errorcode $errorCode")
         }
 
         override fun onServiceUnregistered(arg0: NsdServiceInfo) {
             // Service has been unregistered. This only happens when you call
             // NsdManager.unregisterService() and pass in this listener.
             nsdManager.unregisterService(this)
+            isRegistered = false
         }
 
         override fun onUnregistrationFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
             // Unregistration failed. Put debugging code here to determine why.
-            Logger.d("unregistrationfailed errorcode $errorCode")
+            Log.d(TAG, "Unregistration failed errorcode $errorCode")
         }
     }
 
@@ -57,7 +61,7 @@ object BagelNetworkDiscoveryManager {
         }
     }
 
-    fun registerService() {
+    fun registerService(context: Context) {
         isRegistered = true
         // Create the NsdServiceInfo object, and populate it.
         val serviceInfo = NsdServiceInfo().apply {
@@ -68,12 +72,10 @@ object BagelNetworkDiscoveryManager {
             port = PORT
         }
 
-        nsdManager =
-            (CoreApp.getContext().getSystemService(Context.NSD_SERVICE) as NsdManager).apply {
-                registerService(serviceInfo, NsdManager.PROTOCOL_DNS_SD, registrationListener)
-            }
-
-        nsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener)
+        nsdManager = (context.getSystemService(Context.NSD_SERVICE) as NsdManager).apply {
+            registerService(serviceInfo, NsdManager.PROTOCOL_DNS_SD, registrationListener)
+            discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener)
+        }
     }
 
     private val resolveListener = object : NsdManager.ResolveListener {
@@ -82,14 +84,14 @@ object BagelNetworkDiscoveryManager {
 
         override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
             // Called when the resolve fails. Use the error code to debug.
-            Logger.e("Resolve failed: $errorCode")
+            Log.e(TAG, "Resolve failed: $errorCode")
         }
 
         override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
-            Logger.d("Resolve Succeeded. $serviceInfo")
+            Log.d(TAG, "Resolve Succeeded. $serviceInfo")
 
             if (serviceInfo.serviceName == mServiceName) {
-                Logger.d("Same IP.")
+                Log.d(TAG, "Same IP.")
                 return
             }
             mService = serviceInfo
@@ -105,65 +107,60 @@ object BagelNetworkDiscoveryManager {
 
         // Called as soon as service discovery begins.
         override fun onDiscoveryStarted(regType: String) {
-            Logger.d("Service discovery started")
+            Log.d(TAG, "Service discovery started")
         }
 
         override fun onServiceFound(service: NsdServiceInfo) {
             // A service was found! Do something with it.
-            Logger.d("$TAG -->  discovery success $service")
+            Log.d(TAG, "  discovery success $service")
             when {
                 service.serviceType != SERVICE_TYPE -> // Service type is the string containing the protocol and
                     // transport layer for this service.
-                    Logger.d("$TAG --> Unknown Service Type: ${service.serviceType}")
+                    Log.d(TAG, " Unknown Service Type: ${service.serviceType}")
                 service.serviceName == mServiceName ->  // The name of the service tells the user what they'd be
-                    Logger.d("$TAG --> Same machine: $mServiceName")
+                    Log.d(TAG, " Same machine: $mServiceName")
 
                 service.serviceName.contains("MacBook") ->
                     nsdManager.resolveService(
                         service,
                         resolveListener
                     )
-
             }
         }
 
         override fun onServiceLost(service: NsdServiceInfo) {
             // When the network service is no longer available.
             // Internal bookkeeping code goes here.
-            Logger.e("$TAG --> service lost: $service")
+            Log.e(TAG, "Service lost: $service")
         }
 
         override fun onDiscoveryStopped(serviceType: String) {
-            Logger.i("$TAG --> Discovery stopped: $serviceType")
+            Log.i(TAG, "Discovery stopped: $serviceType")
         }
 
         override fun onStartDiscoveryFailed(serviceType: String, errorCode: Int) {
-            Logger.e("$TAG --> Discovery failed: Error code:$errorCode")
+            Log.e(TAG, "Discovery failed: Error code:$errorCode")
             nsdManager.stopServiceDiscovery(this)
             //maybe try again
         }
 
         override fun onStopDiscoveryFailed(serviceType: String, errorCode: Int) {
-            Logger.e("$TAG --> Discovery failed: Error code:$errorCode")
+            Log.e(TAG, "Discovery failed: Error code:$errorCode")
             nsdManager.stopServiceDiscovery(this)
         }
     }
-
-    private var sockets = mutableListOf<Socket>()
 
     private fun initializeServerSocket(host: InetAddress, port: Int) {
         // Initialize a server socket on the next available port.
         sockets.add(Socket(host, port))
     }
 
-    private var isRegistered = false
-
     fun sendMessage(bagelRequestMessage: BagelMessage) {
         if (isRegistered) {
             //other error messages -> maybe not initialized / registerservice not called
             GlobalScope.launch(Dispatchers.IO) {
                 if (sockets.isEmpty())
-                    Logger.d("BAGEL MESSAGE NOT SENT : no sockets found")
+                    Log.d(TAG, "BAGEL MESSAGE NOT SENT : no sockets found")
                 sockets.forEach { socket ->
                     try {
                         val outPutStream = socket.getOutputStream()
