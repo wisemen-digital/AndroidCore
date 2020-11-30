@@ -103,7 +103,7 @@ class BagelMessage(
 
 
     private fun getHeadersJson(headers: Headers) = JsonObject().apply {
-        headers.names().sorted().forEach { name ->
+        headers.names().sortedBy { it.toLowerCase(Locale.getDefault()) }.forEach { name ->
             this.addProperty(name, headers.values(name).first())
         }
     }
