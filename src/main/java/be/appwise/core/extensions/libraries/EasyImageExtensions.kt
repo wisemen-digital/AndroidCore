@@ -3,7 +3,7 @@ package be.appwise.core.extensions.libraries
 import android.app.Activity
 import android.content.Intent
 import androidx.fragment.app.Fragment
-import be.appwise.core.extensions.logging.logd
+import com.orhanobut.logger.Logger
 import pl.aprilapps.easyphotopicker.DefaultCallback
 import pl.aprilapps.easyphotopicker.EasyImage
 import java.io.File
@@ -19,7 +19,7 @@ fun Fragment.openEasyImageChooser(title: String) {
 fun Fragment.handlePictureResult(requestCode: Int, resultCode: Int, data: Intent?, processImages: (imageFiles: MutableList<File>) -> Unit) {
     EasyImage.handleActivityResult(requestCode, resultCode, data, activity, object : DefaultCallback() {
         override fun onImagePickerError(e: Exception, source: EasyImage.ImageSource?, type: Int) {
-            logd(null, e.message ?: "An error occured")
+            Logger.d(e.message ?: "An error occurred")
         }
 
         override fun onImagesPicked(imageFiles: MutableList<File>, source: EasyImage.ImageSource?, type: Int) {

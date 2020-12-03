@@ -1,6 +1,6 @@
 package be.appwise.core.util
 
-import be.appwise.core.networking.models.AccessToken
+import be.appwise.core.networking.model.AccessToken
 
 internal object HawkUtils {
     private const val HAWK_ACCESS_TOKEN_KEY = "access_token"

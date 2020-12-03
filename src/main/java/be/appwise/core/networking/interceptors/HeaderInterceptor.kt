@@ -1,7 +1,9 @@
-package be.appwise.core.networking
+package be.appwise.core.networking.interceptors
 
 import android.content.res.Resources
 import android.os.Build
+import be.appwise.core.networking.NetworkConstants
+import be.appwise.core.networking.Networking
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.util.*
@@ -24,25 +26,25 @@ class HeaderInterceptor(
 
         val requestBuilder = request!!.newBuilder()
         requestBuilder.addHeader(
-            NetworkConstants.USER_AGENT,
-            appName + "/" + versionName + "/" + versionCode + " (" + Build.MODEL + "; Android/" + Build.VERSION.SDK_INT + ")"
+            NetworkConstants.HEADER_KEY_USER_AGENT,
+            "$appName/$versionName/$versionCode (${Build.MODEL}; Android/${Build.VERSION.SDK_INT})"
         )
         requestBuilder.addHeader(
-            NetworkConstants.ACCEPT,
-            NetworkConstants.ACCEPT_APPLICATION_JSON_VALUE
+            NetworkConstants.HEADER_KEY_ACCEPT,
+            NetworkConstants.HEADER_VALUE_ACCEPT_APPLICATION_JSON
         )
-        requestBuilder.addHeader(NetworkConstants.ACCEPT_LANGUAGE, languageCode)
-        requestBuilder.addHeader(NetworkConstants.API_VERSION, apiVersion)
+        requestBuilder.addHeader(NetworkConstants.HEADER_KEY_ACCEPT_LANGUAGE, languageCode)
+        requestBuilder.addHeader(NetworkConstants.HEADER_KEY_API_VERSION, apiVersion)
         requestBuilder.addHeader(
-            NetworkConstants.APP_PLATFORM,
-            NetworkConstants.ANDROID
+            NetworkConstants.HEADER_KEY_APP_PLATFORM,
+            NetworkConstants.HEADER_VALUE_PLATFORM_ANDROID
         )
-        requestBuilder.addHeader(NetworkConstants.APP_ID, applicationId)
+        requestBuilder.addHeader(NetworkConstants.HEADER_KEY_APP_ID, applicationId)
 
         if (protected) {
             Networking.getAccessToken()?.let {
                 requestBuilder.addHeader(
-                    NetworkConstants.HEADER_AUTHORIZATION_KEY,
+                    NetworkConstants.HEADER_KEY_AUTHORIZATION,
                     "${it.token_type} ${it.access_token}"
                 )
             }

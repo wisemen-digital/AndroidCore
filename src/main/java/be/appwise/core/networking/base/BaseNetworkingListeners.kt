@@ -1,44 +1,51 @@
-package be.appwise.core.networking
+package be.appwise.core.networking.base
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.util.Log
 import be.appwise.core.R
-import be.appwise.core.networking.models.ApiError
+import be.appwise.core.core.CoreApp
+import be.appwise.core.networking.Networking
+import be.appwise.core.networking.model.ApiError
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.orhanobut.hawk.Hawk
 import io.realm.Realm
-import org.json.JSONException
-import retrofit2.Response
+import retrofit2.Retrofit
 
-/**
- * Implement this interface and add it to the initial builder pattern to override the functions.
- * You can choose which function to implement and which may still use the default implementation.
- */
-interface NetworkingListeners {
+interface BaseNetworkingListeners {
     companion object {
-        val DEFAULT = object : NetworkingListeners {}
+        val DEFAULT = object :
+            BaseNetworkingListeners {
+            override fun extraLogoutStep() {
+                Log.e("BaseNetworkListeners", "No extra logout steps needed at the moment")
+            }
+        }
     }
 
+    //<editor-fold desc="ErrorHandling">
     /**
      * This function will be used to handle any errors that come from the network responses
      * Whenever you need to customize your error string, just add a string resource to your
      * projects resource file.
      *
      * In case you need to customize the entire error handling you can override this function
-     * in your implementation of the NetworkListeners
+     * in your implementation of the RestClient
      */
-    fun errorListener(response: Response<*>) = ApiError().apply {
+    fun parseError(response: retrofit2.Response<*>) = ApiError().apply {
         message = when (response.code()) {
-            500 -> Networking.getContext().getString(R.string.internal_server_error)
-            404 -> Networking.getContext().getString(R.string.network_error)
-            /*400 -> Networking.getContext().getString(R.string.login_error)*/
-            401 -> Networking.getContext().getString(R.string.login_error)
+            500 -> CoreApp.getContext().getString(R.string.internal_server_error)
+            404 -> CoreApp.getContext().getString(R.string.network_error)
+            /*400 -> CoreApp.getContext().getString(R.string.login_error)*/
+            401 -> CoreApp.getContext().getString(R.string.login_error)
             else -> {
-                val hashMapConverter = Networking.getProtectedRetrofit().responseBodyConverter<JsonElement>(
-                    JsonElement::class.java, arrayOfNulls<Annotation>(0))
-                when (val errorJson = hashMapConverter.convert(response.errorBody())) {
+                //TODO: a new retrofit has been created in order to have no build errors... to test still!!!
+                val hashMapConverter =
+                    Retrofit.Builder().build().responseBodyConverter<JsonElement>(
+                        JsonElement::class.java, arrayOfNulls<Annotation>(0)
+                    )
+                when (val errorJson = hashMapConverter.convert(response.errorBody()!!)) {
                     is JsonArray -> manageJsonArrayFormat(errorJson)
                     is JsonObject -> manageJsonObjectFormat(errorJson)
                     else -> "Something went wrong with parsing error"
@@ -76,6 +83,7 @@ interface NetworkingListeners {
         return jsonArray.first()?.asJsonObject?.get("message")?.asString
             ?: "" /*.joinToString{ it.asJsonObject.get("message").asString}*/
     }
+    //</editor-fold>
 
     /**
      * This logout function can be used to cleanup any resources the app is using.
@@ -95,21 +103,30 @@ interface NetworkingListeners {
         // Using packageName for this so the application can differentiate between a develop, staging or production build and won't ask the user which to use
         val errorActivity = Intent("${Networking.getPackageName()}.logout")
         errorActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        val pendingIntent = PendingIntent.getActivity(Networking.getContext(), 22, errorActivity, 0)
+        val pendingIntent = PendingIntent.getActivity(CoreApp.getContext(), 22, errorActivity, 0)
 
-        Networking.getUnProtectedClient().dispatcher().cancelAll()
+        if (Hawk.isBuilt()) {
+            Hawk.deleteAll()
+        }
+
+        extraLogoutStep()
+        Realm.getDefaultInstance().executeTransaction { it.deleteAll() }
 
         try {
-            if (Hawk.isBuilt()) {
-                Hawk.deleteAll()
-            }
-
-            Realm.getDefaultInstance().executeTransaction { it.deleteAll() }
             pendingIntent.send()
-
-            //OneSignal.deleteTag(Constants.ONESIGNAL_USER_ID)
         } catch (e: PendingIntent.CanceledException) {
+            e.initCause(Throwable("Make sure that the logout 'endpoint' got added as an intent-filter to your manifest!"))
             e.printStackTrace()
         }
     }
+
+    /**
+     * This function can be used when some extra things need to be reset, removed, deleted upon logout.
+     *
+     * For example, cancelling all network requests from all possible network clients can be listed in this function.
+     * ```
+     *      ProtectedRestClient.getHttpClient.dispatcher().cancelAll()
+     * ```
+     */
+    fun extraLogoutStep()
 }

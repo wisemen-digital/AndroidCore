@@ -1,4 +1,4 @@
-package be.appwise.core.networking.models
+package be.appwise.core.networking.model
 
 class ApiError {
     var exception:String = ""

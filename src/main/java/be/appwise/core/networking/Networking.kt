@@ -1,95 +1,36 @@
 package be.appwise.core.networking
 
-import android.content.Context
-import be.appwise.core.networking.models.AccessToken
-import okhttp3.OkHttpClient
-import okhttp3.Response
-import retrofit2.Call
-import retrofit2.Retrofit
+import be.appwise.core.networking.base.BaseNetworkingListeners
+import be.appwise.core.networking.model.AccessToken
+import be.appwise.core.networking.model.ApiError
+import retrofit2.Response
 
 object Networking {
     private var networkingFacade: NetworkingFacade? =
         NetworkingFacade.EmptyNetworkingFacade()
 
-    internal fun <T> build(
-        networkingBuilder: NetworkingBuilder,
-        apiManagerService: Class<T>?
-    ) {
+    internal fun build(networkingBuilder: Builder) {
         networkingFacade =
-            DefaultNetworkingFacade(networkingBuilder, apiManagerService)
+            DefaultNetworkingFacade(networkingBuilder)
     }
 
-    internal fun getContext(): Context {
-        return networkingFacade!!.getContext()
-    }
+    fun getAppName() = networkingFacade!!.appName
 
-    /**
-     * Use this function to get the result of a network call.
-     * In case of any errors this will map the error using the ApiError object.
-     *
-     * This is a suspended function and is only useful for Coroutines.
-     */
-    suspend fun <T : Any?> doCall(call: Call<T>): T? {
-        return networkingFacade!!.doCall(call)
-    }
+    fun getVersionName() = networkingFacade!!.versionName
 
-    fun getAccessToken(): AccessToken? {
-        return networkingFacade!!.getAccessToken()
-    }
+    fun getVersionCode() = networkingFacade!!.versionCode
 
-    fun saveAccessToken(accessToken: AccessToken) {
-        networkingFacade!!.saveAccessToken(accessToken)
-    }
+    fun getApiVersion() = networkingFacade!!.apiVersion
 
-    internal fun responseCount(responseMethod: Response?): Int {
-        return networkingFacade!!.responseCount(responseMethod)
-    }
+    fun getPackageName() = networkingFacade!!.packageName
 
-    fun <T> getProtectedApiManager(): T? {
-        return networkingFacade!!.getProtectedApiManager()
-    }
+    fun getAccessToken() = networkingFacade!!.getAccessToken()
 
-    fun <T> getUnProtectedApiManager(): T? {
-        return networkingFacade!!.getUnProtectedApiManager()
-    }
+    fun saveAccessToken(accessToken: AccessToken) = networkingFacade!!.saveAccessToken(accessToken)
 
-    /**
-     * Check if the use is logged in
-     *
-     * Basically, if there is an AccessToken saved, the user is logged in
-     */
-    @JvmStatic
-    fun isLoggedIn(): Boolean {
-        return networkingFacade!!.isLoggedIn()
-    }
+    fun getClientIdValue() = networkingFacade!!.clientId
 
-    fun getProtectedRetrofit(): Retrofit {
-        return networkingFacade!!.protectedRetrofit
-    }
-
-    fun getUnProtectedRetrofit(): Retrofit {
-        return networkingFacade!!.unProtectedRetrofit
-    }
-
-    fun getProtectedClient(): OkHttpClient {
-        return networkingFacade!!.protectedClient
-    }
-
-    fun getUnProtectedClient(): OkHttpClient {
-        return networkingFacade!!.unProtectedClient
-    }
-
-    fun getPackageName(): String {
-        return networkingFacade!!.packageName
-    }
-
-    fun getClientSecret(): String {
-        return networkingFacade!!.clientSecret
-    }
-
-    fun getClientId(): String {
-        return networkingFacade!!.clientId
-    }
+    fun getClientSecretValue() = networkingFacade!!.clientSecret
 
     /**
      * This logout function can be used to cleanup any resources the app is using.
@@ -107,5 +48,96 @@ object Networking {
      */
     fun logout() {
         networkingFacade!!.logout()
+    }
+
+    fun parseError(response: Response<*>): ApiError {
+        return networkingFacade!!.parseError(response)
+    }
+
+    class Builder {
+        private var packageName: String = ""
+        private var clientSecretValue = ""
+        private var clientIdValue = ""
+        private var appName = ""
+        private var versionName = ""
+        private var versionCode = ""
+        private var apiVersion = ""
+        private var networkingListeners = BaseNetworkingListeners.DEFAULT
+
+        fun setPackageName(packageName: String): Builder {
+            this.packageName = packageName
+            return this
+        }
+
+        internal fun getPackageName(): String {
+            return packageName
+        }
+
+        fun setClientSecretValue(clientSecretValue: String): Builder {
+            this.clientSecretValue = clientSecretValue
+            return this
+        }
+
+        internal fun getClientSecretValue(): String {
+            return clientSecretValue
+        }
+
+        fun setClientIdValue(clientIdValue: String): Builder {
+            this.clientIdValue = clientIdValue
+            return this
+        }
+
+        internal fun getClientIdValue(): String {
+            return clientIdValue
+        }
+
+        fun setAppName(appName: String): Builder {
+            this.appName = appName
+            return this
+        }
+
+        internal fun getAppName(): String {
+            return appName
+        }
+
+        fun setVersionName(versionName: String): Builder {
+            this.versionName = versionName
+            return this
+        }
+
+        internal fun getVersionName(): String {
+            return versionName
+        }
+
+        fun setVersionCode(versionCode: String): Builder {
+            this.versionCode = versionCode
+            return this
+        }
+
+        internal fun getVersionCode(): String {
+            return versionCode
+        }
+
+        fun setApiVersion(apiVersion: String): Builder {
+            this.apiVersion = apiVersion
+            return this
+        }
+
+        internal fun getApiVersion(): String {
+            return apiVersion
+        }
+
+        fun setNetworkingListeners(customNetworkingListeners: BaseNetworkingListeners): Builder {
+            this.networkingListeners = customNetworkingListeners
+            return this
+        }
+
+        internal fun getNetworkingListeners(): BaseNetworkingListeners {
+            return networkingListeners
+        }
+
+        fun build() {
+            build(this)
+        }
     }
 }

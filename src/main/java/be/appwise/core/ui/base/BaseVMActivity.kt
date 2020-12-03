@@ -2,9 +2,6 @@ package be.appwise.core.ui.base
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
-import be.appwise.core.R
-import be.appwise.core.extensions.activity.snackBar
-import be.appwise.core.extensions.logging.loge
 
 abstract class BaseVMActivity<VM : BaseViewModel> : BaseActivity() {
     /**
