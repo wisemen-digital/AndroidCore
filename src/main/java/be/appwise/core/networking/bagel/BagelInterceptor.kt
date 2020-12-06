@@ -16,7 +16,7 @@ class BagelInterceptor(private val applicationId: String,private val deviceId : 
         val response = chain.proceed(request)
 
         // Update message to bagel with response data from request
-        bagelRequestMessage.updateToMessageWithReponse(response)
+        bagelRequestMessage.updateToMessageWithResponse(response)
         BagelNetworkDiscoveryManager.sendMessage(bagelRequestMessage)
 
         return response

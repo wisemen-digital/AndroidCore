@@ -17,12 +17,9 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import java.util.*
 
 abstract class BaseRestClient<T> {
-    companion object {
-        const val TAG = "BaseRestClient"
-    }
+    protected open val TAG = BaseRestClient::class.java.simpleName
 
     protected abstract val apiService: Class<T>
 
@@ -74,7 +71,7 @@ abstract class BaseRestClient<T> {
             builder.authenticator(Authenticator { onRefreshToken(it) })
         }
         //add it behind all the rest so we can send all the response/request data
-        if(enableBagelInterceptor())
+        if (enableBagelInterceptor())
             builder.addInterceptor(getBagelInterceptor())
 
         return builder.build()
@@ -103,8 +100,17 @@ abstract class BaseRestClient<T> {
     //<editor-fold desc="Interceptors">
     /**
      * Get the default HttpLoggingInterceptor that is being used in almost every project
+     *
+     * In case Bagel is enabled for this RestClient, the logging for requests and responses will be at a bare minimum.
      */
-    protected fun getHttpLoggingInterceptor() = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
+    protected fun getHttpLoggingInterceptor() = HttpLoggingInterceptor().apply {
+        level =
+            if (enableBagelInterceptor()) {
+                HttpLoggingInterceptor.Level.BASIC
+            } else {
+                HttpLoggingInterceptor.Level.BODY
+            }
+    }
 
     /**
      * Get the default HeaderInterceptor that is being used in almost every project
@@ -118,10 +124,12 @@ abstract class BaseRestClient<T> {
         protectedClient
     )
 
-    protected fun getBagelInterceptor() = BagelInterceptor(packageName,
+    protected fun getBagelInterceptor() = BagelInterceptor(
+        packageName,
         Settings.Secure.getString(CoreApp.getContext().contentResolver, Settings.Secure.ANDROID_ID),
-        Settings.Secure.getString(CoreApp.getContext().contentResolver, NetworkConstants.BAGEL_INTERCEPTOR_DEVICE_BLUETOOTH_NAME),
-            Build.MANUFACTURER + "," + Build.MODEL + "; Android/" + Build.VERSION.SDK_INT)
+        Settings.Global.getString(CoreApp.getContext().contentResolver, NetworkConstants.BAGEL_INTERCEPTOR_DEVICE_NAME),
+        Build.MANUFACTURER + "," + Build.MODEL + "; Android/" + Build.VERSION.SDK_INT
+    )
 
     /**
      * Get a default list of interceptors to be added to the restClient.
@@ -146,7 +154,7 @@ abstract class BaseRestClient<T> {
      * Maybe also limit it to DEBUG builds in future
      */
 
-    open fun enableBagelInterceptor() : Boolean{
+    open fun enableBagelInterceptor(): Boolean {
         return false
     }
     //</editor-fold>

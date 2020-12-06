@@ -1,24 +1,18 @@
 package be.appwise.core.networking.bagel
 
-import android.os.Build
-import android.provider.Settings
 import android.util.Base64
-import be.appwise.core.core.CoreApp
 import com.google.gson.JsonObject
 import okhttp3.Headers
 import okhttp3.Request
 import okhttp3.Response
 import okio.Buffer
-import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.util.*
-import java.util.Base64.getEncoder
 
-class BagelMessage(
-    var device: Device? = null,
-    var packetId: String = "",
-    var project: Project? = null
-) {
+class BagelMessage {
+    lateinit var device: Device
+    lateinit var packetId: String
+    lateinit var project: Project
     lateinit var requestInfo: RequestInfo
 
     data class Project(val projectName: String)
@@ -29,7 +23,7 @@ class BagelMessage(
      * use jsonobject instead of pojo because you can't define variables with caps first letter and it's dynamic
      * requestbody can't be a nullable string
      **/
-    class RequestInfo(
+    data class RequestInfo(
         val requestMethod: String? = null,
         val url: String? = null,
         var requestBody: String = "",
@@ -48,7 +42,7 @@ class BagelMessage(
      *
      * @param response
      **/
-    fun updateToMessageWithReponse(response: Response) = this.apply {
+    fun updateToMessageWithResponse(response: Response) = this.apply {
         requestInfo.statusCode = response.code().toString()
         requestInfo.startDate = response.sentRequestAtMillis() / 1000
         requestInfo.endDate = response.receivedResponseAtMillis() / 1000
@@ -59,7 +53,7 @@ class BagelMessage(
         source?.let {
             source.request(Long.MAX_VALUE) // Buffer the entire body.
             val buffer = source.buffer()
-            requestInfo?.responseData = getBase64(buffer)
+            requestInfo.responseData = getBase64(buffer)
         }
     }
 
@@ -74,13 +68,18 @@ class BagelMessage(
          * @param deviceName Readable Identifier used by Bagel to represent a device
          * @param deviceDescription Readable sub identifier used by Bagel for a device
          **/
-        fun createRequestMessage(request: Request, applicationId: String,deviceId : String, deviceName: String, deviceDescription: String) =
+        fun createRequestMessage(
+            request: Request,
+            applicationId: String,
+            deviceId: String,
+            deviceName: String,
+            deviceDescription: String
+        ) =
             BagelMessage().apply {
-                
+
                 device = Device(deviceId, deviceName, deviceDescription)
                 //here we can use application id (packagename) or appname + buildflavor? --> what do you guys thinks ?
                 project = Project(applicationId)
-                /*project = Project(App.getContext().getString(R.string.app_name) + BuildConfig.FLAVOR + BuildConfig.BUILD_TYPE)*/
 
                 requestInfo = RequestInfo(
                     request.method(),
@@ -115,28 +114,29 @@ class BagelMessage(
 
     /*example message
     {
-        "device": {
+      "device": {
         "deviceDescription": "iPhone iOS 14.0.1",
         "deviceId": "DJ's iPhone",
         "deviceName": "DJ's iPhone"
-    },
-        "packetId": "A3A51EF3-87E9-47F1-9050-F2CB6B7BB2CE",
-        "project": {
+      },
+      "packetId": "A3A51EF3-87E9-47F1-9050-F2CB6B7BB2CE",
+      "project": {
         "projectName": "RemeCare - Development"
-    },
-        "requestInfo": {
+      },
+      "requestInfo": {
         "endDate": 1604692119,
         "requestBody": "Y2xpZW50X2lkPWJjZTc3NDMxLTVmYWEtNDk2Mi04OTFjLTlhNDk1YjU0Mjg3MyZy\r\nZXNvdXJjZT1odHRwcyUzQSUyRiUyRmRldmFwaS5yZW1lY2FyZW5ldy5iZSUyRiZn\r\ncmFudF90eXBlPXBhc3N3b3JkJnBhc3N3b3JkPUFwcHdpc2UxJnVzZXJuYW1lPVBh\r\ndGllbnRIYXJ0Zi4xLkFwJTQwcmVtZWNhcmVkZXYubG9jYWw=",
         "requestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept-Language": "en-gb",
-        "Content-Length": "179",
-        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
-    },
+          "Accept": "application/json",
+          "Accept-Encoding": "gzip, deflate, br",
+          "Accept-Language": "en-gb",
+          "Content-Length": "179",
+          "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+        },
         "requestMethod": "POST",
         "startDate": 1604692119,
         "url": "https://devcas.remecare.be/adfs/oauth2/token"
+      }
     }
-    }*/
+    */
 }
