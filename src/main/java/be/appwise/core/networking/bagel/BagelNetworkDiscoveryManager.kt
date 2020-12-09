@@ -8,80 +8,36 @@ import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.io.IOException
-import java.net.InetAddress
 import java.net.Socket
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
 object BagelNetworkDiscoveryManager {
-
-    //port and tag that bagle uses
     private const val SERVICE_TYPE: String = "_Bagel._tcp."
-    private const val PORT = 43434
     private const val TAG = "BagelDiscoveryManager"
 
-    private lateinit var nsdManager: NsdManager
+    private var nsdManager: NsdManager? = null
+    private var serviceInfoList = mutableListOf<NsdServiceInfo>()
 
-    private var mServiceName: String? = null
-    private var sockets = mutableListOf<Socket>()
+    // isRegistered will be used to check if the discovery manager was initialized in the App class
     private var isRegistered = false
 
-    private val registrationListener = object : NsdManager.RegistrationListener {
-
-        override fun onServiceRegistered(NsdServiceInfo: NsdServiceInfo) {
-            // Save the service name. Android may have changed it in order to
-            // resolve a conflict, so update the name you initially requested
-            // with the name Android actually used.
-            mServiceName = NsdServiceInfo.serviceName
-        }
-
-        override fun onRegistrationFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
-            // Registration failed! Put debugging code here to determine why.
-            Log.d(TAG, "Registration failed errorcode $errorCode")
-        }
-
-        override fun onServiceUnregistered(arg0: NsdServiceInfo) {
-            // Service has been unregistered. This only happens when you call
-            // NsdManager.unregisterService() and pass in this listener.
-            nsdManager.unregisterService(this)
-            isRegistered = false
-        }
-
-        override fun onUnregistrationFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
-            // Unregistration failed. Put debugging code here to determine why.
-            Log.d(TAG, "Unregistration failed errorcode $errorCode")
-        }
-    }
-
     fun teardown() {
-        nsdManager.apply {
-            unregisterService(registrationListener)
+        nsdManager?.apply {
             stopServiceDiscovery(discoveryListener)
         }
     }
 
     fun registerService(context: Context) {
+        teardown()
         isRegistered = true
-        // Create the NsdServiceInfo object, and populate it.
-        val serviceInfo = NsdServiceInfo().apply {
-            // The name is subject to change based on conflicts
-            // with other services advertised on the same network.
-            serviceName = " "
-            serviceType = SERVICE_TYPE
-            port = PORT
-        }
 
         nsdManager = (context.getSystemService(Context.NSD_SERVICE) as NsdManager).apply {
-            registerService(serviceInfo, NsdManager.PROTOCOL_DNS_SD, registrationListener)
             discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener)
         }
     }
 
     private val resolveListener = object : NsdManager.ResolveListener {
-
-        private lateinit var mService: NsdServiceInfo
-
         override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
             // Called when the resolve fails. Use the error code to debug.
             Log.e(TAG, "Resolve failed: $errorCode")
@@ -90,15 +46,14 @@ object BagelNetworkDiscoveryManager {
         override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
             Log.d(TAG, "Resolve Succeeded. $serviceInfo")
 
-            if (serviceInfo.serviceName == mServiceName) {
-                Log.d(TAG, "Same IP.")
-                return
+            // Only add the serviceInfo if it isn't in the list already
+            serviceInfoList.filter {
+                serviceInfo.toString() == it.toString()
+            }.apply {
+                if (this.isEmpty()) {
+                    serviceInfoList.add(serviceInfo)
+                }
             }
-            mService = serviceInfo
-            val port: Int = serviceInfo.port
-            val host: InetAddress = serviceInfo.host
-
-            initializeServerSocket(host, port)
         }
     }
 
@@ -112,19 +67,18 @@ object BagelNetworkDiscoveryManager {
 
         override fun onServiceFound(service: NsdServiceInfo) {
             // A service was found! Do something with it.
-            Log.d(TAG, "  discovery success $service")
+            Log.d(TAG, "Discovery success $service")
             when {
-                service.serviceType != SERVICE_TYPE -> // Service type is the string containing the protocol and
+                service.serviceType != SERVICE_TYPE -> {// Service type is the string containing the protocol and
                     // transport layer for this service.
-                    Log.d(TAG, " Unknown Service Type: ${service.serviceType}")
-                service.serviceName == mServiceName ->  // The name of the service tells the user what they'd be
-                    Log.d(TAG, " Same machine: $mServiceName")
-
-                service.serviceName.contains("MacBook") ->
-                    nsdManager.resolveService(
+                    Log.d(TAG, "Unknown Service Type: ${service.serviceType}")
+                }
+                service.serviceName.contains("MacBook") -> {
+                    nsdManager?.resolveService(
                         service,
                         resolveListener
                     )
+                }
             }
         }
 
@@ -132,6 +86,8 @@ object BagelNetworkDiscoveryManager {
             // When the network service is no longer available.
             // Internal bookkeeping code goes here.
             Log.e(TAG, "Service lost: $service")
+
+            // Can't remove the service from the list because we only get the "name" and "type"
         }
 
         override fun onDiscoveryStopped(serviceType: String) {
@@ -139,47 +95,41 @@ object BagelNetworkDiscoveryManager {
         }
 
         override fun onStartDiscoveryFailed(serviceType: String, errorCode: Int) {
-            Log.e(TAG, "Discovery failed: Error code:$errorCode")
-            nsdManager.stopServiceDiscovery(this)
+            Log.e(TAG, "Discovery failed on start: Error code: $errorCode")
             //maybe try again
         }
 
         override fun onStopDiscoveryFailed(serviceType: String, errorCode: Int) {
-            Log.e(TAG, "Discovery failed: Error code:$errorCode")
-            nsdManager.stopServiceDiscovery(this)
+            Log.e(TAG, "Discovery failed on stop: Error code: $errorCode")
+            nsdManager?.stopServiceDiscovery(this)
         }
-    }
-
-    private fun initializeServerSocket(host: InetAddress, port: Int) {
-        // Initialize a server socket on the next available port.
-        sockets.add(Socket(host, port))
     }
 
     fun sendMessage(bagelRequestMessage: BagelMessage) {
         if (isRegistered) {
-            //other error messages -> maybe not initialized / registerservice not called
+            // Other error messages -> maybe not initialized / registerservice not called
             GlobalScope.launch(Dispatchers.IO) {
-                if (sockets.isEmpty())
-                    Log.d(TAG, "BAGEL MESSAGE NOT SENT : no sockets found")
-                sockets.forEach { socket ->
+                val iterator = serviceInfoList.listIterator()
+
+                while (iterator.hasNext()) {
+                    val item = iterator.next()
                     try {
+                        val socket = Socket(item.host, item.port)
                         val outPutStream = socket.getOutputStream()
                         val messageByteArray = Gson().toJson(bagelRequestMessage).toByteArray()
-                        /*Logger.d("message to send \n ${Gson().toJson(bagelRequestMessage)}")*/
-                        //first sent length of message to bagel
+                        Log.d(TAG, "message to send \n ${Gson().toJson(bagelRequestMessage)}")
+                        // First sent length of message to bagel
                         outPutStream.write(messageByteArray.size.toLong().toByteArray())
-                        //sent actual message as a bytearray
+                        // Sent actual message as a byteArray
                         outPutStream.write(messageByteArray)
                         outPutStream.flush()
-                    } catch (ex: IOException) {
-                        // to do check better management for disconnect en socket reset
-                        ex.printStackTrace()
-                        /*Logger.e("BAGEL MESSAGE NOT SENT : socket with channel : ${socket.channel} and port : ${socket.port} closed")*/
-                        //use removeif because it uses iterator in background --> no concurrent modification exceptions because of deleting item used in sockets.foreach
-                        sockets.removeIf { it == socket }
+                    } catch (ex: Exception) {
+                        // An error occurred when trying to send a message to a socket, this can be because
+                        // the socket isn't active anymore. Whatever reason it is, remove the socket from the
+                        // list so further errors won't happen with the same socket.
+                        iterator.remove()
                     }
                 }
-
             }
         } else {
             throw BagelNotRegisteredException()
@@ -187,7 +137,7 @@ object BagelNetworkDiscoveryManager {
     }
 
     class BagelNotRegisteredException :
-        java.lang.Exception("Bagel Network Discovery Manager is not registered! Before sending messages don't forget to enable it in your App class")
+        Exception("Bagel Network Discovery Manager is not registered! Before sending messages don't forget to enable it in your App class")
 
     private fun Long.toByteArray(): ByteArray {
         val bufferSize = Long.SIZE_BYTES
@@ -195,6 +145,4 @@ object BagelNetworkDiscoveryManager {
         buffer.order(ByteOrder.LITTLE_ENDIAN) // BIG_ENDIAN is default byte order, so it is not necessary.
         return buffer.putLong(this).array()
     }
-
-
 }
