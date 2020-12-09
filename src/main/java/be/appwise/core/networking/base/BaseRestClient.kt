@@ -124,12 +124,15 @@ abstract class BaseRestClient<T> {
         protectedClient
     )
 
-    protected fun getBagelInterceptor() = BagelInterceptor(
-        packageName,
-        Settings.Secure.getString(CoreApp.getContext().contentResolver, Settings.Secure.ANDROID_ID),
-        Settings.Global.getString(CoreApp.getContext().contentResolver, NetworkConstants.BAGEL_INTERCEPTOR_DEVICE_NAME),
-        Build.MANUFACTURER + "," + Build.MODEL + "; Android/" + Build.VERSION.SDK_INT
-    )
+    protected fun getBagelInterceptor(): BagelInterceptor { val deviceName = Settings.Secure.getString(CoreApp.getContext().contentResolver, NetworkConstants.BAGEL_INTERCEPTOR_DEVICE_BLUETOOTH_NAME)
+            ?: Settings.Global.getString(CoreApp.getContext().contentResolver, NetworkConstants.BAGEL_INTERCEPTOR_DEVICE_NAME)
+        return BagelInterceptor(
+            packageName,
+            Settings.Secure.getString(CoreApp.getContext().contentResolver, Settings.Secure.ANDROID_ID),
+            deviceName,
+            Build.MANUFACTURER + "," + Build.MODEL + "; Android/" + Build.VERSION.SDK_INT
+        )
+    }
 
     /**
      * Get a default list of interceptors to be added to the restClient.
