@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 29
@@ -95,9 +94,6 @@ dependencies {
     api 'com.afollestad.material-dialogs:core:3.1.1'
     api 'com.afollestad.material-dialogs:datetime:3.1.1'
 
-    //Realm
-    api 'io.realm:android-adapters:3.1.0'
-
     // Time manipulation for Java 7
     api 'joda-time:joda-time:2.10'
 
@@ -109,6 +105,13 @@ dependencies {
 
     // Progress/Loading Button
     api 'com.github.razir.progressbutton:progressbutton:1.0.3'
+
+    // Room Database
+    api "androidx.room:room-runtime:2.2.6"
+    kapt "androidx.room:room-compiler:2.2.6"
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    api "androidx.room:room-ktx:2.2.6"
 }
 repositories {
     mavenCentral()

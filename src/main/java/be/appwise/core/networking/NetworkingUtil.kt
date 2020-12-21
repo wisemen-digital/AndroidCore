@@ -11,7 +11,6 @@ import com.google.gson.FieldAttributes
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import id.zelory.compressor.Compressor
-import io.realm.RealmObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType
@@ -36,15 +35,6 @@ object NetworkingUtil {
 
     internal fun getGson(): Gson {
         val builder = GsonBuilder()
-        builder.setExclusionStrategies(object : ExclusionStrategy {
-            override fun shouldSkipField(f: FieldAttributes): Boolean {
-                return f.declaringClass == RealmObject::class.java
-            }
-
-            override fun shouldSkipClass(clazz: Class<*>): Boolean {
-                return false
-            }
-        })
         return builder.create()
     }
 

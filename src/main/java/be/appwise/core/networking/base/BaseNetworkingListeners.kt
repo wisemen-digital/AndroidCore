@@ -3,6 +3,7 @@ package be.appwise.core.networking.base
 import android.app.PendingIntent
 import android.content.Intent
 import android.util.Log
+import androidx.room.RoomDatabase
 import be.appwise.core.R
 import be.appwise.core.core.CoreApp
 import be.appwise.core.networking.Networking
@@ -11,7 +12,6 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.orhanobut.hawk.Hawk
-import io.realm.Realm
 import retrofit2.Retrofit
 
 interface BaseNetworkingListeners {
@@ -110,7 +110,6 @@ interface BaseNetworkingListeners {
         }
 
         extraLogoutStep()
-        Realm.getDefaultInstance().executeTransaction { it.deleteAll() }
 
         try {
             pendingIntent.send()
