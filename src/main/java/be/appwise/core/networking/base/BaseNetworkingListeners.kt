@@ -3,7 +3,6 @@ package be.appwise.core.networking.base
 import android.app.PendingIntent
 import android.content.Intent
 import android.util.Log
-import androidx.room.RoomDatabase
 import be.appwise.core.R
 import be.appwise.core.core.CoreApp
 import be.appwise.core.networking.Networking
