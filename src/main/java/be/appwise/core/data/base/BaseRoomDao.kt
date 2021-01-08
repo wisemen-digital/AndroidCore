@@ -2,24 +2,38 @@ package be.appwise.core.data.base
 
 
 import androidx.room.*
+import androidx.sqlite.db.SimpleSQLiteQuery
+import androidx.sqlite.db.SupportSQLiteQuery
 
 @Dao
-interface BaseRoomDao<T> {
+abstract class BaseRoomDao<T : BaseEntity>(private val tableName: String) {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(entity: T) : Long
+    abstract suspend fun insert(entity: T) : Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMany(entities: List<T>) : List<Long>
+    abstract suspend fun insertMany(entities: List<T>) : List<Long>
 
     @Update
-    suspend fun update(entity: T)
+    abstract suspend fun update(entity: T)
 
     @Update
-    suspend fun updateMany(entities: List<T>)
+    abstract suspend fun updateMany(entities: List<T>)
 
     @Delete
-    suspend fun delete(entity: T)
+    abstract suspend fun delete(entity: T)
 
     @Delete
-    suspend fun deleteMany(entities: List<T>)
+    abstract suspend fun deleteMany(entities: List<T>)
+
+    @RawQuery
+    abstract suspend fun deleteAllExceptIds(query: SupportSQLiteQuery) : Int
+
+    suspend fun insertManyDeleteOthers(entities: List<T>) : List<Long> {
+        val ids = entities.joinToString { it -> "\'${it.id}\'" }
+
+        val query = SimpleSQLiteQuery("DELETE FROM $tableName WHERE id NOT IN($ids)")
+        deleteAllExceptIds(query)
+
+        return insertMany(entities)
+    }
 }
