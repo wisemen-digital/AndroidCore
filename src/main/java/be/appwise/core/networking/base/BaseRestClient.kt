@@ -1,8 +1,13 @@
 package be.appwise.core.networking.base
 
+import android.os.Build
+import android.provider.Settings
 import android.util.Log
+import be.appwise.core.core.CoreApp
+import be.appwise.core.networking.NetworkConstants
 import be.appwise.core.networking.Networking
 import be.appwise.core.networking.NetworkingUtil
+import be.appwise.core.networking.bagel.BagelInterceptor
 import be.appwise.core.networking.interceptors.Authenticator
 import be.appwise.core.networking.interceptors.HeaderInterceptor
 import be.appwise.core.networking.model.AccessToken
@@ -14,9 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
 abstract class BaseRestClient<T> {
-    companion object {
-        const val TAG = "BaseRestClient"
-    }
+    protected open val TAG = BaseRestClient::class.java.simpleName
 
     protected abstract val apiService: Class<T>
 
@@ -67,6 +70,9 @@ abstract class BaseRestClient<T> {
         if (protectedClient) {
             builder.authenticator(Authenticator { onRefreshToken(it) })
         }
+        //add it behind all the rest so we can send all the response/request data
+        if (enableBagelInterceptor())
+            builder.addInterceptor(getBagelInterceptor())
 
         return builder.build()
     }
@@ -94,9 +100,17 @@ abstract class BaseRestClient<T> {
     //<editor-fold desc="Interceptors">
     /**
      * Get the default HttpLoggingInterceptor that is being used in almost every project
+     *
+     * In case Bagel is enabled for this RestClient, the logging for requests and responses will be at a bare minimum.
      */
-    protected fun getHttpLoggingInterceptor() =
-        HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
+    protected fun getHttpLoggingInterceptor() = HttpLoggingInterceptor().apply {
+        level =
+            if (enableBagelInterceptor()) {
+                HttpLoggingInterceptor.Level.BASIC
+            } else {
+                HttpLoggingInterceptor.Level.BODY
+            }
+    }
 
     /**
      * Get the default HeaderInterceptor that is being used in almost every project
@@ -110,6 +124,16 @@ abstract class BaseRestClient<T> {
         protectedClient
     )
 
+    protected fun getBagelInterceptor(): BagelInterceptor { val deviceName = Settings.Secure.getString(CoreApp.getContext().contentResolver, NetworkConstants.BAGEL_INTERCEPTOR_DEVICE_BLUETOOTH_NAME)
+            ?: Settings.Global.getString(CoreApp.getContext().contentResolver, NetworkConstants.BAGEL_INTERCEPTOR_DEVICE_NAME)
+        return BagelInterceptor(
+            packageName,
+            Settings.Secure.getString(CoreApp.getContext().contentResolver, Settings.Secure.ANDROID_ID),
+            deviceName,
+            Build.MANUFACTURER + "," + Build.MODEL + "; Android/" + Build.VERSION.SDK_INT
+        )
+    }
+
     /**
      * Get a default list of interceptors to be added to the restClient.
      *
@@ -120,6 +144,21 @@ abstract class BaseRestClient<T> {
         return listOf(
             getHttpLoggingInterceptor(), getHeaderInterceptor()
         )
+    }
+
+    /**
+     * Allows you to enable the Bagle interceptor for an instance of the BaseRestClient
+     *
+     * It will be added after all other interceptors so headers and other request/response data
+     * will be up to date when shown in Bagel
+     *
+     * Added it here so you can choose for each instance of a BaseRestclient
+     * can be move to networking so you enable it for all or disable it for all
+     * Maybe also limit it to DEBUG builds in future
+     */
+
+    open fun enableBagelInterceptor(): Boolean {
+        return false
     }
     //</editor-fold>
 
