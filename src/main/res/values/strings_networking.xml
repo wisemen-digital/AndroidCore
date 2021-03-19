@@ -1,9 +1,10 @@
 <resources>
     <!--server errors-->
-    <string name="internet_connection_error">Kijk na of je een werkende netwerkverbinding hebt.</string>
-    <string name="internal_server_error">Er is iets mis met de server. Probeer later opnieuw.</string>
-    <string name="network_error">Kijk je internet na.</string>
-    <string name="login_error">Uw gebruikersnaam en/of wachtwoord is fout</string>
-    <string name="api_error_fallback">We konden je verzoek niet uitvoeren. Probeer later opnieuw.</string>
-    <string name="api_error_authentication">Foute gebruikersnaam of wachtwoord.</string>
+    <string name="error_default">Something went wrong.</string>
+    <string name="internet_connection_error">Check if you have a working network connection.</string>
+    <string name="internet_certificate_connection_error">You are connected to an insecure network.</string>
+    <string name="internal_server_error">Something is wrong with the server. Please try again later.</string>
+    <string name="network_error">Check your internet connection.</string>
+    <string name="login_error">Your username and / or password is incorrect.</string>
+    <string name="api_error_fallback">We were unable to fulfill your request. Please try again later.</string>
 </resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TitledRecyclerview">
+        <attr name="primaryEmptyText" format="string" />
+        <attr name="secondaryEmptyText" format="string" />
+        <attr name="emptyIcon" format="reference" />
+        <attr name="actionIcon" format="reference" />
+        <attr name="title" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="NumberStepper">
+        <attr name="label" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="InitialsImageView">
+        <attr name="circleColor" format="integer" />
+        <attr name="android:textColor" />
+        <attr name="android:textSize" />
+    </declare-styleable>
+</resources>
