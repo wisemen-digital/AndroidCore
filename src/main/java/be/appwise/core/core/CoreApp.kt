@@ -1,7 +1,6 @@
 package be.appwise.core.core
 
 import android.content.Context
-import io.realm.RealmConfiguration
 
 object CoreApp {
     private var coreFacade: CoreFacade? = CoreFacade.EmptyCoreFacade()

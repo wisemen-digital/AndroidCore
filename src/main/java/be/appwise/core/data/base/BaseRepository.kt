@@ -3,15 +3,12 @@ package be.appwise.core.data.base
 import be.appwise.core.R
 import be.appwise.core.core.CoreApp
 import be.appwise.core.networking.Networking
-import io.realm.Realm
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
 import java.net.UnknownHostException
 
 open class BaseRepository {
-    val realm: Realm = Realm.getDefaultInstance()
-
     /**
      * Wrap your network call with this function to have a centralized way to handle response errors
      *
