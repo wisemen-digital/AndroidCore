@@ -1,3 +1,25 @@
+buildscript {
+    ext.kotlin_version = '1.4.21'
+    repositories {
+        google()
+        maven { url 'https://plugins.gradle.org/m2/'}
+        jcenter()
+    }
+    dependencies {
+        classpath "io.realm:realm-gradle-plugin:7.0.0"
+        classpath 'com.android.tools.build:gradle:4.1.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -78,7 +100,7 @@ dependencies {
     api "com.wajahatkarim3.easyvalidation:easyvalidation-core:1.0.1"
 
     // logger (https://github.com/orhanobut/logger)
-    implementation 'com.orhanobut:logger:2.2.0'
+    api 'com.orhanobut:logger:2.2.0'
 
     // Hawk (https://github.com/orhanobut/hawk)
     implementation "com.orhanobut:hawk:2.0.1"

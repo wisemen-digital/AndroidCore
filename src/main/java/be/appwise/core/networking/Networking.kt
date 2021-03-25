@@ -1,5 +1,7 @@
 package be.appwise.core.networking
 
+import android.content.Context
+import be.appwise.core.networking.bagel.BagelNetworkDiscoveryManager
 import be.appwise.core.networking.base.BaseNetworkingListeners
 import be.appwise.core.networking.model.AccessToken
 import be.appwise.core.networking.model.ApiError
@@ -134,6 +136,11 @@ object Networking {
 
         internal fun getNetworkingListeners(): BaseNetworkingListeners {
             return networkingListeners
+        }
+
+        fun registerBagelService(context: Context) : Builder{
+            BagelNetworkDiscoveryManager.registerService(context)
+            return this
         }
 
         fun build() {
