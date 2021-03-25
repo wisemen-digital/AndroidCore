@@ -16,15 +16,15 @@ class HeaderInterceptor(
     private val applicationId: String,
     private val protected: Boolean
 ) : Interceptor {
-    override fun intercept(chain: Interceptor.Chain?): Response {
-        val request = chain?.request()
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val request = chain.request()
 
         Locale.getDefault()
         val systemConfiguration = Resources.getSystem().configuration
         val locale = if (Build.VERSION.SDK_INT >= 24) systemConfiguration.locales.get(0) else Locale.getDefault()
         val languageCode = locale.language
 
-        val requestBuilder = request!!.newBuilder()
+        val requestBuilder = request.newBuilder()
         requestBuilder.addHeader(
             NetworkConstants.HEADER_KEY_USER_AGENT,
             "$appName/$versionName/$versionCode (${Build.MODEL}; Android/${Build.VERSION.SDK_INT})"
