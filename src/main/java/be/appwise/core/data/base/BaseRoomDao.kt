@@ -72,9 +72,14 @@ abstract class BaseRoomDao<T : BaseEntity>(private val tableName: String) {
     @Delete
     abstract suspend fun deleteMany(entities: List<T>)
 
-
     @RawQuery
     protected abstract suspend fun deleteAllExceptIds(query: SupportSQLiteQuery) : Int
+
+    @RawQuery
+    protected abstract suspend fun deleteAll(query: SupportSQLiteQuery)
+
+    @RawQuery
+    protected abstract suspend fun deleteById(query: SupportSQLiteQuery)
 
     @RawQuery
     protected abstract suspend fun findMultipleEntities(query: SupportSQLiteQuery): List<T>?
@@ -96,6 +101,24 @@ abstract class BaseRoomDao<T : BaseEntity>(private val tableName: String) {
         deleteAllExceptIds(query)
 
         return insertMany(entities)
+    }
+
+    /**
+     *  Deletes all entities from the table
+     */
+    suspend fun deleteAll() {
+        val query = SimpleSQLiteQuery("DELETE FROM $tableName;")
+        deleteAll(query)
+    }
+
+    /**
+     *  Deletes the entity from the table that matches the given ID
+     *
+     *  @param id the id of the entity that needs to be deleted
+     */
+    suspend fun deleteById(id: Int) {
+        val query = SimpleSQLiteQuery("DELETE FROM $tableName WHERE id = $id;")
+        deleteById(query)
     }
 
     /**
