@@ -91,9 +91,8 @@ dependencies {
     api "com.squareup.retrofit2:retrofit:2.9.0"
     api "com.squareup.retrofit2:converter-gson:2.9.0"
 
-    // not necessary to add OKHttp as a dep, it is already integrated and available through the retrofit library
-    // Updating the 'logging-interceptor' to something higher make the app crash due to outdated OKHttp in retrofit
-    api 'com.squareup.okhttp3:logging-interceptor:4.2.0'
+    api "com.squareup.okhttp3:okhttp:4.9.0"
+    api 'com.squareup.okhttp3:logging-interceptor:4.9.0'
 
     // gson (https://github.com/google/gson)
     api 'com.google.code.gson:gson:2.8.6'
