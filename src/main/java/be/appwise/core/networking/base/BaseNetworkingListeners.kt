@@ -104,10 +104,6 @@ interface BaseNetworkingListeners {
         errorActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         val pendingIntent = PendingIntent.getActivity(CoreApp.getContext(), 22, errorActivity, 0)
 
-        if (Hawk.isBuilt()) {
-            Hawk.deleteAll()
-        }
-
         extraLogoutStep()
 
         try {
@@ -126,5 +122,9 @@ interface BaseNetworkingListeners {
      *      ProtectedRestClient.getHttpClient.dispatcher().cancelAll()
      * ```
      */
-    fun extraLogoutStep()
+    fun extraLogoutStep(){
+        if (Hawk.isBuilt()) {
+            Hawk.deleteAll()
+        }
+    }
 }
