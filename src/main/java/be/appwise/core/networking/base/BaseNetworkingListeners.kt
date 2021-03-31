@@ -6,12 +6,15 @@ import android.util.Log
 import be.appwise.core.R
 import be.appwise.core.core.CoreApp
 import be.appwise.core.networking.Networking
+import be.appwise.core.networking.NetworkingUtil
 import be.appwise.core.networking.model.ApiError
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.orhanobut.hawk.Hawk
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 interface BaseNetworkingListeners {
     companion object {
@@ -39,12 +42,20 @@ interface BaseNetworkingListeners {
             /*400 -> CoreApp.getContext().getString(R.string.login_error)*/
             401 -> CoreApp.getContext().getString(R.string.login_error)
             else -> {
-                //TODO: a new retrofit has been created in order to have no build errors... to test still!!!
+                // In order for the body to be converted to a correct Json representation, a Retrofit Body Converter is needed...
+                // Because of this the Retrofit instance needs a baseUrl and also needs the same converterFactories as we use in our final implementations
+                //
+                // However this also seems to be possible with Gson like this: `Gson().fromJson(response.errorBody()?.string() ?: "{}", JsonElement::class.java);`
                 val hashMapConverter =
-                    Retrofit.Builder().build().responseBodyConverter<JsonElement>(
-                        JsonElement::class.java, arrayOfNulls<Annotation>(0)
-                    )
+                    Retrofit.Builder().baseUrl("https://www.google.be")
+                        .addConverterFactory(ScalarsConverterFactory.create())
+                        .addConverterFactory(GsonConverterFactory.create(NetworkingUtil.getGson()))
+                        .build().responseBodyConverter<JsonElement>(
+                            JsonElement::class.java, arrayOfNulls<Annotation>(0)
+                        )
                 when (val errorJson = hashMapConverter.convert(response.errorBody()!!)) {
+                // Uncomment this line to test the implementation with Gson!!
+                // when (val errorJson = Gson().fromJson(response.errorBody()?.string() ?: "{}", JsonElement::class.java)) {
                     is JsonArray -> manageJsonArrayFormat(errorJson)
                     is JsonObject -> manageJsonObjectFormat(errorJson)
                     else -> "Something went wrong with parsing error"
