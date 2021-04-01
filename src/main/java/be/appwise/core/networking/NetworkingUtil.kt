@@ -14,19 +14,20 @@ import id.zelory.compressor.Compressor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.Response
 import java.io.File
-
 
 object NetworkingUtil {
     internal fun responseCount(responseMethod: Response?): Int {
         var response = responseMethod
         var result = 0
         while (response != null) {
-            response = response.priorResponse()
-            if (response == response?.priorResponse()) {
+            response = response.priorResponse
+            if (response == response?.priorResponse) {
                 result++
             }
         }
@@ -44,7 +45,7 @@ object NetworkingUtil {
         file: File
     ): MultipartBody.Part = withContext(Dispatchers.Default) {
         val requestFile =
-            RequestBody.create(MediaType.parse(getMimeType(contentResolver, Uri.fromFile(file))), file)
+            file.asRequestBody(getMimeType(contentResolver, Uri.fromFile(file)).toMediaTypeOrNull())
         MultipartBody.Part.createFormData(key, file.name, requestFile)
     }
 
@@ -52,10 +53,8 @@ object NetworkingUtil {
         withContext(
             Dispatchers.Default
         ) {
-            val requestFile = RequestBody.create(
-                MediaType.parse(getMimeType(context.contentResolver, Uri.fromFile(file))),
-                resizeFile(context, file)
-            )
+            val requestFile = resizeFile(context, file)
+                .asRequestBody(getMimeType(context.contentResolver, Uri.fromFile(file)).toMediaTypeOrNull())
             MultipartBody.Part.createFormData(key, file.name, requestFile)
         }
 

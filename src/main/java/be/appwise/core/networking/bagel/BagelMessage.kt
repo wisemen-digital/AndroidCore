@@ -43,12 +43,12 @@ class BagelMessage {
      * @param response
      **/
     fun updateToMessageWithResponse(response: Response) = this.apply {
-        requestInfo.statusCode = response.code().toString()
-        requestInfo.startDate = response.sentRequestAtMillis() / 1000
-        requestInfo.endDate = response.receivedResponseAtMillis() / 1000
-        requestInfo.responseHeaders = getHeadersJson(response.headers())
+        requestInfo.statusCode = response.code.toString()
+        requestInfo.startDate = response.sentRequestAtMillis / 1000
+        requestInfo.endDate = response.receivedResponseAtMillis / 1000
+        requestInfo.responseHeaders = getHeadersJson(response.headers)
 
-        val responseBody = response.body()
+        val responseBody = response.body
         val source = responseBody?.source()
         source?.let {
             source.request(Long.MAX_VALUE) // Buffer the entire body.
@@ -82,11 +82,11 @@ class BagelMessage {
                 project = Project(applicationId)
 
                 requestInfo = RequestInfo(
-                    request.method(),
-                    request.url().toString()
+                    request.method,
+                    request.url.toString()
                 )
 
-                val requestBody = request.body()
+                val requestBody = request.body
                 requestBody?.let {
                     val buffer = Buffer()
                     it.writeTo(buffer)
@@ -94,7 +94,7 @@ class BagelMessage {
                     requestInfo.requestBody = requestBody64
                 }
 
-                requestInfo.requestHeaders = getHeadersJson(request.headers())
+                requestInfo.requestHeaders = getHeadersJson(request.headers)
 
                 packetId = UUID.randomUUID().toString()
             }
