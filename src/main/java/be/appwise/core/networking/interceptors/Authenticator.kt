@@ -15,7 +15,7 @@ class Authenticator(private val onRefreshToken: (refreshToken: String) -> Access
     private var callsWithoutToken = 0
 
     override fun authenticate(route: Route?, response: Response): Request? {
-        val request = response.request()
+        val request = response.request
 
         // Get the current AccessToken
         val accessToken = Networking.getAccessToken()?.access_token
@@ -40,7 +40,7 @@ class Authenticator(private val onRefreshToken: (refreshToken: String) -> Access
             val newToken = Networking.getAccessToken()
 
             // Check if the request made was previously made as an authenticated request
-            if (response.request().header(NetworkConstants.HEADER_KEY_AUTHORIZATION) != null) {
+            if (response.request.header(NetworkConstants.HEADER_KEY_AUTHORIZATION) != null) {
                 // If the token has changed since the request was made, use the new token
                 if (newToken?.access_token != accessToken) {
                     Logger.t("Authenticator").d("Same tokens")

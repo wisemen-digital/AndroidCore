@@ -11,7 +11,6 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.orhanobut.hawk.Hawk
-import io.realm.Realm
 import retrofit2.Retrofit
 
 interface BaseNetworkingListeners {
@@ -110,7 +109,6 @@ interface BaseNetworkingListeners {
         }
 
         extraLogoutStep()
-        Realm.getDefaultInstance().executeTransaction { it.deleteAll() }
 
         try {
             pendingIntent.send()

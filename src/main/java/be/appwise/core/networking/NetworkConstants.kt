@@ -20,4 +20,7 @@ object NetworkConstants {
 
     const val HEADER_VALUE_ACCEPT_APPLICATION_JSON = "application/json"
     const val HEADER_VALUE_PLATFORM_ANDROID = "android"
+
+    const val BAGEL_INTERCEPTOR_DEVICE_BLUETOOTH_NAME = "bluetooth_name"
+    const val BAGEL_INTERCEPTOR_DEVICE_NAME = "device_name"
 }
