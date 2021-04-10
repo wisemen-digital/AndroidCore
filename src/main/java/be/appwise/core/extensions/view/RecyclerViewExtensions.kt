@@ -20,12 +20,23 @@ fun RecyclerView.addDivider(drawable: Int? = null, orientation: Int = LinearLayo
     addItemDecoration(dividerItemDecoration)
 }
 
-fun RecyclerView.setupRecyclerView(decoration: DividerItemDecoration? = DividerItemDecoration(context, DividerItemDecoration.VERTICAL), layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)) =
-    apply {
-        setHasFixedSize(true)
-        this.layoutManager = layoutManager
+/**
+ * Sets up the RecyclerView with some common used parameters.
+ *
+ * @param decoration A decoration item that should be used between each listItem, defaults to the DividerItemDecoration.
+ *                   In case the decoration is 'null' no decoration will be added.
+ * @param layoutManager The layoutManager to be used with the RecyclerView, defaults to the LinearLayoutManager
+ * @param hasFixedSize True if adapter changes cannot affect the size of the RecyclerView
+ */
+fun RecyclerView.setupRecyclerView(
+    decoration: RecyclerView.ItemDecoration? = DividerItemDecoration(context, DividerItemDecoration.VERTICAL),
+    layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context),
+    hasFixedSize: Boolean = true
+) {
+    setHasFixedSize(hasFixedSize)
+    this.layoutManager = layoutManager
 
-        if (decoration != null) {
-            addItemDecoration(decoration)
-        }
+    if (decoration != null) {
+        addItemDecoration(decoration)
     }
+}
