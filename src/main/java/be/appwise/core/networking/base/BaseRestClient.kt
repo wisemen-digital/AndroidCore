@@ -59,6 +59,26 @@ abstract class BaseRestClient<T> {
         createRetrofit()
     }
 
+    /**
+     * Create a default HttpClient with a list of Interceptors added to it as well as an Authenticator.
+     * - The list of Interceptors can be updated by overriding [BaseRestClient.getInterceptors].
+     * - The Authenticator is only active when the [BaseRestClient.protectedClient] flag is true.
+     * - When the flag [BaseRestClient.enableBagelInterceptor] is set to true,
+     *      the [BagelInterceptor] will be added and all calls (request and responses) can be found in Bagel
+     *
+     * In any case, this function can be overridden to add something specific to the whole configuration, or simply to override everything.
+     * If you want to add something to it, you can do so by using the [OkHttpClient.newBuilder].
+     *
+     * As an example:
+     * ```
+     * override fun createHttpClient(): OkHttpClient {
+     *     return super.createHttpClient()
+     *         .newBuilder()
+     *         .connectTimeout(1, TimeUnit.MINUTES)
+     *         .build()
+     * }
+     * ```
+     */
     protected open fun createHttpClient(): OkHttpClient {
         Log.d(TAG, "createHttpClient")
         val builder = OkHttpClient.Builder()
@@ -86,6 +106,16 @@ abstract class BaseRestClient<T> {
      * as well as the baseUrl and the okHttpClient.
      *
      * If a project specific object should be needed, this function can be overridden to suit your needs.
+     *
+     * As an example:
+     * ```
+     * override fun createRetrofit(): Retrofit {
+     *     return super.createRetrofit().newBuilder()
+     *         .validateEagerly(true)
+     *         .build()
+     * }
+     *
+     * ```
      */
     protected open fun createRetrofit(): Retrofit {
         Log.d(TAG, "createRetrofit")
@@ -113,7 +143,7 @@ abstract class BaseRestClient<T> {
     }
 
     /**
-     * Get the default HeaderInterceptor that is being used in almost every project
+     * Get the default [HeaderInterceptor] that is being used in almost every project
      */
     protected fun getHeaderInterceptor() = HeaderInterceptor(
         appName,
@@ -124,7 +154,11 @@ abstract class BaseRestClient<T> {
         protectedClient
     )
 
-    protected fun getBagelInterceptor(): BagelInterceptor { val deviceName = Settings.Secure.getString(CoreApp.getContext().contentResolver, NetworkConstants.BAGEL_INTERCEPTOR_DEVICE_BLUETOOTH_NAME)
+    /**
+     * Get the default [BagelInterceptor].
+     */
+    protected fun getBagelInterceptor(): BagelInterceptor {
+        val deviceName = Settings.Secure.getString(CoreApp.getContext().contentResolver, NetworkConstants.BAGEL_INTERCEPTOR_DEVICE_BLUETOOTH_NAME)
             ?: Settings.Global.getString(CoreApp.getContext().contentResolver, NetworkConstants.BAGEL_INTERCEPTOR_DEVICE_NAME)
         return BagelInterceptor(
             packageName,
@@ -147,19 +181,17 @@ abstract class BaseRestClient<T> {
     }
 
     /**
-     * Allows you to enable the Bagle interceptor for an instance of the BaseRestClient
+     * Allows you to enable the Bagel interceptor for an instance of the [BaseRestClient]
      *
      * It will be added after all other interceptors so headers and other request/response data
      * will be up to date when shown in Bagel
      *
-     * Added it here so you can choose for each instance of a BaseRestclient
-     * can be move to networking so you enable it for all or disable it for all
+     * Added it here so you can choose for each instance of a [BaseRestClient] if you wish to use it or not.
+     *
+     * Can be moved to [Networking] so you can enable/disable it for all clients.
      * Maybe also limit it to DEBUG builds in future
      */
-
-    open fun enableBagelInterceptor(): Boolean {
-        return false
-    }
+    open fun enableBagelInterceptor() = false
     //</editor-fold>
 
     /**
