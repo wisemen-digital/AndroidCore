@@ -7,11 +7,11 @@ import be.appwise.core.R
 import be.appwise.core.core.CoreApp
 import be.appwise.core.networking.Networking
 import be.appwise.core.networking.model.ApiError
+import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.orhanobut.hawk.Hawk
-import retrofit2.Retrofit
 
 interface BaseNetworkingListeners {
     companion object {
@@ -39,12 +39,7 @@ interface BaseNetworkingListeners {
             /*400 -> CoreApp.getContext().getString(R.string.login_error)*/
             401 -> CoreApp.getContext().getString(R.string.login_error)
             else -> {
-                //TODO: a new retrofit has been created in order to have no build errors... to test still!!!
-                val hashMapConverter =
-                    Retrofit.Builder().build().responseBodyConverter<JsonElement>(
-                        JsonElement::class.java, arrayOfNulls<Annotation>(0)
-                    )
-                when (val errorJson = hashMapConverter.convert(response.errorBody()!!)) {
+                when (val errorJson = Gson().fromJson(response.errorBody()?.string() ?: "{}", JsonElement::class.java)) {
                     is JsonArray -> manageJsonArrayFormat(errorJson)
                     is JsonObject -> manageJsonObjectFormat(errorJson)
                     else -> "Something went wrong with parsing error"
