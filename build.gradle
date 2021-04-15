@@ -117,7 +117,7 @@ dependencies {
 
     //dialogs
     api 'com.afollestad.material-dialogs:core:3.1.1'
-    api 'com.afollestad.material-dialogs:datetime:3.1.1'
+    api 'com.afollestad.material-dialogs:datetime:3.3.0'
 
     // Time manipulation for Java 7
     api 'joda-time:joda-time:2.10'
