@@ -85,7 +85,7 @@ dependencies {
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2'
 
     // navigation components
-    api 'androidx.navigation:navigation-fragment-ktx:2.3.4'
+    api 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     api 'androidx.navigation:navigation-ui-ktx:2.3.4'
 
     //networking
