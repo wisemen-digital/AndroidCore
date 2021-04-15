@@ -119,7 +119,7 @@ dependencies {
     api 'com.afollestad.material-dialogs:datetime:3.3.0'
 
     // Time manipulation for Java 7
-    api 'joda-time:joda-time:2.10'
+    api 'joda-time:joda-time:2.10.10'
 
     //compress images for uploads
     implementation 'id.zelory:compressor:2.1.0'
