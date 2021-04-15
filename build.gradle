@@ -85,7 +85,7 @@ dependencies {
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2'
 
     // navigation components
-    api 'androidx.navigation:navigation-fragment-ktx:2.3.4'
+    api 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     api 'androidx.navigation:navigation-ui-ktx:2.3.4'
 
     //networking
@@ -123,7 +123,7 @@ dependencies {
     api 'joda-time:joda-time:2.10'
 
     //compress images for uploads
-    implementation 'id.zelory:compressor:2.1.0'
+    implementation 'id.zelory:compressor:3.0.1'
 
     // https://github.com/Ereza/CustomActivityOnCrash
     implementation 'cat.ereza:customactivityoncrash:2.3.0'
