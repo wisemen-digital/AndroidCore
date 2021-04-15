@@ -6,17 +6,14 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.webkit.MimeTypeMap
-import com.google.gson.ExclusionStrategy
-import com.google.gson.FieldAttributes
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.default
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.Response
 import java.io.File
@@ -58,7 +55,7 @@ object NetworkingUtil {
             MultipartBody.Part.createFormData(key, file.name, requestFile)
         }
 
-    suspend fun resizeFile(context: Context, file: File): File = withContext(Dispatchers.IO) {
+    suspend fun resizeFile(context: Context, file: File): File {
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
         BitmapFactory.decodeFile(file.path, options)
@@ -78,8 +75,9 @@ object NetworkingUtil {
             newHeight = imageHeight / ratio
         }
 
-        Compressor(context).setMaxHeight(newHeight.toInt()).setMaxWidth(newWidth.toInt())
-            .setQuality(80).compressToFile(file)
+        return Compressor.compress(context, file) {
+            default(newWidth.toInt(), newHeight.toInt(), quality = 80)
+        }
     }
 
     /**
