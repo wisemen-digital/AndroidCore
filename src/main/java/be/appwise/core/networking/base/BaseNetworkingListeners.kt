@@ -81,7 +81,7 @@ interface BaseNetworkingListeners {
 
     /**
      * This logout function can be used to cleanup any resources the app is using.
-     * i.e. remove all entries from Hawk, delete all data from Realm, ...
+     * i.e. remove all entries from Hawk, delete all data from Room, ...
      *
      * After that it will call a Deeplink in the app to return to the 'Starting Activity' without any backstack.
      * For this to work, don't forget to add the intent filter to your 'Starting Activity' to make the deep
