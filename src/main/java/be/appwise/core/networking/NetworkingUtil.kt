@@ -55,7 +55,7 @@ object NetworkingUtil {
             MultipartBody.Part.createFormData(key, file.name, requestFile)
         }
 
-    suspend fun resizeFile(context: Context, file: File): File = withContext(Dispatchers.IO) {
+    suspend fun resizeFile(context: Context, file: File): File {
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
         BitmapFactory.decodeFile(file.path, options)
@@ -75,7 +75,7 @@ object NetworkingUtil {
             newHeight = imageHeight / ratio
         }
 
-        Compressor.compress(context, file, this.coroutineContext) {
+        return Compressor.compress(context, file) {
             default(newWidth.toInt(), newHeight.toInt(), quality = 80)
         }
     }
