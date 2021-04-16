@@ -1,9 +1,7 @@
 name: Build CI
 
 on:
-  push:
-    branches:
-      - 'dependabot/**'
+  pull_request:
 
 jobs:
   build:
