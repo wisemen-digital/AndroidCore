@@ -117,6 +117,23 @@ class RecyclerViewEmptyLoadingSupport @JvmOverloads constructor(
     fun resetState(){
         onChangeState()
     }
+
+    //<editor-fold desc="Needed for Fading edge with Padding">
+
+    // This resolves an issue with a RecyclerView which has both a 'Fading Edge' as well as a 'Padding (Bot or Top)'
+    // See https://stackoverflow.com/a/56338638/2263408 for more information
+    override fun isPaddingOffsetRequired(): Boolean {
+        return true
+    }
+
+    override fun getTopPaddingOffset(): Int {
+        return -paddingTop
+    }
+
+    override fun getBottomPaddingOffset(): Int {
+        return paddingBottom
+    }
+    //</editor-fold>
 }
 
 enum class RecyclerViewEnum {

@@ -7,11 +7,11 @@ import be.appwise.core.R
 import be.appwise.core.core.CoreApp
 import be.appwise.core.networking.Networking
 import be.appwise.core.networking.model.ApiError
+import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.orhanobut.hawk.Hawk
-import retrofit2.Retrofit
 
 interface BaseNetworkingListeners {
     companion object {
@@ -39,12 +39,7 @@ interface BaseNetworkingListeners {
             /*400 -> CoreApp.getContext().getString(R.string.login_error)*/
             401 -> CoreApp.getContext().getString(R.string.login_error)
             else -> {
-                //TODO: a new retrofit has been created in order to have no build errors... to test still!!!
-                val hashMapConverter =
-                    Retrofit.Builder().build().responseBodyConverter<JsonElement>(
-                        JsonElement::class.java, arrayOfNulls<Annotation>(0)
-                    )
-                when (val errorJson = hashMapConverter.convert(response.errorBody()!!)) {
+                when (val errorJson = Gson().fromJson(response.errorBody()?.string() ?: "{}", JsonElement::class.java)) {
                     is JsonArray -> manageJsonArrayFormat(errorJson)
                     is JsonObject -> manageJsonObjectFormat(errorJson)
                     else -> "Something went wrong with parsing error"
@@ -86,7 +81,7 @@ interface BaseNetworkingListeners {
 
     /**
      * This logout function can be used to cleanup any resources the app is using.
-     * i.e. remove all entries from Hawk, delete all data from Realm, ...
+     * i.e. remove all entries from Hawk, delete all data from Room, ...
      *
      * After that it will call a Deeplink in the app to return to the 'Starting Activity' without any backstack.
      * For this to work, don't forget to add the intent filter to your 'Starting Activity' to make the deep
@@ -103,10 +98,6 @@ interface BaseNetworkingListeners {
         val errorActivity = Intent("${Networking.getPackageName()}.logout")
         errorActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         val pendingIntent = PendingIntent.getActivity(CoreApp.getContext(), 22, errorActivity, 0)
-
-        if (Hawk.isBuilt()) {
-            Hawk.deleteAll()
-        }
 
         extraLogoutStep()
 
@@ -126,5 +117,9 @@ interface BaseNetworkingListeners {
      *      ProtectedRestClient.getHttpClient.dispatcher().cancelAll()
      * ```
      */
-    fun extraLogoutStep()
+    fun extraLogoutStep(){
+        if (Hawk.isBuilt()) {
+            Hawk.deleteAll()
+        }
+    }
 }

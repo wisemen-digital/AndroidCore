@@ -1,5 +1,5 @@
 package be.appwise.core.data.base
 
-interface BaseEntity {
-    val id: Int
+abstract class BaseEntity {
+    abstract val id: Any
 }
