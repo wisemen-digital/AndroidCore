@@ -71,6 +71,9 @@ dependencies {
     api "androidx.lifecycle:lifecycle-extensions:2.2.0"
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
 
+
+
+
     api 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
 
     //AndroidX Support libraries
