@@ -76,10 +76,10 @@ abstract class BaseRoomDao<T : BaseEntity>(private val tableName: String) {
     protected abstract suspend fun deleteAllExceptIds(query: SupportSQLiteQuery) : Int
 
     @RawQuery
-    protected abstract suspend fun deleteAllFromTable(query: SupportSQLiteQuery)
+    protected abstract suspend fun deleteAllFromTable(query: SupportSQLiteQuery) : Int
 
     @RawQuery
-    protected abstract suspend fun deleteById(query: SupportSQLiteQuery)
+    protected abstract suspend fun deleteById(query: SupportSQLiteQuery) : Int
 
     @RawQuery
     protected abstract suspend fun findMultipleEntities(query: SupportSQLiteQuery): List<T>?
