@@ -106,7 +106,7 @@ abstract class BaseRoomDao<T : BaseEntity>(private val tableName: String) {
     /**
      *  Deletes all entities from the table
      */
-    suspend fun deleteAll() {
+    suspend fun deleteAllFromTable() {
         val query = SimpleSQLiteQuery("DELETE FROM $tableName;")
         deleteAll(query)
     }
@@ -152,6 +152,11 @@ abstract class BaseRoomDao<T : BaseEntity>(private val tableName: String) {
     suspend fun findEntityById(id: Int): T? {
         val query = SimpleSQLiteQuery("SELECT * FROM $tableName WHERE id = $id")
         return findSingleEntity(query)
+    }
+
+    suspend fun findEntitiesWithKeyword(column: String, needle: List<String>): List<T>? {
+        val query = SimpleSQLiteQuery("SELECT * FROM $tableName WHERE $column LIKE '%' || $needle || '%'")
+        return findMultipleEntities(query)
     }
 
     /**
