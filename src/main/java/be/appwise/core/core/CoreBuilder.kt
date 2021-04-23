@@ -23,8 +23,12 @@ class CoreBuilder(internal val context: Context) {
 
     /***
      * Initialize this logger
+     *
+     * @param tag The name to be used in LogCat
+     * @param isLoggable Whether or not the logger should be enabled for this application.
+     *      When using in a production/release version it should not be enabled (security reasons) i.e. use BuildConfig.DEBUG
      */
-    fun initializeLogger(tag: String = "AndroidApp", isLoggable: Boolean = BuildConfig.DEBUG): CoreBuilder {
+    fun initializeLogger(tag: String, isLoggable: Boolean): CoreBuilder {
         val formatStrategy = PrettyFormatStrategy.newBuilder().tag(tag).build() /*Set a tag*/
 
         // Initialize Logger
