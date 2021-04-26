@@ -2,13 +2,13 @@
 
 [![](https://jitpack.io/v/appwise-labs/AndroidCore.svg)](https://jitpack.io/#appwise-labs/AndroidCore)
 
-## Download
+## <u>Download</u>
 
 ```groovy
 implementation 'com.github.appwise-labs:AndroidCore:<Latest-Version>'
 ```
 
-## Initialize
+## <u>Initialize</u>
 
 In order to initialize AndroidCore correctly you have 2 options.
 
@@ -35,14 +35,57 @@ Networking.Builder()
 
 Do note, that when you use AndroidCore as a Dependency that the `isLoggable` parameter in `initializeLogger()` should be added. It is best to use `BuildConfig.DEBUG` as the parameter so the logs won't show up in a production build.
 
-## Contribution
+## <u>RestClient</u>
+
+When implementing a Restclient in your project you can extend from `BaseRestClient`. Don't forget to add the `API Service Interface` inside the `<>`. Do mind that you still have a choice to implement the RestClient as an `object` or as a regular `class`.
+
+```kotlin
+object UnProtectedRestClient : BaseRestClient<NetworkService>(){
+    override val apiService = NetworkService::class.java
+    override val protectedClient = false
+
+    override fun getBaseUrl() = "https://www.baseUrl.com/"
+}
+```
+
+Within the RestClient class, you have a lot of flexibility to adjust it to your requirements. Just take look at the possible functions and parameters to override.
+
+<p align="center">
+  <img width="250" src="static/RestClient-flexibility.png">
+</p>
+
+## <u>Room</u>
+
+In case you wish to use `@Transaction` in combination with AndroidCore's `BaseRoomDao`, you should use an `open` keyword with your function.
+
+```kotlin
+@Dao
+abstract class Dao: BaseRoomDao<Item>("item"){
+
+    @Insert
+    abstract fun insert(item: Item)
+
+    @Delete
+    abstract fun delete(item: Item)
+
+    @Transaction
+    open fun replace(oldItem: Item, newItem: Item){
+        delete(oldItem)
+        insert(newItem)
+    }
+}
+```
+
+In case you omit the `open` keyword you'll get an error `error: Method annotated with @Transaction must not be private, final, or abstract.`
+
+## <u>Contribution</u>
 
 All contributors are welcome. Take a look at [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
 
-## Changelog
+## <u>Changelog</u>
 
 See the [CHANGELOG.md](CHANGELOG.md) for more information regarding new updates and more.
 
-## License
+## <u>License</u>
 
 See the [LICENSE](LICENSE) file for more info
