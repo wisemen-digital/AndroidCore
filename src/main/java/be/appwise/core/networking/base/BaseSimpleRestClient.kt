@@ -19,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
 abstract class BaseSimpleRestClient {
-    protected open val TAG = BaseSimpleRestClient::class.java.simpleName
+    protected open val TAG: String = BaseSimpleRestClient::class.java.simpleName
 
     protected abstract val protectedClient: Boolean
 
@@ -42,7 +42,9 @@ abstract class BaseSimpleRestClient {
     }
 
     /**
-     * Get the Retrofit object for this RestClient along with all Converters, BaseUrl, OkHttpClient, and more
+     * Get the standard Retrofit object for this RestClient along with all Converters, BaseUrl, OkHttpClient, and more
+     *
+     * This Retrofit object will be created with the [BaseSimpleRestClient.getBaseUrl]
      */
     val getRetrofit: Retrofit by lazy {
         Log.d(TAG, "getRetrofit")
@@ -106,11 +108,22 @@ abstract class BaseSimpleRestClient {
      * }
      *
      * ```
+     *
+     * @param baseUrl add a specific url when creating a new object. By default this will be empty,
+     *  but in case you want to create a specific service you can add a different url, if needed.
+     * @return A new retrofit object with a baseUrl added to it, a couple of ConverterFactories and the okHttpClient
      */
-    protected open fun createRetrofit(): Retrofit {
+    protected open fun createRetrofit(baseUrl: String = ""): Retrofit {
         Log.d(TAG, "createRetrofit")
+
+        val urlToUse = if (baseUrl.isNotBlank()){
+            baseUrl
+        } else {
+            getBaseUrl()
+        }
+
         return Retrofit.Builder()
-            .baseUrl(getBaseUrl())
+            .baseUrl(urlToUse)
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(getGsonFactory())
             .client(getHttpClient)
