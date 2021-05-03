@@ -20,6 +20,7 @@ abstract class BaseBindingVMFragment<B : ViewDataBinding> : BaseVMFragment() {
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, getLayout(), container, false)
+        mBinding.lifecycleOwner = viewLifecycleOwner
         return mBinding.root
     }
 }
