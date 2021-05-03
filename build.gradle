@@ -117,7 +117,7 @@ dependencies {
     implementation "com.orhanobut:hawk:2.0.1"
 
     //open image chooser
-    api 'com.github.jkwiecien:EasyImage:3.0.3'
+    api 'com.github.jkwiecien:EasyImage:3.2.0'
 
     //image loading/caching
     api "com.github.bumptech.glide:glide:$glide_version"
