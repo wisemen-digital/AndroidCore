@@ -37,14 +37,37 @@ Do note, that when you use AndroidCore as a Dependency that the `isLoggable` par
 
 ## <u>RestClient</u>
 
-When implementing a Restclient in your project you can extend from `BaseRestClient`. Don't forget to add the `API Service Interface` inside the `<>`. Do mind that you still have a choice to implement the RestClient as an `object` or as a regular `class`.
+When implementing a Restclient in your project you can extend from `BaseRestClient`. Do mind that you still have a choice to implement the RestClient as an `object` or as a regular `class`. (Each time you call the class `AppRestClient()` it'll create a new instance, while calling the object `AppRestClient` retains the same instance)
+
+In your RestClient you can have multiple apiServices to accomodate for the multitude of Repositories in the project, or you can have 1 single apiService.
 
 ```kotlin
-object UnProtectedRestClient : BaseRestClient<NetworkService>(){
+object UnProtectedRestClient : BaseRestClient(){
     override val apiService = NetworkService::class.java
     override val protectedClient = false
 
-    override fun getBaseUrl() = "https://www.baseUrl.com/"
+    override fun getBaseUrl() = "https://www.apiEndpoint.com/api/v1/"
+
+
+    val userService: UserNetworkService by lazy {
+        // Use this function ('createRetrofit()') when you wish to use a different 'baseUrl' with your service
+        createRetrofit("https://www.apiEndpoint.com/api/v1/user")
+            .create(PokemonNetworkService::class.java)
+    }
+
+    val authService: AuthNetworkService by lazy {
+        // Use this when you just want to use a different service with the default 'getBaseUrl()'
+        getRetrofit.create(MatchUpNetworkService::class.java)
+    }
+
+    val settingsService: SettingsNetworkService by lazy {
+        // This behaves the same as using 'createRetrofit(baseUrl)',
+        // but offers more options by using the builder itself.
+        getRetrofit.newBuilder()
+            .baseUrl("https://www.apiEndpoint.com/api/v1/settings")
+            .build()
+            .create(SettingsNetworkService::class.java)
+    }
 }
 ```
 
