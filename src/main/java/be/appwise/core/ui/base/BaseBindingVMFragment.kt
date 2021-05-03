@@ -8,7 +8,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 
-abstract class BaseBindingVMFragment<VM : BaseViewModel, B : ViewDataBinding> : BaseVMFragment<VM>() {
+abstract class BaseBindingVMFragment<B : ViewDataBinding> : BaseVMFragment() {
     protected lateinit var mBinding: B
         private set
 
