@@ -137,7 +137,7 @@ dependencies {
     implementation 'cat.ereza:customactivityoncrash:2.3.0'
 
     // Progress/Loading Button
-    api 'com.github.razir.progressbutton:progressbutton:1.0.3'
+    api 'com.github.razir.progressbutton:progressbutton:2.1.0'
 
     // Room Database
     api "androidx.room:room-runtime:$room_version"
