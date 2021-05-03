@@ -130,7 +130,6 @@ override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     mBinding.run {
-        lifeCycleOwner = viewLifeCycleOwner
         viewModel = mViewModel
     }
 }
@@ -141,7 +140,6 @@ override fun onViewCreated(view: View,s savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
     mBinding.run {
-        lifecycleOwner = viewLifecycleOwner
         viewModel = mViewModel.apply {
             // After the viewModel has been initialized you can use the functions and variables like normal
             fetchData()
