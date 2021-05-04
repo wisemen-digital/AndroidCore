@@ -23,10 +23,12 @@ All notable changes to this project will be documented in this file.
 - `kotlin_version` added to `build.gradle` so our dependabot won't fail it's builds.
 - BaseEntity now expects an `id` param as an `Any` type.
 - Extension function `setupRecyclerView` is now more flexible.
+- Changed expected type of `id` from `Int` to `Any`
 
 ### Improvements
 
 - Added an `extraLogoutStep()` in `BaseNetworkingListeners` so it's easier to potentially keep some values in Hawk when logging out.
+- Added possibility to provide a custom `idColumnInfo` when needed in the `BaseDao`, default value will still be `id`
 - Added possibility to add multiple ApiServices to a RestClient (possibility to use different baseUrl as well)
 
 ### Internal

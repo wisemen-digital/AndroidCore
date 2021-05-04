@@ -101,6 +101,33 @@ abstract class Dao: BaseRoomDao<Item>("item"){
 
 In case you omit the `open` keyword you'll get an error `error: Method annotated with @Transaction must not be private, final, or abstract.`
 
+### Custom 'id' column names
+
+When using `BaseEntity` and you wish to provide a different name for the `id` column, you can do so by using the `@ColumnInfo` on your Entity. Doing this, however, breaks the standard use of our `BaseDao` class. For it to work, just overridde the `idColumnInfo` in your Dao to tie it together.
+
+```kotlin
+override val idColumnInfo = DBConstants.COLUMN_ID_USER
+```
+
+I suggest to use a class to put all your Database constants in, i.e.:
+
+```kotlin
+object DBConstants {
+    const val DATABASE_NAME = "poemCollection.db"
+    const val USER_TABLE_NAME = "user"
+
+    const val COLUMN_ID_USER = "userId"
+}
+```
+
+Doing this will enable you to provide your table and column names in queries like so:
+
+```kotlin
+@Query("SELECT * FROM ${DBConstants.POEM_TABLE_NAME} WHERE ${DBConstants.COLUMN_ID_POEM} = :poemId")
+```
+
+Should you ever need to change those values, then you'd only have to do so in one location.
+
 ## <u>Base Activity Fragment</u>
 
 To reduce some boilerplate code whilst creating new Fragments or Activities you can use these BaseClasses
