@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        glide_version = "4.11.0"
+        glide_version = "4.12.0"
         kotlin_version = "1.4.32"
         kotlinx_coroutines_version = "1.4.3"
         lifecycle_version = "2.3.1"
@@ -117,7 +117,7 @@ dependencies {
     implementation "com.orhanobut:hawk:2.0.1"
 
     //open image chooser
-    api 'com.github.jkwiecien:EasyImage:3.0.3'
+    api 'com.github.jkwiecien:EasyImage:3.2.0'
 
     //image loading/caching
     api "com.github.bumptech.glide:glide:$glide_version"
@@ -137,7 +137,7 @@ dependencies {
     implementation 'cat.ereza:customactivityoncrash:2.3.0'
 
     // Progress/Loading Button
-    api 'com.github.razir.progressbutton:progressbutton:1.0.3'
+    api 'com.github.razir.progressbutton:progressbutton:2.1.0'
 
     // Room Database
     api "androidx.room:room-runtime:$room_version"

@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Removed Realm from AndroidCore and replaced it with Room.
 - Updated `EasyImage` dependency which had breaking changes in some of our Extension functions.
 - Updated a lot of dependencies where a couple of them had some breaking changes, not major but still (functions turned to parameters).
+- Using `BaseBindingVMFragment`, `BaseVMFragment`, `BaseBindingVMActivity` or `BaseVMActivity` won't require you to add the ViewModel as a generic object
 
 ### Bug Fixes
 
@@ -28,6 +29,7 @@ All notable changes to this project will be documented in this file.
 
 - Added an `extraLogoutStep()` in `BaseNetworkingListeners` so it's easier to potentially keep some values in Hawk when logging out.
 - Added possibility to provide a custom `idColumnInfo` when needed in the `BaseDao`, default value will still be `id`
+- Added possibility to add multiple ApiServices to a RestClient (possibility to use different baseUrl as well)
 
 ### Internal
 

@@ -7,27 +7,30 @@ import be.appwise.core.R
 import be.appwise.core.extensions.fragment.snackBar
 import com.orhanobut.logger.Logger
 
-abstract class BaseVMFragment<VM : BaseViewModel> : Fragment() {
+abstract class BaseVMFragment : Fragment() {
     /**
-     * The viewModel that will be used for this Activity
+     * Reference to the viewModel that will be used for this Activity.
+     * When using this class, you should override [mViewModel] by using `by viewModels()`
+     *
+     * ```kotlin
+     *     override val mViewModel: MainViewModel by viewModels()
+     * ```
+     *
+     * you can even add a [ViewModelFactory] to it if needed.
+     *
+     *```kotlin
+     *     override val mViewModel: MainViewModel by viewModels() { getViewModelFactory() }
+     * ```
      */
-    protected lateinit var mViewModel: VM
-        private set
-
-    protected abstract fun getViewModel(): Class<VM>
+    protected abstract val mViewModel: BaseViewModel
 
     protected open fun getViewModelFactory(): ViewModelProvider.NewInstanceFactory =
         ViewModelProvider.NewInstanceFactory()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        init()
-    }
 
-    protected open fun init() {
-        mViewModel = ViewModelProvider(this, getViewModelFactory()).get(getViewModel()).apply {
-            setDefaultExceptionHandler(::onError)
-        }
+        mViewModel.setDefaultExceptionHandler(::onError)
     }
 
     open fun onError(throwable: Throwable) {
