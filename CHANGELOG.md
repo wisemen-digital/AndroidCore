@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 ### Improvements
 
 - Added an `extraLogoutStep()` in `BaseNetworkingListeners` so it's easier to potentially keep some values in Hawk when logging out.
+- Added possibility to add multiple ApiServices to a RestClient (possibility to use different baseUrl as well)
 
 ### Internal
 

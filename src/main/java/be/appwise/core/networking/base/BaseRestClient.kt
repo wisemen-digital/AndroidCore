@@ -18,10 +18,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
-abstract class BaseRestClient<T> {
-    protected open val TAG = BaseRestClient::class.java.simpleName
-
-    protected abstract val apiService: Class<T>
+abstract class BaseRestClient {
+    protected open val TAG: String = BaseRestClient::class.java.simpleName
 
     protected abstract val protectedClient: Boolean
 
@@ -36,14 +34,6 @@ abstract class BaseRestClient<T> {
     open val clientSecret = Networking.getClientSecretValue()
 
     /**
-     * Get the service attached to this retrofit object to do the network requests
-     */
-    val getService: T by lazy {
-        Log.d(TAG, "getService()")
-        getRetrofit.create(apiService)
-    }
-
-    /**
      * Get the OkHttpClient for this RestClient along with all the interceptors, headers, and more
      */
     val getHttpClient: OkHttpClient by lazy {
@@ -52,7 +42,9 @@ abstract class BaseRestClient<T> {
     }
 
     /**
-     * Get the Retrofit object for this RestClient along with all Converters, BaseUrl, OkHttpClient, and more
+     * Get the standard Retrofit object for this RestClient along with all Converters, BaseUrl, OkHttpClient, and more
+     *
+     * This Retrofit object will be created with the [BaseRestClient.getBaseUrl]
      */
     val getRetrofit: Retrofit by lazy {
         Log.d(TAG, "getRetrofit")
@@ -116,11 +108,22 @@ abstract class BaseRestClient<T> {
      * }
      *
      * ```
+     *
+     * @param baseUrl add a specific url when creating a new object. By default this will be empty,
+     *  but in case you want to create a specific service you can add a different url, if needed.
+     * @return A new retrofit object with a baseUrl added to it, a couple of ConverterFactories and the okHttpClient
      */
-    protected open fun createRetrofit(): Retrofit {
+    protected open fun createRetrofit(baseUrl: String = ""): Retrofit {
         Log.d(TAG, "createRetrofit")
+
+        val urlToUse = if (baseUrl.isNotBlank()){
+            baseUrl
+        } else {
+            getBaseUrl()
+        }
+
         return Retrofit.Builder()
-            .baseUrl(getBaseUrl())
+            .baseUrl(urlToUse)
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(getGsonFactory())
             .client(getHttpClient)
