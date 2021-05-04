@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Master](https://github.com/appwise-labs/AndroidCore)
 
+
+## [1.0.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.0.0)
+
 ### New Features
 
 - Added Double and Tripple triggers for LiveData.
