@@ -14,6 +14,8 @@ import androidx.sqlite.db.SupportSQLiteQuery
  */
 @Dao
 abstract class BaseRoomDao<T : BaseEntity>(private val tableName: String) {
+    open val idColumnInfo = "id"
+
     /**
      *  Inserts an entity object in the database.
      *  If the provided ID from the entity already exists, the object will be overwritten.
@@ -95,9 +97,9 @@ abstract class BaseRoomDao<T : BaseEntity>(private val tableName: String) {
      *  @return a list of the inserted ID's
      */
     suspend fun insertManyDeleteOthers(entities: List<T>) : List<Long> {
-        val ids = entities.joinToString { it -> "\'${it.id}\'" }
+        val ids = entities.joinToString { "\'${it.id}\'" }
 
-        val query = SimpleSQLiteQuery("DELETE FROM $tableName WHERE id NOT IN($ids);")
+        val query = SimpleSQLiteQuery("DELETE FROM $tableName WHERE $idColumnInfo NOT IN($ids);")
         deleteAllExceptIds(query)
 
         return insertMany(entities)
@@ -116,8 +118,8 @@ abstract class BaseRoomDao<T : BaseEntity>(private val tableName: String) {
      *
      *  @param id the id of the entity that needs to be deleted
      */
-    suspend fun deleteById(id: Int) {
-        val query = SimpleSQLiteQuery("DELETE FROM $tableName WHERE id = $id;")
+    suspend fun deleteById(id: Any) {
+        val query = SimpleSQLiteQuery("DELETE FROM $tableName WHERE $idColumnInfo = $id;")
         deleteById(query)
     }
 
@@ -136,10 +138,10 @@ abstract class BaseRoomDao<T : BaseEntity>(private val tableName: String) {
      * @param ids a list of ID's that needs to be searched for
      * @return a list of all entities that match the ID's from the given list
      */
-    suspend fun findEntitiesById(ids: List<Int>): List<T>? {
-        val formattedIds = ids.joinToString { it -> "\'${it}\'" }
+    suspend fun findEntitiesById(ids: List<Any>): List<T>? {
+        val formattedIds = ids.joinToString { "\'${it}\'" }
 
-        val query = SimpleSQLiteQuery("SELECT * FROM $tableName WHERE id IN ($formattedIds);")
+        val query = SimpleSQLiteQuery("SELECT * FROM $tableName WHERE $idColumnInfo IN ($formattedIds);")
         return findMultipleEntities(query)
     }
 
@@ -149,8 +151,8 @@ abstract class BaseRoomDao<T : BaseEntity>(private val tableName: String) {
      * @param id the ID of the object that needs to be searched for
      * @return the object if the ID matched
      */
-    suspend fun findEntityById(id: Int): T? {
-        val query = SimpleSQLiteQuery("SELECT * FROM $tableName WHERE id = $id")
+    suspend fun findEntityById(id: Any): T? {
+        val query = SimpleSQLiteQuery("SELECT * FROM $tableName WHERE $idColumnInfo = $id")
         return findSingleEntity(query)
     }
 
@@ -198,15 +200,15 @@ abstract class BaseRoomDao<T : BaseEntity>(private val tableName: String) {
         return findMultipleEntitiesLive(SimpleSQLiteQuery("SELECT * FROM $tableName;"))
     }
 
-    fun findEntitiesByIdLive(ids: List<Int>): LiveData<List<T>> {
+    fun findEntitiesByIdLive(ids: List<Any>): LiveData<List<T>> {
         val formattedIds = ids.joinToString { it -> "\'${it}\'" }
 
-        val query = SimpleSQLiteQuery("SELECT * FROM $tableName WHERE id IN ($formattedIds);")
+        val query = SimpleSQLiteQuery("SELECT * FROM $tableName WHERE $idColumnInfo IN ($formattedIds);")
         return findMultipleEntitiesLive(query)
     }
 
-    fun findEntityByIdLive(id: Int): LiveData<T> {
-        val query = SimpleSQLiteQuery("SELECT * FROM $tableName WHERE id = $id")
+    fun findEntityByIdLive(id: Any): LiveData<T> {
+        val query = SimpleSQLiteQuery("SELECT * FROM $tableName WHERE $idColumnInfo = $id")
         return findSingleEntityLive(query)
     }*/
 }
