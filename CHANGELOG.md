@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Master](https://github.com/appwise-labs/AndroidCore)
 
+### Bug Fixes
+
+- Removed 'JCenter' from the repositories list as that [service has been discontinued](https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/).
+- Removed 'easyValidation' dependency as it was a deprecated library that was only available on JCenter.
 
 ## [1.0.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.0.0)
 
