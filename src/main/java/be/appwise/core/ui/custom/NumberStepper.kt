@@ -1,11 +1,14 @@
 package be.appwise.core.ui.custom
 
 import android.content.Context
+import android.text.InputFilter
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import be.appwise.core.R
+import be.appwise.core.databinding.NumberStepperBinding
 import be.appwise.core.extensions.view.optionalCallbacks
 import kotlinx.android.synthetic.main.number_stepper.view.*
 
@@ -19,47 +22,75 @@ import kotlinx.android.synthetic.main.number_stepper.view.*
  * You can change the styling of [etValue] by adding a style with name numberStepperEdittext in your styles
 */
 
-class NumberStepper : ConstraintLayout {
-    constructor(context: Context) : super(context) {
-        init(context)
-    }
+class NumberStepper @JvmOverloads constructor(
+    private val ctx: Context,
+    private val attributeSet: AttributeSet? = null,
+    private val defStyleAttr: Int = 0
+) : LinearLayout(ctx, attributeSet, defStyleAttr) , TwoWayBindingManager {
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        init(context, attrs)
-    }
+    private lateinit var mNumberStepperBinding: NumberStepperBinding
+    private var mMinValue: Double = Double.MIN_VALUE
+    private var mMaxValue: Double = Double.MAX_VALUE
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
-        init(context, attrs)
-    }
-
-    private fun init(context: Context, attrs: AttributeSet? = null) {
-
+    init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        inflater.inflate(R.layout.number_stepper, this, true)
+        mNumberStepperBinding = NumberStepperBinding.inflate(inflater, this)
 
-        attrs?.let {
+        attributeSet?.let {
             val attributes = context.obtainStyledAttributes(it, R.styleable.NumberStepper)
             setLabelText(attributes.getString(R.styleable.NumberStepper_label))
+
+            //only set fields when set in xml --> needs double defaults instead of 0f
+            if (attributes.hasValue(R.styleable.NumberStepper_minValue))
+                mMinValue = attributes.getFloat(R.styleable.NumberStepper_minValue, 0f).toDouble()
+            if (attributes.hasValue(R.styleable.NumberStepper_maxValue))
+                mMaxValue =
+                    attributes.getFloat(R.styleable.NumberStepper_maxValue, 0f).toDouble()
+
+            with(mNumberStepperBinding) {
+                ivPlus.setImageResource(
+                    attributes.getResourceId(
+                        R.styleable.NumberStepper_plus_icon,
+                        R.drawable.ic_plus
+                    )
+                )
+                ivMinus.setImageResource(
+                    attributes.getResourceId(
+                        R.styleable.NumberStepper_minus_icon,
+                        R.drawable.ic_minus
+                    )
+                )
+            }
         }
 
-        etValue.optionalCallbacks {
-            mValueChangeListener?.onValueChanged(it.toInt())
-        }
+        with(mNumberStepperBinding) {
 
-        ivPlus.setOnClickListener {
-            val newValue = getValue() + 1
-            etValue.setText((newValue).toString())
-            mValueChangeListener?.onValueChanged(newValue)
-        }
 
-        ivMinus.setOnClickListener {
-            val newValue = getValue() - 1
-            etValue.setText((newValue).toString())
-            mValueChangeListener?.onValueChanged(newValue)
+            val filter = InputFilter { source, start, end, dest, dstart, dend ->
+                val futureText = dest.toString() + source.toString()
+                if (futureText.toDouble() !in mMinValue..mMaxValue) "" else null
+            }
+
+            etValue.filters = arrayOf(filter)
+            etValue.optionalCallbacks {
+                mValueChangeListener?.onValueChanged(it.toInt())
+            }
+
+            ivPlus.setOnClickListener {
+                val newValue = getValue() + 1
+                if (newValue <= mMaxValue) {
+                    etValue.setText((newValue).toString())
+                    mValueChangeListener?.onValueChanged(newValue)
+                }
+            }
+
+            ivMinus.setOnClickListener {
+                val newValue = getValue() - 1
+                if (newValue >= mMinValue) {
+                    etValue.setText((newValue).toString())
+                    mValueChangeListener?.onValueChanged(newValue)
+                }
+            }
         }
     }
 
@@ -86,24 +117,28 @@ class NumberStepper : ConstraintLayout {
      * when [label] is null or empty [tvLabel] and [spacing] will be hidden and only
      * */
     private fun setLabelText(label: String?) {
-        tvLabel.text = label
-        tvLabel.visibility = if (label.isNullOrEmpty()) View.GONE else View.VISIBLE
-        spacing.visibility = if (label.isNullOrEmpty()) View.GONE else View.VISIBLE
+        with(mNumberStepperBinding) {
+            tvLabel.text = label
+            tvLabel.visibility = if (label.isNullOrEmpty()) View.GONE else View.VISIBLE
+            spacing.visibility = if (label.isNullOrEmpty()) View.GONE else View.VISIBLE
+        }
     }
 
     /**
      * @return the text of [etValue] as an Int
      */
     fun getValue(): Int {
-        val value =  etValue.text.toString()
-        return if(value.isEmpty()) 0 else value.toInt()
+        val value = mNumberStepperBinding.etValue.text.toString()
+        return if (value.isEmpty()) 0 else value.toInt()
     }
 
     /**
      * sets [number] as the text of [etValue]
      * @param number digit to show in the Numberstepper
      */
-    fun setValueText(number: Int) {
-        etValue.setText(number.toString())
+    fun setValue(number: Int) {
+        mNumberStepperBinding.etValue.setText(number.toString())
     }
+
+    override fun getEdittextForBinding() = mNumberStepperBinding.etValue
 }

@@ -10,6 +10,10 @@
 
     <declare-styleable name="NumberStepper">
         <attr name="label" format="string" />
+        <attr name="plus_icon" format="reference"/>
+        <attr name="minus_icon" format="reference"/>
+        <attr name="minValue" format="integer"/>
+        <attr name="maxValue" format="integer"/>
     </declare-styleable>
 
     <declare-styleable name="InitialsImageView">

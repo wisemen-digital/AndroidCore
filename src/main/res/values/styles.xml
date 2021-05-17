@@ -17,8 +17,6 @@
         <item name="android:layout_marginTop">@dimen/spacing_small</item>
     </style>
 
-    <style name="numberStepperEdittext" parent="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"/>
-
     <style name="iiv_initialsText">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
         <item name="android:textColor">@android:color/black</item>
@@ -26,14 +24,20 @@
 
     <style name="pab_title">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body2</item>
-        <item name="android:paddingTop">@dimen/spacing_normal</item>
-        <item name="android:paddingBottom">@dimen/spacing_normal</item>
+        <item name="android:layout_gravity">center_vertical</item>
     </style>
 
     <style name="pab_subTitle">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
-        <item name="android:paddingTop">@dimen/spacing_normal</item>
-        <item name="android:paddingBottom">@dimen/spacing_normal</item>
         <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:gravity">end|center_vertical</item>
     </style>
+
+    <style name="numberStepper_label">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body2</item>
+    </style>
+
+    <style name="numberStepper_edittext" parent="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"/>
+
 </resources>

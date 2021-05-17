@@ -16,17 +16,13 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/ivNext"
-                android:textAppearance="@style/pab_title"
+                style="@style/pab_title"
                 app:layout_constraintWidth_default="wrap"
                 app:layout_constraintHorizontal_bias="0"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacing_normal"
-                android:layout_gravity="center_vertical"
-                android:textSize="@dimen/font_body"
                 tools:text="title" />
-
-
 
 
         <TextView
@@ -39,11 +35,7 @@
                 app:layout_constraintHorizontal_bias="0"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/pab_subTitle"
-                android:layout_gravity="end|center_vertical"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:textSize="@dimen/font_body"
+                style="@style/pab_subTitle"
                 android:visibility="gone"
                 tools:text="subtitle"
                 tools:visibility="visible" />
