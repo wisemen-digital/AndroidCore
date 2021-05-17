@@ -25,11 +25,13 @@
         <attr name="pab_titleTextColor" format="color"/>
         <attr name="pab_titleTextAppearance" format="reference"/>
         <attr name="pab_subTitleTextColor" format="color"/>
+        <attr name="pab_subTitleTextAppearance" format="reference"/>
+        <attr name="pab_hintTextColor" format="color"/>
         <attr name="pab_dividerColor" format="color"/>
-        <attr name="pab_arrowColor" format="color"/>
-        <attr name="pab_visibleArrow" format="boolean"/>
+        <attr name="pab_nextIconColor" format="color"/>
+        <attr name="pab_nextIcon" format="reference"/>
+        <attr name="pab_visibleNextIcon" format="boolean"/>
         <attr name="pab_visibleDivider" format="boolean"/>
         <attr name="pab_vertical" format="boolean"/>
-        <attr name="pab_textColor" format="color"/>
     </declare-styleable>
 </resources>

@@ -2,124 +2,169 @@ package be.appwise.core.ui.custom
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.viewbinding.ViewBinding
 import be.appwise.core.R
-import kotlinx.android.synthetic.main.profile_action_button.view.*
+import be.appwise.core.databinding.ProfileActionButtonBinding
+import be.appwise.core.databinding.ProfileActionButtonVerticalBinding
 
-class ProfileActionButton : LinearLayout {
-
-    constructor(context: Context) : super(context) {
-        init(context)
-    }
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        init(context, attrs)
-    }
-
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
-        init(context, attrs)
-    }
+class ProfileActionButton @JvmOverloads constructor(
+    private val ctx: Context,
+    private val attributeSet: AttributeSet? = null,
+    private val defStyleAttr: Int = 0
+) : ConstraintLayout(ctx, attributeSet, defStyleAttr) {
 
     private var mIsVertical: Boolean = false
+    private var mTitle: String? = null
+    private var mSubTitle: String? = null
+    private var mHint: String? = null
 
+    private var mDividerIsVisible: Boolean = false
+    private var mNextIconIsVisible: Boolean = false
+    private var mTitleTextAppearance: Int = -1
+    private var mSubTitleTextAppearance: Int = -1
+    private var mTitleTextColor: Int = -1
+    private var mSubTitleTextColor: Int = -1
+    private var mHintColor: Int = -1
+    private var mDividerColor: Int = -1
+    private var mNextIconColor: Int = -1
+    private var mNextIcon: Drawable? = null
 
-    private fun init(context: Context, attrs: AttributeSet? = null) {
+    private lateinit var mProfileActionButtonBinding: ViewBinding
 
+    init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        attrs?.let {
+        attributeSet?.let {
             val attributes = context.obtainStyledAttributes(it, R.styleable.ProfileActionButton)
             mIsVertical = attributes.getBoolean(R.styleable.ProfileActionButton_pab_vertical, false)
-            inflater.inflate(
-                if (mIsVertical) R.layout.profile_action_button_vertical else R.layout.profile_action_button,
-                this,
-                true
+
+            mTitle = attributes.getString(R.styleable.ProfileActionButton_pab_title)
+            mSubTitle = attributes.getString(R.styleable.ProfileActionButton_pab_subTitle)
+            mHint = attributes.getString(R.styleable.ProfileActionButton_pab_hint)
+
+            mNextIconIsVisible =
+                attributes.getBoolean(R.styleable.ProfileActionButton_pab_visibleNextIcon, true)
+            mDividerIsVisible =
+                attributes.getBoolean(R.styleable.ProfileActionButton_pab_visibleDivider, true)
+
+            mTitleTextAppearance = attributes.getResourceId(
+                R.styleable.ProfileActionButton_pab_titleTextAppearance,
+                R.style.pab_title
+            )
+            mSubTitleTextAppearance = attributes.getResourceId(
+                R.styleable.ProfileActionButton_pab_subTitleTextAppearance,
+                R.style.pab_subTitle
             )
 
+            mTitleTextColor = attributes.getColor(
+                R.styleable.ProfileActionButton_pab_titleTextColor,
+                android.R.color.black
+            )
+            mSubTitleTextColor = attributes.getColor(
+                R.styleable.ProfileActionButton_pab_subTitleTextColor,
+                android.R.color.black
+            )
+            mHintColor = attributes.getColor(
+                R.styleable.ProfileActionButton_pab_hintTextColor,
+                android.R.color.black
+            )
+            mNextIconColor = attributes.getColor(
+                R.styleable.ProfileActionButton_pab_nextIconColor,
+                android.R.color.black
+            )
+            mDividerColor = attributes.getColor(
+                R.styleable.ProfileActionButton_pab_dividerColor,
+                android.R.color.black
+            )
 
-            for (index in 0 until attributes.indexCount) {
-                val attr = attributes.getIndex(index)
-                when (attr) {
-                    R.styleable.ProfileActionButton_pab_title -> {
-                        setTitle(attributes.getString(attr))
-                    }
-                    R.styleable.ProfileActionButton_pab_subTitle -> {
-                        setSubTitle(attributes.getString(attr))
-                    }
-                    R.styleable.ProfileActionButton_pab_hint -> {
-                        setHint(attributes.getString(attr))
-                    }
-                    R.styleable.ProfileActionButton_pab_visibleArrow -> {
-                        when (attributes.getBoolean(attr, true)) {
-                            true -> ivNext.visibility = View.VISIBLE
-                            false -> ivNext.visibility = View.GONE
-                        }
-                    }
-                    R.styleable.ProfileActionButton_pab_visibleDivider -> {
-                        when (attributes.getBoolean(attr, true)) {
-                            true -> divider.visibility = View.VISIBLE
-                            false -> divider.visibility = View.GONE
-                        }
-                    }
-                    R.styleable.ProfileActionButton_pab_textColor -> {
-                        tvTitle.setTextColor(
-                            attributes.getColor(
-                                attr,
-                                ContextCompat.getColor(context, android.R.color.white)
-                            )
-                        )
-                        tvSubtitle.setTextColor(
-                            attributes.getColor(
-                                attr,
-                                ContextCompat.getColor(context, android.R.color.white)
-                            )
-                        )
-                    }
-
-                    R.styleable.ProfileActionButton_pab_titleTextAppearance -> tvTitle.setTextAppearance(attributes.getResourceId(attr, -1))
-
-                    R.styleable.ProfileActionButton_pab_titleTextColor -> {
-                        tvTitle.setTextColor(attributes.getColor(attr, android.R.color.black))
-                    }
-                    R.styleable.ProfileActionButton_pab_subTitleTextColor -> {
-                        tvSubtitle.setTextColor(attributes.getColor(attr, android.R.color.black))
-                    }
-                    R.styleable.ProfileActionButton_pab_dividerColor -> {
-                        divider.setBackgroundColor(attributes.getColor(attr, android.R.color.black))
-                    }
-                    R.styleable.ProfileActionButton_pab_arrowColor -> {
-                        ivNext.imageTintList =
-                            ColorStateList.valueOf(attributes.getColor(attr, android.R.color.black))
-                    }
-
-
-                }
-            }
+            mNextIcon = attributes.getDrawable(R.styleable.ProfileActionButton_pab_nextIcon)
+                ?: ContextCompat.getDrawable(
+                    context.applicationContext,
+                    R.drawable.ic_baseline_chevron_right
+                )
             attributes.recycle()
-
         }
+        mProfileActionButtonBinding = if (!mIsVertical) ProfileActionButtonBinding.inflate(
+            inflater,
+            this
+        )
+        else ProfileActionButtonVerticalBinding.inflate(
+            inflater,
+            this
+        )
+
+        isDividerVisible()
+        isArrowVisible()
+        setTitle(mTitle)
+        setSubTitle(mSubTitle)
+        setHint(mHint)
+
+
+        titleView?.setTextAppearance(context, mTitleTextAppearance)
+
+        subtitleView?.setTextAppearance(context, mTitleTextAppearance)
+        titleView?.setTextColor(mTitleTextColor)
+        subtitleView?.setTextColor(mSubTitleTextColor)
+        subtitleView?.setHintTextColor(mHintColor)
+        divider?.setBackgroundColor(mDividerColor)
+        nextView?.setImageDrawable(mNextIcon)
+        nextView?.imageTintList = ColorStateList.valueOf(mNextIconColor)
+
+    }
+
+
+    private val titleView get() = when (val binding = mProfileActionButtonBinding) {
+        is ProfileActionButtonBinding -> binding.tvTitle
+        is ProfileActionButtonVerticalBinding -> binding.tvTitle
+        else -> null
+    }
+
+    private val subtitleView get() = when (val binding = mProfileActionButtonBinding) {
+        is ProfileActionButtonBinding -> binding.tvSubtitle
+        is ProfileActionButtonVerticalBinding -> binding.tvSubtitle
+        else -> null
+    }
+
+    private val divider get() = when (val binding = mProfileActionButtonBinding) {
+        is ProfileActionButtonBinding -> binding.divider
+        is ProfileActionButtonVerticalBinding -> binding.divider
+        else -> null
+    }
+
+    private val nextView get() = when (val binding = mProfileActionButtonBinding) {
+        is ProfileActionButtonBinding -> binding.ivNext
+        is ProfileActionButtonVerticalBinding -> binding.ivNext
+        else -> null
+    }
+
+
+    private fun isDividerVisible() {
+        divider?.isVisible = mDividerIsVisible
+    }
+
+    private fun isArrowVisible() {
+        divider?.isVisible = mNextIconIsVisible
     }
 
     private fun setHint(hint: String?) {
-        tvSubtitle.hint = hint
+        subtitleView?.isVisible = hint != null
+        subtitleView?.hint = hint
     }
 
     fun setTitle(text: String?) {
-        tvTitle.visibility = if (text.isNullOrEmpty()) View.GONE else View.VISIBLE
+        titleView?.visibility = if (text.isNullOrEmpty()) View.GONE else View.VISIBLE
         /*spacing?.visibility = if (text.isNullOrEmpty()) View.VISIBLE else View.GONE*/
-        tvTitle.text = text
+        titleView?.text = text
     }
 
     fun setSubTitle(text: String?) {
-        tvSubtitle.isVisible = text != null
-        tvSubtitle.text = text
+        subtitleView?.isVisible = text != null
+        subtitleView?.text = text
     }
 }
