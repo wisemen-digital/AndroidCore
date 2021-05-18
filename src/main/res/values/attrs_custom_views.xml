@@ -38,4 +38,20 @@
         <attr name="pab_visibleDivider" format="boolean"/>
         <attr name="pab_vertical" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="ProfileDataRow">
+        <attr name="labelText" format="string" />
+        <attr name="valueText" format="string" />
+        <attr name="valueHint" format="string" />
+        <attr name="labelTextColor" format="color" />
+        <attr name="valueTextColor" format="color" />
+        <attr name="valueHintColor" format="color" />
+        <attr name="visibleDivider" format="boolean" />
+        <attr name="dividerColor" format="color" />
+        <attr name="android:imeOptions" />
+        <attr name="android:inputType" />
+        <attr name="editable" format="boolean" />
+        <attr name="singleLine" format="boolean" />
+
+    </declare-styleable>
 </resources>

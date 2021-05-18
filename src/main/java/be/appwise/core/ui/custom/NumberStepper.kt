@@ -23,9 +23,9 @@ import kotlinx.android.synthetic.main.number_stepper.view.*
 */
 
 class NumberStepper @JvmOverloads constructor(
-    private val ctx: Context,
-    private val attributeSet: AttributeSet? = null,
-    private val defStyleAttr: Int = 0
+    ctx: Context,
+    attributeSet: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : LinearLayout(ctx, attributeSet, defStyleAttr) , TwoWayBindingManager {
 
     private lateinit var mNumberStepperBinding: NumberStepperBinding

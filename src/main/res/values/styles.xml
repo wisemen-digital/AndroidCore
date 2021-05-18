@@ -40,4 +40,17 @@
 
     <style name="numberStepper_edittext" parent="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"/>
 
+
+    <style name="pdr_label">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body2</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="pdr_value">
+        <item name="android:minWidth">50dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:background">@null</item>
+    </style>
+
 </resources>

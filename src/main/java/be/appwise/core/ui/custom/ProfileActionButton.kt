@@ -15,9 +15,9 @@ import be.appwise.core.databinding.ProfileActionButtonBinding
 import be.appwise.core.databinding.ProfileActionButtonVerticalBinding
 
 class ProfileActionButton @JvmOverloads constructor(
-    private val ctx: Context,
-    private val attributeSet: AttributeSet? = null,
-    private val defStyleAttr: Int = 0
+    ctx: Context,
+    attributeSet: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : ConstraintLayout(ctx, attributeSet, defStyleAttr) {
 
     private var mIsVertical: Boolean = false
