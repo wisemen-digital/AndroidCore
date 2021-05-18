@@ -133,10 +133,11 @@ abstract class BaseRestClient {
     //<editor-fold desc="Interceptors">
     /**
      * Get the default HttpLoggingInterceptor that is being used in almost every project
-     *
      * In case Bagel is enabled for this RestClient, the logging for requests and responses will be at a bare minimum.
+     *
+     * Whenever you need to have project specific level or only want the logging enabled on DEBUG you can override the function.
      */
-    protected fun getHttpLoggingInterceptor() = HttpLoggingInterceptor().apply {
+    protected open fun getHttpLoggingInterceptor() = HttpLoggingInterceptor().apply {
         level =
             if (enableBagelInterceptor()) {
                 HttpLoggingInterceptor.Level.BASIC

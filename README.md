@@ -43,11 +43,9 @@ In your RestClient you can have multiple apiServices to accomodate for the multi
 
 ```kotlin
 object UnProtectedRestClient : BaseRestClient(){
-    override val apiService = NetworkService::class.java
+
     override val protectedClient = false
-
     override fun getBaseUrl() = "https://www.apiEndpoint.com/api/v1/"
-
 
     val userService: UserNetworkService by lazy {
         // Use this function ('createRetrofit()') when you wish to use a different 'baseUrl' with your service
