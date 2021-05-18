@@ -9,6 +9,10 @@ All notable changes to this project will be documented in this file.
 - Removed 'JCenter' from the repositories list as that [service has been discontinued](https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/).
 - Removed 'easyValidation' dependency as it was a deprecated library that was only available on JCenter.
 
+### Improvements
+
+- Added the possibility to override the BaseRestClient's `getHttpLoggingInterceptor()` to provide a project specific logging level.
+
 ## [1.0.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.0.0)
 
 ### New Features
