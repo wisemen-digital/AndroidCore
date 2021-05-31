@@ -103,7 +103,7 @@ dependencies {
     api "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
     // gson (https://github.com/google/gson)
-    api 'com.google.code.gson:gson:2.8.6'
+    api 'com.google.code.gson:gson:2.8.7'
 
     // logger (https://github.com/orhanobut/logger)
     api 'com.orhanobut:logger:2.2.0'
