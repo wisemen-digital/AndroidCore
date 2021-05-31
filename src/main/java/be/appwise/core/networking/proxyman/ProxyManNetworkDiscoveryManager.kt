@@ -25,26 +25,42 @@ internal object ProxyManNetworkDiscoveryManager {
      * It also manages packages that were created when not connected with a ProxyMan service.
      * When it reconnects with a Proxyman service it flushed als the messages. [flushAllPendingIfNeeded]
      *
-     * @param mServiceName is the [Device] that is sending the request and response data
-     * @property project is the [Project] that is sending the request and response data
-     * @property icon is the base64 value of the launcher icon for your project/app
-     * @constructor Creates an empty group.
+     * @property nsdManager
+     * is the [NsdManager] that manages all listeners for Network discovery
+     *
+     * @property MaximumSizePackage
+     * is the maximum allowed package size.
+     * Used to check if [TrafficPackage.responseBodyData] or if [Request.body] are too big to be
+     * sent to Proxyman
+     *
+     * @property proxyManGson
+     * Used to connect [Base64ArrayTypeAdapter] and [Base64TypeAdapter]
+     * In doing so making it possible to automatically Base64 encode objects with
+     * the types [ByteArray] and [Data]
+     *
+     * @property SERVICE_TYPE
+     * Tag sent by Proxyman over Network discovery , used to find only Proxyman Services
+     *
+     * @property TAG
+     * Used as title for the logging of this DiscoveryManager
+     *
+     * @property mAppContext
+     * The context of the App this DiscoveryManager is registered to.
+     * Is used to deliver app specific data to the [TrafficPackage] and [ConnectionPackage] objects
+     *
+     * @property mDeviceName
+     * Is used to override the default device name that is going to be shown in ProxyMan
+     * @see Device
+     *
+     * @property mAllowedServices
+     * A list of service names that is used to determine with which services this DiscoveryManager will connect.
+     * Packages will only be sent to allowed services.
      */
 
 
-    /**
-     * Maximum allowed package size.
-     * Used to check if [TrafficPackage.responseBodyData] or if [Request.body] are too big to be
-     * sent to Proxyman
-    * */
+
     const val MaximumSizePackage = 52428800
 
-    /**
-     *
-     * Used to connect  [Base64ArrayTypeAdapter] and [Base64TypeAdapter]
-     * In doing so making it possible to automatically Base64 encode objects with
-     * the types [ByteArray] and [Data]
-     * */
     val proxyManGson: Gson = GsonBuilder()
         .registerTypeAdapter(ByteArray::class.java, Base64ArrayTypeAdapter())
         .registerTypeAdapter(Data::class.java, Base64TypeAdapter())
@@ -52,7 +68,6 @@ internal object ProxyManNetworkDiscoveryManager {
 
     private var nsdManager: NsdManager? = null
 
-    //port and tag that Proxyman uses
     private const val SERVICE_TYPE: String = "_Proxyman._tcp."
     private const val PORT = 43434
     private const val TAG = "ProxyManNetworkDiscoveryManager"
