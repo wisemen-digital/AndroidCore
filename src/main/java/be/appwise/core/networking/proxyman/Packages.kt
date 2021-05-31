@@ -1,6 +1,8 @@
 package be.appwise.core.networking.proxyman
 
 import android.graphics.Bitmap
+import android.os.Build
+import android.provider.Settings
 import android.util.Base64
 import androidx.core.graphics.drawable.toBitmap
 import java.io.ByteArrayOutputStream
@@ -9,8 +11,8 @@ import java.nio.charset.StandardCharsets
 
 
 class ConnectionPackage() : Data {
-    val device: Message.Device = Message.Device.current
-    val project: Message.Project = Message.Project.current
+    val device: Device = Device.current
+    val project: Project = Project.current
     val icon: String = getBase64Data()
 
     private fun getBase64Data(): String {
@@ -73,6 +75,22 @@ class TrafficPackage(
             this.request.resetBody()
         ProxyManNetworkDiscoveryManager.proxyManGson.toJson(this)
     }
+}
+
+class Project {
+    companion object {
+        val current = Project()
+    }
+    val name: String = ProxyManNetworkDiscoveryManager.getAppContext().applicationInfo.loadLabel(ProxyManNetworkDiscoveryManager.getAppContext().packageManager).toString()
+    val bundleIdentifier: String = ProxyManNetworkDiscoveryManager.getAppContext().packageName
+}
+
+class Device {
+    companion object {
+        val current = Device()
+    }
+    var name: String = ProxyManNetworkDiscoveryManager.getDeviceName() ?: Settings.Secure.getString(ProxyManNetworkDiscoveryManager.getAppContext().contentResolver, "bluetooth_name")
+    val model: String = name + " (API " + Build.VERSION.SDK_INT+")"
 }
 
 class CustomError(val code: Int, val message: String)

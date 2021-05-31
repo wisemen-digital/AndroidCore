@@ -4,17 +4,14 @@ class Configuration(
     var projectName: String,
     var deviceName: String
 ) {
-    var id: String = "${Message.Project().bundleIdentifier}-${Message.Device().model}"
-    var hostName: String = "${Message.Project().bundleIdentifier}-${Message.Device().model}"
+    var id: String = "${Project.current.bundleIdentifier}-${Device.current.model}"
+    var hostName: String = "${Project.current.bundleIdentifier}-${Device.current.model}"
 
     companion object {
         fun default() : Configuration {
-            val project = Message.Project.current
-            val deviceName = Message.Device.current
+            val project = Project.current
+            val deviceName = Device.current
             return Configuration(projectName = project.name, deviceName = deviceName.name)
         }
     }
-
-
-
 }

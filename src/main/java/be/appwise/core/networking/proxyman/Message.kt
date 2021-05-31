@@ -14,25 +14,7 @@ class Message(
     var content: Data?
 ) {
 
-    class Project {
-        companion object {
-            val current = Project()
-        }
 
-        val name: String = ProxyManNetworkDiscoveryManager.getAppContext().applicationInfo.loadLabel(ProxyManNetworkDiscoveryManager.getAppContext().packageManager).toString()
-        val bundleIdentifier: String = ProxyManNetworkDiscoveryManager.getAppContext().packageName
-    }
-
-    class Device {
-        companion object {
-            val current = Device()
-        }
-
-        var name: String =
-            Settings.Secure.getString(ProxyManNetworkDiscoveryManager.getAppContext().contentResolver, "bluetooth_name")
-        val model: String =
-            Build.MANUFACTURER + "," + Build.MODEL + " Android/" + Build.VERSION.SDK_INT
-    }
 
     companion object {
         fun buildConnectionMessage(id: String, item: ConnectionPackage): Message {

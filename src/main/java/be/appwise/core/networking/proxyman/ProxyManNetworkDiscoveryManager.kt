@@ -17,7 +17,7 @@ import java.nio.ByteOrder
 import java.util.zip.GZIPOutputStream
 
 
-object ProxyManNetworkDiscoveryManager {
+internal object ProxyManNetworkDiscoveryManager {
 
     const val MaximumSizePackage = 52428800
 
@@ -26,7 +26,7 @@ object ProxyManNetworkDiscoveryManager {
         .registerTypeAdapter(Data::class.java, Base64TypeAdapter())
         .create()
 
-    private lateinit var nsdManager: NsdManager
+    private var nsdManager: NsdManager? = null
 
     //port and tag that bagle uses
     private const val SERVICE_TYPE: String = "_Proxyman._tcp."
@@ -52,7 +52,7 @@ object ProxyManNetworkDiscoveryManager {
         override fun onServiceUnregistered(arg0: NsdServiceInfo) {
             // Service has been unregistered. This only happens when you call
             // NsdManager.unregisterService() and pass in this listener.
-            nsdManager.unregisterService(this)
+            nsdManager?.unregisterService(this)
         }
 
         override fun onUnregistrationFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
@@ -62,17 +62,29 @@ object ProxyManNetworkDiscoveryManager {
     }
 
     fun teardown() {
-        nsdManager.apply {
+        nsdManager?.apply {
             unregisterService(registrationListener)
             stopServiceDiscovery(discoveryListener)
         }
     }
 
-    private lateinit var mAppContext : Context
-    fun getAppContext() = mAppContext
+    private lateinit var mAppContext: Context
+    private var mDeviceName: String? = null
+    private lateinit var mAllowedServices: ArrayList<String>
 
-    fun registerService(appContext : Context) {
+    fun getAppContext() = mAppContext
+    fun getDeviceName() = mDeviceName
+
+    fun registerService(
+        appContext: Context,
+        deviceName: String? = null,
+        allowedServices: ArrayList<String>
+    ) {
+
+        teardown()
         mAppContext = appContext
+        mDeviceName = deviceName
+        mAllowedServices = allowedServices
         isRegistered = true
         // Create the NsdServiceInfo object, and populate it.
         val serviceInfo = NsdServiceInfo().apply {
@@ -87,7 +99,7 @@ object ProxyManNetworkDiscoveryManager {
             registerService(serviceInfo, NsdManager.PROTOCOL_DNS_SD, registrationListener)
         }
 
-        nsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener)
+        nsdManager?.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener)
     }
 
     private val resolveListener = object : NsdManager.ResolveListener {
@@ -133,7 +145,7 @@ object ProxyManNetworkDiscoveryManager {
                     Logger.d("$TAG --> Same machine: $mServiceName")
 
                 service.serviceName.contains("Proxyman") ->
-                    nsdManager.resolveService(
+                    nsdManager?.resolveService(
                         service,
                         resolveListener
                     )
@@ -155,13 +167,13 @@ object ProxyManNetworkDiscoveryManager {
 
         override fun onStartDiscoveryFailed(serviceType: String, errorCode: Int) {
             Logger.e("$TAG --> Discovery failed: Error code:$errorCode")
-            nsdManager.stopServiceDiscovery(this)
+            nsdManager?.stopServiceDiscovery(this)
             //maybe try again
         }
 
         override fun onStopDiscoveryFailed(serviceType: String, errorCode: Int) {
             Logger.e("$TAG --> Discovery failed: Error code:$errorCode")
-            nsdManager.stopServiceDiscovery(this)
+            nsdManager?.stopServiceDiscovery(this)
         }
     }
 
@@ -178,48 +190,36 @@ object ProxyManNetworkDiscoveryManager {
 
     fun send(proxymanRequestMessage: Message) {
         if (isRegistered) {
-                //other error messages -> maybe not initialized / registerservice not called
-                with(services.iterator()) {
-                    forEach { service ->
-                        val socket = service.value
-                        try {
-                            Logger.d("send message with id ${proxymanRequestMessage.messageType}")
-                            val outPutStream = socket.getOutputStream()
-                            val encodedMessage = gzip(proxyManGson.toJson(proxymanRequestMessage)) ?: proxyManGson.toJson(proxymanRequestMessage).toByteArray()
-                            val output = ByteArrayOutputStream()
-                            output.write(encodedMessage.size.toLong().toByteArray())
-                            output.write(encodedMessage)
-                            outPutStream.write(output.toByteArray())
-                            outPutStream.flush()
-                        } catch (ex: IOException) {
-                            Logger.e("BAGEL MESSAGE NOT SENT : socket with channel : ${socket.channel} and port : ${socket.port} closed")
-                            remove()
-                            addMessageToPendingPackages(proxymanRequestMessage)
-                        }
-                    }
-                    if (services.isEmpty()) {
-                        Logger.d("BAGEL MESSAGE NOT SENT : no sockets found")
+            //other error messages -> maybe not initialized / registerservice not called
+            with(services.iterator()) {
+                forEach { service ->
+                    val socket = service.value
+                    try {
+                        Logger.d("send message with id ${proxymanRequestMessage.messageType}")
+                        val outPutStream = socket.getOutputStream()
+                        val encodedMessage = gzip(proxyManGson.toJson(proxymanRequestMessage))
+                            ?: proxyManGson.toJson(proxymanRequestMessage).toByteArray()
+                        val output = ByteArrayOutputStream()
+                        output.write(encodedMessage.size.toLong().toByteArray())
+                        output.write(encodedMessage)
+                        outPutStream.write(output.toByteArray())
+                        outPutStream.flush()
+                    } catch (ex: IOException) {
+                        Logger.e("BAGEL MESSAGE NOT SENT : socket with channel : ${socket.channel} and port : ${socket.port} closed")
+                        remove()
                         addMessageToPendingPackages(proxymanRequestMessage)
                     }
                 }
+                if (services.isEmpty()) {
+                    Logger.d("BAGEL MESSAGE NOT SENT : no sockets found")
+                    addMessageToPendingPackages(proxymanRequestMessage)
+                }
+            }
         } else {
             throw ProxyManNotRegisteredException()
         }
     }
 
-    /*private fun gzip(string: String): ByteArray? {
-        return try {
-            val data = Buffer()
-            data.writeUtf8(string)
-            val sink = Buffer()
-            val gzipSink = GzipSink(sink)
-            gzipSink.write(data, data.size)
-            gzipSink.close()
-            sink.readByteArray()
-        } catch (ex: IOException){
-            null
-        }
-    }*/
     private fun gzip(string: String): ByteArray? {
         val os = ByteArrayOutputStream(string.length)
 
@@ -230,12 +230,13 @@ object ProxyManNetworkDiscoveryManager {
             val compressed: ByteArray = os.toByteArray()
             os.close()
             compressed
-        } catch (ex: IOException){
+        } catch (ex: IOException) {
             null
         }
     }
 
-    class ProxyManNotRegisteredException : java.lang.Exception("Proxyman Network Discovery Manager is not registered! Before sending messages don't forget to enable it in your App class")
+    class ProxyManNotRegisteredException :
+        java.lang.Exception("Proxyman Network Discovery Manager is not registered! Before sending messages don't forget to enable it in your App class")
 
     private fun Long.toByteArray(): ByteArray {
         val bufferSize = Long.SIZE_BYTES

@@ -14,8 +14,6 @@ class Base64ArrayTypeAdapter : TypeAdapter<ByteArray>() {
         else
             out.nullValue()
     }
-
-
     override fun read(`in`: JsonReader?): ByteArray? {
         return null
     }

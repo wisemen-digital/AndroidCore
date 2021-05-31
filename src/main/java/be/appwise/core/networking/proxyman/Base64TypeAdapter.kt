@@ -8,7 +8,6 @@ import java.io.IOException
 
 
 class Base64TypeAdapter : TypeAdapter<Data?>() {
-    @Throws(IOException::class)
     override fun write(out: JsonWriter, value: Data?) {
         val outString = value?.toData()?.let { Base64.encodeToString(it.toByteArray(), Base64.NO_WRAP) }
         if (outString != null)
@@ -16,11 +15,7 @@ class Base64TypeAdapter : TypeAdapter<Data?>() {
         else
             out.nullValue()
     }
-
-
     override fun read(`in`: JsonReader?): Data? {
         return null
     }
-
-
 }

@@ -6,7 +6,7 @@ import okio.Buffer
 import java.lang.Exception
 import java.util.*
 
-class ProxyManInterceptor : Interceptor {
+class ProxyManInterceptor() : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
@@ -43,12 +43,6 @@ class ProxyManInterceptor : Interceptor {
             request = proxyManRequest,
             startAt = System.currentTimeMillis() / 1000.0
         )
-
-        /*val trafficMessage = ProxyManMessage.buildTrafficMessage(
-           Configuration.default().id,
-           trafficPackage
-       )
-      ProxyManNetworkDiscoveryManager.sendMessage(trafficMessage)*/
 
         //do the actual call not always succeeds so resent message here
         try {
