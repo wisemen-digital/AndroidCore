@@ -3,6 +3,7 @@ package be.appwise.core.networking.proxyman
 import android.content.Context
 import android.net.nsd.NsdManager
 import android.net.nsd.NsdServiceInfo
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.Dispatchers
@@ -16,26 +17,49 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.util.zip.GZIPOutputStream
 
-
 internal object ProxyManNetworkDiscoveryManager {
 
+
+    /**
+     * Discovery Manager that manages connecting , disconnecting with Proxyman services.
+     * It also manages packages that were created when not connected with a ProxyMan service.
+     * When it reconnects with a Proxyman service it flushed als the messages. [flushAllPendingIfNeeded]
+     *
+     * @param mServiceName is the [Device] that is sending the request and response data
+     * @property project is the [Project] that is sending the request and response data
+     * @property icon is the base64 value of the launcher icon for your project/app
+     * @constructor Creates an empty group.
+     */
+
+
+    /**
+     * Maximum allowed package size.
+     * Used to check if [TrafficPackage.responseBodyData] or if [Request.body] are too big to be
+     * sent to Proxyman
+    * */
     const val MaximumSizePackage = 52428800
 
-    val proxyManGson = GsonBuilder()
+    /**
+     *
+     * Used to connect  [Base64ArrayTypeAdapter] and [Base64TypeAdapter]
+     * In doing so making it possible to automatically Base64 encode objects with
+     * the types [ByteArray] and [Data]
+     * */
+    val proxyManGson: Gson = GsonBuilder()
         .registerTypeAdapter(ByteArray::class.java, Base64ArrayTypeAdapter())
         .registerTypeAdapter(Data::class.java, Base64TypeAdapter())
         .create()
 
     private var nsdManager: NsdManager? = null
 
-    //port and tag that bagle uses
+    //port and tag that Proxyman uses
     private const val SERVICE_TYPE: String = "_Proxyman._tcp."
     private const val PORT = 43434
     private const val TAG = "ProxyManNetworkDiscoveryManager"
 
     private var mServiceName: String? = null
 
-    private val registrationListener = object : NsdManager.RegistrationListener {
+    /*private val registrationListener = object : NsdManager.RegistrationListener {
 
         override fun onServiceRegistered(NsdServiceInfo: NsdServiceInfo) {
             // Save the service name. Android may have changed it in order to
@@ -59,11 +83,14 @@ internal object ProxyManNetworkDiscoveryManager {
             // Unregistration failed. Put debugging code here to determine why.
             Logger.d("unregistrationfailed errorcode $errorCode")
         }
-    }
+    }*/
 
-    fun teardown() {
+    /**
+     * Disconnects unneeded listeners from stray nsdmanager
+     * */
+    private fun teardown() {
         nsdManager?.apply {
-            unregisterService(registrationListener)
+            /*unregisterService(registrationListener)*/
             stopServiceDiscovery(discoveryListener)
         }
     }
@@ -87,19 +114,19 @@ internal object ProxyManNetworkDiscoveryManager {
         mAllowedServices = allowedServices
         isRegistered = true
         // Create the NsdServiceInfo object, and populate it.
-        val serviceInfo = NsdServiceInfo().apply {
-            // The name is subject to change based on conflicts
-            // with other services advertised on the same network.
-            serviceName = " "
-            serviceType = SERVICE_TYPE
-            port = PORT
-        }
+        /* val serviceInfo = NsdServiceInfo().apply {
+             // The name is subject to change based on conflicts
+             // with other services advertised on the same network.
+             serviceName = " "
+             serviceType = SERVICE_TYPE
+             port = PORT
+         }*/
 
         nsdManager = (getAppContext().getSystemService(Context.NSD_SERVICE) as NsdManager).apply {
-            registerService(serviceInfo, NsdManager.PROTOCOL_DNS_SD, registrationListener)
+            /*registerService(serviceInfo, NsdManager.PROTOCOL_DNS_SD, registrationListener)*/
+            discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener)
         }
 
-        nsdManager?.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener)
     }
 
     private val resolveListener = object : NsdManager.ResolveListener {
