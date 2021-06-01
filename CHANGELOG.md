@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 
 - Added Double and Tripple triggers for LiveData.
 - `tryNavigate` functions have been added.
+- Added `ProxymanInterceptor` and more, now we can debug our request/response data for calls in the Proxyman mac app.
 
 ### Breaking
 
