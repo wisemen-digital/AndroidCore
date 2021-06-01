@@ -47,8 +47,8 @@ class ConnectionPackage() : Data {
  * @property response holds the reponse code and headers
  * @property responseBodyData holds a bytearray representing the response body data
  * @property packageType is the type of the package. Is a filter in the Proxyman client. Only http at the moment.
- * @property startAt Time when the request was sent.
- * @property endAt Time when response was received.
+ * @property startAt Time when the request was sent (in seconds).
+ * @property endAt Time when response was received (in seconds).
  * @constructor Creates a TrafficPackage.
  */
 class TrafficPackage(
@@ -99,7 +99,7 @@ class TrafficPackage(
             val buffer = source.buffer()
             this.responseBodyData = buffer.copy().readString(StandardCharsets.UTF_8).toByteArray()
         }
-        this.endAt = response.receivedResponseAtMillis
+        this.endAt = response.receivedResponseAtMillis.div(1000)
     }
 
     /**
@@ -118,10 +118,10 @@ class TrafficPackage(
 }
 
 /**
-* The app that is sending the request and response data to Proxyman
+ * The app that is sending the request and response data to Proxyman
  * @param name name of the project
  * @param bundleIdentifier package name of the project
-**/
+ **/
 
 class Project {
     companion object {
