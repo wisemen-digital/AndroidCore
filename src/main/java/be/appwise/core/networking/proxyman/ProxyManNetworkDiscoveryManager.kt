@@ -74,38 +74,12 @@ internal object ProxyManNetworkDiscoveryManager {
 
     private var mServiceName: String? = null
 
-    /*private val registrationListener = object : NsdManager.RegistrationListener {
-
-        override fun onServiceRegistered(NsdServiceInfo: NsdServiceInfo) {
-            // Save the service name. Android may have changed it in order to
-            // resolve a conflict, so update the name you initially requested
-            // with the name Android actually used.
-            mServiceName = NsdServiceInfo.serviceName
-        }
-
-        override fun onRegistrationFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
-            // Registration failed! Put debugging code here to determine why.
-            Logger.d("registrationfailed errorcode $errorCode")
-        }
-
-        override fun onServiceUnregistered(arg0: NsdServiceInfo) {
-            // Service has been unregistered. This only happens when you call
-            // NsdManager.unregisterService() and pass in this listener.
-            nsdManager?.unregisterService(this)
-        }
-
-        override fun onUnregistrationFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
-            // Unregistration failed. Put debugging code here to determine why.
-            Logger.d("unregistrationfailed errorcode $errorCode")
-        }
-    }*/
 
     /**
      * Disconnects unneeded listeners from stray nsdmanager
      * */
     private fun teardown() {
         nsdManager?.apply {
-            /*unregisterService(registrationListener)*/
             stopServiceDiscovery(discoveryListener)
         }
     }
@@ -128,17 +102,8 @@ internal object ProxyManNetworkDiscoveryManager {
         mDeviceName = deviceName
         mAllowedServices = allowedServices
         isRegistered = true
-        // Create the NsdServiceInfo object, and populate it.
-        /* val serviceInfo = NsdServiceInfo().apply {
-             // The name is subject to change based on conflicts
-             // with other services advertised on the same network.
-             serviceName = " "
-             serviceType = SERVICE_TYPE
-             port = PORT
-         }*/
 
         nsdManager = (getAppContext().getSystemService(Context.NSD_SERVICE) as NsdManager).apply {
-            /*registerService(serviceInfo, NsdManager.PROTOCOL_DNS_SD, registrationListener)*/
             discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener)
         }
 
