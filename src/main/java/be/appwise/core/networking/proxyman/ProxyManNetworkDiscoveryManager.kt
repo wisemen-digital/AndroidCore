@@ -15,7 +15,10 @@ import java.net.InetAddress
 import java.net.Socket
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import java.util.*
 import java.util.zip.GZIPOutputStream
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 internal object ProxyManNetworkDiscoveryManager {
 
@@ -144,6 +147,7 @@ internal object ProxyManNetworkDiscoveryManager {
         override fun onServiceFound(service: NsdServiceInfo) {
             // A service was found! Do something with it.
             Logger.d("$TAG -->  discovery success $service")
+            val isProxymanService = if(mAllowedServices.isEmpty()) service.serviceName.contains("Proxyman-") else service.serviceName.substringAfter("Proxyman-").toLowerCase(Locale.ROOT) in mAllowedServices
             when {
                 service.serviceType != SERVICE_TYPE -> // Service type is the string containing the protocol and
                     // transport layer for this service.
@@ -151,7 +155,7 @@ internal object ProxyManNetworkDiscoveryManager {
                 service.serviceName == mServiceName ->  // The name of the service tells the user what they'd be
                     Logger.d("$TAG --> Same machine: $mServiceName")
 
-                service.serviceName.contains("Proxyman") ->
+                isProxymanService ->
                     nsdManager?.resolveService(
                         service,
                         resolveListener
