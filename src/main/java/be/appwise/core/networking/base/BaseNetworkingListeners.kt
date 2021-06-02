@@ -2,7 +2,6 @@ package be.appwise.core.networking.base
 
 import android.app.PendingIntent
 import android.content.Intent
-import android.util.Log
 import be.appwise.core.R
 import be.appwise.core.core.CoreApp
 import be.appwise.core.networking.Networking
@@ -15,15 +14,10 @@ import com.orhanobut.hawk.Hawk
 
 interface BaseNetworkingListeners {
     companion object {
-        val DEFAULT = object :
-            BaseNetworkingListeners {
-            override fun extraLogoutStep() {
-                Log.e("BaseNetworkListeners", "No extra logout steps needed at the moment")
-            }
-        }
+        val DEFAULT = object : BaseNetworkingListeners {}
     }
 
-    //<editor-fold desc="ErrorHandling">
+//<editor-fold desc="ErrorHandling">
     /**
      * This function will be used to handle any errors that come from the network responses
      * Whenever you need to customize your error string, just add a string resource to your
@@ -77,7 +71,7 @@ interface BaseNetworkingListeners {
         return jsonArray.first()?.asJsonObject?.get("message")?.asString
             ?: "" /*.joinToString{ it.asJsonObject.get("message").asString}*/
     }
-    //</editor-fold>
+//</editor-fold>
 
     /**
      * This logout function can be used to cleanup any resources the app is using.
@@ -117,7 +111,7 @@ interface BaseNetworkingListeners {
      *      ProtectedRestClient.getHttpClient.dispatcher().cancelAll()
      * ```
      */
-    fun extraLogoutStep(){
+    fun extraLogoutStep() {
         if (Hawk.isBuilt()) {
             Hawk.deleteAll()
         }
