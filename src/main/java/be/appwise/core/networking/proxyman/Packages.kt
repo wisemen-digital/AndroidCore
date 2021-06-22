@@ -58,8 +58,8 @@ class TrafficPackage(
     var response: Response? = null,
     var responseBodyData: ByteArray? = null,
     var packageType: PackageType = PackageType.http,
-    var startAt: Long,
-    var endAt: Long? = null
+    var startAt: Double,
+    var endAt: Double? = null
 ) : Data {
     //startat and endat are fractional seconds
     enum class PackageType {
@@ -99,7 +99,7 @@ class TrafficPackage(
             val buffer = source.buffer()
             this.responseBodyData = buffer.copy().readString(StandardCharsets.UTF_8).toByteArray()
         }
-        this.endAt = response.receivedResponseAtMillis.div(1000)
+        this.endAt = response.receivedResponseAtMillis.div(1000.0)
     }
 
     /**

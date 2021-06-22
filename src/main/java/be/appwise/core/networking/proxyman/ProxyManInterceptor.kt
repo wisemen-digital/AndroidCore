@@ -41,7 +41,7 @@ class ProxyManInterceptor() : Interceptor {
         val trafficPackage = TrafficPackage(
             id = UUID.randomUUID().toString().toUpperCase(),
             request = proxyManRequest,
-            startAt = System.currentTimeMillis() / 1000
+            startAt = System.currentTimeMillis().div(1000.0)
         )
 
         //do the actual call not always succeeds so resent message here
