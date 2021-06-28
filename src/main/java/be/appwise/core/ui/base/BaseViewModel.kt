@@ -15,7 +15,7 @@ abstract class BaseViewModel : ViewModel() {
     private val _loading = MutableLiveData<Boolean>().apply { value = false }
     val loading get() = _loading as LiveData<Boolean>
 
-    private fun isLoading(loading: Boolean) {
+    fun isLoading(loading: Boolean) {
         _loading.postValue(loading)
     }
 
