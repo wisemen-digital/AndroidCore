@@ -1,4 +1,4 @@
-package be.appwise.core.ui.custom
+package be.appwise.emptyRecyclerView
 
 import android.content.Context
 import android.util.AttributeSet
@@ -41,7 +41,7 @@ import androidx.recyclerview.widget.RecyclerView
  *             android:layout_width="wrap_content"
  *             android:layout_height="wrap_content" />
  *
- *         <be.appwise.core.ui.custom.RecyclerViewEmptyLoadingSupport
+ *         <be.appwise.emptyRecyclerView.ViewStateRecyclerView
  *             android:id="@+id/rvCategories"
  *             android:layout_width="match_parent"
  *             android:layout_height="match_parent" />
@@ -49,16 +49,16 @@ import androidx.recyclerview.widget.RecyclerView
  * ```
  * See [this SO post](https://stackoverflow.com/a/52716769/2263408) for more info
  */
-class RecyclerViewEmptyLoadingSupport @JvmOverloads constructor(
+class ViewStateRecyclerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : RecyclerView(context, attrs, defStyleAttr) {
 
-    var stateView: RecyclerViewEnum? = RecyclerViewEnum.LOADING
+    var state: RecyclerViewState? = RecyclerViewState.LOADING
         set(value) {
             field = value
-            setState()
+            updateState()
         }
     var emptyStateView: View? = null
     var loadingStateView: View? = null
@@ -86,35 +86,35 @@ class RecyclerViewEmptyLoadingSupport @JvmOverloads constructor(
     }
 
     fun onChangeState() {
-        stateView = if (adapter?.itemCount == 0) {
-            RecyclerViewEnum.EMPTY_STATE
+        state = if (adapter?.itemCount == 0) {
+            RecyclerViewState.EMPTY
         } else {
-            RecyclerViewEnum.NORMAL
+            RecyclerViewState.NORMAL
         }
     }
 
-    private fun setState() {
-        when (this.stateView) {
-            RecyclerViewEnum.LOADING -> {
+    private fun updateState() {
+        when (state) {
+            RecyclerViewState.LOADING -> {
                 loadingStateView?.visibility = View.VISIBLE
-                this@RecyclerViewEmptyLoadingSupport.visibility = View.GONE
+                this@ViewStateRecyclerView.visibility = View.GONE
                 emptyStateView?.visibility = View.GONE
             }
 
-            RecyclerViewEnum.NORMAL -> {
+            RecyclerViewState.NORMAL -> {
                 loadingStateView?.visibility = View.GONE
-                this@RecyclerViewEmptyLoadingSupport.visibility = View.VISIBLE
+                this@ViewStateRecyclerView.visibility = View.VISIBLE
                 emptyStateView?.visibility = View.GONE
             }
-            RecyclerViewEnum.EMPTY_STATE -> {
+            RecyclerViewState.EMPTY -> {
                 loadingStateView?.visibility = View.GONE
-                this@RecyclerViewEmptyLoadingSupport.visibility = View.GONE
+                this@ViewStateRecyclerView.visibility = View.GONE
                 emptyStateView?.visibility = View.VISIBLE
             }
         }
     }
 
-    fun resetState(){
+    fun resetState() {
         onChangeState()
     }
 
@@ -134,10 +134,4 @@ class RecyclerViewEmptyLoadingSupport @JvmOverloads constructor(
         return paddingBottom
     }
     //</editor-fold>
-}
-
-enum class RecyclerViewEnum {
-    LOADING,
-    NORMAL,
-    EMPTY_STATE
 }
