@@ -8,11 +8,23 @@
 implementation 'com.github.appwise-labs:AndroidCore:<Latest-Version>'
 ```
 
+From v1.1.0 the library has grown to use multiple modules for specific use-cases. 
+The core can be added by using this dependency.
+```groovy
+implementation 'com.github.appwise-labs:AndroidCore:core:<Latest-Version>'
+```
+
+To use another module of this library just follow the folder structure
+```groovy
+implementation 'com.github.appwise-labs:AndroidCore:list:emptyRecyclerView:<Latest-Version>'
+```
+
+
 ## <u>Initialize</u>
 
 In order to initialize AndroidCore correctly you have 2 options.
 
-- CoreApp: to initialze the Logger, ErrorActivity and Hawk (Hawk is initialized by the `init()` on `CoreApp`
+- CoreApp: to initialze the Logger, ErrorActivity and Hawk (Hawk is initialized by default by the `init()` on `CoreApp`
 - Networking: to initialize everything regarding the networking part of Core
 
 ```kotlin
@@ -118,7 +130,9 @@ object DBConstants {
 }
 ```
 
-Doing this will enable you to provide your table and column names in queries like so:
+Another possibility is to add the constants in a `companion object` in the classes where the constants are needed in.
+
+Doing either of this will enable you to provide your table and column names in queries like so:
 
 ```kotlin
 @Query("SELECT * FROM ${DBConstants.POEM_TABLE_NAME} WHERE ${DBConstants.COLUMN_ID_POEM} = :poemId")

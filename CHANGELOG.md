@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Master](https://github.com/appwise-labs/AndroidCore)
 
+### Breaking
+
+- Moved Core to a proper module, now a better abstraction can be achieved by adding more submodules to Core. Even a sample app can be created within this project as well. Details of the procedure can be found [here](https://appwise.atlassian.net/wiki/spaces/~635004520/pages/415989761/Android+Core+Multiple+Submodules).
+
 ### Bug Fixes
 
 - Removed 'JCenter' from the repositories list as that [service has been discontinued](https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/).
