@@ -37,6 +37,8 @@ Do note, that when you use AndroidCore as a Dependency that the `isLoggable` par
 
 ## <u>RestClient</u>
 
+When implementing a Restclient in your project you can extend from `BaseRestClient`. Don't forget to add the `API Service Interface` inside the `<>`. Do mind that you still have a choice to implement the RestClient as an `object` or as a regular `class`.
+
 When implementing a Restclient in your project you can extend from `BaseRestClient`. Do mind that you still have a choice to implement the RestClient as an `object` or as a regular `class`. (Each time you call the class `AppRestClient()` it'll create a new instance, while calling the object `AppRestClient` retains the same instance)
 
 In your RestClient you can have multiple apiServices to accomodate for the multitude of Repositories in the project, or you can have 1 single apiService.
@@ -74,6 +76,36 @@ Within the RestClient class, you have a lot of flexibility to adjust it to your 
 <p align="center">
   <img width="250" src="static/RestClient-flexibility.png">
 </p>
+
+## <u>ProxymanInterceptor</u>
+
+The ProxymanInterceptor is a interceptor that sends request/response data over local network to services that are running Proxyman. If you want to use the ProxymanInterceptor you have to do follow these steps
+
+1. Register the ProxymanService (discovery of Proxyman services/clients on local network), the second parameter is optional and will be used as the device identifier in the Proxyman client, when none is given a your device's name will be used. As a third parameter, you have the option to limit the clients which will receive your network packages when they are running Proxyman.
+
+```
+Networking.Builder()
+    .registerProxymanService(this, "OnePlus-Appwise", arrayListOf("MacBook-1", "MacBook-Personal"))
+    .build()
+```
+
+2. Add ProxymanInterceptor to instance of BaseRestclient by overriding enableProxyManInterceptor()
+
+```kotlin
+object ProtectedRestClient : BaseRestClient<NetworkService>(){
+        override fun enableProxyManInterceptor() = Buildflavor == "dev"
+}
+```
+
+---
+
+**NOTE:** Make sure you disable the ProxymanInterceptor on Release builds by checking BuildConfig.Debug. If you use the new CI file it will be ok. If are not using the new file check if your **Buildflavor == "dev"**.
+
+---
+
+3. Make sure your Android device and the service running Proxyman are on the same network.
+
+4. Enjoy!
 
 ## <u>Room</u>
 
