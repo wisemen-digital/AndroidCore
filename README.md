@@ -39,12 +39,35 @@ Do note, that when you use AndroidCore as a Dependency that the `isLoggable` par
 
 When implementing a Restclient in your project you can extend from `BaseRestClient`. Don't forget to add the `API Service Interface` inside the `<>`. Do mind that you still have a choice to implement the RestClient as an `object` or as a regular `class`.
 
-```kotlin
-object UnProtectedRestClient : BaseRestClient<NetworkService>(){
-    override val apiService = NetworkService::class.java
-    override val protectedClient = false
+When implementing a Restclient in your project you can extend from `BaseRestClient`. Do mind that you still have a choice to implement the RestClient as an `object` or as a regular `class`. (Each time you call the class `AppRestClient()` it'll create a new instance, while calling the object `AppRestClient` retains the same instance)
 
-    override fun getBaseUrl() = "https://www.baseUrl.com/"
+In your RestClient you can have multiple apiServices to accomodate for the multitude of Repositories in the project, or you can have 1 single apiService.
+
+```kotlin
+object UnProtectedRestClient : BaseRestClient(){
+
+    override val protectedClient = false
+    override fun getBaseUrl() = "https://www.apiEndpoint.com/api/v1/"
+
+    val userService: UserNetworkService by lazy {
+        // Use this function ('createRetrofit()') when you wish to use a different 'baseUrl' with your service
+        createRetrofit("https://www.apiEndpoint.com/api/v1/user")
+            .create(PokemonNetworkService::class.java)
+    }
+
+    val authService: AuthNetworkService by lazy {
+        // Use this when you just want to use a different service with the default 'getBaseUrl()'
+        getRetrofit.create(MatchUpNetworkService::class.java)
+    }
+
+    val settingsService: SettingsNetworkService by lazy {
+        // This behaves the same as using 'createRetrofit(baseUrl)',
+        // but offers more options by using the builder itself.
+        getRetrofit.newBuilder()
+            .baseUrl("https://www.apiEndpoint.com/api/v1/settings")
+            .build()
+            .create(SettingsNetworkService::class.java)
+    }
 }
 ```
 
@@ -53,6 +76,36 @@ Within the RestClient class, you have a lot of flexibility to adjust it to your 
 <p align="center">
   <img width="250" src="static/RestClient-flexibility.png">
 </p>
+
+## <u>ProxymanInterceptor</u>
+
+The ProxymanInterceptor is a interceptor that sends request/response data over local network to services that are running Proxyman. If you want to use the ProxymanInterceptor you have to do follow these steps
+
+1. Register the ProxymanService (discovery of Proxyman services/clients on local network), the second parameter is optional and will be used as the device identifier in the Proxyman client, when none is given a your device's name will be used. As a third parameter, you have the option to limit the clients which will receive your network packages when they are running Proxyman.
+
+```
+Networking.Builder()
+    .registerProxymanService(this, "OnePlus-Appwise", arrayListOf("MacBook-1", "MacBook-Personal"))
+    .build()
+```
+
+2. Add ProxymanInterceptor to instance of BaseRestclient by overriding enableProxyManInterceptor()
+
+```kotlin
+object ProtectedRestClient : BaseRestClient<NetworkService>(){
+        override fun enableProxyManInterceptor() = Buildflavor == "dev"
+}
+```
+
+---
+
+**NOTE:** Make sure you disable the ProxymanInterceptor on Release builds by checking BuildConfig.Debug. If you use the new CI file it will be ok. If are not using the new file check if your **Buildflavor == "dev"**.
+
+---
+
+3. Make sure your Android device and the service running Proxyman are on the same network.
+
+4. Enjoy!
 
 ## <u>Room</u>
 
@@ -78,33 +131,103 @@ abstract class Dao: BaseRoomDao<Item>("item"){
 
 In case you omit the `open` keyword you'll get an error `error: Method annotated with @Transaction must not be private, final, or abstract.`
 
-## <u>ProxymanInterceptor</u>
+### Custom 'id' column names
 
-The ProxymanInterceptor is a interceptor that sends request/response data over local network to services that are running Proxyman. If you want to use the ProxymanInterceptor you have to do follow these steps 
+When using `BaseEntity` and you wish to provide a different name for the `id` column, you can do so by using the `@ColumnInfo` on your Entity. Doing this, however, breaks the standard use of our `BaseDao` class. For it to work, just overridde the `idColumnInfo` in your Dao to tie it together.
 
-1. Register the ProxymanService (discovery of Proxyman services/clients on local network)
 ```kotlin
-Networking.Builder()
-...
-.registerProxymanService(this)
-...
-.build()
+override val idColumnInfo = DBConstants.COLUMN_ID_USER
 ```
-2. Add ProxymanInterceptor to instance of BaseRestclient by overriding enableProxyManInterceptor()
+
+I suggest to use a class to put all your Database constants in, i.e.:
+
 ```kotlin
-object ProtectedRestClient : BaseRestClient<NetworkService>(){
-    ...
+object DBConstants {
+    const val DATABASE_NAME = "poemCollection.db"
+    const val USER_TABLE_NAME = "user"
 
-    override fun enableProxyManInterceptor() = BuildConfig.DEBUG
-
-    ...
+    const val COLUMN_ID_USER = "userId"
 }
 ```
-Make sure you disable the ProxymanInterceptor on Release builds by checking BuildConfig.Debug. If you use the new CI file it will be ok. If are not using the new file check if your Buildflavor == "dev".
 
-3. Make sure your Android device and the service running Proxyman are on the same network.
+Doing this will enable you to provide your table and column names in queries like so:
 
-4. Enjoy!
+```kotlin
+@Query("SELECT * FROM ${DBConstants.POEM_TABLE_NAME} WHERE ${DBConstants.COLUMN_ID_POEM} = :poemId")
+```
+
+Should you ever need to change those values, then you'd only have to do so in one location.
+
+## <u>Base Activity Fragment</u>
+
+To reduce some boilerplate code whilst creating new Fragments or Activities you can use these BaseClasses
+
+- BaseFragment | BaseActivity
+- BaseVMFragment | BaseVMActivity
+- BaseBindingVMFragment |BaseBindingVMActivity
+
+Do mind, that by using the `BaseBindingVM` equivalent you will automatically be using the other 2 as well. The hierarchy is as follows:
+
+`BaseBindingVMFragment` -------extends-------> `BaseVMFragment` -------extends-------> `BaseFragment`
+
+### <u>BaseVM...</u>
+
+By using `BaseVM...` you will need to override the value `mViewModel`. After that is set, the `DefaultExceptionHandler` will also be set automatically
+
+```kotlin
+override val mViewModel: MainViewModel by viewModels()
+```
+
+With `BaseVM...` you also have the option to add a custom `viewModelFactory` to it. For this to work you just need to override the function `getViewModelFactory()`
+
+```kotlin
+override fun getViewModelFactory() = SplashViewModel.factory("someValue")
+```
+
+You can then add the factory to the declaration of the `mViewModel`
+
+```kotlin
+override val mViewModel: MainViewModel by viewModels() {
+    MainViewModel.factory("someValue")
+}
+```
+
+### <u>BaseBindingVM...</u>
+
+Everything that applies to `BaseVM...` applies to this class as well. A couple of things to add to this is that the Binding class is an expected Generic. You'll also have to override a function `getLayout()` to finish the basic setup for DataBinding
+
+```kotlin
+class MainFragment : BaseBindingVMFragment<FragmentMainBinding>() {
+    override fun getLayout() = R.layout.fragment_main
+
+}
+```
+
+If you have any variables in your layout that you wish to dataBind to it, you'll have to do that yourself in the `onCreate()` (for Activities) or `onViewCreated()` (for Fragments)
+
+```kotlin
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+
+    mBinding.run {
+        viewModel = mViewModel
+    }
+}
+
+// OR
+
+override fun onViewCreated(view: View,s savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    mBinding.run {
+        viewModel = mViewModel.apply {
+            // After the viewModel has been initialized you can use the functions and variables like normal
+            fetchData()
+        }
+    }
+}
+
+```
 
 ## <u>Contribution</u>
 

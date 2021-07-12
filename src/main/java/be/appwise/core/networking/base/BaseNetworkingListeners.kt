@@ -2,7 +2,6 @@ package be.appwise.core.networking.base
 
 import android.app.PendingIntent
 import android.content.Intent
-import android.util.Log
 import be.appwise.core.R
 import be.appwise.core.core.CoreApp
 import be.appwise.core.networking.Networking
@@ -15,12 +14,7 @@ import com.orhanobut.hawk.Hawk
 
 interface BaseNetworkingListeners {
     companion object {
-        val DEFAULT = object :
-            BaseNetworkingListeners {
-            override fun extraLogoutStep() {
-                Log.e("BaseNetworkListeners", "No extra logout steps needed at the moment")
-            }
-        }
+        val DEFAULT = object : BaseNetworkingListeners {}
     }
 
     //<editor-fold desc="ErrorHandling">
@@ -117,7 +111,7 @@ interface BaseNetworkingListeners {
      *      ProtectedRestClient.getHttpClient.dispatcher().cancelAll()
      * ```
      */
-    fun extraLogoutStep(){
+    fun extraLogoutStep() {
         if (Hawk.isBuilt()) {
             Hawk.deleteAll()
         }
