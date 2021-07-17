@@ -1,4 +1,4 @@
-package com.example.coredemo
+package com.example.coredemo.ui
 
 import be.appwise.core.ui.base.BaseViewModel
 

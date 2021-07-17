@@ -1,10 +1,11 @@
-package com.example.coredemo
+package com.example.coredemo.ui
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import be.appwise.core.extensions.activity.snackBar
 import be.appwise.core.ui.base.BaseBindingVMActivity
+import com.example.coredemo.R
 import com.example.coredemo.databinding.ActivityMainBinding
+import com.example.coredemo.ui.backdrop.BackdropActivity
 
 class MainActivity : BaseBindingVMActivity<ActivityMainBinding>() {
 
@@ -19,8 +20,7 @@ class MainActivity : BaseBindingVMActivity<ActivityMainBinding>() {
 
     private fun initViews() {
         mBinding.btnBackdrop.setOnClickListener {
-            //TODO: open new Activity!!!
-            snackBar("Open activity Backdrop!!")
+            startActivity(BackdropActivity.newIntent(this))
         }
     }
 }
