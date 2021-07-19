@@ -144,8 +144,8 @@ object Networking {
             return this
         }
 
-        fun registerProxymanService(context: Context,deviceName : String?= null , allowedServices : ArrayList<String> = arrayListOf()) : Builder{
-            ProxyManNetworkDiscoveryManager.registerService(context,deviceName,allowedServices)
+        fun registerProxymanService(context: Context,deviceName : String?= null , allowedServices : ArrayList<String> = arrayListOf(),isLoggingEnabled : Boolean = true) : Builder{
+            ProxyManNetworkDiscoveryManager.registerService(context,deviceName,allowedServices,isLoggingEnabled)
             return this
         }
 

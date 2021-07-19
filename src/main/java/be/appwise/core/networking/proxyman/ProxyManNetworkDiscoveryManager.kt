@@ -58,9 +58,13 @@ internal object ProxyManNetworkDiscoveryManager {
      * @property mAllowedServices
      * A list of service names that is used to determine with which services this DiscoveryManager will connect.
      * Packages will only be sent to allowed services.
+     *
+     * @property maxPendingItem
+     * The max amount of packages (calls) that can be hold in memory (in [pendingPackages]) when there aren't any clients available to receive them.
+     *
+     * @property mIsLoggingEnabled
+     * Is used to determine if the Proxyman classes should show logging or not
      */
-
-
 
     const val MaximumSizePackage = 52428800
 
@@ -90,6 +94,8 @@ internal object ProxyManNetworkDiscoveryManager {
     private lateinit var mAppContext: Context
     private var mDeviceName: String? = null
     private lateinit var mAllowedServices: ArrayList<String>
+    private var mIsLoggingEnabled: Boolean = true
+    private const val maxPendingItem = 30
 
     fun getAppContext() = mAppContext
     fun getDeviceName() = mDeviceName
@@ -97,19 +103,20 @@ internal object ProxyManNetworkDiscoveryManager {
     fun registerService(
         appContext: Context,
         deviceName: String? = null,
-        allowedServices: ArrayList<String>
+        allowedServices: ArrayList<String>,
+        isLoggingEnabled: Boolean = true,
     ) {
 
         teardown()
         mAppContext = appContext
         mDeviceName = deviceName
         mAllowedServices = allowedServices
-        isRegistered = true
+        mIsRegistered = true
+        mIsLoggingEnabled = isLoggingEnabled
 
         nsdManager = (getAppContext().getSystemService(Context.NSD_SERVICE) as NsdManager).apply {
             discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener)
         }
-
     }
 
     private val resolveListener = object : NsdManager.ResolveListener {
@@ -122,10 +129,10 @@ internal object ProxyManNetworkDiscoveryManager {
         }
 
         override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
-            Logger.d("Resolve Succeeded. $serviceInfo")
+            showDebugMessage("Resolve Succeeded. $serviceInfo")
             val serviceName: String = serviceInfo.serviceName
             if (serviceName == mServiceName) {
-                Logger.d("Same IP.")
+                showDebugMessage("Same IP.")
                 return
             }
             mService = serviceInfo
@@ -136,24 +143,42 @@ internal object ProxyManNetworkDiscoveryManager {
         }
     }
 
+
+    private fun showDebugMessage(debugMessage: String) {
+        if (mIsLoggingEnabled)
+            Logger.d(debugMessage)
+    }
+
+    private fun showErrorMessage(debugMessage: String) {
+        if (mIsLoggingEnabled)
+            Logger.e(debugMessage)
+    }
+
+    private fun showInfoMessage(debugMessage: String) {
+        if (mIsLoggingEnabled)
+            Logger.i(debugMessage)
+    }
+
     // Instantiate a new DiscoveryListener
     private val discoveryListener = object : NsdManager.DiscoveryListener {
 
         // Called as soon as service discovery begins.
         override fun onDiscoveryStarted(regType: String) {
-            Logger.d("Service discovery started")
+            showDebugMessage("Service discovery started")
         }
 
         override fun onServiceFound(service: NsdServiceInfo) {
             // A service was found! Do something with it.
-            Logger.d("$TAG -->  discovery success $service")
-            val isProxymanService = if(mAllowedServices.isEmpty()) service.serviceName.contains("Proxyman-") else service.serviceName.substringAfter("Proxyman-").toLowerCase(Locale.ROOT) in mAllowedServices
+            showDebugMessage("$TAG -->  discovery success $service")
+            val isProxymanService =
+                if (mAllowedServices.isEmpty()) service.serviceName.contains("Proxyman-") else service.serviceName.substringAfter(
+                    "Proxyman-").toLowerCase(Locale.ROOT) in mAllowedServices
             when {
                 service.serviceType != SERVICE_TYPE -> // Service type is the string containing the protocol and
                     // transport layer for this service.
-                    Logger.d("$TAG --> Unknown Service Type: ${service.serviceType}")
+                    showDebugMessage("$TAG --> Unknown Service Type: ${service.serviceType}")
                 service.serviceName == mServiceName ->  // The name of the service tells the user what they'd be
-                    Logger.d("$TAG --> Same machine: $mServiceName")
+                    showDebugMessage("$TAG --> Same machine: $mServiceName")
 
                 isProxymanService ->
                     nsdManager?.resolveService(
@@ -168,22 +193,22 @@ internal object ProxyManNetworkDiscoveryManager {
             // When the network service is no longer available.
             // Internal bookkeeping code goes here.
             services.remove(service.serviceName)
-            Logger.e("$TAG --> service lost: $service remaining sockets : ${services.size}")
+            showErrorMessage("$TAG --> service lost: $service remaining sockets : ${services.size}")
 
         }
 
         override fun onDiscoveryStopped(serviceType: String) {
-            Logger.i("$TAG --> Discovery stopped: $serviceType")
+            showInfoMessage("$TAG --> Discovery stopped: $serviceType")
         }
 
         override fun onStartDiscoveryFailed(serviceType: String, errorCode: Int) {
-            Logger.e("$TAG --> Discovery failed: Error code:$errorCode")
+            showErrorMessage("$TAG --> Discovery failed: Error code:$errorCode")
             nsdManager?.stopServiceDiscovery(this)
             //maybe try again
         }
 
         override fun onStopDiscoveryFailed(serviceType: String, errorCode: Int) {
-            Logger.e("$TAG --> Discovery failed: Error code:$errorCode")
+            showErrorMessage("$TAG --> Discovery failed: Error code:$errorCode")
             nsdManager?.stopServiceDiscovery(this)
         }
     }
@@ -196,17 +221,17 @@ internal object ProxyManNetworkDiscoveryManager {
         sendAppData()
     }
 
-    private var isRegistered = false
+    private var mIsRegistered = false
     private var pendingPackages = arrayListOf<Message>()
 
     fun send(proxymanRequestMessage: Message) {
-        if (isRegistered) {
+        if (mIsRegistered) {
             //other error messages -> maybe not initialized / registerservice not called
             with(services.iterator()) {
                 forEach { service ->
                     val socket = service.value
                     try {
-                        Logger.d("send message with id ${proxymanRequestMessage.messageType}")
+                        showDebugMessage("send message with type ${proxymanRequestMessage.messageType}")
                         val outPutStream = socket.getOutputStream()
                         val encodedMessage = gzip(proxyManGson.toJson(proxymanRequestMessage))
                             ?: proxyManGson.toJson(proxymanRequestMessage).toByteArray()
@@ -216,13 +241,13 @@ internal object ProxyManNetworkDiscoveryManager {
                         outPutStream.write(output.toByteArray())
                         outPutStream.flush()
                     } catch (ex: IOException) {
-                        Logger.e("BAGEL MESSAGE NOT SENT : socket with channel : ${socket.channel} and port : ${socket.port} closed")
+                        showErrorMessage("BAGEL MESSAGE NOT SENT : socket with channel : ${socket.channel} and port : ${socket.port} closed")
                         remove()
                         addMessageToPendingPackages(proxymanRequestMessage)
                     }
                 }
                 if (services.isEmpty()) {
-                    Logger.d("BAGEL MESSAGE NOT SENT : no sockets found")
+                    showDebugMessage("BAGEL MESSAGE NOT SENT : no sockets found")
                     addMessageToPendingPackages(proxymanRequestMessage)
                 }
             }
@@ -257,12 +282,15 @@ internal object ProxyManNetworkDiscoveryManager {
     }
 
     private fun addMessageToPendingPackages(message: Message) {
+        if (pendingPackages.count() >= maxPendingItem) {
+            pendingPackages.clear()
+        }
         pendingPackages.add(message)
     }
 
     private fun flushAllPendingIfNeeded() {
         if (pendingPackages.isEmpty()) return
-        Logger.d("[Proxyman PoC] Flush ${pendingPackages.count()} items")
+        showDebugMessage("[Proxyman PoC] Flush ${pendingPackages.count()} items")
         GlobalScope.launch(Dispatchers.IO) {
             pendingPackages.listIterator().forEach {
                 send(it)
