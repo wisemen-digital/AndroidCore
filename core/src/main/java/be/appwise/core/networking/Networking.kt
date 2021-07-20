@@ -5,6 +5,7 @@ import be.appwise.core.networking.bagel.BagelNetworkDiscoveryManager
 import be.appwise.core.networking.base.BaseNetworkingListeners
 import be.appwise.core.networking.model.AccessToken
 import be.appwise.core.networking.model.ApiError
+import be.appwise.core.networking.proxyman.ProxyManNetworkDiscoveryManager
 import retrofit2.Response
 
 object Networking {
@@ -140,6 +141,11 @@ object Networking {
 
         fun registerBagelService(context: Context) : Builder{
             BagelNetworkDiscoveryManager.registerService(context)
+            return this
+        }
+
+        fun registerProxymanService(context: Context,deviceName : String?= null , allowedServices : ArrayList<String> = arrayListOf()) : Builder{
+            ProxyManNetworkDiscoveryManager.registerService(context,deviceName,allowedServices)
             return this
         }
 

@@ -11,6 +11,7 @@ import be.appwise.core.networking.bagel.BagelInterceptor
 import be.appwise.core.networking.interceptors.Authenticator
 import be.appwise.core.networking.interceptors.HeaderInterceptor
 import be.appwise.core.networking.model.AccessToken
+import be.appwise.core.networking.proxyman.ProxyManInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -85,6 +86,10 @@ abstract class BaseRestClient {
         //add it behind all the rest so we can send all the response/request data
         if (enableBagelInterceptor())
             builder.addInterceptor(getBagelInterceptor())
+
+        //add it behind all the rest so we can send all the response/request data
+        if (enableProxyManInterceptor())
+            builder.addInterceptor(ProxyManInterceptor())
 
         return builder.build()
     }
@@ -196,6 +201,20 @@ abstract class BaseRestClient {
      * Maybe also limit it to DEBUG builds in future
      */
     open fun enableBagelInterceptor() = false
+    //</editor-fold>
+
+    /**
+     * Allows you to enable the ProxyMan interceptor for an instance of the [BaseRestClient]
+     *
+     * It will be added after all other interceptors so headers and other request/response data
+     * will be up to date when shown in ProxyMan
+     *
+     * Added it here so you can choose for each instance of a [BaseRestClient] if you wish to use it or not.
+     *
+     * Can be moved to [Networking] so you can enable/disable it for all clients.
+     * Maybe also limit it to DEBUG builds in future
+     */
+    open fun enableProxyManInterceptor() = false
     //</editor-fold>
 
     /**

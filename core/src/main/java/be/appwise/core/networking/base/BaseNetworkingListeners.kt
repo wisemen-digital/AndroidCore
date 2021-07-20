@@ -17,7 +17,7 @@ interface BaseNetworkingListeners {
         val DEFAULT = object : BaseNetworkingListeners {}
     }
 
-//<editor-fold desc="ErrorHandling">
+    //<editor-fold desc="ErrorHandling">
     /**
      * This function will be used to handle any errors that come from the network responses
      * Whenever you need to customize your error string, just add a string resource to your
@@ -71,7 +71,7 @@ interface BaseNetworkingListeners {
         return jsonArray.first()?.asJsonObject?.get("message")?.asString
             ?: "" /*.joinToString{ it.asJsonObject.get("message").asString}*/
     }
-//</editor-fold>
+    //</editor-fold>
 
     /**
      * This logout function can be used to cleanup any resources the app is using.
