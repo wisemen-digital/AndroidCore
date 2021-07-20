@@ -242,7 +242,6 @@ internal object ProxyManNetworkDiscoveryManager {
                         outPutStream.flush()
                     } catch (ex: IOException) {
                         showErrorMessage("BAGEL MESSAGE NOT SENT : socket with channel : ${socket.channel} and port : ${socket.port} closed")
-                        remove()
                         addMessageToPendingPackages(proxymanRequestMessage)
                     }
                 }
