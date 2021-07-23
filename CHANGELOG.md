@@ -10,6 +10,9 @@ All notable changes to this project will be documented in this file.
 - Removed 'easyValidation' dependency as it was a deprecated library that was only available on JCenter.
 
 ### Improvements
+- Added the possibility to override the choose if you want the Proxyman classes to show it's logs. 
+- Limited the number of calls/packages Proxyman holds in memory when there is no client available.
+- Removed unneeded line that deleted Proxyman clients that weren't connected to your app anymore.
 
 - Added the possibility to override the BaseRestClient's `getHttpLoggingInterceptor()` to provide a project specific logging level.
 

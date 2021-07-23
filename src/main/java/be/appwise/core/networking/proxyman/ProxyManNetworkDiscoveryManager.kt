@@ -146,17 +146,17 @@ internal object ProxyManNetworkDiscoveryManager {
 
     private fun showDebugMessage(debugMessage: String) {
         if (mIsLoggingEnabled)
-            Logger.d(debugMessage)
+            Logger.t(TAG).d(debugMessage)
     }
 
     private fun showErrorMessage(debugMessage: String) {
         if (mIsLoggingEnabled)
-            Logger.e(debugMessage)
+            Logger.t(TAG).e(debugMessage)
     }
 
     private fun showInfoMessage(debugMessage: String) {
         if (mIsLoggingEnabled)
-            Logger.i(debugMessage)
+            Logger.t(TAG).i(debugMessage)
     }
 
     // Instantiate a new DiscoveryListener
@@ -169,16 +169,16 @@ internal object ProxyManNetworkDiscoveryManager {
 
         override fun onServiceFound(service: NsdServiceInfo) {
             // A service was found! Do something with it.
-            showDebugMessage("$TAG -->  discovery success $service")
+            showDebugMessage("discovery success $service")
             val isProxymanService =
                 if (mAllowedServices.isEmpty()) service.serviceName.contains("Proxyman-") else service.serviceName.substringAfter(
                     "Proxyman-").toLowerCase(Locale.ROOT) in mAllowedServices
             when {
                 service.serviceType != SERVICE_TYPE -> // Service type is the string containing the protocol and
                     // transport layer for this service.
-                    showDebugMessage("$TAG --> Unknown Service Type: ${service.serviceType}")
+                    showDebugMessage("Unknown Service Type: ${service.serviceType}")
                 service.serviceName == mServiceName ->  // The name of the service tells the user what they'd be
-                    showDebugMessage("$TAG --> Same machine: $mServiceName")
+                    showDebugMessage("Same machine: $mServiceName")
 
                 isProxymanService ->
                     nsdManager?.resolveService(
@@ -193,22 +193,22 @@ internal object ProxyManNetworkDiscoveryManager {
             // When the network service is no longer available.
             // Internal bookkeeping code goes here.
             services.remove(service.serviceName)
-            showErrorMessage("$TAG --> service lost: $service remaining sockets : ${services.size}")
+            showErrorMessage("service lost: $service remaining sockets : ${services.size}")
 
         }
 
         override fun onDiscoveryStopped(serviceType: String) {
-            showInfoMessage("$TAG --> Discovery stopped: $serviceType")
+            showInfoMessage("Discovery stopped: $serviceType")
         }
 
         override fun onStartDiscoveryFailed(serviceType: String, errorCode: Int) {
-            showErrorMessage("$TAG --> Discovery failed: Error code:$errorCode")
+            showErrorMessage("Discovery failed: Error code:$errorCode")
             nsdManager?.stopServiceDiscovery(this)
             //maybe try again
         }
 
         override fun onStopDiscoveryFailed(serviceType: String, errorCode: Int) {
-            showErrorMessage("$TAG --> Discovery failed: Error code:$errorCode")
+            showErrorMessage("Discovery failed: Error code:$errorCode")
             nsdManager?.stopServiceDiscovery(this)
         }
     }

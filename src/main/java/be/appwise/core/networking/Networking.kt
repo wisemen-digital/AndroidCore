@@ -139,13 +139,21 @@ object Networking {
             return networkingListeners
         }
 
-        fun registerBagelService(context: Context) : Builder{
+        fun registerBagelService(context: Context): Builder {
             BagelNetworkDiscoveryManager.registerService(context)
             return this
         }
 
-        fun registerProxymanService(context: Context,deviceName : String?= null , allowedServices : ArrayList<String> = arrayListOf(),isLoggingEnabled : Boolean = true) : Builder{
-            ProxyManNetworkDiscoveryManager.registerService(context,deviceName,allowedServices,isLoggingEnabled)
+        fun registerProxymanService(
+            context: Context,
+            deviceName: String? = null,
+            allowedServices: ArrayList<String> = arrayListOf(),
+            isLoggingEnabled: Boolean = true,
+        ): Builder {
+            ProxyManNetworkDiscoveryManager.registerService(context,
+                deviceName,
+                allowedServices,
+                isLoggingEnabled)
             return this
         }
 
