@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">core</string>
+
+    <string name="error_default">Something went wrong.</string>
 </resources>

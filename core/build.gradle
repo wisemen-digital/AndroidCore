@@ -124,7 +124,7 @@ dependencies {
     api 'com.orhanobut:logger:2.2.0'
 
     // Hawk (https://github.com/orhanobut/hawk)
-    implementation "com.orhanobut:hawk:2.0.1"
+    api "com.orhanobut:hawk:2.0.1"
 
     //open image chooser
     api 'com.github.jkwiecien:EasyImage:3.2.0'
@@ -139,9 +139,6 @@ dependencies {
 
     // Time manipulation for Java 7
     api 'joda-time:joda-time:2.10.10'
-
-    //compress images for uploads
-    implementation 'id.zelory:compressor:3.0.1'
 
     // https://github.com/Ereza/CustomActivityOnCrash
     implementation 'cat.ereza:customactivityoncrash:2.3.0'
