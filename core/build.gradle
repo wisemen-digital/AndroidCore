@@ -145,10 +145,4 @@ dependencies {
 
     // Progress/Loading Button
     api 'com.github.razir.progressbutton:progressbutton:2.1.0'
-
-    // Room Database
-    api "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-
-    // optional - Kotlin Extensions and Coroutines support for Room
-    api "androidx.room:room-ktx:$room_version"}
+}

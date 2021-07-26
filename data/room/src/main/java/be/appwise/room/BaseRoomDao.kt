@@ -1,4 +1,4 @@
-package be.appwise.core.data.base
+package be.appwise.room
 
 import androidx.room.*
 import androidx.sqlite.db.SimpleSQLiteQuery

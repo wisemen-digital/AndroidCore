@@ -1,4 +1,4 @@
-package be.appwise.core.data.base
+package be.appwise.room
 
 abstract class BaseEntity {
     abstract val id: Any
