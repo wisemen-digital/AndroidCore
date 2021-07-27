@@ -1,0 +1,3 @@
+rootProject.name = "CoreDemo"
+include ':sample'
+include ':core'
