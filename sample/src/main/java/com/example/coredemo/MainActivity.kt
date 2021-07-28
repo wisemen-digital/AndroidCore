@@ -1,6 +1,5 @@
 package com.example.coredemo
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import be.appwise.core.ui.base.BaseActivity
 
