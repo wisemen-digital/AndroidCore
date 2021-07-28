@@ -93,11 +93,11 @@ Within the RestClient class, you have a lot of flexibility to adjust it to your 
 
 The ProxymanInterceptor is a interceptor that sends request/response data over local network to services that are running Proxyman. If you want to use the ProxymanInterceptor you have to do follow these steps
 
-1. Register the ProxymanService (discovery of Proxyman services/clients on local network), the second parameter is optional and will be used as the device identifier in the Proxyman client, when none is given a your device's name will be used. As a third parameter, you have the option to limit the clients which will receive your network packages when they are running Proxyman.
+1. Register the ProxymanService (discovery of Proxyman services/clients on local network), the second parameter is optional and will be used as the device identifier in the Proxyman client, when none is given a your device's name will be used. As a third parameter, you have the option to limit the clients which will receive your network packages when they are running Proxyman. as a fourth parameter , you have the option to enable and disable logging for the Proxyman classes.
 
 ```
 Networking.Builder()
-    .registerProxymanService(this, "OnePlus-Appwise", arrayListOf("MacBook-1", "MacBook-Personal"))
+    .registerProxymanService(this, "OnePlus-Appwise", arrayListOf("MacBook-1", "MacBook-Personal"),false)
     .build()
 ```
 
