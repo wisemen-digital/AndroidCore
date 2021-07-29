@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'realm-android'
 }
 
 android {
@@ -35,6 +36,7 @@ android {
 
 dependencies {
     implementation project(path: ':core')
+    implementation project(path: ':data:networking')
     implementation project(path: ':data:realm')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
