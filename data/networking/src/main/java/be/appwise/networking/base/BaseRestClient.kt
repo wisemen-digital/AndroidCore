@@ -93,8 +93,12 @@ abstract class BaseRestClient {
         return builder.build()
     }
 
+    /**
+     * In case [protectedClient] is set to true this function should be overridden without using the 'super()'
+     * Using the 'super()' will still result in the exception being thrown!
+     */
     protected open fun onRefreshToken(refreshToken: String): AccessToken? {
-        throw Exception("refreshToken should be overridden in order for this to work")
+        throw Exception("RefreshToken should be overridden in order for this to work, do not call 'super()'.")
     }
 
     /**

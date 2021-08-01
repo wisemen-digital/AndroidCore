@@ -13,6 +13,8 @@
 4. [Changelog](#changelog)
 5. [License](#license)
 
+---
+
 # Legacy
 
 Using a version before v1.1.0 of this dependency can be used and will suffice, as it will already contain Networking, Room and the EmptyStateRecyclerView.
@@ -21,11 +23,15 @@ Using a version before v1.1.0 of this dependency can be used and will suffice, a
 implementation 'com.github.appwise-labs:AndroidCore:<Latest-Version>'
 ```
 
+---
+
 # Modules
 
 Since v1.1.0 the library has grown to use multiple modules for specific use-cases. The core module contains a lot of functionality that some of the other modules may use.
 
 In the core module a lot of general extension functions can be found, as well as some BaseClasses regarding the ViewModels, Fragments, and Activities. Also a lot of dependencies are already added to core which are 'made public' so they can be used through Core.
+
+---
 
 ## Core
 
@@ -37,6 +43,8 @@ The core can be added by using this dependency. It contains BaseClasses for View
 implementation 'com.github.appwise-labs.AndroidCore:core:<Latest-Version>'
 ```
 
+---
+
 ## Networking
 
 [Networking Samples and Information](documentation/NETWORKING.md)
@@ -44,6 +52,8 @@ implementation 'com.github.appwise-labs.AndroidCore:core:<Latest-Version>'
 ```groovy
 implementation 'com.github.appwise-labs.AndroidCore:networking:<Latest-Version>'
 ```
+
+---
 
 ## Room
 
@@ -53,6 +63,8 @@ implementation 'com.github.appwise-labs.AndroidCore:networking:<Latest-Version>'
 implementation 'com.github.appwise-labs.AndroidCore:room:<Latest-Version>'
 ```
 
+---
+
 ## Realm
 
 [Realm Samples and Information](documentation/REALM.md)
@@ -60,6 +72,8 @@ implementation 'com.github.appwise-labs.AndroidCore:room:<Latest-Version>'
 ```groovy
 implementation 'com.github.appwise-labs.AndroidCore:realm:<Latest-Version>'
 ```
+
+---
 
 ## EmptyStateRecyclerView
 
@@ -71,13 +85,19 @@ This module contains a custom view extending from the RecyclerView which can han
 implementation 'com.github.appwise-labs.AndroidCore:emptyRecyclerView:<Latest-Version>'
 ```
 
+---
+
 # Contribution
 
 All contributors are welcome. Take a look at [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
 
+---
+
 # Changelog
 
 See the [CHANGELOG.md](CHANGELOG.md) for more information regarding new updates and more.
+
+---
 
 # License
 

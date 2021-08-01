@@ -42,6 +42,8 @@ Networking.Builder()
 
 After this is done you can start off by extending the `RestClient`.
 
+---
+
 ## RestClient
 
 When implementing a Restclient in your project you can extend from `BaseRestClient`. Don't forget to add the `API Service Interface` inside the `<>`. Do mind that you still have a choice to implement the RestClient as an `object` or as a regular `class`.
@@ -83,6 +85,8 @@ Within the RestClient class, you have a lot of flexibility to adjust it to your 
 <p align="center">
   <img width="250" src="../static/RestClient-flexibility.png">
 </p>
+
+---
 
 ## ProxymanInterceptor
 

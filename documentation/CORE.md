@@ -1,19 +1,46 @@
-## <u>Initialize</u>
+# Core
 
-In order to initialize AndroidCore correctly you have 2 options.
+## Table of Contents
 
-- CoreApp: to initialze the Logger, ErrorActivity and Hawk (Hawk is initialized by default by the `init()` on `CoreApp`
+1. [Gradle Dependency](#gradle-dependency)
+2. [Initialize](#initialize)
+3. [Base Classes](#base-classes)
+   1. [BaseVM...](#basevm)
+   2. [BaseBindingVM...](#basebindingvm)
+
+---
+
+## Gradle Dependency
+
+This Core module can be added by using this dependency. It contains BaseClasses for ViewModel, Fragments, and Activities. Also a lot of extension functions can be found.
+
+```groovy
+dependencies {
+  ...
+  implementation 'com.github.appwise-labs.AndroidCore:core:<Latest-Version>'
+}
+```
+
+---
+
+## Initialize
+
+The Core module, at the moment, can technically be used without initialization. Though, to use the full functionality it is recommended to do the initialization. This can be done in the `Application` class.
+
+Doing so will give you a couple of options, you can initialize a Default Error Activity to show instead of the old (and ugly) pop-up of Android itself. Another option is to set if the Logger should be active for this build and which tag it should use by default.
 
 ```kotlin
 CoreApp.init(this)
     .initializeErrorActivity(BuildConfig.DEBUG)
-    .initializeLogger()
+    .initializeLogger("LoggingTag", BuildConfig.DEBUG)
     .build()
 ```
 
 Do note, that when you use AndroidCore as a Dependency that the `isLoggable` parameter in `initializeLogger()` should be added. It is best to use `BuildConfig.DEBUG` as the parameter so the logs won't show up in a production build.
 
-## <u>Base Activity Fragment</u>
+---
+
+## Base classes
 
 To reduce some boilerplate code whilst creating new Fragments or Activities you can use these BaseClasses
 
@@ -25,7 +52,9 @@ Do mind, that by using the `BaseBindingVM` equivalent you will automatically be 
 
 `BaseBindingVMFragment` -------extends-------> `BaseVMFragment` -------extends-------> `BaseFragment`
 
-### <u>BaseVM...</u>
+---
+
+### BaseVM...
 
 By using `BaseVM...` you will need to override the value `mViewModel`. After that is set, the `DefaultExceptionHandler` will also be set automatically
 
@@ -47,9 +76,11 @@ override val mViewModel: MainViewModel by viewModels() {
 }
 ```
 
-### <u>BaseBindingVM...</u>
+---
 
-Everything that applies to `BaseVM...` applies to this class as well. A couple of things to add to this is that the Binding class is an expected Generic. You'll also have to override a function `getLayout()` to finish the basic setup for DataBinding
+### BaseBindingVM...
+
+Everything that applies to `BaseVM...` applies to this class as well. A couple of things to add to this is that the Binding class is expecting a Generic (of the Binding-Layout). You'll also have to override a function `getLayout()` to finish the basic setup for DataBinding
 
 ```kotlin
 class MainFragment : BaseBindingVMFragment<FragmentMainBinding>() {
