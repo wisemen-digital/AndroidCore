@@ -5,6 +5,6 @@ import androidx.core.text.HtmlCompat
 
 fun TextView.setHtmlText(text: String?) {
     text?.let {
-        this.text = HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        this.text = HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).trim()
     }
 }
