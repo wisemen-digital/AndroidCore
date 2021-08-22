@@ -49,6 +49,8 @@ implementation 'com.github.appwise-labs.AndroidCore:core:<Latest-Version>'
 
 [Networking Samples and Information](documentation/NETWORKING.md)
 
+Using this module will enable you to use the BaseRestClient object with some default values regarding the RestClient and Interceptors, a lot of which is costumizable.
+
 ```groovy
 implementation 'com.github.appwise-labs.AndroidCore:networking:<Latest-Version>'
 ```
@@ -58,6 +60,8 @@ implementation 'com.github.appwise-labs.AndroidCore:networking:<Latest-Version>'
 ## Room
 
 [Room Samples and Information](documentation/ROOM.md)
+
+With this Room module you will have access to a BaseRoomDao in which a lot of queries are premade. The BaseRoomDao will expect a BaseEntity, so make sure that your Room Entity extends that.
 
 ```groovy
 implementation 'com.github.appwise-labs.AndroidCore:room:<Latest-Version>'

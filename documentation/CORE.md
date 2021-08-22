@@ -21,6 +21,18 @@ dependencies {
 }
 ```
 
+Android Studio could prompt you with an error if you're building an app with this library as a dependeny. To fix that issue just add the next code snippet.
+
+```
+packagingOptions {
+    exclude 'META-INF/core_release.kotlin_module'
+}
+```
+
+The reason behind this is that another library that's called `core` is added to the build as well which is causing an issue [more can be read here](https://discuss.kotlinlang.org/t/disable-meta-inf-generation-in-gradle-android-project/3830).
+
+A possible solution is to rename our Core library to AppwiseCore or something
+
 ---
 
 ## Initialize
