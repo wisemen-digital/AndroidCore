@@ -44,8 +44,7 @@ class NumberStepper @JvmOverloads constructor(
             if (attributes.hasValue(R.styleable.NumberStepper_minValue))
                 mMinValue = attributes.getFloat(R.styleable.NumberStepper_minValue, 0f).toDouble()
             if (attributes.hasValue(R.styleable.NumberStepper_maxValue))
-                mMaxValue =
-                    attributes.getFloat(R.styleable.NumberStepper_maxValue, 0f).toDouble()
+                mMaxValue = attributes.getFloat(R.styleable.NumberStepper_maxValue, 0f).toDouble()
 
             with(mNumberStepperBinding) {
                 ivPlus.setImageResource(

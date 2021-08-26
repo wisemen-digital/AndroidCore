@@ -62,26 +62,11 @@ class ProfileActionButton @JvmOverloads constructor(
                 R.style.pab_subTitle
             )
 
-            mTitleTextColor = attributes.getColor(
-                R.styleable.ProfileActionButton_pab_titleTextColor,
-                android.R.color.black
-            )
-            mSubTitleTextColor = attributes.getColor(
-                R.styleable.ProfileActionButton_pab_subTitleTextColor,
-                android.R.color.black
-            )
-            mHintColor = attributes.getColor(
-                R.styleable.ProfileActionButton_pab_hintTextColor,
-                android.R.color.black
-            )
-            mNextIconColor = attributes.getColor(
-                R.styleable.ProfileActionButton_pab_nextIconColor,
-                android.R.color.black
-            )
-            mDividerColor = attributes.getColor(
-                R.styleable.ProfileActionButton_pab_dividerColor,
-                android.R.color.black
-            )
+            mTitleTextColor = attributes.getColor(R.styleable.ProfileActionButton_pab_titleTextColor, ContextCompat.getColor(context,android.R.color.black))
+            mSubTitleTextColor = attributes.getColor(R.styleable.ProfileActionButton_pab_subTitleTextColor, ContextCompat.getColor(context,android.R.color.black))
+            mHintColor = attributes.getColor(R.styleable.ProfileActionButton_pab_hintTextColor, ContextCompat.getColor(context,android.R.color.black))
+            mNextIconColor = attributes.getColor(R.styleable.ProfileActionButton_pab_nextIconColor, ContextCompat.getColor(context,android.R.color.black))
+            mDividerColor = attributes.getColor(R.styleable.ProfileActionButton_pab_dividerColor, ContextCompat.getColor(context,android.R.color.black))
 
             mNextIcon = attributes.getDrawable(R.styleable.ProfileActionButton_pab_nextIcon)
                 ?: ContextCompat.getDrawable(

@@ -8,6 +8,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.IntegerRes
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import be.appwise.core.R
 import be.appwise.core.databinding.ProfileDataRowBinding
@@ -42,13 +43,13 @@ class ProfileDataRow @JvmOverloads constructor(
         mLabel = attributes.getString(R.styleable.ProfileDataRow_labelText)
         mValue = attributes.getString(R.styleable.ProfileDataRow_labelText)
         mValueHint = attributes.getString(R.styleable.ProfileDataRow_labelText)
-        mLabelTextColor = attributes.getColor(R.styleable.ProfileDataRow_labelTextColor,android.R.color.black)
-        mValueTextColor = attributes.getColor(R.styleable.ProfileDataRow_valueTextColor,android.R.color.black)
-        mValueHintColor = attributes.getColor(R.styleable.ProfileDataRow_valueHintColor,android.R.color.black)
+        mLabelTextColor = attributes.getColor(R.styleable.ProfileDataRow_labelTextColor,ContextCompat.getColor(context,android.R.color.black))
+        mValueTextColor = attributes.getColor(R.styleable.ProfileDataRow_valueTextColor,ContextCompat.getColor(context,android.R.color.black))
+        mValueHintColor = attributes.getColor(R.styleable.ProfileDataRow_valueHintColor,ContextCompat.getColor(context,android.R.color.black))
         mValueImeOptions = attributes.getInt(R.styleable.ProfileDataRow_android_imeOptions, EditorInfo.IME_ACTION_NEXT)
         mValueInputType = attributes.getInt(R.styleable.ProfileDataRow_android_inputType, EditorInfo.TYPE_TEXT_FLAG_CAP_SENTENCES)
         mVisibleDivider = attributes.getBoolean(R.styleable.ProfileDataRow_visibleDivider,true)
-        mDividerColor = attributes.getColor(R.styleable.ProfileDataRow_dividerColor,android.R.color.black)
+        mDividerColor = attributes.getColor(R.styleable.ProfileDataRow_dividerColor,ContextCompat.getColor(context,android.R.color.black))
         mValueIsEditable = attributes.getBoolean(R.styleable.ProfileDataRow_editable,true)
         mValueIsSingleLine = attributes.getBoolean(R.styleable.ProfileDataRow_singleLine,true)
 
