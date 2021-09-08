@@ -4,10 +4,29 @@ All notable changes to this project will be documented in this file.
 
 ## [Master](https://github.com/appwise-labs/AndroidCore)
 
+### Breaking
+
+### Bug Fixes
+
+### Improvements
+
+## [1.1.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.1.0)
+
+### Breaking
+
+- Moved Core to a proper module, now a better abstraction can be achieved by adding more submodules to Core. Even a sample app can be created within this project as well. Details of the procedure can be found [here](https://appwise.atlassian.net/wiki/spaces/~635004520/pages/415989761/Android+Core+Multiple+Submodules).
+- Networking, Realm and Room have been moved to separate modules as well.
+
 ### Bug Fixes
 
 - Removed 'JCenter' from the repositories list as that [service has been discontinued](https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/).
 - Removed 'easyValidation' dependency as it was a deprecated library that was only available on JCenter.
+
+### Improvements
+- Added the possibility to override the choose if you want the Proxyman classes to show it's logs.
+- Limited the number of calls/packages Proxyman holds in memory when there is no client available.
+- Removed unneeded line that deleted Proxyman clients that weren't connected to your app anymore.
+- Added the possibility to override the BaseRestClient's `getHttpLoggingInterceptor()` to provide a project specific logging level.
 
 ## [1.0.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.0.0)
 
@@ -15,6 +34,7 @@ All notable changes to this project will be documented in this file.
 
 - Added Double and Tripple triggers for LiveData.
 - `tryNavigate` functions have been added.
+- Added `ProxymanInterceptor` and more, now we can debug our request/response data for calls in the Proxyman mac app.
 
 ### Breaking
 
