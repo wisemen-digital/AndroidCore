@@ -17,7 +17,7 @@
     </declare-styleable>
 
     <declare-styleable name="InitialsImageView">
-        <attr name="circleColor" format="integer" />
+        <attr name="circleColor" format="color" />
         <attr name="android:textColor" />
         <attr name="android:textSize" />
     </declare-styleable>
