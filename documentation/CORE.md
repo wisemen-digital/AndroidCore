@@ -127,7 +127,7 @@ override fun onViewCreated(view: View,s savedInstanceState: Bundle?) {
 }
 
 ```
-##Custom Views
+## Custom Views
 All classes that are used to create fast , easy and commonly used views/components.
 
 ### InitialsImageView
