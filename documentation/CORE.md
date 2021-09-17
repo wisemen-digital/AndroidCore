@@ -7,7 +7,7 @@
 3. [Base Classes](#base-classes)
    1. [BaseVM...](#basevm)
    2. [BaseBindingVM...](#basebindingvm)
-4. [Custom Views](#custom_views)
+4. [Custom Views](#custom-views)
 
 ---
 
