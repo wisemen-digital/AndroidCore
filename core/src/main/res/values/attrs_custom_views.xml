@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="TitledRecyclerview">
-        <attr name="primaryEmptyText" format="string" />
-        <attr name="secondaryEmptyText" format="string" />
+        <attr name="emptyTexTitle" format="string" />
+        <attr name="emptyTextDescription" format="string" />
         <attr name="emptyIcon" format="reference" />
         <attr name="actionIcon" format="reference" />
+        <attr name="actionText" format="string" />
         <attr name="title" format="string" />
     </declare-styleable>
 

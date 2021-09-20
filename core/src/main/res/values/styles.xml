@@ -6,14 +6,20 @@
         <item name="android:paddingBottom">@dimen/spacing_normal</item>
     </style>
 
-    <style name="ttr_secondaryTitle">
+    <style name="ttr_emptyTextTitle">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
         <item name="android:layout_marginTop">@dimen/spacing_small</item>
     </style>
 
-    <style name="ttr_secondaryText">
+    <style name="ttr_emptyTextDescription">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
         <item name="android:layout_marginTop">@dimen/spacing_small</item>
+    </style>
+
+    <style name="ttr_actionText">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+        <item name="android:padding">@dimen/spacing_normal</item>
     </style>
 
     <style name="iiv_initialsText">

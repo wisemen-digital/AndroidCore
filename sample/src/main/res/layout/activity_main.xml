@@ -31,10 +31,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>-->
 
-    <be.appwise.core.ui.custom.ProfileDataRow
+    <!--<be.appwise.core.ui.custom.ProfileDataRow
             style="@style/customPdrStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"/>-->
 
 
 
