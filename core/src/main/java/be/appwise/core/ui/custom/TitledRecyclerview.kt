@@ -33,7 +33,7 @@ class TitledRecyclerview @JvmOverloads constructor(
             with(attributes) {
                 val title = getString(R.styleable.TitledRecyclerview_title)
                 setTitle(title)
-                val primaryEmptyText = getString(R.styleable.TitledRecyclerview_emptyTexTitle)
+                val primaryEmptyText = getString(R.styleable.TitledRecyclerview_emptyTextTitle)
                 tvEmptyTextTitle.text = primaryEmptyText
                 val secondaryEmptyText =
                     getString(R.styleable.TitledRecyclerview_emptyTextDescription)
