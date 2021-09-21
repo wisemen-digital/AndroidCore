@@ -15,4 +15,27 @@
       app:layout_constraintRight_toRightOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
 
+
+    <!--<be.appwise.core.ui.custom.InitialsImageView
+            style="@style/customIivStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>-->
+
+    <!--<be.appwise.core.ui.custom.ProfileActionButton
+            style="@style/customPabStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>-->
+
+   <!-- <be.appwise.core.ui.custom.NumberStepper
+            style="@style/customNumberStepperStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>-->
+
+    <!--<be.appwise.core.ui.custom.ProfileDataRow
+            style="@style/customPdrStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>-->
+
+
+
   </androidx.constraintlayout.widget.ConstraintLayout>

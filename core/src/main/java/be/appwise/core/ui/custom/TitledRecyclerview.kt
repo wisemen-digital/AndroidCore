@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.getResourceIdOrThrow
+import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -13,8 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import be.appwise.core.R
 import kotlinx.android.synthetic.main.titled_recyclerview.view.*
 
-class TitledRecyclerview @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
+class TitledRecyclerview @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -22,25 +25,34 @@ class TitledRecyclerview @JvmOverloads constructor(context: Context, attrs: Attr
         ivAction.setOnClickListener {
             mActionListener?.onAction()
         }
+        tvAction.setOnClickListener {
+            mActionListener?.onAction()
+        }
         attrs?.let {
             val attributes = context.obtainStyledAttributes(it, R.styleable.TitledRecyclerview)
             with(attributes) {
                 val title = getString(R.styleable.TitledRecyclerview_title)
                 setTitle(title)
-                val primaryEmptyText = getString(R.styleable.TitledRecyclerview_primaryEmptyText)
-                tvPrimaryText.text = primaryEmptyText
-                val secondaryEmptyText = getString(R.styleable.TitledRecyclerview_secondaryEmptyText)
-                tvSecondaryText.text = secondaryEmptyText
-                try {
-                    val emptyIcon = getResourceIdOrThrow(R.styleable.TitledRecyclerview_emptyIcon)
+                val primaryEmptyText = getString(R.styleable.TitledRecyclerview_emptyTextTitle)
+                tvEmptyTextTitle.text = primaryEmptyText
+                val secondaryEmptyText =
+                    getString(R.styleable.TitledRecyclerview_emptyTextDescription)
+                tvEmptyTextDescription.text = secondaryEmptyText
+                val emptyIcon = getResourceId(R.styleable.TitledRecyclerview_emptyIcon, -1)
+                if (emptyIcon != -1)
                     ivEmptyIcon.setImageResource(emptyIcon)
-                } catch (ex: Exception) {
-                }
+                ivEmptyIcon.isVisible = emptyIcon != -1
+
                 try {
                     val actionIcon = getResourceIdOrThrow(R.styleable.TitledRecyclerview_actionIcon)
                     ivAction.setImageResource(actionIcon)
                 } catch (ex: Exception) {
                 }
+
+                val actionText = getString(R.styleable.TitledRecyclerview_actionText)
+                tvAction.text = actionText
+                tvAction.isVisible = !actionText.isNullOrEmpty()
+                ivAction.isVisible = actionText.isNullOrEmpty()
                 /* val textSize = getDimensionPixelSize(R.styleable.InitialsImageView_android_textSize, -1)
                  tvInitials.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize.toFloat())
                  val textColor = getResourceId(R.styleable.InitialsImageView_android_textColor, android.R.color.white)

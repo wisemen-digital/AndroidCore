@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Master](https://github.com/appwise-labs/AndroidCore)
 
+### Custom Views
+
 ### Breaking
 
 ### Bug Fixes
@@ -11,6 +13,11 @@ All notable changes to this project will be documented in this file.
 ### Improvements
 
 ## [1.1.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.1.0)
+
+### Custom Views
+- Added classes that are used to create fast, easy and commonly used views/components.
+- This update contains InitialsImageView, ProfileActionButton , ProfileDataRow , Numberstepper
+
 
 ### Breaking
 

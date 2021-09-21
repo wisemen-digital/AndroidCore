@@ -13,4 +13,91 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+
+
+
+    <style name="customPabStyle">
+        <item name="pab_title">Wat is het beste platform?</item>
+        <!--subtitle en hint zijn text en hint value van dezelfde textview deze kan je gebruiken door onderscheidt te maken tussen placeholder
+         en een ingevulde en/of geselecteerde value-->
+        <item name="pab_subTitle">Android</item>
+        <item name="pab_hint">Selecteer platform</item>
+
+        <item name="pab_titleTextColor">@android:color/holo_red_dark</item>
+        <item name="pab_titleTextAppearance">@style/customTitleTextAppearance</item>
+
+        <item name="pab_subTitleTextColor">@android:color/holo_green_dark</item>
+        <item name="pab_subTitleTextAppearance">@style/customSubTitleTextAppearance</item>
+
+        <item name="pab_nextIconColor">@android:color/holo_blue_dark</item>
+        <item name="pab_nextIcon">@drawable/ic_chevron_left</item>
+
+        <item name="pab_dividerColor">@android:color/holo_orange_dark</item>
+        <item name="pab_vertical">true</item>
+        <!--<item name="pab_visibleDivider">false</item>
+        <item name="pab_visibleNextIcon">false</item>-->
+    </style>
+
+    <!--overrides entire style of Profileactionbutton titleview-->
+    <style name="pab_title">
+        <item name="android:background">@color/teal_200</item>
+    </style>
+
+    <!--overrides entire style of Profileactionbutton subtitleview-->
+    <style name="pab_subTitle">
+        <item name="android:background">@color/teal_700</item>
+    </style>
+
+
+    <style name="customTitleTextAppearance">
+        <item name="android:textColor">@android:color/holo_red_dark</item>
+        <item name="android:textStyle">bold</item>
+        <!--... more options that can be set on textappearance-->
+    </style>
+
+    <style name="customSubTitleTextAppearance">
+        <item name="android:textColor">@android:color/holo_green_dark</item>
+        <item name="android:textStyle">bold</item>
+        <!--... more options that can be set on textappearance-->
+    </style>
+
+
+    <style name="customNumberStepperStyle">
+        <item name="label">Ik ben een numberstepper</item>
+        <item name="plus_icon">@drawable/ic_plus</item>
+        <item name="minus_icon">@drawable/ic_minus</item>
+        <!--if you don't set these you can go to max and min value of doubles-->
+        <item name="minValue">0</item>
+        <item name="maxValue">100</item>
+    </style>
+
+
+    <style name="customPdrStyle">
+        <item name="labelText">Dit is mijn label</item>
+        <!--subtitle en hint zijn text en hint value van dezelfde textview deze kan je gebruiken door onderscheidt te maken tussen placeholder
+         en een ingevulde en/of geselecteerde value-->
+        <item name="valueHint" >Ik ben de hint</item>
+        <item name="labelTextColor" >@android:color/holo_purple</item>
+        <item name="valueTextColor">@android:color/holo_green_dark</item>
+        <item name="valueHintColor">@android:color/holo_red_dark</item>
+        <item name="visibleDivider">true</item>
+        <item name="dividerColor" >@android:color/holo_orange_dark</item>
+        <!--adjust keyboard for the child edittext-->
+        <item name="android:imeOptions">actionDone</item>
+        <!--adjust keyboard for the child edittext-->
+        <item name="android:inputType">textPersonName</item>
+        <!--enable/disable input-->
+        <item name="editable" >true</item>
+        <!--multiple lines or not-->
+        <item name="singleLine">true</item>
+    </style>
+
+    <style name="customIivStyle">
+        <item name="circleColor">@color/teal_200</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@android:color/holo_purple</item>
+    </style>
+
+
 </resources>

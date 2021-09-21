@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/llPeopleAllowed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        tools:parentTag="androidx.appcompat.widget.LinearLayoutCompat">
 
     <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="label"
-            style="@style/ttr_secondaryText" />
+            style="@style/numberStepper_label" />
 
     <View
             android:id="@+id/spacing"
@@ -28,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/spacing_small"
             app:srcCompat="@drawable/ic_minus"
+            android:layout_gravity="center_vertical"
             android:background="?selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true" />
@@ -36,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="50dp"
-            style="@style/numberStepperEdittext">
+            style="@style/numberStepper_edittext">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etValue"
@@ -55,10 +57,11 @@
             android:id="@+id/ivPlus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/spacing_small"
             android:background="?selectableItemBackgroundBorderless"
             android:clickable="true"
             app:srcCompat="@drawable/ic_plus"
             android:focusable="true" />
 
-</LinearLayout>
+</merge>
