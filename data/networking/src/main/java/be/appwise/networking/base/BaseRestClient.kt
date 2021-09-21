@@ -223,7 +223,7 @@ abstract class BaseRestClient {
     /**
      * Get the Gson Factory to handle all cases of type conversions from the responses
      */
-    protected fun getGsonFactory(): GsonConverterFactory {
+    open fun getGsonFactory(): GsonConverterFactory {
         return GsonConverterFactory.create(NetworkingUtil.getGson())
     }
 }
