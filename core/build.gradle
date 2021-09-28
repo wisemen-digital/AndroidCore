@@ -104,7 +104,7 @@ dependencies {
     api "com.afollestad.material-dialogs:datetime:$material_dialogs_version"
 
     // Time manipulation for Java 7
-    api 'joda-time:joda-time:2.10.10'
+    api 'joda-time:joda-time:2.10.11'
 
     // https://github.com/Ereza/CustomActivityOnCrash
     implementation 'cat.ereza:customactivityoncrash:2.3.0'
