@@ -14,11 +14,11 @@ fun Activity.showDateTimePicker(currentTimeStamp: Long, useDate: (Long) -> Unit)
     }
     val chosenDate = Calendar.getInstance()
 
-    val datePickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+    val datePickerDialog = DatePickerDialog(this, { _, year, monthOfYear, dayOfMonth ->
         chosenDate.set(year, monthOfYear, dayOfMonth)
         TimePickerDialog(this,
             checkWhichThemeToUse(),
-            TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+            { _, hourOfDay, minute ->
             chosenDate.set(Calendar.HOUR_OF_DAY, hourOfDay)
             chosenDate.set(Calendar.MINUTE, minute)
             Log.d("DatePickerDialog", "The chosen date " + chosenDate.time)

@@ -6,7 +6,7 @@ import okio.Buffer
 import java.lang.Exception
 import java.util.*
 
-class ProxyManInterceptor() : Interceptor {
+class ProxyManInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
@@ -19,9 +19,9 @@ class ProxyManInterceptor() : Interceptor {
         }
         else{
             if(!headers.containsKey("content-type"))
-                headers.put("content-type", request.body?.contentType().toString())
+                headers["content-type"] = request.body?.contentType().toString()
             if(!headers.containsKey("content-length"))
-                headers.put("content-length", request.body?.contentType().toString())
+                headers["content-length"] = request.body?.contentType().toString()
         }
 
         val proxyManHeaders = headers.map { Header(it.key, it.value) }.toTypedArray()
@@ -39,7 +39,7 @@ class ProxyManInterceptor() : Interceptor {
         )
 
         val trafficPackage = TrafficPackage(
-            id = UUID.randomUUID().toString().toUpperCase(),
+            id = UUID.randomUUID().toString().uppercase(),
             request = proxyManRequest,
             startAt = System.currentTimeMillis().div(1000.0)
         )

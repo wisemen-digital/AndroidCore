@@ -6,7 +6,7 @@ import kotlin.reflect.KProperty
 class HawkValueDelegate<in R, T>(private val key: String, private val defaultValue: T) {
     operator fun getValue(thisRef: R, property: KProperty<*>): T {
         if (Hawk.isBuilt()){
-            return Hawk.get<T>(key, defaultValue)
+            return Hawk.get(key, defaultValue)
         }else{
             throw Exception("Please add Hawk to the Core init in order to use it")
         }

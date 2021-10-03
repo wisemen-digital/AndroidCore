@@ -7,8 +7,10 @@ All notable changes to this project will be documented in this file.
 ### Custom Views
 
 ### Breaking
+- The signature of the `configureToolbar()` methods has been changed.
 
 ### Bug Fixes
+- Cleaned up resources, removed unneeded imports, ...
 
 ### Improvements
 
