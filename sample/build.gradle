@@ -35,6 +35,9 @@ android {
 dependencies {
     implementation project(path: ':core')
     implementation project(path: ':data:realm')
+    implementation project(path: ':data:room')
+    implementation project(path: ':data:networking')
+    implementation project(path: ':list:emptyRecyclerView')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testImplementation 'junit:junit:4.13.2'
