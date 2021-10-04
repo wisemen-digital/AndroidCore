@@ -128,13 +128,12 @@ class ProfileActionButton @JvmOverloads constructor(
         else -> null
     }
 
-
     private fun isDividerVisible() {
         divider?.isVisible = mDividerIsVisible
     }
 
     private fun isArrowVisible() {
-        divider?.isVisible = mNextIconIsVisible
+        nextView?.isVisible = mNextIconIsVisible
     }
 
     private fun setHint(hint: String?) {
