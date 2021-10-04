@@ -1,7 +1,6 @@
 package be.appwise.core.core
 
 import android.content.Context
-import be.appwise.core.BuildConfig
 import cat.ereza.customactivityoncrash.config.CaocConfig
 import com.orhanobut.hawk.Hawk
 import com.orhanobut.logger.AndroidLogAdapter

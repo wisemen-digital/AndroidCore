@@ -5,7 +5,7 @@ interface Nameable {
     var last_name: String?
 
     fun getFullName(): String = "$first_name $last_name".trim().replace("null", "")
-    fun getShortenedName(): String = "${first_name?.first()}. ${last_name}".trim().replace("null", "")
+    fun getShortenedName(): String = "${first_name?.first()}. $last_name".trim().replace("null", "")
     fun getInitials(): String =
-        "${first_name?.first()?.toUpperCase()}${last_name?.first()?.toUpperCase()}".replace("null", "")
+        "${first_name?.first()?.uppercase()}${last_name?.first()?.uppercase()}".replace("null", "")
 }

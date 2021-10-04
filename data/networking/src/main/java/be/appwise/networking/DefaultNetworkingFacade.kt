@@ -6,7 +6,7 @@ import be.appwise.networking.model.ApiError
 import be.appwise.networking.util.HawkUtils
 import retrofit2.Response
 
-class DefaultNetworkingFacade(private val networkingBuilder: Networking.Builder) :
+class DefaultNetworkingFacade(networkingBuilder: Networking.Builder) :
     NetworkingFacade {
 
     //<editor-fold desc="Variables">
