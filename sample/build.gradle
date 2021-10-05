@@ -5,13 +5,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdkVersion 31
 
     defaultConfig {
         applicationId "com.example.coredemo"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -36,9 +35,12 @@ android {
 dependencies {
     implementation project(path: ':core')
     implementation project(path: ':data:realm')
+    implementation project(path: ':data:room')
+    implementation project(path: ':data:networking')
+    implementation project(path: ':list:emptyRecyclerView')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }

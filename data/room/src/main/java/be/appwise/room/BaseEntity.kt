@@ -1,5 +1,5 @@
 package be.appwise.room
 
-abstract class BaseEntity {
-    abstract val id: Any
+interface BaseEntity {
+    val id: Any
 }

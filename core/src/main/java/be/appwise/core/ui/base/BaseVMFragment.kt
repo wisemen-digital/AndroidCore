@@ -1,11 +1,7 @@
 package be.appwise.core.ui.base
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import be.appwise.core.R
-import be.appwise.core.extensions.fragment.snackBar
-import com.orhanobut.logger.Logger
 
 abstract class BaseVMFragment : BaseFragment() {
     /**

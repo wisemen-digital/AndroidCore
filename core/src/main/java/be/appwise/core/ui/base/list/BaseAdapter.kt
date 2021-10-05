@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseAdapter<T, L, VH : BaseViewHolder<T>>() : RecyclerView.Adapter<VH>() {
+@Deprecated(message = "Deprecated in favor of ListAdapter", replaceWith = ReplaceWith("ListAdapter", "androidx.recyclerview.widget.ListAdapter"))
+abstract class BaseAdapter<T, L, VH : BaseViewHolder<T>> : RecyclerView.Adapter<VH>() {
 
     private val items: MutableList<T> = ArrayList()
 
