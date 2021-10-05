@@ -62,11 +62,22 @@ class ProfileActionButton @JvmOverloads constructor(
                 R.style.pab_subTitle
             )
 
-            mTitleTextColor = attributes.getColor(R.styleable.ProfileActionButton_pab_titleTextColor, ContextCompat.getColor(context,android.R.color.black))
-            mSubTitleTextColor = attributes.getColor(R.styleable.ProfileActionButton_pab_subTitleTextColor, ContextCompat.getColor(context,android.R.color.black))
-            mHintColor = attributes.getColor(R.styleable.ProfileActionButton_pab_hintTextColor, ContextCompat.getColor(context,android.R.color.black))
-            mNextIconColor = attributes.getColor(R.styleable.ProfileActionButton_pab_nextIconColor, ContextCompat.getColor(context,android.R.color.black))
-            mDividerColor = attributes.getColor(R.styleable.ProfileActionButton_pab_dividerColor, ContextCompat.getColor(context,android.R.color.black))
+            mTitleTextColor =
+                attributes.getColor(R.styleable.ProfileActionButton_pab_titleTextColor, -1)
+            mSubTitleTextColor =
+                attributes.getColor(R.styleable.ProfileActionButton_pab_subTitleTextColor, -1)
+            mHintColor = attributes.getColor(
+                R.styleable.ProfileActionButton_pab_hintTextColor,
+                ContextCompat.getColor(context, android.R.color.black)
+            )
+            mNextIconColor = attributes.getColor(
+                R.styleable.ProfileActionButton_pab_nextIconColor,
+                ContextCompat.getColor(context, android.R.color.black)
+            )
+            mDividerColor = attributes.getColor(
+                R.styleable.ProfileActionButton_pab_dividerColor,
+                ContextCompat.getColor(context, android.R.color.black)
+            )
 
             mNextIcon = attributes.getDrawable(R.styleable.ProfileActionButton_pab_nextIcon)
                 ?: ContextCompat.getDrawable(
@@ -92,10 +103,11 @@ class ProfileActionButton @JvmOverloads constructor(
 
 
         titleView?.setTextAppearance(context, mTitleTextAppearance)
-
         subtitleView?.setTextAppearance(context, mSubTitleTextAppearance)
-        titleView?.setTextColor(mTitleTextColor)
-        subtitleView?.setTextColor(mSubTitleTextColor)
+        if (mTitleTextColor != -1)
+            titleView?.setTextColor(mTitleTextColor)
+        if (mSubTitleTextColor != -1)
+            subtitleView?.setTextColor(mSubTitleTextColor)
         subtitleView?.setHintTextColor(mHintColor)
         divider?.setBackgroundColor(mDividerColor)
         nextView?.setImageDrawable(mNextIcon)
@@ -104,29 +116,33 @@ class ProfileActionButton @JvmOverloads constructor(
     }
 
 
-    private val titleView get() = when (val binding = mProfileActionButtonBinding) {
-        is ProfileActionButtonBinding -> binding.tvTitle
-        is ProfileActionButtonVerticalBinding -> binding.tvTitle
-        else -> null
-    }
+    private val titleView
+        get() = when (val binding = mProfileActionButtonBinding) {
+            is ProfileActionButtonBinding -> binding.tvTitle
+            is ProfileActionButtonVerticalBinding -> binding.tvTitle
+            else -> null
+        }
 
-    private val subtitleView get() = when (val binding = mProfileActionButtonBinding) {
-        is ProfileActionButtonBinding -> binding.tvSubtitle
-        is ProfileActionButtonVerticalBinding -> binding.tvSubtitle
-        else -> null
-    }
+    private val subtitleView
+        get() = when (val binding = mProfileActionButtonBinding) {
+            is ProfileActionButtonBinding -> binding.tvSubtitle
+            is ProfileActionButtonVerticalBinding -> binding.tvSubtitle
+            else -> null
+        }
 
-    private val divider get() = when (val binding = mProfileActionButtonBinding) {
-        is ProfileActionButtonBinding -> binding.divider
-        is ProfileActionButtonVerticalBinding -> binding.divider
-        else -> null
-    }
+    private val divider
+        get() = when (val binding = mProfileActionButtonBinding) {
+            is ProfileActionButtonBinding -> binding.divider
+            is ProfileActionButtonVerticalBinding -> binding.divider
+            else -> null
+        }
 
-    private val nextView get() = when (val binding = mProfileActionButtonBinding) {
-        is ProfileActionButtonBinding -> binding.ivNext
-        is ProfileActionButtonVerticalBinding -> binding.ivNext
-        else -> null
-    }
+    private val nextView
+        get() = when (val binding = mProfileActionButtonBinding) {
+            is ProfileActionButtonBinding -> binding.ivNext
+            is ProfileActionButtonVerticalBinding -> binding.ivNext
+            else -> null
+        }
 
     private fun isDividerVisible() {
         divider?.isVisible = mDividerIsVisible
