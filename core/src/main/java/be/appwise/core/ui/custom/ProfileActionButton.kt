@@ -36,7 +36,7 @@ class ProfileActionButton @JvmOverloads constructor(
     private var mNextIconColor: Int = -1
     private var mNextIcon: Drawable? = null
 
-    private lateinit var mProfileActionButtonBinding: ViewBinding
+    private var mProfileActionButtonBinding: ViewBinding
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -93,7 +93,7 @@ class ProfileActionButton @JvmOverloads constructor(
 
         titleView?.setTextAppearance(context, mTitleTextAppearance)
 
-        subtitleView?.setTextAppearance(context, mTitleTextAppearance)
+        subtitleView?.setTextAppearance(context, mSubTitleTextAppearance)
         titleView?.setTextColor(mTitleTextColor)
         subtitleView?.setTextColor(mSubTitleTextColor)
         subtitleView?.setHintTextColor(mHintColor)
