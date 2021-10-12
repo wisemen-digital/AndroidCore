@@ -6,6 +6,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import be.appwise.core.R
 import be.appwise.core.extensions.activity.snackBar
 import com.orhanobut.logger.Logger
@@ -36,7 +37,7 @@ open class BaseActivity : AppCompatActivity() {
                 it.setDisplayHomeAsUpEnabled(true)
                 it.setHomeAsUpIndicator(backIconDrawableRes)
                 toolbar.setNavigationOnClickListener { onToolbarNavigationIconClicked() }
-                backIconColor?.let { toolbar.navigationIcon?.colorFilter = PorterDuffColorFilter(backIconColor, PorterDuff.Mode.SRC_IN) }
+                backIconColor?.let { toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, backIconColor)) }
             }
         }
     }

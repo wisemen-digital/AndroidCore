@@ -9,6 +9,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import be.appwise.core.R
@@ -57,7 +58,7 @@ open class BaseFragment : Fragment() {
                 it.setDisplayHomeAsUpEnabled(true)
                 it.setHomeAsUpIndicator(backIconDrawableRes)
                 toolbar.setNavigationOnClickListener { onToolbarNavigationIconClicked() }
-                backIconColor?.let { toolbar.navigationIcon?.colorFilter = PorterDuffColorFilter(backIconColor, PorterDuff.Mode.SRC_IN) }
+                backIconColor?.let { toolbar.navigationIcon?.setTint(ContextCompat.getColor(requireContext(), backIconColor)) }
             }
         }
     }
