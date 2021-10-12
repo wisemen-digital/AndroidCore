@@ -13,6 +13,8 @@ All notable changes to this project will be documented in this file.
 - Cleaned up resources, removed unneeded imports, ...
 
 ### Improvements
+- Fixed some styling issues with the ProfileActionButton
+- Fixed issue with the textColor overriding the textAppearance color of a ProfileActionButton
 
 ## [1.1.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.1.0)
 
