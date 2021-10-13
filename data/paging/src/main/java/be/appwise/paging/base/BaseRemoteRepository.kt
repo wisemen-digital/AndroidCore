@@ -17,8 +17,25 @@ interface BaseRemoteRepository<T : Any> {
 
     suspend fun loadPagedData(page: Int, loadType: LoadType): Boolean
 
+    /**
+     * This functions expects to returns an [androidx.paging.Pager] object. This can be build by doing this
+     *
+     * ```
+     * return Pager(
+     *     config = pagingConfig,
+     *     pagingSourceFactory = pagingSourceFactory,
+     *     remoteMediator = object : BaseRemoteMediator<NewsItemWithUser>() {
+     *         override val repository: BaseRemoteRepository<NewsItemWithUser>
+     *             get() = this@NewsRepository
+     *     }
+     * ).flow
+     * ```
+     *
+     * From the [androidx.paging.Pager] you can get a LiveData or Flow object.
+     * Because the LiveData is extracted from the Flow, we will expect a Flow
+     */
     @ExperimentalPagingApi
-    fun pagingDataLive(pagingConfig: PagingConfig = getDefaultPageConfig()): Flow<PagingData<T>>
+    fun pagingDataAsFlow(pagingConfig: PagingConfig = getDefaultPageConfig()): Flow<PagingData<T>>
 
     suspend fun clearAllRemoteTables()
 }
