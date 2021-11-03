@@ -19,6 +19,7 @@ buildscript {
         mavenCentral()
         jcenter() // this is still needed for the current Realm version
         maven { url 'https://plugins.gradle.org/m2/' }
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:7.0.1"
