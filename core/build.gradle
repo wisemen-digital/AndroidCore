@@ -3,9 +3,8 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
+    id 'maven-publish'
 }
-
-group = 'com.github.appwise-labs'
 
 android {
     compileSdkVersion 31
@@ -99,4 +98,16 @@ dependencies {
 
     // https://github.com/Ereza/CustomActivityOnCrash
     implementation 'cat.ereza:customactivityoncrash:2.3.0'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'com.github.appwise-labs'
+            }
+        }
+    }
 }

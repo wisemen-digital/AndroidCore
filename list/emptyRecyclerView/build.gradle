@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'maven-publish'
 }
 
 group = 'com.github.appwise-labs'
@@ -39,4 +40,16 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "com.google.android.material:material:$material_version"
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'com.github.appwise-labs'
+            }
+        }
+    }
 }
