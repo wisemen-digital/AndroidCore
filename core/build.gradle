@@ -3,9 +3,8 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
+    id 'maven-publish'
 }
-
-group = 'com.github.appwise-labs'
 
 android {
     compileSdkVersion 31
@@ -48,7 +47,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    api "androidx.core:core-ktx:1.6.0"
+    api "androidx.core:core-ktx:1.7.0"
 
     api 'androidx.multidex:multidex:2.0.1'
 
@@ -95,8 +94,20 @@ dependencies {
     api "com.afollestad.material-dialogs:datetime:$material_dialogs_version"
 
     // Time manipulation for Java 7
-    api 'joda-time:joda-time:2.10.12'
+    api 'joda-time:joda-time:2.10.13'
 
     // https://github.com/Ereza/CustomActivityOnCrash
     implementation 'cat.ereza:customactivityoncrash:2.3.0'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'com.github.appwise-labs'
+            }
+        }
+    }
 }

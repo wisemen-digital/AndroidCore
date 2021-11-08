@@ -119,7 +119,7 @@ internal object ProxyManNetworkDiscoveryManager {
         }
     }
 
-    private val resolveListener = object : NsdManager.ResolveListener {
+    private class ProxyManResolveListener : NsdManager.ResolveListener {
 
         private lateinit var mService: NsdServiceInfo
 
@@ -183,7 +183,7 @@ internal object ProxyManNetworkDiscoveryManager {
                 isProxymanService ->
                     nsdManager?.resolveService(
                         service,
-                        resolveListener
+                        ProxyManResolveListener()
                     )
 
             }
@@ -241,12 +241,12 @@ internal object ProxyManNetworkDiscoveryManager {
                         outPutStream.write(output.toByteArray())
                         outPutStream.flush()
                     } catch (ex: IOException) {
-                        showErrorMessage("BAGEL MESSAGE NOT SENT : socket with channel : ${socket.channel} and port : ${socket.port} closed")
+                        showErrorMessage("Proxyman MESSAGE NOT SENT : socket with channel : ${socket.channel} and port : ${socket.port} closed")
                         addMessageToPendingPackages(proxymanRequestMessage)
                     }
                 }
                 if (services.isEmpty()) {
-                    showDebugMessage("BAGEL MESSAGE NOT SENT : no sockets found")
+                    showDebugMessage("Proxyman MESSAGE NOT SENT : no sockets found")
                     addMessageToPendingPackages(proxymanRequestMessage)
                 }
             }
