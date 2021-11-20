@@ -8,9 +8,12 @@ All notable changes to this project will be documented in this file.
 
 ### Breaking
 - The signature of the `configureToolbar()` methods has been changed.
+- Updated the visibility of some functions of the `BaseRestClient`.
+- Added `GetGson()` back to the `BaseRestClient` so it can easily be extended with a `newBuilder`.
 
 ### Bug Fixes
 - Cleaned up resources, removed unneeded imports, ...
+- Changed immutable interceptor list mutable so the list can be easily added to.
 
 ### Improvements
 - Fixed some styling issues with the ProfileActionButton
