@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - Cleaned up resources, removed unneeded imports, ...
 - Changed immutable interceptor list mutable so the list can be easily added to.
 - Fixed issue with the `logout()` function as it was breaking on Android API 31
+- Fixed the issue where the sourceCode could not be inspected whilst using the modules as a dependency
 
 ### Improvements
 - Fixed some styling issues with the ProfileActionButton
