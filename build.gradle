@@ -9,7 +9,7 @@ buildscript {
         lifecycle_version = "2.4.0"
         material_dialogs_version = "3.3.0"
         nav_version = "2.3.5"
-        okhttp_version = "4.9.2"
+        okhttp_version = "4.9.3"
         retrofit_version = "2.9.0"
         room_version = "2.3.0"
         material_version = "1.4.0"
