@@ -51,6 +51,11 @@ dependencies {
     api "com.squareup.retrofit2:converter-gson:$retrofit_version"
 }
 
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "sources"
+}
+
 afterEvaluate {
     publishing {
         publications {
@@ -58,6 +63,8 @@ afterEvaluate {
                 from components.release
 
                 groupId = 'com.github.appwise-labs'
+
+                artifact(sourceJar)
             }
         }
     }
