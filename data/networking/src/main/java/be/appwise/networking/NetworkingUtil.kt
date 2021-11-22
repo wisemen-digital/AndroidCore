@@ -6,8 +6,6 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.webkit.MimeTypeMap
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.default
 import kotlinx.coroutines.Dispatchers
@@ -29,11 +27,6 @@ object NetworkingUtil {
             }
         }
         return result
-    }
-
-    internal fun getGson(): Gson {
-        val builder = GsonBuilder()
-        return builder.create()
     }
 
     suspend fun getBodyForFile(
@@ -63,8 +56,8 @@ object NetworkingUtil {
         val imageHeight = options.outHeight.toDouble()
         val imageWidth = options.outWidth.toDouble()
         //720p is 1280 x 720 px
-        var newHeight = 0.0
-        var newWidth = 0.0
+        val newHeight: Double
+        val newWidth: Double
         if (imageHeight > imageWidth) {//portrait-->720p
             val ratio = imageHeight / 720
             newWidth = imageWidth / ratio
@@ -94,7 +87,7 @@ object NetworkingUtil {
             cr.getType(uri) ?: "*/*"
         } else {
             val fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString())
-            MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase())
+            MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.lowercase())
                 ?: "*/*"
         }
     }

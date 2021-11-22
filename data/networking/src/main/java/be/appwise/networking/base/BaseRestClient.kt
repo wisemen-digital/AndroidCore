@@ -5,12 +5,13 @@ import android.provider.Settings
 import android.util.Log
 import be.appwise.networking.NetworkConstants
 import be.appwise.networking.Networking
-import be.appwise.networking.NetworkingUtil
 import be.appwise.networking.bagel.BagelInterceptor
 import be.appwise.networking.interceptors.Authenticator
 import be.appwise.networking.interceptors.HeaderInterceptor
 import be.appwise.networking.model.AccessToken
 import be.appwise.networking.proxyman.ProxyManInterceptor
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -186,8 +187,8 @@ abstract class BaseRestClient {
      * In case a project specific order is needed this function can be
      * overridden and changed as needed (reordering, omitting or adding)
      */
-    open fun getInterceptors(): List<Interceptor> {
-        return listOf(
+    protected open fun getInterceptors(): List<Interceptor> {
+        return mutableListOf(
             getHttpLoggingInterceptor(), getHeaderInterceptor()
         )
     }
@@ -203,7 +204,7 @@ abstract class BaseRestClient {
      * Can be moved to [Networking] so you can enable/disable it for all clients.
      * Maybe also limit it to DEBUG builds in future
      */
-    open fun enableBagelInterceptor() = false
+    protected open fun enableBagelInterceptor() = false
     //</editor-fold>
 
     /**
@@ -217,13 +218,31 @@ abstract class BaseRestClient {
      * Can be moved to [Networking] so you can enable/disable it for all clients.
      * Maybe also limit it to DEBUG builds in future
      */
-    open fun enableProxyManInterceptor() = false
+    protected open fun enableProxyManInterceptor() = false
     //</editor-fold>
 
     /**
      * Get the Gson Factory to handle all cases of type conversions from the responses
      */
-    open fun getGsonFactory(): GsonConverterFactory {
-        return GsonConverterFactory.create(NetworkingUtil.getGson())
+    protected open fun getGsonFactory(): GsonConverterFactory {
+        return GsonConverterFactory.create(getGson())
+    }
+
+    /**
+     * Create a Gson instance that can be used within the RestClient.
+     * This can easily be overridden by using the 'newBuilder' pattern
+     *
+     * As an example:
+     * ```
+     * override fun getGson(): Gson {
+     *     return super.getGson().newBuilder()
+     *         .setPrettyPrinting()
+     *         .create()
+     * }
+     *
+     * ```
+     */
+    protected open fun getGson(): Gson {
+        return Gson()
     }
 }
