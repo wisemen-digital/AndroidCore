@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 ### Improvements
 - Fixed some styling issues with the ProfileActionButton
 - Fixed issue with the textColor overriding the textAppearance color of a ProfileActionButton
+- Added paging3 module to the build, it will provide some standard ways to add a paging source and will easily hook in to your current implementation with a repository interface and much more.
 
 ## [1.1.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.1.0)
 
