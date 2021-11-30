@@ -8,7 +8,8 @@
    2. [Networking](#networking)
    3. [Room](#room)
    4. [Realm](#realm)
-   5. [EmptyStateRecyclerView](#emptystaterecyclerview)
+   5. [Paging](#paging)
+   6. [EmptyStateRecyclerView](#emptystaterecyclerview)
 3. [Contribution](#contribution)
 4. [Changelog](#changelog)
 5. [License](#license)
@@ -75,6 +76,16 @@ implementation 'com.github.appwise-labs.AndroidCore:room:<Latest-Version>'
 
 ```groovy
 implementation 'com.github.appwise-labs.AndroidCore:realm:<Latest-Version>'
+```
+
+---
+
+## Paging
+
+[Paging Samples and Information](documentation/PAGING.md)
+
+```groovy
+implementation 'com.github.appwise-labs.AndroidCore:paging:<Latest-Version>'
 ```
 
 ---
