@@ -7,6 +7,14 @@ All notable changes to this project will be documented in this file.
 ### Custom Views
 
 ### Breaking
+
+### Bug Fixes
+
+### Improvements
+
+## [1.1.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.2.0)
+
+### Breaking
 - The signature of the `configureToolbar()` methods has been changed.
 - Updated the visibility of some functions of the `BaseRestClient`.
 - Added `GetGson()` back to the `BaseRestClient` so it can easily be extended with a `newBuilder`.
