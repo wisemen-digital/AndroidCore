@@ -26,6 +26,9 @@ abstract class BaseVMFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mViewModel.setDefaultExceptionHandler(::onError)
+        mViewModel.coroutineException.observe(viewLifecycleOwner) {
+            if (it == null) return@observe
+            onError(it)
+        }
     }
 }

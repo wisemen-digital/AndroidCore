@@ -12,6 +12,9 @@ abstract class BaseViewModel : ViewModel() {
     @Suppress("MemberVisibilityCanBePrivate")
     var vmScope = viewModelScope
 
+    private val _coroutineException = MutableLiveData<Throwable?>(null)
+    val coroutineException: LiveData<Throwable?> = _coroutineException
+
     private val _loading = MutableLiveData<Boolean>().apply { value = false }
     val loading get() = _loading as LiveData<Boolean>
 
@@ -29,14 +32,13 @@ abstract class BaseViewModel : ViewModel() {
         showLoading(onSuccess)
     }
 
-    fun setDefaultExceptionHandler(onError: (error: Throwable) -> Unit = {}) {
-        vmScope = vmScopeWithCustomExceptionHandler(onError)
+    private fun setDefaultExceptionHandler() {
+        vmScope = (viewModelScope + CoroutineExceptionHandler { _, throwable ->
+            _coroutineException.value = throwable
+        })
     }
 
-    @Suppress("MemberVisibilityCanBePrivate")
-    fun vmScopeWithCustomExceptionHandler(onError: (error: Throwable) -> Unit = {}) =
-        (viewModelScope + CoroutineExceptionHandler { _, throwable ->
-            isLoading(false)
-            onError(throwable)
-        })
+    init {
+        setDefaultExceptionHandler()
+    }
 }

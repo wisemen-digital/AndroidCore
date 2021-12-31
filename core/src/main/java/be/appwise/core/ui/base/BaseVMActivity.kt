@@ -26,6 +26,9 @@ abstract class BaseVMActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mViewModel.setDefaultExceptionHandler(::onError)
+        mViewModel.coroutineException.observe(this) {
+            if (it == null) return@observe
+            onError(it)
+        }
     }
 }
