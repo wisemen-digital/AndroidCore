@@ -50,7 +50,7 @@ When implementing a Restclient in your project you can extend from `BaseRestClie
 
 When implementing a Restclient in your project you can extend from `BaseRestClient`. Do mind that you still have a choice to implement the RestClient as an `object` or as a regular `class`. (Each time you call the class `AppRestClient()` it'll create a new instance, while calling the object `AppRestClient` retains the same instance)
 
-In your RestClient you can have multiple apiServices to accomodate for the multitude of Repositories in the project, or you can have 1 single apiService.
+In your RestClient you can have multiple apiServices to accommodate for the multitude of Repositories in the project, or you can have 1 single apiService.
 
 ```kotlin
 object UnProtectedRestClient : BaseRestClient(){
