@@ -11,10 +11,10 @@ import be.appwise.networking.interceptors.HeaderInterceptor
 import be.appwise.networking.model.AccessToken
 import be.appwise.networking.proxyman.ProxyManInterceptor
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -125,18 +125,39 @@ abstract class BaseRestClient {
     protected open fun createRetrofit(baseUrl: String = ""): Retrofit {
         Log.d(TAG, "createRetrofit")
 
-        val urlToUse = if (baseUrl.isNotBlank()){
+        val urlToUse = if (baseUrl.isNotBlank()) {
             baseUrl
         } else {
             getBaseUrl()
         }
 
-        return Retrofit.Builder()
+        val builder = Retrofit.Builder()
             .baseUrl(urlToUse)
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(getGsonFactory())
             .client(getHttpClient)
-            .build()
+
+        getConverterFactories().forEach {
+            builder.addConverterFactory(it)
+        }
+
+        return builder.build()
+    }
+
+    /**
+     * Get a default list of [Converter.Factory] to be added to the restClient.
+     *
+     * In case a project specific order is needed this function can be
+     * overridden and changed as needed (reordering, omitting or adding)
+     *
+     * ```kotlin
+     *     override fun getConverterFactories(): MutableList<Converter.Factory> {
+     *         return super.getConverterFactories().also {
+     *             it.add(1, getNewConverterFactory())
+     *         }
+     *     }
+     * ```
+     */
+    protected open fun getConverterFactories(): MutableList<Converter.Factory> {
+        return mutableListOf(ScalarsConverterFactory.create(), getGsonFactory())
     }
 
     //<editor-fold desc="Interceptors">
@@ -187,7 +208,7 @@ abstract class BaseRestClient {
      * In case a project specific order is needed this function can be
      * overridden and changed as needed (reordering, omitting or adding)
      */
-    protected open fun getInterceptors(): List<Interceptor> {
+    protected open fun getInterceptors(): MutableList<Interceptor> {
         return mutableListOf(
             getHttpLoggingInterceptor(), getHeaderInterceptor()
         )
@@ -205,7 +226,6 @@ abstract class BaseRestClient {
      * Maybe also limit it to DEBUG builds in future
      */
     protected open fun enableBagelInterceptor() = false
-    //</editor-fold>
 
     /**
      * Allows you to enable the ProxyMan interceptor for an instance of the [BaseRestClient]
