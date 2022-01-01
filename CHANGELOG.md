@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 ### Breaking
 
 ### Bug Fixes
+- Added `getConverterFactories()` to the `BaseRestClient` so we can reorder ConverterFactories if needed.
 
 ### Improvements
 
