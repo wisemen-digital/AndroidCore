@@ -3,7 +3,6 @@ package be.appwise.core.extensions.navigation
 import android.net.Uri
 import android.os.Bundle
 import androidx.annotation.IdRes
-import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.NavDirections

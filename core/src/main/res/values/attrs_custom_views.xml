@@ -1,20 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="TitledRecyclerview">
-        <attr name="primaryEmptyText" format="string" />
-        <attr name="secondaryEmptyText" format="string" />
+        <attr name="emptyTextTitle" format="string" />
+        <attr name="emptyTextDescription" format="string" />
         <attr name="emptyIcon" format="reference" />
         <attr name="actionIcon" format="reference" />
+        <attr name="actionText" format="string" />
         <attr name="title" format="string" />
     </declare-styleable>
 
     <declare-styleable name="NumberStepper">
         <attr name="label" format="string" />
+        <attr name="plus_icon" format="reference"/>
+        <attr name="minus_icon" format="reference"/>
+        <attr name="minValue" format="integer"/>
+        <attr name="maxValue" format="integer"/>
     </declare-styleable>
 
     <declare-styleable name="InitialsImageView">
-        <attr name="circleColor" format="integer" />
+        <attr name="circleColor" format="color" />
         <attr name="android:textColor" />
         <attr name="android:textSize" />
+    </declare-styleable>
+
+    <declare-styleable name="ProfileActionButton">
+        <attr name="pab_title" format="string"/>
+        <attr name="pab_subTitle" format="string"/>
+        <attr name="pab_hint" format="string"/>
+        <attr name="pab_titleTextColor" format="color"/>
+        <attr name="pab_titleTextAppearance" format="reference"/>
+        <attr name="pab_subTitleTextColor" format="color"/>
+        <attr name="pab_subTitleTextAppearance" format="reference"/>
+        <attr name="pab_hintTextColor" format="color"/>
+        <attr name="pab_dividerColor" format="color"/>
+        <attr name="pab_nextIconColor" format="color"/>
+        <attr name="pab_nextIcon" format="reference"/>
+        <attr name="pab_visibleNextIcon" format="boolean"/>
+        <attr name="pab_visibleDivider" format="boolean"/>
+        <attr name="pab_vertical" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="ProfileDataRow">
+        <attr name="labelText" format="string" />
+        <attr name="valueText" format="string" />
+        <attr name="valueHint" format="string" />
+        <attr name="labelTextColor" format="color" />
+        <attr name="valueTextColor" format="color" />
+        <attr name="valueHintColor" format="color" />
+        <attr name="visibleDivider" format="boolean" />
+        <attr name="dividerColor" format="color" />
+        <attr name="android:imeOptions" />
+        <attr name="android:inputType" />
+        <attr name="editable" format="boolean" />
+        <attr name="singleLine" format="boolean" />
+
     </declare-styleable>
 </resources>

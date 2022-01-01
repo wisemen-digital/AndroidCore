@@ -28,7 +28,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:title="Sample project" />
 
-            <ScrollView
+            <androidx.core.widget.NestedScrollView
                 android:overScrollMode="never"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -38,13 +38,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?attr/colorSurface"
                     android:gravity="center_horizontal"
                     android:orientation="vertical">
 
-                    <include layout="@layout/component_backdrop" />
+                    <include layout="@layout/component_backdrop"
+                        app:backdrop="@{true}" />
                 </LinearLayout>
-            </ScrollView>
+            </androidx.core.widget.NestedScrollView>
         </LinearLayout>
 
         <!--        peekHeight = is height that will still be visible when collapsed-->
@@ -92,123 +92,9 @@
                     android:gravity="center_horizontal"
                     android:orientation="vertical">
 
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="shr_featured_label"
-                        android:textColor="?colorOnBackground" />
+                    <include layout="@layout/component_backdrop"
+                        app:backdrop="@{false}" />
 
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="shr_apartment_label"
-                        android:textColor="?colorOnBackground" />
-
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="shr_accessories_label"
-                        android:textColor="?colorOnBackground" />
-
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="shr_shoes_label"
-                        android:textColor="?colorOnBackground" />
-
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="shr_tops_label"
-                        android:textColor="?colorOnBackground" />
-
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="shr_bottoms_label"
-                        android:textColor="?colorOnBackground" />
-
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="shr_dresses_label"
-                        android:textColor="?colorOnBackground" />
-
-                    <View
-                        android:layout_width="56dp"
-                        android:layout_height="1dp"
-                        android:layout_margin="16dp"
-                        android:background="?attr/colorPrimaryVariant" />
-
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="shr_account_label"
-                        android:textColor="?colorOnBackground" />
-
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="shr_account_label"
-                        android:textColor="?colorOnBackground" />
-
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="shr_account_label"
-                        android:textColor="?colorOnBackground" />
-
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="shr_account_label"
-                        android:textColor="?colorOnBackground" />
-
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="shr_account_label"
-                        android:textColor="?colorOnBackground" />
-
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="shr_account_label"
-                        android:textColor="?colorOnBackground" />
-
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="is"
-                        android:textColor="?colorOnBackground" />
-
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="this"
-                        android:textColor="?colorOnBackground" />
-
-                    <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="whatever"
-                        android:textColor="?colorOnBackground" />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </LinearLayout>

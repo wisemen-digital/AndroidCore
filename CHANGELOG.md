@@ -4,9 +4,44 @@ All notable changes to this project will be documented in this file.
 
 ## [Master](https://github.com/appwise-labs/AndroidCore)
 
+### Custom Views
+
+### Breaking
+
+### Bug Fixes
+- Added `getConverterFactories()` to the `BaseRestClient` so we can reorder ConverterFactories if needed.
+
+### Improvements
+
+## [1.1.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.2.0)
+
+### Breaking
+- The signature of the `configureToolbar()` methods has been changed.
+- Updated the visibility of some functions of the `BaseRestClient`.
+- Added `GetGson()` back to the `BaseRestClient` so it can easily be extended with a `newBuilder`.
+
+### Bug Fixes
+- Cleaned up resources, removed unneeded imports, ...
+- Changed immutable interceptor list mutable so the list can be easily added to.
+- Fixed issue with the `logout()` function as it was breaking on Android API 31
+- Fixed the issue where the sourceCode could not be inspected whilst using the modules as a dependency
+
+### Improvements
+- Fixed some styling issues with the ProfileActionButton
+- Fixed issue with the textColor overriding the textAppearance color of a ProfileActionButton
+- Added paging3 module to the build, it will provide some standard ways to add a paging source and will easily hook in to your current implementation with a repository interface and much more.
+
+## [1.1.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.1.0)
+
+### Custom Views
+- Added classes that are used to create fast, easy and commonly used views/components.
+- This update contains InitialsImageView, ProfileActionButton , ProfileDataRow , Numberstepper
+
+
 ### Breaking
 
 - Moved Core to a proper module, now a better abstraction can be achieved by adding more submodules to Core. Even a sample app can be created within this project as well. Details of the procedure can be found [here](https://appwise.atlassian.net/wiki/spaces/~635004520/pages/415989761/Android+Core+Multiple+Submodules).
+- Networking, Realm and Room have been moved to separate modules as well.
 
 ### Bug Fixes
 
@@ -14,7 +49,9 @@ All notable changes to this project will be documented in this file.
 - Removed 'easyValidation' dependency as it was a deprecated library that was only available on JCenter.
 
 ### Improvements
-
+- Added the possibility to override the choose if you want the Proxyman classes to show it's logs.
+- Limited the number of calls/packages Proxyman holds in memory when there is no client available.
+- Removed unneeded line that deleted Proxyman clients that weren't connected to your app anymore.
 - Added the possibility to override the BaseRestClient's `getHttpLoggingInterceptor()` to provide a project specific logging level.
 
 ## [1.0.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.0.0)
