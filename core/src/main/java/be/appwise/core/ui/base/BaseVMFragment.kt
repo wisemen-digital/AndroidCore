@@ -1,6 +1,7 @@
 package be.appwise.core.ui.base
 
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 
 abstract class BaseVMFragment : BaseFragment() {
@@ -23,9 +24,12 @@ abstract class BaseVMFragment : BaseFragment() {
     protected open fun getViewModelFactory(): ViewModelProvider.NewInstanceFactory =
         ViewModelProvider.NewInstanceFactory()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        mViewModel.setDefaultExceptionHandler(::onError)
+        mViewModel.coroutineException.observe(viewLifecycleOwner) {
+            if (it == null) return@observe
+            onError(it)
+        }
     }
 }

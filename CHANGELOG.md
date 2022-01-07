@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file.
 
 ### Bug Fixes
 - Added `getConverterFactories()` to the `BaseRestClient` so we can reorder ConverterFactories if needed.
+- Changed the default exception handler in the `BaseViewModel` so it will use a LiveData callback instead of a high order function.
+This makes sure that errors in a coroutine in the `init{}` block can be handled as well
 
 ### Improvements
 
