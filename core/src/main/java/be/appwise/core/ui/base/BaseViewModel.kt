@@ -9,16 +9,18 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 
-abstract class BaseViewModel : ViewModel() {
+open class BaseViewModel : ViewModel() {
     @Suppress("MemberVisibilityCanBePrivate")
     var vmScope = viewModelScope
 
     private val _coroutineException = SingleLiveEvent<Throwable?>()
     val coroutineException: LiveData<Throwable?> = _coroutineException
+    fun setCoroutineException(exception: Throwable?) {
+        _coroutineException.value = exception
+    }
 
     private val _loading = MutableLiveData<Boolean>().apply { value = false }
     val loading get() = _loading as LiveData<Boolean>
-
     fun isLoading(loading: Boolean) {
         _loading.postValue(loading)
     }
@@ -33,11 +35,28 @@ abstract class BaseViewModel : ViewModel() {
         showLoading(onSuccess)
     }
 
-    private fun setDefaultExceptionHandler() {
-        vmScope = (viewModelScope + CoroutineExceptionHandler { _, throwable ->
-            _coroutineException.value = throwable
-        })
+    private fun setDefaultExceptionHandler(onError: (error: Throwable) -> Unit = {}) {
+        vmScope = vmScopeWithCustomExceptionHandler(onError)
     }
+
+    /**
+     * Function that can be used to have a custom exception handler per coroutine launch
+     *
+     * ```
+     * fun addToSomething(onFinish: (Throwable?) -> Unit) = vmScopeWithCustomExceptionHandler { onFinish(it) }.launch {
+     *     callSomething {}
+     *     onFinish(null)
+     * }
+     * ``
+     *
+     * Can also be overridden in a viewModel to make it more reusable
+     */
+    open fun vmScopeWithCustomExceptionHandler(onError: (error: Throwable) -> Unit = {}) =
+        (viewModelScope + CoroutineExceptionHandler { _, throwable ->
+            isLoading(false)
+            onError(throwable)
+            setCoroutineException(throwable)
+        })
 
     init {
         setDefaultExceptionHandler()
