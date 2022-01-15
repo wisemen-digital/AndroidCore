@@ -1,41 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Hello World!"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintLeft_toLeftOf="parent"
-      app:layout_constraintRight_toRightOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+    android:orientation="vertical"
+    tools:context=".ui.MainActivity">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/mtbMain"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:elevation="0dp" />
 
-    <!--<be.appwise.core.ui.custom.InitialsImageView
-            style="@style/customIivStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>-->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/my_nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/nav_graph_main" />
 
-    <!--<be.appwise.core.ui.custom.ProfileActionButton
-            style="@style/customPabStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>-->
-
-   <!-- <be.appwise.core.ui.custom.NumberStepper
-            style="@style/customNumberStepperStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>-->
-
-    <!--<be.appwise.core.ui.custom.ProfileDataRow
-            style="@style/customPdrStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>-->
-
-
-
-  </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
