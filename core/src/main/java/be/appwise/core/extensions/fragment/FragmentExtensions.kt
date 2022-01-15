@@ -6,6 +6,7 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import be.appwise.core.extensions.snackBar
 
+@Deprecated("This is not the desired way to show/style a Snackbar, theming is easier to do globally in the themes.xml")
 fun Fragment.snackBar(message: String, textColor: Int = android.R.color.white, viewID: Int = android.R.id.content) {
     activity ?: return
     snackBar(activity!!.findViewById(viewID), message, textColor).show()

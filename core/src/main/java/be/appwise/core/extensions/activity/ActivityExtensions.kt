@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import be.appwise.core.extensions.snackBar
 
+@Deprecated("This is not the desired way to show/style a Snackbar, theming is easier to do globally in the themes.xml")
 fun Activity.snackBar(message: String, textColor: Int = android.R.color.white, viewID: Int = android.R.id.content) =
     snackBar(findViewById(viewID), message, textColor).show()
 

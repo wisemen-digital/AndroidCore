@@ -6,6 +6,7 @@
 
     <color name="gray20">#333333</color>
     <color name="dim_gray">#696969</color>
+    <color name="silver_chalice">#9F9F9F</color>
 
     <color name="purple_200">#bb86fc</color> <!--Color primary (dark)-->
     <color name="purple_500">#6200ee</color> <!--Color primary (light)-->

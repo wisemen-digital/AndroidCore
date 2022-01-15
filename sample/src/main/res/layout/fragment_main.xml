@@ -6,17 +6,17 @@
 
         <variable
             name="viewModel"
-            type="com.example.coredemo.ui.MainViewModel" />
+            type="com.example.coredemo.ui.main.MainViewModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.MainFragment">
+        tools:context=".ui.main.MainFragment">
 
-        <TextView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvContentItems"
             android:layout_width="match_parent"
-            android:text="hello, what's this???"
             android:layout_height="match_parent"/>
     </FrameLayout>
 </layout>
