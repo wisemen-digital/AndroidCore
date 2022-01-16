@@ -4,6 +4,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import be.appwise.core.ui.base.BaseViewModel
 import be.appwise.measurements.Measurement
+import be.appwise.measurements.units.UnitAngle
 import be.appwise.measurements.units.UnitEnergy
 import be.appwise.measurements.units.UnitLength
 
@@ -60,6 +61,8 @@ class MeasurementsViewModel : BaseViewModel() {
             val converted = measure.converted(secondUnitLength)
             val desc = converted.description
             unitLengthValue.value = desc
+
+            Measurement(10.0, UnitAngle.arcMinutes).unit
         }
     }
     // </editor-fold>
