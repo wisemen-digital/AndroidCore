@@ -15,7 +15,7 @@ abstract class BaseRemoteKeysDao<T : BaseRemoteKeys>(private val tableName: Stri
     abstract suspend fun insertAll(remoteKey: List<T>)
 
     suspend fun remoteKeyId(id: Any): T? {
-        val query = SimpleSQLiteQuery("SELECT * FROM $tableName WHERE $idColumnInfo = $id")
+        val query = SimpleSQLiteQuery("SELECT * FROM $tableName WHERE $idColumnInfo = ?", arrayOf(id))
         return selectQuery(query)
     }
 

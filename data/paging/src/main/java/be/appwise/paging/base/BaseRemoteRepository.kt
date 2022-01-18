@@ -1,9 +1,6 @@
 package be.appwise.paging.base
 
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.LoadType
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+import androidx.paging.*
 import kotlinx.coroutines.flow.Flow
 
 interface BaseRemoteRepository<T : Any> {
@@ -15,7 +12,7 @@ interface BaseRemoteRepository<T : Any> {
 
     suspend fun getRemoteKeyById(item: T): BaseRemoteKeys?
 
-    suspend fun loadPagedData(page: Int, loadType: LoadType): Boolean
+    suspend fun loadPagedData(page: Int, loadType: LoadType,state: PagingState<Int, T>): Boolean
 
     /**
      * This functions expects to returns an [androidx.paging.Pager] object. This can be build by doing this
