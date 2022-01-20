@@ -86,7 +86,7 @@ abstract class BaseFilterRemoteMediator<T : Any, QT : Any>(
     }
 
     interface RemoteFilterMediatorListener<T : Any, QT : Any> {
-        fun getRemoteKeyById(t: T): BaseRemoteKeys?
+        suspend fun getRemoteKeyById(t: T): BaseRemoteKeys?
         fun defaultPageIndex(): Int
         suspend fun loadPagedData(
             page: Int,

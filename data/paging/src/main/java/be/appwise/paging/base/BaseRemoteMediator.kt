@@ -82,7 +82,7 @@ abstract class BaseRemoteMediator<T : Any>(val remoteMediatorListener: RemoteMed
     }
 
     interface RemoteMediatorListener<T : Any> {
-        fun getRemoteKeyById(t: T) : BaseRemoteKeys?
+        suspend fun getRemoteKeyById(t: T) : BaseRemoteKeys?
         fun defaultPageIndex(): Int
         suspend fun loadPagedData(
             page: Int,
