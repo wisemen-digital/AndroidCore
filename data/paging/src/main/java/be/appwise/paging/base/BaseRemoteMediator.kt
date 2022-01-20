@@ -7,8 +7,7 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 
 @ExperimentalPagingApi
-abstract class BaseRemoteMediator<T: Any>: RemoteMediator<Int, T>() {
-    abstract val repository: BaseRemoteRepository<T>
+abstract class BaseRemoteMediator<T : Any>(val remoteMediatorListener: RemoteMediatorListener<T>) : RemoteMediator<Int, T>() {
 
     override suspend fun load(loadType: LoadType, state: PagingState<Int, T>): MediatorResult {
         val page = when (val pageKeyData = getKeyPageData(loadType, state)) {
@@ -21,7 +20,7 @@ abstract class BaseRemoteMediator<T: Any>: RemoteMediator<Int, T>() {
         }
 
         return try {
-            val isEndOfList = repository.loadPagedData(page, loadType,state)
+            val isEndOfList = remoteMediatorListener.loadPagedData(page, loadType, state)
             MediatorResult.Success(endOfPaginationReached = isEndOfList)
         } catch (exception: Exception) {
             // This will handle any exceptions that happen when the data cannot be parsed by the "doCall" function
@@ -36,7 +35,7 @@ abstract class BaseRemoteMediator<T: Any>: RemoteMediator<Int, T>() {
         return when (loadType) {
             LoadType.REFRESH -> {
                 val remoteKeys = getClosestRemoteKey(state)
-                remoteKeys?.nextKey?.minus(1) ?: repository.defaultPageIndex
+                remoteKeys?.nextKey?.minus(1) ?: remoteMediatorListener.defaultPageIndex()
             }
             LoadType.APPEND -> {
                 val remoteKeys = getLastRemoteKey(state)
@@ -59,7 +58,7 @@ abstract class BaseRemoteMediator<T: Any>: RemoteMediator<Int, T>() {
         return state.pages
             .firstOrNull { it.data.isNotEmpty() }
             ?.data?.firstOrNull()
-            ?.let { feedback -> repository.getRemoteKeyById(feedback) }
+            ?.let { feedback -> remoteMediatorListener.getRemoteKeyById(feedback) }
     }
 
     /**
@@ -69,7 +68,7 @@ abstract class BaseRemoteMediator<T: Any>: RemoteMediator<Int, T>() {
         return state.pages
             .lastOrNull { it.data.isNotEmpty() }
             ?.data?.lastOrNull()
-            ?.let { feedback -> repository.getRemoteKeyById(feedback) }
+            ?.let { feedback -> remoteMediatorListener.getRemoteKeyById(feedback) }
     }
 
     /**
@@ -77,7 +76,19 @@ abstract class BaseRemoteMediator<T: Any>: RemoteMediator<Int, T>() {
      */
     private suspend fun getClosestRemoteKey(state: PagingState<Int, T>): BaseRemoteKeys? {
         return state.anchorPosition?.let { position ->
-            state.closestItemToPosition(position)?.let { feedback -> repository.getRemoteKeyById(feedback) }
+            state.closestItemToPosition(position)
+                ?.let { feedback -> remoteMediatorListener.getRemoteKeyById(feedback) }
         }
     }
+
+    interface RemoteMediatorListener<T : Any> {
+        fun getRemoteKeyById(t: T) : BaseRemoteKeys?
+        fun defaultPageIndex(): Int
+        suspend fun loadPagedData(
+            page: Int,
+            loadType: LoadType,
+            state: PagingState<Int, T>
+        ): Boolean
+    }
+
 }

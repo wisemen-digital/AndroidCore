@@ -20,12 +20,12 @@ interface BaseFilterRemoteRepository<T : Any, QT : Any> {
 
     suspend fun getRemoteKeyById(item: T): BaseRemoteKeys?
 
-    suspend fun loadPagedData(
+    /*suspend fun loadPagedData(
         page: Int,
         loadType: LoadType,
         state: PagingState<Int, T>,
         query: QT
-    ): Boolean
+    ): Boolean*/
 
     /**
      * This functions expects to returns an [androidx.paging.Pager] object. This can be build by doing this
