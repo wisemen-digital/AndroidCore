@@ -4,7 +4,6 @@ import androidx.paging.*
 import kotlinx.coroutines.flow.Flow
 
 interface BaseRemoteRepository<T : Any> {
-    val defaultPageIndex: Int
 
     fun getDefaultPageConfig(
         pageSize: Int = 15,
@@ -17,8 +16,6 @@ interface BaseRemoteRepository<T : Any> {
             enablePlaceholders = enablePlaceholders
         )
     }
-
-    suspend fun getRemoteKeyById(item: T): BaseRemoteKeys?
 
     /**
      * This functions expects to returns an [androidx.paging.Pager] object. This can be build by doing this
