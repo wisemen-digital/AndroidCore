@@ -41,8 +41,8 @@ class ProfileDataRow @JvmOverloads constructor(
 
         val attributes = context.obtainStyledAttributes(attributeSet, R.styleable.ProfileDataRow)
         mLabel = attributes.getString(R.styleable.ProfileDataRow_labelText)
-        mValue = attributes.getString(R.styleable.ProfileDataRow_labelText)
-        mValueHint = attributes.getString(R.styleable.ProfileDataRow_labelText)
+        mValue = attributes.getString(R.styleable.ProfileDataRow_valueText)
+        mValueHint = attributes.getString(R.styleable.ProfileDataRow_valueHint)
         mLabelTextColor = attributes.getColor(R.styleable.ProfileDataRow_labelTextColor,ContextCompat.getColor(context,android.R.color.black))
         mValueTextColor = attributes.getColor(R.styleable.ProfileDataRow_valueTextColor,ContextCompat.getColor(context,android.R.color.black))
         mValueHintColor = attributes.getColor(R.styleable.ProfileDataRow_valueHintColor,ContextCompat.getColor(context,android.R.color.black))
