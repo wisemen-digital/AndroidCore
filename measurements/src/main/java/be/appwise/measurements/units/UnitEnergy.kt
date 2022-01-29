@@ -31,7 +31,5 @@ class UnitEnergy(symbol: String, converter: UnitConverter) : Dimension(symbol, c
         val kilowattHours = UnitEnergy(Symbol.kilowattHours, Coefficient.kilowattHours)
     }
 
-    override fun baseUnit(): Dimension {
-        return joules
-    }
+    override fun baseUnit() = joules
 }

@@ -20,6 +20,7 @@
         <item name="colorError">@color/red_600</item>
         <!--"On" colors define how text, icons and strokes are colored in relation to the surface-->
         <!--on which they appear.-->
+        <item name="android:textColorPrimary">@color/white_50</item>
         <item name="colorOnPrimary">@color/gray20</item>
         <item name="colorOnSecondary">@color/black_900</item>
         <item name="colorOnBackground">@color/white_50</item>

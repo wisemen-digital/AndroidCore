@@ -46,6 +46,41 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
         unit = newMeasurement.unit
     }
 
+    /**
+     * Add two measurements of the same Dimension.
+     *
+     * If the [unit] of this object and [other] are [equals], then this returns the result of adding the [value] of each [Measurement].
+     * If they are not equal, then this will convert both to the base unit of the [Dimension] and return the result as a [Measurement] of that base unit.
+     * @return The result of adding the two measurements.
+     */
+    operator fun plus(other: Measurement<Dimension>): Measurement<Dimension> {
+        return if (other.unit == unit) {
+            Measurement(value + other.value, unit)
+        } else {
+            val lhsValueInTermsOfBase = unit.converter.baseUnitValue(value)
+            val otherValueInTermsOfBase = other.unit.converter.baseUnitValue(other.value)
+            Measurement(lhsValueInTermsOfBase + otherValueInTermsOfBase, unit.baseUnit())
+        }
+    }
+
+    /**
+     *
+     *  Subtract two measurements of the same Dimension.
+     *
+     *  If the [unit] of this object and [other] are [equals], then this returns the result of subtracting the [value] of each [Measurement].
+     *  If they are not equal, then this will convert both to the base unit of the [Dimension] and return the result as a [Measurement] of that base unit.
+     *  @return The result of adding the two measurements.
+     */
+    operator fun minus(other: Measurement<*>): Measurement<*> {
+        return if (other.unit == unit) {
+            Measurement(value + other.value, unit)
+        } else {
+            val lhsValueInTermsOfBase = unit.converter.baseUnitValue(value)
+            val otherValueInTermsOfBase = other.unit.converter.baseUnitValue(other.value)
+            Measurement(lhsValueInTermsOfBase - otherValueInTermsOfBase, unit.baseUnit())
+        }
+    }
+
     val abs get() = Measurement(value.absoluteValue, unit)
 
     val description get() = "$value ${unit.symbol}"
