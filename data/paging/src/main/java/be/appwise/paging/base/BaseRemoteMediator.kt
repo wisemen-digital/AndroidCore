@@ -21,7 +21,7 @@ abstract class BaseRemoteMediator<T: Any>: RemoteMediator<Int, T>() {
         }
 
         return try {
-            val isEndOfList = repository.loadPagedData(page, loadType)
+            val isEndOfList = repository.loadPagedData(page, loadType,state)
             MediatorResult.Success(endOfPaginationReached = isEndOfList)
         } catch (exception: Exception) {
             // This will handle any exceptions that happen when the data cannot be parsed by the "doCall" function
