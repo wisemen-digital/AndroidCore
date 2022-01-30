@@ -11,5 +11,6 @@ data class ContentItem(val id: Int, val name: String, val desc: String) {
     companion object {
         const val measurement = 10
         const val emptyRecyclerView = 20
+        const val paging = 30
     }
 }

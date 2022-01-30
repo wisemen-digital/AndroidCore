@@ -43,6 +43,7 @@ dependencies {
     implementation project(path: ':data:realm')
     implementation project(path: ':data:room')
     implementation project(path: ':data:networking')
+    implementation project(path: ':data:paging')
     implementation project(path: ':list:emptyRecyclerView')
     implementation project(path: ':measurements')
 

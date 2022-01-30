@@ -11,9 +11,16 @@
         <action
             android:id="@+id/action_mainFragment_to_measurementsFragment"
             app:destination="@id/measurementsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_pagingFragment"
+            app:destination="@id/pagingFragment" />
     </fragment>
     <fragment
         android:id="@+id/measurementsFragment"
         android:name="com.example.coredemo.ui.measurements.MeasurementsFragment"
         android:label="MeasurementsFragment" />
+    <fragment
+        android:id="@+id/pagingFragment"
+        android:name="com.example.coredemo.ui.paging.PagingFragment"
+        android:label="PagingFragment" />
 </navigation>
