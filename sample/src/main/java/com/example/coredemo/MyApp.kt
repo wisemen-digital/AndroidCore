@@ -3,12 +3,17 @@ package com.example.coredemo
 import android.app.Application
 import be.appwise.core.core.CoreApp
 import be.appwise.networking.Networking
+import com.example.coredemo.data.database.AppDatabase
 
 class MyApp : Application() {
 
     companion object {
         lateinit var instance: MyApp
             private set
+
+        val database: AppDatabase by lazy {
+            AppDatabase.getDatabase(instance)
+        }
     }
 
     override fun onCreate() {

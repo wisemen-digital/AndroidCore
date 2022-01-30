@@ -3,6 +3,8 @@ package com.example.coredemo.ui.paging
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
 import be.appwise.core.extensions.view.setupRecyclerView
 import be.appwise.core.ui.base.BaseBindingVMFragment
 import com.example.coredemo.R
@@ -25,6 +27,12 @@ class PagingFragment : BaseBindingVMFragment<FragmentPagingBinding>() {
         //TODO: create paging Repository
 
         initViews()
+
+        mViewModel.spellsLive.observe(viewLifecycleOwner) {
+            lifecycleScope.launchWhenResumed {
+                pagingAdapter.submitData(PagingData.from(it))
+            }
+        }
     }
 
     private fun initViews() {
