@@ -1,13 +1,15 @@
 package be.appwise.paging.base
 
-
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 
 @ExperimentalPagingApi
-abstract class BaseRemoteMediator<T : Any>(val remoteMediatorListener: RemoteMediatorListener<T>) : RemoteMediator<Int, T>() {
+abstract class BaseFilterRemoteMediator<T : Any, QT : Any>(
+    val query: QT,
+    val remoteFilterMediatorListener: RemoteFilterMediatorListener<T, QT>
+) : RemoteMediator<Int, T>() {
 
     override suspend fun load(loadType: LoadType, state: PagingState<Int, T>): MediatorResult {
         val page = when (val pageKeyData = getKeyPageData(loadType, state)) {
@@ -20,7 +22,7 @@ abstract class BaseRemoteMediator<T : Any>(val remoteMediatorListener: RemoteMed
         }
 
         return try {
-            val isEndOfList = remoteMediatorListener.loadPagedData(page, loadType, state)
+            val isEndOfList = remoteFilterMediatorListener.loadPagedData(page, loadType, state, query)
             MediatorResult.Success(endOfPaginationReached = isEndOfList)
         } catch (exception: Exception) {
             // This will handle any exceptions that happen when the data cannot be parsed by the "doCall" function
@@ -35,17 +37,19 @@ abstract class BaseRemoteMediator<T : Any>(val remoteMediatorListener: RemoteMed
         return when (loadType) {
             LoadType.REFRESH -> {
                 val remoteKeys = getClosestRemoteKey(state)
-                remoteKeys?.nextKey?.minus(1) ?: remoteMediatorListener.defaultPageIndex()
+                remoteKeys?.nextKey?.minus(1) ?: remoteFilterMediatorListener.defaultPageIndex()
             }
             LoadType.APPEND -> {
                 val remoteKeys = getLastRemoteKey(state)
-                remoteKeys?.nextKey ?: return MediatorResult.Success(endOfPaginationReached = false)
+                remoteKeys?.nextKey
+                    ?: return MediatorResult.Success(endOfPaginationReached = false)
                 remoteKeys.nextKey
             }
             LoadType.PREPEND -> {
                 val remoteKeys = getFirstRemoteKey(state)
                 //end of list condition reached
-                remoteKeys?.prevKey ?: return MediatorResult.Success(endOfPaginationReached = false)
+                remoteKeys?.prevKey
+                    ?: return MediatorResult.Success(endOfPaginationReached = false)
                 remoteKeys.prevKey
             }
         }
@@ -58,7 +62,7 @@ abstract class BaseRemoteMediator<T : Any>(val remoteMediatorListener: RemoteMed
         return state.pages
             .firstOrNull { it.data.isNotEmpty() }
             ?.data?.firstOrNull()
-            ?.let { feedback -> remoteMediatorListener.getRemoteKeyById(feedback) }
+            ?.let { feedback -> remoteFilterMediatorListener.getRemoteKeyById(feedback) }
     }
 
     /**
@@ -68,7 +72,7 @@ abstract class BaseRemoteMediator<T : Any>(val remoteMediatorListener: RemoteMed
         return state.pages
             .lastOrNull { it.data.isNotEmpty() }
             ?.data?.lastOrNull()
-            ?.let { feedback -> remoteMediatorListener.getRemoteKeyById(feedback) }
+            ?.let { feedback -> remoteFilterMediatorListener.getRemoteKeyById(feedback) }
     }
 
     /**
@@ -77,18 +81,18 @@ abstract class BaseRemoteMediator<T : Any>(val remoteMediatorListener: RemoteMed
     private suspend fun getClosestRemoteKey(state: PagingState<Int, T>): BaseRemoteKeys? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)
-                ?.let { feedback -> remoteMediatorListener.getRemoteKeyById(feedback) }
+                ?.let { feedback -> remoteFilterMediatorListener.getRemoteKeyById(feedback) }
         }
     }
 
-    interface RemoteMediatorListener<T : Any> {
-        suspend fun getRemoteKeyById(t: T) : BaseRemoteKeys?
+    interface RemoteFilterMediatorListener<T : Any, QT : Any> {
+        suspend fun getRemoteKeyById(t: T): BaseRemoteKeys?
         fun defaultPageIndex(): Int
         suspend fun loadPagedData(
             page: Int,
             loadType: LoadType,
-            state: PagingState<Int, T>
+            state: PagingState<Int, T>,
+            query: QT
         ): Boolean
     }
-
 }

@@ -3,7 +3,7 @@ package be.appwise.paging.base
 import androidx.paging.*
 import kotlinx.coroutines.flow.Flow
 
-interface BaseRemoteRepository<T : Any> {
+interface BaseFilterRemoteRepository<T : Any, QT : Any> {
 
     fun getDefaultPageConfig(
         pageSize: Int = 15,
@@ -35,7 +35,10 @@ interface BaseRemoteRepository<T : Any> {
      * Because the LiveData is extracted from the Flow, we will expect a Flow
      */
     @ExperimentalPagingApi
-    fun pagingDataAsFlow(pagingConfig: PagingConfig = getDefaultPageConfig()): Flow<PagingData<T>>
+    fun pagingDataAsFlow(
+        pagingConfig: PagingConfig = getDefaultPageConfig(),
+        query: QT
+    ): Flow<PagingData<T>>
 
     suspend fun clearAllRemoteTables()
 }
