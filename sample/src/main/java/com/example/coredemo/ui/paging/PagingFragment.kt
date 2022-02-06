@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.PagingData
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.LoadState
 import be.appwise.core.extensions.view.setupRecyclerView
 import be.appwise.core.ui.base.BaseBindingVMFragment
 import com.example.coredemo.R
 import com.example.coredemo.databinding.FragmentPagingBinding
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
+@ExperimentalPagingApi
 class PagingFragment : BaseBindingVMFragment<FragmentPagingBinding>() {
 
     private val pagingAdapter by lazy { PagingAdapter() }
@@ -22,17 +26,21 @@ class PagingFragment : BaseBindingVMFragment<FragmentPagingBinding>() {
 
         mBinding.viewModel = mViewModel
 
-        //TODO: create adapter
-        //TODO: create RestClient (https://open5e.com/classes ---- https://api.open5e.com/spells/)
-        //TODO: create paging Repository
-
         initViews()
 
         mViewModel.spellsLive.observe(viewLifecycleOwner) {
             lifecycleScope.launchWhenResumed {
-                pagingAdapter.submitData(PagingData.from(it))
+                pagingAdapter.submitData(it)
             }
         }
+
+        lifecycleScope.launch {
+            // Get the load state of the paged adapter to update a view in the UI
+            pagingAdapter.loadStateFlow.collectLatest { loadStates ->
+                mViewModel.isLoading(loadStates.refresh is LoadState.Loading || loadStates.append is LoadState.Loading || loadStates.prepend is LoadState.Loading)
+            }
+        }
+
     }
 
     private fun initViews() {

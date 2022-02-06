@@ -13,7 +13,7 @@ class PagingAdapter : PagingDataAdapter<Spell, PagingAdapter.PagingViewHolder>(P
     companion object {
         private val PAGING_DIFF = object : DiffUtil.ItemCallback<Spell>() {
             override fun areItemsTheSame(oldItem: Spell, newItem: Spell): Boolean {
-                return oldItem == newItem
+                return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(oldItem: Spell, newItem: Spell): Boolean {

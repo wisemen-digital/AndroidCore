@@ -46,7 +46,7 @@ abstract class CoreRemoteMediator<T : Any>(
         return state.pages
             .firstOrNull { it.data.isNotEmpty() }
             ?.data?.firstOrNull()
-            ?.let { feedback -> listener.getRemoteKeyById(feedback) }
+            ?.let { item -> listener.getRemoteKeyById(item) }
     }
 
     /**
@@ -58,7 +58,7 @@ abstract class CoreRemoteMediator<T : Any>(
         return state.pages
             .lastOrNull { it.data.isNotEmpty() }
             ?.data?.lastOrNull()
-            ?.let { feedback -> listener.getRemoteKeyById(feedback) }
+            ?.let { item -> listener.getRemoteKeyById(item) }
     }
 
     /**
@@ -69,7 +69,7 @@ abstract class CoreRemoteMediator<T : Any>(
     open suspend fun getClosestRemoteKey(state: PagingState<Int, T>): BaseRemoteKeys? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)
-                ?.let { feedback -> listener.getRemoteKeyById(feedback) }
+                ?.let { item -> listener.getRemoteKeyById(item) }
         }
     }
 }

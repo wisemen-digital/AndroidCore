@@ -10,5 +10,5 @@ data class SpellResponse(
     val level_int: Int
 ) {
 
-    val getAsEntity get() = Spell(slug, slug, name, desc, level, level_int)
+    fun getAsEntity(id: String) = Spell(id, slug, name, desc, level, level_int)
 }

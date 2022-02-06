@@ -1,15 +1,13 @@
 package com.example.coredemo.ui.paging
 
+import androidx.lifecycle.asLiveData
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.cachedIn
 import be.appwise.core.ui.base.BaseViewModel
 import com.example.coredemo.data.repositories.SpellRepo
 
 class PagingViewModel : BaseViewModel() {
 
-    val spellsLive get() = SpellRepo.spellsLive
-
-    init {
-        launchAndLoad {
-            SpellRepo.getSpells()
-        }
-    }
+    @ExperimentalPagingApi
+    val spellsLive get() = SpellRepo.pagingDataAsFlow.asLiveData().cachedIn(this)
 }

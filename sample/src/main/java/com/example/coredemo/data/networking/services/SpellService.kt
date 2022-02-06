@@ -9,6 +9,9 @@ interface SpellService {
 
     @GET("spells")
     suspend fun getSpells(
-        @Query("format") format: String = "json"
+        @Query("page") page: Int,
+        @Query("format") format: String = "json",
+        @Query("ordering") ordering: String = "level_int,slug",
+        @Query("limit") limit: Int = 30
     ): PaginationResponse<List<SpellResponse>>
 }
