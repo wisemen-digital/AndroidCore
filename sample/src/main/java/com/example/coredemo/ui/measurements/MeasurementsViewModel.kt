@@ -31,7 +31,7 @@ class MeasurementsViewModel : BaseViewModel() {
         if (value != null && firstUnitEnergy != null && secondUnitEnergy != null) {
             val measure = Measurement(value, firstUnitEnergy)
             val converted = measure.converted(secondUnitEnergy)
-            val desc = converted.description
+            val desc = converted.formattedDescription()
             unitEnergyValue.value = desc
         }
     }
@@ -59,7 +59,7 @@ class MeasurementsViewModel : BaseViewModel() {
         if (value != null && firstUnitLength != null && secondUnitLength != null) {
             val measure = Measurement(value, firstUnitLength)
             val converted = measure.converted(secondUnitLength)
-            val desc = converted.description
+            val desc = converted.formattedDescription()
             unitLengthValue.value = desc
 
             Measurement(10.0, UnitAngle.arcMinutes).unit

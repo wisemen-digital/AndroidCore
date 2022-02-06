@@ -46,6 +46,7 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
         unit = newMeasurement.unit
     }
 
+    // <editor-fold desc="calculations">
     /**
      * Add two measurements of the same Dimension.
      *
@@ -63,6 +64,10 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
         }
     }
 
+    operator fun plus(other: Double): Measurement<Dimension> = Measurement(value + other, unit)
+    operator fun plus(other: Float): Measurement<Dimension> = Measurement(value + other, unit)
+    operator fun plus(other: Int): Measurement<Dimension> = Measurement(value + other, unit)
+
     /**
      *
      *  Subtract two measurements of the same Dimension.
@@ -73,7 +78,7 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
      */
     operator fun minus(other: Measurement<*>): Measurement<*> {
         return if (other.unit == unit) {
-            Measurement(value + other.value, unit)
+            Measurement(value - other.value, unit)
         } else {
             val lhsValueInTermsOfBase = unit.converter.baseUnitValue(value)
             val otherValueInTermsOfBase = other.unit.converter.baseUnitValue(other.value)
@@ -81,7 +86,54 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
         }
     }
 
+    operator fun minus(other: Double): Measurement<Dimension> = Measurement(value - other, unit)
+    operator fun minus(other: Float): Measurement<Dimension> = Measurement(value - other, unit)
+    operator fun minus(other: Int): Measurement<Dimension> = Measurement(value - other, unit)
+
+    /**
+     * Divide two measurements of the same Dimension.
+     *
+     * If the [unit] of this object and [other] are [equals], then this returns the result of dividing the [value] of each [Measurement].
+     * If they are not equal, then this will convert both to the base unit of the [Dimension] and return the result as a [Measurement] of that base unit.
+     * @return The result of adding the two measurements.
+     */
+    operator fun div(other: Measurement<Dimension>): Measurement<Dimension> {
+        return if (other.unit == unit) {
+            Measurement(value / other.value, unit)
+        } else {
+            val lhsValueInTermsOfBase = unit.converter.baseUnitValue(value)
+            val otherValueInTermsOfBase = other.unit.converter.baseUnitValue(other.value)
+            Measurement(lhsValueInTermsOfBase / otherValueInTermsOfBase, unit.baseUnit())
+        }
+    }
+
+    operator fun div(other: Double): Measurement<Dimension> = Measurement(value / other, unit)
+    operator fun div(other: Float): Measurement<Dimension> = Measurement(value / other, unit)
+    operator fun div(other: Int): Measurement<Dimension> = Measurement(value / other, unit)
+
+    /**
+     * Multiply two measurements of the same Dimension.
+     *
+     * If the [unit] of this object and [other] are [equals], then this returns the result of multiplying the [value] of each [Measurement].
+     * If they are not equal, then this will convert both to the base unit of the [Dimension] and return the result as a [Measurement] of that base unit.
+     * @return The result of adding the two measurements.
+     */
+    operator fun times(other: Measurement<Dimension>): Measurement<Dimension> {
+        return if (other.unit == unit) {
+            Measurement(value * other.value, unit)
+        } else {
+            val lhsValueInTermsOfBase = unit.converter.baseUnitValue(value)
+            val otherValueInTermsOfBase = other.unit.converter.baseUnitValue(other.value)
+            Measurement(lhsValueInTermsOfBase * otherValueInTermsOfBase, unit.baseUnit())
+        }
+    }
+
+    operator fun times(other: Double): Measurement<Dimension> = Measurement(value * other, unit)
+    operator fun times(other: Float): Measurement<Dimension> = Measurement(value * other, unit)
+    operator fun times(other: Int): Measurement<Dimension> = Measurement(value * other, unit)
+
     val abs get() = Measurement(value.absoluteValue, unit)
+    // </editor-fold>
 
     val description get() = "$value ${unit.symbol}"
 
@@ -90,6 +142,7 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
 
     fun formattedDescription(pattern: String = "#.#"): String {
 
+    fun formattedDescription(pattern: String = "#.##"): String {
         val formatter = DecimalFormat(pattern)
         formatter.roundingMode = RoundingMode.HALF_EVEN
         val someVal = formatter.format(value)
@@ -97,7 +150,7 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
         return "$someVal ${unit.symbol}"
     }
 
-    fun prettyFormatValue(pattern: String = "#.#"): String {
+    fun prettyFormatValue(pattern: String = "#.##"): String {
         val formatter = DecimalFormat(pattern)
         formatter.roundingMode = RoundingMode.HALF_EVEN
 
