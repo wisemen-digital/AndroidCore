@@ -14,6 +14,7 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
     var unit: UnitType = unit
         private set
 
+
     /**
      * Returns a new measurement created by converting to the specified unit.
      *
@@ -136,11 +137,6 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
     // </editor-fold>
 
     val description get() = "$value ${unit.symbol}"
-
-    //TODO: maybe take a look into the `MeasureFormatter` native to kotlin/android,
-    //  maybe we can interlock them so the format can be done with that API
-
-    fun formattedDescription(pattern: String = "#.#"): String {
 
     fun formattedDescription(pattern: String = "#.##"): String {
         val formatter = DecimalFormat(pattern)
