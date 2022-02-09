@@ -1,14 +1,19 @@
 package be.appwise.measurements
 
+import android.icu.text.MeasureFormat
+import android.icu.util.Measure
+import android.icu.util.ULocale
+import android.os.Build
+import androidx.annotation.RequiresApi
 import be.appwise.measurements.units.Dimension
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.util.*
 import kotlin.math.absoluteValue
 
 // Based this complete thing on swift
 // https://github.com/apple/swift-corelibs-foundation/blob/main/Sources/Foundation/Unit.swift
 // https://github.com/apple/swift-corelibs-foundation/blob/main/Sources/Foundation/Measurement.swift
-
 class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
 
     var unit: UnitType = unit
@@ -55,7 +60,7 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
      * If they are not equal, then this will convert both to the base unit of the [Dimension] and return the result as a [Measurement] of that base unit.
      * @return The result of adding the two measurements.
      */
-    operator fun plus(other: Measurement<Dimension>): Measurement<Dimension> {
+    operator fun plus(other: Measurement<*>): Measurement<*> {
         return if (other.unit == unit) {
             Measurement(value + other.value, unit)
         } else {
@@ -68,6 +73,8 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
     operator fun plus(other: Double): Measurement<Dimension> = Measurement(value + other, unit)
     operator fun plus(other: Float): Measurement<Dimension> = Measurement(value + other, unit)
     operator fun plus(other: Int): Measurement<Dimension> = Measurement(value + other, unit)
+    operator fun plus(other: Long): Measurement<Dimension> = Measurement(value + other, unit)
+    operator fun plus(other: Short): Measurement<Dimension> = Measurement(value + other, unit)
 
     /**
      *
@@ -90,6 +97,8 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
     operator fun minus(other: Double): Measurement<Dimension> = Measurement(value - other, unit)
     operator fun minus(other: Float): Measurement<Dimension> = Measurement(value - other, unit)
     operator fun minus(other: Int): Measurement<Dimension> = Measurement(value - other, unit)
+    operator fun minus(other: Long): Measurement<Dimension> = Measurement(value - other, unit)
+    operator fun minus(other: Short): Measurement<Dimension> = Measurement(value - other, unit)
 
     /**
      * Divide two measurements of the same Dimension.
@@ -111,6 +120,8 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
     operator fun div(other: Double): Measurement<Dimension> = Measurement(value / other, unit)
     operator fun div(other: Float): Measurement<Dimension> = Measurement(value / other, unit)
     operator fun div(other: Int): Measurement<Dimension> = Measurement(value / other, unit)
+    operator fun div(other: Long): Measurement<Dimension> = Measurement(value / other, unit)
+    operator fun div(other: Short): Measurement<Dimension> = Measurement(value / other, unit)
 
     /**
      * Multiply two measurements of the same Dimension.
@@ -120,6 +131,7 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
      * @return The result of adding the two measurements.
      */
     operator fun times(other: Measurement<Dimension>): Measurement<Dimension> {
+        // TODO: calculations of 2 different Units can happen because there is a wrong way of checking things...
         return if (other.unit == unit) {
             Measurement(value * other.value, unit)
         } else {
@@ -132,6 +144,8 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
     operator fun times(other: Double): Measurement<Dimension> = Measurement(value * other, unit)
     operator fun times(other: Float): Measurement<Dimension> = Measurement(value * other, unit)
     operator fun times(other: Int): Measurement<Dimension> = Measurement(value * other, unit)
+    operator fun times(other: Long): Measurement<Dimension> = Measurement(value * other, unit)
+    operator fun times(other: Short): Measurement<Dimension> = Measurement(value * other, unit)
 
     val abs get() = Measurement(value.absoluteValue, unit)
     // </editor-fold>
@@ -141,24 +155,22 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
     fun formattedDescription(pattern: String = "#.##"): String {
         val formatter = DecimalFormat(pattern)
         formatter.roundingMode = RoundingMode.HALF_EVEN
-        val someVal = formatter.format(value)
+        val formattedValue = formatter.format(value)
 
-        return "$someVal ${unit.symbol}"
+        return "$formattedValue ${unit.symbol}"
     }
 
-    fun prettyFormatValue(pattern: String = "#.##"): String {
-        val formatter = DecimalFormat(pattern)
-        formatter.roundingMode = RoundingMode.HALF_EVEN
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun format(measureFormat: MeasureFormat = MeasureFormat.getInstance(Locale.getDefault(), MeasureFormat.FormatWidth.SHORT)): String {
+        if (unit.measureUnit == null) {
+            return formattedDescription()
+        }
 
-        return formatter.format(value)
+        val measure = Measure(value, unit.measureUnit)
+        return measureFormat.format(measure)
     }
 
     override fun toString(): String {
         return "\"measurement\": {\"value\": \"$value\", \"symbol\": \"${unit.symbol}\"}"
     }
-}
-
-fun Iterable<Measurement<*>>.sum(): Measurement<*> {
-    val values = this.map { it.value }
-    return Measurement(values.sum(), this.first().unit)
 }
