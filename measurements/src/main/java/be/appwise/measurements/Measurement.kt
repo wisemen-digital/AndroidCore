@@ -2,7 +2,6 @@ package be.appwise.measurements
 
 import android.icu.text.MeasureFormat
 import android.icu.util.Measure
-import android.icu.util.ULocale
 import android.os.Build
 import androidx.annotation.RequiresApi
 import be.appwise.measurements.units.Dimension
@@ -61,12 +60,16 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
      * @return The result of adding the two measurements.
      */
     operator fun plus(other: Measurement<*>): Measurement<*> {
-        return if (other.unit == unit) {
-            Measurement(value + other.value, unit)
+        return if (other.unit.javaClass == this.unit.javaClass) {
+            if (other.unit == unit) {
+                Measurement(value + other.value, unit)
+            } else {
+                val lhsValueInTermsOfBase = unit.converter.baseUnitValue(value)
+                val otherValueInTermsOfBase = other.unit.converter.baseUnitValue(other.value)
+                Measurement(lhsValueInTermsOfBase + otherValueInTermsOfBase, unit.baseUnit())
+            }
         } else {
-            val lhsValueInTermsOfBase = unit.converter.baseUnitValue(value)
-            val otherValueInTermsOfBase = other.unit.converter.baseUnitValue(other.value)
-            Measurement(lhsValueInTermsOfBase + otherValueInTermsOfBase, unit.baseUnit())
+            throw Exception("Attempt to add measurements with non-equal units")
         }
     }
 
@@ -85,12 +88,16 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
      *  @return The result of adding the two measurements.
      */
     operator fun minus(other: Measurement<*>): Measurement<*> {
-        return if (other.unit == unit) {
-            Measurement(value - other.value, unit)
+        return if (other.unit.javaClass == this.unit.javaClass) {
+            if (other.unit == unit) {
+                Measurement(value - other.value, unit)
+            } else {
+                val lhsValueInTermsOfBase = unit.converter.baseUnitValue(value)
+                val otherValueInTermsOfBase = other.unit.converter.baseUnitValue(other.value)
+                Measurement(lhsValueInTermsOfBase - otherValueInTermsOfBase, unit.baseUnit())
+            }
         } else {
-            val lhsValueInTermsOfBase = unit.converter.baseUnitValue(value)
-            val otherValueInTermsOfBase = other.unit.converter.baseUnitValue(other.value)
-            Measurement(lhsValueInTermsOfBase - otherValueInTermsOfBase, unit.baseUnit())
+            throw Exception("Attempt to subtract measurements with non-equal units")
         }
     }
 
@@ -108,12 +115,16 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
      * @return The result of adding the two measurements.
      */
     operator fun div(other: Measurement<Dimension>): Measurement<Dimension> {
-        return if (other.unit == unit) {
-            Measurement(value / other.value, unit)
+        return if (other.unit.javaClass == this.unit.javaClass) {
+            if (other.unit == unit) {
+                Measurement(value / other.value, unit)
+            } else {
+                val lhsValueInTermsOfBase = unit.converter.baseUnitValue(value)
+                val otherValueInTermsOfBase = other.unit.converter.baseUnitValue(other.value)
+                Measurement(lhsValueInTermsOfBase / otherValueInTermsOfBase, unit.baseUnit())
+            }
         } else {
-            val lhsValueInTermsOfBase = unit.converter.baseUnitValue(value)
-            val otherValueInTermsOfBase = other.unit.converter.baseUnitValue(other.value)
-            Measurement(lhsValueInTermsOfBase / otherValueInTermsOfBase, unit.baseUnit())
+            throw Exception("Attempt to divide measurements with non-equal units")
         }
     }
 
@@ -131,13 +142,16 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
      * @return The result of adding the two measurements.
      */
     operator fun times(other: Measurement<Dimension>): Measurement<Dimension> {
-        // TODO: calculations of 2 different Units can happen because there is a wrong way of checking things...
-        return if (other.unit == unit) {
-            Measurement(value * other.value, unit)
+        return if (other.unit.javaClass == this.unit.javaClass) {
+            if (other.unit == unit) {
+                Measurement(value * other.value, unit)
+            } else {
+                val lhsValueInTermsOfBase = unit.converter.baseUnitValue(value)
+                val otherValueInTermsOfBase = other.unit.converter.baseUnitValue(other.value)
+                Measurement(lhsValueInTermsOfBase * otherValueInTermsOfBase, unit.baseUnit())
+            }
         } else {
-            val lhsValueInTermsOfBase = unit.converter.baseUnitValue(value)
-            val otherValueInTermsOfBase = other.unit.converter.baseUnitValue(other.value)
-            Measurement(lhsValueInTermsOfBase * otherValueInTermsOfBase, unit.baseUnit())
+            throw Exception("Attempt to multiply measurements with non-equal units")
         }
     }
 
