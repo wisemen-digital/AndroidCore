@@ -22,20 +22,21 @@
             android:orientation="vertical"
             android:paddingVertical="10dp">
 
-            <include
+            <com.example.coredemo.ui.measurements.ConvertMeasurement
                 android:id="@+id/unitEnergy"
-                layout="@layout/component_measurement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:unitTitle="@{`Unit Energy`}"
                 app:unitTotal="@{viewModel.unitEnergyValue}"
                 app:unitValue="@={viewModel.energyValue}" />
 
-            <include
+            <com.example.coredemo.ui.measurements.ConvertMeasurement
                 android:id="@+id/unitLength"
-                layout="@layout/component_measurement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:unitTitle="@{`Unit Length`}"
                 app:unitTotal="@{viewModel.unitLengthValue}"
                 app:unitValue="@={viewModel.lengthValue}" />
-
         </LinearLayout>
     </ScrollView>
 </layout>

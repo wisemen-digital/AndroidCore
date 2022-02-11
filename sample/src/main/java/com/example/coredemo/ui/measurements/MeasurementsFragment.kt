@@ -29,7 +29,7 @@ class MeasurementsFragment : BaseBindingVMFragment<FragmentMeasurementsBinding>(
         val items = UnitLength.list.map { it.symbol }
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, items)
 
-        (mBinding.unitLength.tilFromUnit.editText as? AutoCompleteTextView)?.let { tv ->
+        (mBinding.unitLength.fromEditText as? AutoCompleteTextView)?.let { tv ->
             tv.setAdapter(adapter)
             tv.setText(items.first(), false)
 
@@ -39,7 +39,7 @@ class MeasurementsFragment : BaseBindingVMFragment<FragmentMeasurementsBinding>(
             }
         }
 
-        (mBinding.unitLength.tilToUnit.editText as? AutoCompleteTextView)?.let { tv ->
+        (mBinding.unitLength.toEditText as? AutoCompleteTextView)?.let { tv ->
             tv.setAdapter(adapter)
             tv.setText(items.first(), false)
 
@@ -54,7 +54,7 @@ class MeasurementsFragment : BaseBindingVMFragment<FragmentMeasurementsBinding>(
         val items = UnitEnergy.list.map { it.symbol }
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, items)
 
-        (mBinding.unitEnergy.tilFromUnit.editText as? AutoCompleteTextView)?.let { tv ->
+        (mBinding.unitEnergy.fromEditText as? AutoCompleteTextView)?.let { tv ->
             tv.setAdapter(adapter)
             tv.setText(items.first(), false)
 
@@ -64,7 +64,7 @@ class MeasurementsFragment : BaseBindingVMFragment<FragmentMeasurementsBinding>(
             }
         }
 
-        (mBinding.unitEnergy.tilToUnit.editText as? AutoCompleteTextView)?.let { tv ->
+        (mBinding.unitEnergy.toEditText as? AutoCompleteTextView)?.let { tv ->
             tv.setAdapter(adapter)
             tv.setText(items.first(), false)
 

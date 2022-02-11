@@ -33,12 +33,15 @@ class MeasurementsViewModel : BaseViewModel() {
         if (value != null && firstUnitEnergy != null && secondUnitEnergy != null) {
             val measure = Measurement(value, firstUnitEnergy)
             val converted = measure.converted(secondUnitEnergy)
-            val desc = converted.format()
+            val desc = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                converted.format()
+            } else {
+                converted.formattedDescription()
+            }
             unitEnergyValue.value = desc
         }
     }
     // </editor-fold>
-
 
     // <editor-fold desc="Length">
     val lengthValue = MutableLiveData("0")
@@ -61,7 +64,11 @@ class MeasurementsViewModel : BaseViewModel() {
         if (value != null && firstUnitLength != null && secondUnitLength != null) {
             val measure = Measurement(value, firstUnitLength)
             val converted = measure.converted(secondUnitLength)
-            val desc = converted.format()
+            val desc = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                converted.format()
+            } else {
+                converted.formattedDescription()
+            }
             unitLengthValue.value = desc
         }
     }
