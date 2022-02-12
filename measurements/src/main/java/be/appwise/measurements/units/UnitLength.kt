@@ -90,7 +90,7 @@ class UnitLength(symbol: String, converter: UnitConverter, measureUnit: MeasureU
     companion object {
         val megameters = UnitLength(Symbol.megameters, Coefficient.megameters, Unit.megameters)
         val kilometers = UnitLength(Symbol.kilometers, Coefficient.kilometers, Unit.kilometers)
-        val hectometers = UnitLength(Symbol.hectometers, Coefficient.hectometers,Unit.hectometers)
+        val hectometers = UnitLength(Symbol.hectometers, Coefficient.hectometers, Unit.hectometers)
         val decameters = UnitLength(Symbol.decameters, Coefficient.decameters, Unit.decameters)
         val meters = UnitLength(Symbol.meters, Coefficient.meters, Unit.meters)
         val decimeters = UnitLength(Symbol.decimeters, Coefficient.decimeters, Unit.decimeters)

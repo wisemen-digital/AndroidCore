@@ -18,7 +18,6 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
     var unit: UnitType = unit
         private set
 
-
     /**
      * Returns a new measurement created by converting to the specified unit.
      *
@@ -26,16 +25,20 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
      * @return A converted measurement
      */
     fun converted(otherUnit: UnitType): Measurement<UnitType> {
-        return if (unit == otherUnit) {
-            Measurement(value, otherUnit)
-        } else {
-            val valueInTermsOfBase = unit.converter.baseUnitValue(value)
-            if (otherUnit == otherUnit.baseUnit()) {
-                Measurement(valueInTermsOfBase, otherUnit)
+        return if (otherUnit.javaClass == this.unit.javaClass) {
+            if (unit == otherUnit) {
+                Measurement(value, otherUnit)
             } else {
-                val otherValueFromTermsOfBase = otherUnit.converter.value(valueInTermsOfBase)
-                Measurement(otherValueFromTermsOfBase, otherUnit)
+                val valueInTermsOfBase = unit.converter.baseUnitValue(value)
+                if (otherUnit == otherUnit.baseUnit()) {
+                    Measurement(valueInTermsOfBase, otherUnit)
+                } else {
+                    val otherValueFromTermsOfBase = otherUnit.converter.value(valueInTermsOfBase)
+                    Measurement(otherValueFromTermsOfBase, otherUnit)
+                }
             }
+        } else {
+            throw Exception("Attempt to add measurements with non-equal units")
         }
     }
 
