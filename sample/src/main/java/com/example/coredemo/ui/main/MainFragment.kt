@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import be.appwise.core.extensions.fragment.snackBar
 import be.appwise.core.extensions.view.setupRecyclerView
 import be.appwise.core.ui.base.BaseBindingVMFragment
 import com.example.coredemo.R
 import com.example.coredemo.databinding.FragmentMainBinding
-import com.google.android.material.snackbar.Snackbar
 
 class MainFragment : BaseBindingVMFragment<FragmentMainBinding>() {
 
@@ -24,7 +22,8 @@ class MainFragment : BaseBindingVMFragment<FragmentMainBinding>() {
 
     private fun handleNavigationToContent(it: ContentItem) {
         when (it.id) {
-            ContentItem.measurement -> MainFragmentDirections.actionMainFragmentToMeasurementsFragment()
+            ContentItem.measurementConversion -> MainFragmentDirections.actionMainFragmentToMeasurementsFragment()
+            ContentItem.measurementCalculation -> MainFragmentDirections.actionMainFragmentToMeasureCalculationFragment()
 //            ContentItem.emptyRecyclerView -> {}
             else -> null
         }?.run(findNavController()::navigate)

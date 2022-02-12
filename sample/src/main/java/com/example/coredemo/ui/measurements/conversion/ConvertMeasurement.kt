@@ -1,4 +1,4 @@
-package com.example.coredemo.ui.measurements
+package com.example.coredemo.ui.measurements.conversion
 
 import android.content.Context
 import android.util.AttributeSet
@@ -20,13 +20,21 @@ class ConvertMeasurement @JvmOverloads constructor(
     private val binding = ComponentMeasurementBinding.inflate(LayoutInflater.from(context), this)
 
     var unitTitle: String? = ""
-    set(value) {
-        field = value
-        value?.let {
-            binding.tvUnitTitle.text = it
+        set(value) {
+            field = value
+            value?.let {
+                binding.tvUnitTitle.text = it
+            }
         }
-    }
     var unitValue: String = "0"
+        set(value) {
+            field = value
+
+            val text = unitValueEditText.editText?.text?.toString()
+            if (text != value) {
+                unitValueEditText.editText?.setText(value)
+            }
+        }
     var unitTotal: String? = ""
         set(value) {
             field = value

@@ -1,4 +1,4 @@
-package com.example.coredemo.ui.measurements
+package com.example.coredemo.ui.measurements.conversion
 
 import android.os.Bundle
 import android.view.View

@@ -1,4 +1,4 @@
-package com.example.coredemo.ui.measurements
+package com.example.coredemo.ui.measurements.conversion
 
 import be.appwise.measurements.units.UnitEnergy
 import be.appwise.measurements.units.UnitLength

@@ -11,9 +11,17 @@
         <action
             android:id="@+id/action_mainFragment_to_measurementsFragment"
             app:destination="@id/measurementsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_measureCalculationFragment"
+            app:destination="@id/measureCalculationFragment" />
     </fragment>
     <fragment
         android:id="@+id/measurementsFragment"
-        android:name="com.example.coredemo.ui.measurements.MeasurementsFragment"
+        android:name="com.example.coredemo.ui.measurements.conversion.MeasurementsFragment"
         android:label="MeasurementsFragment" />
+
+    <fragment
+        android:id="@+id/measureCalculationFragment"
+        android:name="com.example.coredemo.ui.measurements.calculations.MeasureCalculationFragment"
+        android:label="MeasureCalculationFragment" />
 </navigation>

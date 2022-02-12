@@ -1,12 +1,10 @@
-package com.example.coredemo.ui.measurements
+package com.example.coredemo.ui.measurements.conversion
 
 import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import be.appwise.core.ui.base.BaseViewModel
 import be.appwise.measurements.Measurement
-import be.appwise.measurements.units.UnitAngle
 import be.appwise.measurements.units.UnitEnergy
 import be.appwise.measurements.units.UnitLength
 

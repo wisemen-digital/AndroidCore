@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.coredemo.ui.measurements.calculations.MeasureCalculationViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.measurements.calculations.MeasureCalculationFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="10dp">
+
+            <View
+                android:id="@+id/vFirstDividerTitle"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="?colorAccent"
+                app:layout_constraintBottom_toBottomOf="@id/tvUnitTitle"
+                app:layout_constraintEnd_toStartOf="@id/tvUnitTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvUnitTitle" />
+
+            <TextView
+                android:id="@+id/tvUnitTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="?colorAccent"
+                app:drawableEndCompat="@drawable/ic_arrow_down"
+                app:drawableStartCompat="@drawable/ic_arrow_down"
+                app:drawableTint="?colorAccent"
+                app:layout_constraintEnd_toStartOf="@id/vSecondDividertitle"
+                app:layout_constraintStart_toEndOf="@id/vFirstDividerTitle"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Same unit addition" />
+
+            <View
+                android:id="@+id/vSecondDividertitle"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="?colorAccent"
+                app:layout_constraintBottom_toBottomOf="@id/tvUnitTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvUnitTitle"
+                app:layout_constraintTop_toTopOf="@id/tvUnitTitle" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilFromUnitValue"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:hint="Value of the unit"
+                app:layout_constraintEnd_toStartOf="@id/tilToUnitValue"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvUnitTitle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:selectAllOnFocus="true"
+                    android:text="@={viewModel.firstLengthValue}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilToUnitValue"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:hint="Value of the unit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tilFromUnitValue"
+                app:layout_constraintTop_toBottomOf="@id/tvUnitTitle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:selectAllOnFocus="true"
+                    android:text="@={viewModel.secondLengthValue}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/ivConvert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add"
+                app:layout_constraintBottom_toBottomOf="@id/tilFromUnit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tilFromUnitValue"
+                app:tint="@color/white_50" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilFromUnit"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:hint="From Unit"
+                app:layout_constraintEnd_toStartOf="@id/tilToUnit"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tilFromUnitValue">
+
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilToUnit"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:hint="To Unit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tilFromUnit"
+                app:layout_constraintTop_toBottomOf="@id/tilFromUnitValue">
+
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tvResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@{viewModel.unitLengthTotal}"
+                android:textAppearance="?textAppearanceBody2"
+                app:layout_constraintTop_toBottomOf="@id/tilToUnit" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="@dimen/spacing_normal_16dp"
+                android:checked="@={viewModel.convertUnit}"
+                android:text="Convert to starting unit?"
+                app:layout_constraintTop_toBottomOf="@id/tvResult"
+                android:layout_height="wrap_content"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>
