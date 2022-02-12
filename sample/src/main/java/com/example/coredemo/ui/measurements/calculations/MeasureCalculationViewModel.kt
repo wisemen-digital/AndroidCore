@@ -45,14 +45,7 @@ class MeasureCalculationViewModel : BaseViewModel() {
 
             val addition = firstMeasure + secondMeasure
             val converted = if (convertUnit == true) {
-                //TODO: there still seems to be an issue with the Generics of the Measurement
-                // To circumvent this we need to create a new measurement with the expected unit before converting.
-                val temp = if (firstMeasure.unit == secondMeasure.unit) {
-                    Measurement(addition.value, firstUnitLength)
-                } else {
-                    Measurement(addition.value, firstUnitLength.baseUnit())
-                }
-                temp.converted(firstUnitLength)
+                addition.converted(firstUnitLength)
             } else addition
 
             val desc = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

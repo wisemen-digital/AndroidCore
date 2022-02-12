@@ -59,7 +59,7 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
      * If they are not equal, then this will convert both to the base unit of the [Dimension] and return the result as a [Measurement] of that base unit.
      * @return The result of adding the two measurements.
      */
-    operator fun plus(other: Measurement<*>): Measurement<*> {
+    operator fun plus(other: Measurement<*>): Measurement<Dimension> {
         return if (other.unit.javaClass == this.unit.javaClass) {
             if (other.unit == unit) {
                 Measurement(value + other.value, unit)
@@ -87,7 +87,7 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
      *  If they are not equal, then this will convert both to the base unit of the [Dimension] and return the result as a [Measurement] of that base unit.
      *  @return The result of adding the two measurements.
      */
-    operator fun minus(other: Measurement<*>): Measurement<*> {
+    operator fun minus(other: Measurement<*>): Measurement<Dimension> {
         return if (other.unit.javaClass == this.unit.javaClass) {
             if (other.unit == unit) {
                 Measurement(value - other.value, unit)
@@ -114,7 +114,7 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
      * If they are not equal, then this will convert both to the base unit of the [Dimension] and return the result as a [Measurement] of that base unit.
      * @return The result of adding the two measurements.
      */
-    operator fun div(other: Measurement<*>): Measurement<*> {
+    operator fun div(other: Measurement<*>): Measurement<Dimension> {
         return if (other.unit.javaClass == this.unit.javaClass) {
             if (other.unit == unit) {
                 Measurement(value / other.value, unit)
@@ -141,7 +141,7 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
      * If they are not equal, then this will convert both to the base unit of the [Dimension] and return the result as a [Measurement] of that base unit.
      * @return The result of adding the two measurements.
      */
-    operator fun times(other: Measurement<*>): Measurement<*> {
+    operator fun times(other: Measurement<*>): Measurement<Dimension> {
         return if (other.unit.javaClass == this.unit.javaClass) {
             if (other.unit == unit) {
                 Measurement(value * other.value, unit)
