@@ -7,7 +7,7 @@ buildscript {
         //TODO: update kotlin version when room 2.4.0 is in stable
         kotlin_version = "1.6.10"
         kotlinx_coroutines_version = "1.6.0"
-        lifecycle_version = "2.4.0"
+        lifecycle_version = "2.4.1"
         material_dialogs_version = "3.3.0"
         nav_version = "2.3.5"
         okhttp_version = "4.9.3"
