@@ -1,11 +1,16 @@
 package be.appwise.measurements.units
 
+import android.icu.util.MeasureUnit
 import be.appwise.measurements.converters.UnitConverter
 import be.appwise.measurements.converters.UnitConverterLinear
+import be.appwise.measurements.isAtLeastN
+import be.appwise.measurements.isAtLeastP
 
-class UnitVolume(symbol: String, converter: UnitConverter) : Dimension(symbol, converter) {
+class UnitVolume(symbol: String, converter: UnitConverter, measureUnit: MeasureUnit? = null) : Dimension(symbol, converter, measureUnit) {
 
     private constructor(symbol: String, coefficient: Double) : this(symbol, UnitConverterLinear(coefficient))
+
+    private constructor(symbol: String, coefficient: Double, measureUnit: MeasureUnit?) : this(symbol, UnitConverterLinear(coefficient), measureUnit)
 
     private object Symbol {
         const val megaliters = "ML"
@@ -75,38 +80,72 @@ class UnitVolume(symbol: String, converter: UnitConverter) : Dimension(symbol, c
         const val metricCups = 0.25
     }
 
+    private object Unit {
+        val megaliters = if (isAtLeastN) MeasureUnit.MEGALITER else null
+        val kiloliters = null
+        val liters = if (isAtLeastN) MeasureUnit.LITER else null
+        val deciliters = if (isAtLeastN) MeasureUnit.DECILITER else null
+        val centiliters = if (isAtLeastN) MeasureUnit.CENTILITER else null
+        val milliliters = if (isAtLeastN) MeasureUnit.MILLILITER else null
+        val cubicKilometers = if (isAtLeastN) MeasureUnit.CUBIC_KILOMETER else null
+        val cubicMeters = if (isAtLeastN) MeasureUnit.CUBIC_METER else null
+        val cubicDecimeters = null
+        val cubicCentimeters = if (isAtLeastN) MeasureUnit.CUBIC_CENTIMETER else null
+        val cubicMillimeters = null
+        val cubicInches = if (isAtLeastN) MeasureUnit.CUBIC_INCH else null
+        val cubicFeet = if (isAtLeastN) MeasureUnit.CUBIC_FOOT else null
+        val cubicYards = if (isAtLeastN) MeasureUnit.CUBIC_YARD else null
+        val cubicMiles = if (isAtLeastN) MeasureUnit.CUBIC_MILE else null
+        val acreFeet = if (isAtLeastN) MeasureUnit.ACRE_FOOT else null
+        val bushels = if (isAtLeastN) MeasureUnit.BUSHEL else null
+        val teaspoons = if (isAtLeastN) MeasureUnit.TEASPOON else null
+        val tablespoons = if (isAtLeastN) MeasureUnit.TABLESPOON else null
+        val fluidOunces = if (isAtLeastN) MeasureUnit.FLUID_OUNCE else null
+        val cups = if (isAtLeastN) MeasureUnit.CUP else null
+        val pints = if (isAtLeastN) MeasureUnit.PINT else null
+        val quarts = if (isAtLeastN) MeasureUnit.QUART else null
+        val gallons = if (isAtLeastN) MeasureUnit.GALLON else null
+        val imperialTeaspoons = null
+        val imperialTablespoons = null
+        val imperialFluidOunces = null
+        val imperialPints = null
+        val imperialQuarts = null
+        val imperialGallons = if (isAtLeastP) MeasureUnit.GALLON_IMPERIAL else null
+        val metricCups = if (isAtLeastP) MeasureUnit.CUP_METRIC else null
+    }
+
     companion object {
-        val megaliters = UnitVolume(Symbol.megaliters, Coefficient.megaliters)
-        val kiloliters = UnitVolume(Symbol.kiloliters, Coefficient.kiloliters)
-        val liters = UnitVolume(Symbol.liters, Coefficient.liters)
-        val deciliters = UnitVolume(Symbol.deciliters, Coefficient.deciliters)
-        val centiliters = UnitVolume(Symbol.centiliters, Coefficient.centiliters)
-        val milliliters = UnitVolume(Symbol.milliliters, Coefficient.milliliters)
-        val cubicKilometers = UnitVolume(Symbol.cubicKilometers, Coefficient.cubicKilometers)
-        val cubicMeters = UnitVolume(Symbol.cubicMeters, Coefficient.cubicMeters)
-        val cubicDecimeters = UnitVolume(Symbol.cubicDecimeters, Coefficient.cubicDecimeters)
-        val cubicCentimeters = UnitVolume(Symbol.cubicCentimeters, Coefficient.cubicCentimeters)
-        val cubicMillimeters = UnitVolume(Symbol.cubicMillimeters, Coefficient.cubicMillimeters)
-        val cubicInches = UnitVolume(Symbol.cubicInches, Coefficient.cubicInches)
-        val cubicFeet = UnitVolume(Symbol.cubicFeet, Coefficient.cubicFeet)
-        val cubicYards = UnitVolume(Symbol.cubicYards, Coefficient.cubicYards)
-        val cubicMiles = UnitVolume(Symbol.cubicMiles, Coefficient.cubicMiles)
-        val acreFeet = UnitVolume(Symbol.acreFeet, Coefficient.acreFeet)
-        val bushels = UnitVolume(Symbol.bushels, Coefficient.bushels)
-        val teaspoons = UnitVolume(Symbol.teaspoons, Coefficient.teaspoons)
-        val tablespoons = UnitVolume(Symbol.tablespoons, Coefficient.tablespoons)
-        val fluidOunces = UnitVolume(Symbol.fluidOunces, Coefficient.fluidOunces)
-        val cups = UnitVolume(Symbol.cups, Coefficient.cups)
-        val pints = UnitVolume(Symbol.pints, Coefficient.pints)
-        val quarts = UnitVolume(Symbol.quarts, Coefficient.quarts)
-        val gallons = UnitVolume(Symbol.gallons, Coefficient.gallons)
-        val imperialTeaspoons = UnitVolume(Symbol.imperialTeaspoons, Coefficient.imperialTeaspoons)
-        val imperialTablespoons = UnitVolume(Symbol.imperialTablespoons, Coefficient.imperialTablespoons)
-        val imperialFluidOunces = UnitVolume(Symbol.imperialFluidOunces, Coefficient.imperialFluidOunces)
-        val imperialPints = UnitVolume(Symbol.imperialPints, Coefficient.imperialPints)
-        val imperialQuarts = UnitVolume(Symbol.imperialQuarts, Coefficient.imperialQuarts)
-        val imperialGallons = UnitVolume(Symbol.imperialGallons, Coefficient.imperialGallons)
-        val metricCups = UnitVolume(Symbol.metricCups, Coefficient.metricCups)
+        val megaliters = UnitVolume(Symbol.megaliters, Coefficient.megaliters, Unit.megaliters)
+        val kiloliters = UnitVolume(Symbol.kiloliters, Coefficient.kiloliters, Unit.kiloliters)
+        val liters = UnitVolume(Symbol.liters, Coefficient.liters, Unit.liters)
+        val deciliters = UnitVolume(Symbol.deciliters, Coefficient.deciliters, Unit.deciliters)
+        val centiliters = UnitVolume(Symbol.centiliters, Coefficient.centiliters, Unit.centiliters)
+        val milliliters = UnitVolume(Symbol.milliliters, Coefficient.milliliters, Unit.milliliters)
+        val cubicKilometers = UnitVolume(Symbol.cubicKilometers, Coefficient.cubicKilometers, Unit.cubicKilometers)
+        val cubicMeters = UnitVolume(Symbol.cubicMeters, Coefficient.cubicMeters, Unit.cubicMeters)
+        val cubicDecimeters = UnitVolume(Symbol.cubicDecimeters, Coefficient.cubicDecimeters, Unit.cubicDecimeters)
+        val cubicCentimeters = UnitVolume(Symbol.cubicCentimeters, Coefficient.cubicCentimeters, Unit.cubicCentimeters)
+        val cubicMillimeters = UnitVolume(Symbol.cubicMillimeters, Coefficient.cubicMillimeters, Unit.cubicMillimeters)
+        val cubicInches = UnitVolume(Symbol.cubicInches, Coefficient.cubicInches, Unit.cubicInches)
+        val cubicFeet = UnitVolume(Symbol.cubicFeet, Coefficient.cubicFeet, Unit.cubicFeet)
+        val cubicYards = UnitVolume(Symbol.cubicYards, Coefficient.cubicYards, Unit.cubicYards)
+        val cubicMiles = UnitVolume(Symbol.cubicMiles, Coefficient.cubicMiles, Unit.cubicMiles)
+        val acreFeet = UnitVolume(Symbol.acreFeet, Coefficient.acreFeet, Unit.acreFeet)
+        val bushels = UnitVolume(Symbol.bushels, Coefficient.bushels, Unit.bushels)
+        val teaspoons = UnitVolume(Symbol.teaspoons, Coefficient.teaspoons, Unit.teaspoons)
+        val tablespoons = UnitVolume(Symbol.tablespoons, Coefficient.tablespoons, Unit.tablespoons)
+        val fluidOunces = UnitVolume(Symbol.fluidOunces, Coefficient.fluidOunces, Unit.fluidOunces)
+        val cups = UnitVolume(Symbol.cups, Coefficient.cups, Unit.cups)
+        val pints = UnitVolume(Symbol.pints, Coefficient.pints, Unit.pints)
+        val quarts = UnitVolume(Symbol.quarts, Coefficient.quarts, Unit.quarts)
+        val gallons = UnitVolume(Symbol.gallons, Coefficient.gallons, Unit.gallons)
+        val imperialTeaspoons = UnitVolume(Symbol.imperialTeaspoons, Coefficient.imperialTeaspoons, Unit.imperialTeaspoons)
+        val imperialTablespoons = UnitVolume(Symbol.imperialTablespoons, Coefficient.imperialTablespoons, Unit.imperialTablespoons)
+        val imperialFluidOunces = UnitVolume(Symbol.imperialFluidOunces, Coefficient.imperialFluidOunces, Unit.imperialFluidOunces)
+        val imperialPints = UnitVolume(Symbol.imperialPints, Coefficient.imperialPints, Unit.imperialPints)
+        val imperialQuarts = UnitVolume(Symbol.imperialQuarts, Coefficient.imperialQuarts, Unit.imperialQuarts)
+        val imperialGallons = UnitVolume(Symbol.imperialGallons, Coefficient.imperialGallons, Unit.imperialGallons)
+        val metricCups = UnitVolume(Symbol.metricCups, Coefficient.metricCups, Unit.metricCups)
     }
 
     override fun baseUnit() = liters

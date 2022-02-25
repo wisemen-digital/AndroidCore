@@ -1,11 +1,16 @@
 package be.appwise.measurements.units
 
+import android.icu.util.MeasureUnit
 import be.appwise.measurements.converters.UnitConverter
 import be.appwise.measurements.converters.UnitConverterLinear
+import be.appwise.measurements.isAtLeastN
+import be.appwise.measurements.isAtLeastO
 
-class UnitLength(symbol: String, converter: UnitConverter) : Dimension(symbol, converter) {
+class UnitLength(symbol: String, converter: UnitConverter, measureUnit: MeasureUnit? = null) : Dimension(symbol, converter, measureUnit) {
 
     private constructor(symbol: String, coefficient: Double) : this(symbol, UnitConverterLinear(coefficient))
+
+    private constructor(symbol: String, coefficient: Double, measureUnit: MeasureUnit?) : this(symbol, UnitConverterLinear(coefficient), measureUnit)
 
     private object Symbol {
         const val megameters = "Mm"
@@ -57,29 +62,54 @@ class UnitLength(symbol: String, converter: UnitConverter) : Dimension(symbol, c
         const val parsecs = 3.086e+16
     }
 
+    private object Unit {
+        val megameters = null
+        val kilometers = if (isAtLeastN) MeasureUnit.KILOMETER else null
+        val hectometers = null
+        val decameters = null
+        val meters = if (isAtLeastN) MeasureUnit.METER else null
+        val decimeters = if (isAtLeastN) MeasureUnit.DECIMETER else null
+        val centimeters = if (isAtLeastN) MeasureUnit.CENTIMETER else null
+        val millimeters = if (isAtLeastN) MeasureUnit.MILLIMETER else null
+        val micrometers = if (isAtLeastN) MeasureUnit.MICROMETER else null
+        val nanometers = if (isAtLeastN) MeasureUnit.NANOMETER else null
+        val picometers = if (isAtLeastN) MeasureUnit.PICOMETER else null
+        val inches = if (isAtLeastN) MeasureUnit.INCH else null
+        val feet = if (isAtLeastN) MeasureUnit.FOOT else null
+        val yards = if (isAtLeastN) MeasureUnit.YARD else null
+        val miles = if (isAtLeastN) MeasureUnit.MILE else null
+        val scandinavianMiles = if (isAtLeastO) MeasureUnit.MILE_SCANDINAVIAN else null
+        val lightyears = if (isAtLeastN) MeasureUnit.LIGHT_YEAR else null
+        val nauticalMiles = if (isAtLeastN) MeasureUnit.NAUTICAL_MILE else null
+        val fathoms = if (isAtLeastN) MeasureUnit.FATHOM else null
+        val furlongs = if (isAtLeastN) MeasureUnit.FURLONG else null
+        val astronomicalUnits = if (isAtLeastN) MeasureUnit.ASTRONOMICAL_UNIT else null
+        val parsecs = if (isAtLeastN) MeasureUnit.PARSEC else null
+    }
+
     companion object {
-        val megameters = UnitLength(Symbol.megameters, Coefficient.megameters)
-        val kilometers = UnitLength(Symbol.kilometers, Coefficient.kilometers)
-        val hectometers = UnitLength(Symbol.hectometers, Coefficient.hectometers)
-        val decameters = UnitLength(Symbol.decameters, Coefficient.decameters)
-        val meters = UnitLength(Symbol.meters, Coefficient.meters)
-        val decimeters = UnitLength(Symbol.decimeters, Coefficient.decimeters)
-        val centimeters = UnitLength(Symbol.centimeters, Coefficient.centimeters)
-        val millimeters = UnitLength(Symbol.millimeters, Coefficient.millimeters)
-        val micrometers = UnitLength(Symbol.micrometers, Coefficient.micrometers)
-        val nanometers = UnitLength(Symbol.nanometers, Coefficient.nanometers)
-        val picometers = UnitLength(Symbol.picometers, Coefficient.picometers)
-        val inches = UnitLength(Symbol.inches, Coefficient.inches)
-        val feet = UnitLength(Symbol.feet, Coefficient.feet)
-        val yards = UnitLength(Symbol.yards, Coefficient.yards)
-        val miles = UnitLength(Symbol.miles, Coefficient.miles)
-        val scandinavianMiles = UnitLength(Symbol.scandinavianMiles, Coefficient.scandinavianMiles)
-        val lightyears = UnitLength(Symbol.lightyears, Coefficient.lightyears)
-        val nauticalMiles = UnitLength(Symbol.nauticalMiles, Coefficient.nauticalMiles)
-        val fathoms = UnitLength(Symbol.fathoms, Coefficient.fathoms)
-        val furlongs = UnitLength(Symbol.furlongs, Coefficient.furlongs)
-        val astronomicalUnits = UnitLength(Symbol.astronomicalUnits, Coefficient.astronomicalUnits)
-        val parsecs = UnitLength(Symbol.parsecs, Coefficient.parsecs)
+        val megameters = UnitLength(Symbol.megameters, Coefficient.megameters, Unit.megameters)
+        val kilometers = UnitLength(Symbol.kilometers, Coefficient.kilometers, Unit.kilometers)
+        val hectometers = UnitLength(Symbol.hectometers, Coefficient.hectometers, Unit.hectometers)
+        val decameters = UnitLength(Symbol.decameters, Coefficient.decameters, Unit.decameters)
+        val meters = UnitLength(Symbol.meters, Coefficient.meters, Unit.meters)
+        val decimeters = UnitLength(Symbol.decimeters, Coefficient.decimeters, Unit.decimeters)
+        val centimeters = UnitLength(Symbol.centimeters, Coefficient.centimeters, Unit.centimeters)
+        val millimeters = UnitLength(Symbol.millimeters, Coefficient.millimeters, Unit.millimeters)
+        val micrometers = UnitLength(Symbol.micrometers, Coefficient.micrometers, Unit.micrometers)
+        val nanometers = UnitLength(Symbol.nanometers, Coefficient.nanometers, Unit.nanometers)
+        val picometers = UnitLength(Symbol.picometers, Coefficient.picometers, Unit.picometers)
+        val inches = UnitLength(Symbol.inches, Coefficient.inches, Unit.inches)
+        val feet = UnitLength(Symbol.feet, Coefficient.feet, Unit.feet)
+        val yards = UnitLength(Symbol.yards, Coefficient.yards, Unit.yards)
+        val miles = UnitLength(Symbol.miles, Coefficient.miles, Unit.miles)
+        val scandinavianMiles = UnitLength(Symbol.scandinavianMiles, Coefficient.scandinavianMiles, Unit.scandinavianMiles)
+        val lightyears = UnitLength(Symbol.lightyears, Coefficient.lightyears, Unit.lightyears)
+        val nauticalMiles = UnitLength(Symbol.nauticalMiles, Coefficient.nauticalMiles, Unit.nauticalMiles)
+        val fathoms = UnitLength(Symbol.fathoms, Coefficient.fathoms, Unit.fathoms)
+        val furlongs = UnitLength(Symbol.furlongs, Coefficient.furlongs, Unit.furlongs)
+        val astronomicalUnits = UnitLength(Symbol.astronomicalUnits, Coefficient.astronomicalUnits, Unit.astronomicalUnits)
+        val parsecs = UnitLength(Symbol.parsecs, Coefficient.parsecs, Unit.parsecs)
     }
 
     override fun baseUnit() = meters

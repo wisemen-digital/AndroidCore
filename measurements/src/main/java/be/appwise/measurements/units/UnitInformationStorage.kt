@@ -1,12 +1,17 @@
 package be.appwise.measurements.units
 
+import android.icu.util.MeasureUnit
 import be.appwise.measurements.converters.UnitConverter
 import be.appwise.measurements.converters.UnitConverterLinear
+import be.appwise.measurements.isAtLeastO
+import be.appwise.measurements.isAtLeastR
 import kotlin.math.pow
 
-class UnitInformationStorage(symbol: String, converter: UnitConverter) : Dimension(symbol, converter) {
+class UnitInformationStorage(symbol: String, converter: UnitConverter, measureUnit: MeasureUnit? = null) : Dimension(symbol, converter, measureUnit) {
 
     private constructor(symbol: String, coefficient: Double) : this(symbol, UnitConverterLinear(coefficient))
+
+    private constructor(symbol: String, coefficient: Double, measureUnit: MeasureUnit?) : this(symbol, UnitConverterLinear(coefficient), measureUnit)
 
     private object Symbol {
         const val bytes = "B"
@@ -90,42 +95,80 @@ class UnitInformationStorage(symbol: String, converter: UnitConverter) : Dimensi
         const val kibibits = 1024.0
     }
 
+    private object Unit {
+        val bytes = if (isAtLeastO) MeasureUnit.BYTE else null
+        val bits = if (isAtLeastO) MeasureUnit.BIT else null
+        val nibbles = null
+        val yottabytes = null
+        val zettabytes = null
+        val exabytes = null
+        val petabytes = if (isAtLeastR) MeasureUnit.PETABYTE else null
+        val terabytes = if (isAtLeastO) MeasureUnit.TERABYTE else null
+        val gigabytes = if (isAtLeastO) MeasureUnit.GIGABYTE else null
+        val megabytes = if (isAtLeastO) MeasureUnit.MEGABYTE else null
+        val kilobytes = if (isAtLeastO) MeasureUnit.KILOBYTE else null
+        val yottabits = null
+        val zettabits = null
+        val exabits = null
+        val petabits = null
+        val terabits = if (isAtLeastO) MeasureUnit.TERABIT else null
+        val gigabits = if (isAtLeastO) MeasureUnit.GIGABIT else null
+        val megabits = if (isAtLeastO) MeasureUnit.MEGABIT else null
+        val kilobits = if (isAtLeastO) MeasureUnit.KILOBIT else null
+        val yobibytes = null
+        val zebibytes = null
+        val exbibytes = null
+        val pebibytes = null
+        val tebibytes = null
+        val gibibytes = null
+        val mebibytes = null
+        val kibibytes = null
+        val yobibits = null
+        val zebibits = null
+        val exbibits = null
+        val pebibits = null
+        val tebibits = null
+        val gibibits = null
+        val mebibits = null
+        val kibibits = null
+    }
+
     companion object {
-        val bytes = UnitInformationStorage(Symbol.bytes, Coefficient.bytes)
-        val bits = UnitInformationStorage(Symbol.bits, Coefficient.bits)
-        val nibbles = UnitInformationStorage(Symbol.nibbles, Coefficient.nibbles)
-        val yottabytes = UnitInformationStorage(Symbol.yottabytes, Coefficient.yottabytes)
-        val zettabytes = UnitInformationStorage(Symbol.zettabytes, Coefficient.zettabytes)
-        val exabytes = UnitInformationStorage(Symbol.exabytes, Coefficient.exabytes)
-        val petabytes = UnitInformationStorage(Symbol.petabytes, Coefficient.petabytes)
-        val terabytes = UnitInformationStorage(Symbol.terabytes, Coefficient.terabytes)
-        val gigabytes = UnitInformationStorage(Symbol.gigabytes, Coefficient.gigabytes)
-        val megabytes = UnitInformationStorage(Symbol.megabytes, Coefficient.megabytes)
-        val kilobytes = UnitInformationStorage(Symbol.kilobytes, Coefficient.kilobytes)
-        val yottabits = UnitInformationStorage(Symbol.yottabits, Coefficient.yottabits)
-        val zettabits = UnitInformationStorage(Symbol.zettabits, Coefficient.zettabits)
-        val exabits = UnitInformationStorage(Symbol.exabits, Coefficient.exabits)
-        val petabits = UnitInformationStorage(Symbol.petabits, Coefficient.petabits)
-        val terabits = UnitInformationStorage(Symbol.terabits, Coefficient.terabits)
-        val gigabits = UnitInformationStorage(Symbol.gigabits, Coefficient.gigabits)
-        val megabits = UnitInformationStorage(Symbol.megabits, Coefficient.megabits)
-        val kilobits = UnitInformationStorage(Symbol.kilobits, Coefficient.kilobits)
-        val yobibytes = UnitInformationStorage(Symbol.yobibytes, Coefficient.yobibytes)
-        val zebibytes = UnitInformationStorage(Symbol.zebibytes, Coefficient.zebibytes)
-        val exbibytes = UnitInformationStorage(Symbol.exbibytes, Coefficient.exbibytes)
-        val pebibytes = UnitInformationStorage(Symbol.pebibytes, Coefficient.pebibytes)
-        val tebibytes = UnitInformationStorage(Symbol.tebibytes, Coefficient.tebibytes)
-        val gibibytes = UnitInformationStorage(Symbol.gibibytes, Coefficient.gibibytes)
-        val mebibytes = UnitInformationStorage(Symbol.mebibytes, Coefficient.mebibytes)
-        val kibibytes = UnitInformationStorage(Symbol.kibibytes, Coefficient.kibibytes)
-        val yobibits = UnitInformationStorage(Symbol.yobibits, Coefficient.yobibits)
-        val zebibits = UnitInformationStorage(Symbol.zebibits, Coefficient.zebibits)
-        val exbibits = UnitInformationStorage(Symbol.exbibits, Coefficient.exbibits)
-        val pebibits = UnitInformationStorage(Symbol.pebibits, Coefficient.pebibits)
-        val tebibits = UnitInformationStorage(Symbol.tebibits, Coefficient.tebibits)
-        val gibibits = UnitInformationStorage(Symbol.gibibits, Coefficient.gibibits)
-        val mebibits = UnitInformationStorage(Symbol.mebibits, Coefficient.mebibits)
-        val kibibits = UnitInformationStorage(Symbol.kibibits, Coefficient.kibibits)
+        val bytes = UnitInformationStorage(Symbol.bytes, Coefficient.bytes, Unit.bytes)
+        val bits = UnitInformationStorage(Symbol.bits, Coefficient.bits, Unit.bits)
+        val nibbles = UnitInformationStorage(Symbol.nibbles, Coefficient.nibbles, Unit.nibbles)
+        val yottabytes = UnitInformationStorage(Symbol.yottabytes, Coefficient.yottabytes, Unit.yottabytes)
+        val zettabytes = UnitInformationStorage(Symbol.zettabytes, Coefficient.zettabytes, Unit.zettabytes)
+        val exabytes = UnitInformationStorage(Symbol.exabytes, Coefficient.exabytes, Unit.exabytes)
+        val petabytes = UnitInformationStorage(Symbol.petabytes, Coefficient.petabytes, Unit.petabytes)
+        val terabytes = UnitInformationStorage(Symbol.terabytes, Coefficient.terabytes, Unit.terabytes)
+        val gigabytes = UnitInformationStorage(Symbol.gigabytes, Coefficient.gigabytes, Unit.gigabytes)
+        val megabytes = UnitInformationStorage(Symbol.megabytes, Coefficient.megabytes, Unit.megabytes)
+        val kilobytes = UnitInformationStorage(Symbol.kilobytes, Coefficient.kilobytes, Unit.kilobytes)
+        val yottabits = UnitInformationStorage(Symbol.yottabits, Coefficient.yottabits, Unit.yottabits)
+        val zettabits = UnitInformationStorage(Symbol.zettabits, Coefficient.zettabits, Unit.zettabits)
+        val exabits = UnitInformationStorage(Symbol.exabits, Coefficient.exabits, Unit.exabits)
+        val petabits = UnitInformationStorage(Symbol.petabits, Coefficient.petabits, Unit.petabits)
+        val terabits = UnitInformationStorage(Symbol.terabits, Coefficient.terabits, Unit.terabits)
+        val gigabits = UnitInformationStorage(Symbol.gigabits, Coefficient.gigabits, Unit.gigabits)
+        val megabits = UnitInformationStorage(Symbol.megabits, Coefficient.megabits, Unit.megabits)
+        val kilobits = UnitInformationStorage(Symbol.kilobits, Coefficient.kilobits, Unit.kilobits)
+        val yobibytes = UnitInformationStorage(Symbol.yobibytes, Coefficient.yobibytes, Unit.yobibytes)
+        val zebibytes = UnitInformationStorage(Symbol.zebibytes, Coefficient.zebibytes, Unit.zebibytes)
+        val exbibytes = UnitInformationStorage(Symbol.exbibytes, Coefficient.exbibytes, Unit.exbibytes)
+        val pebibytes = UnitInformationStorage(Symbol.pebibytes, Coefficient.pebibytes, Unit.pebibytes)
+        val tebibytes = UnitInformationStorage(Symbol.tebibytes, Coefficient.tebibytes, Unit.tebibytes)
+        val gibibytes = UnitInformationStorage(Symbol.gibibytes, Coefficient.gibibytes, Unit.gibibytes)
+        val mebibytes = UnitInformationStorage(Symbol.mebibytes, Coefficient.mebibytes, Unit.mebibytes)
+        val kibibytes = UnitInformationStorage(Symbol.kibibytes, Coefficient.kibibytes, Unit.kibibytes)
+        val yobibits = UnitInformationStorage(Symbol.yobibits, Coefficient.yobibits, Unit.yobibits)
+        val zebibits = UnitInformationStorage(Symbol.zebibits, Coefficient.zebibits, Unit.zebibits)
+        val exbibits = UnitInformationStorage(Symbol.exbibits, Coefficient.exbibits, Unit.exbibits)
+        val pebibits = UnitInformationStorage(Symbol.pebibits, Coefficient.pebibits, Unit.pebibits)
+        val tebibits = UnitInformationStorage(Symbol.tebibits, Coefficient.tebibits, Unit.tebibits)
+        val gibibits = UnitInformationStorage(Symbol.gibibits, Coefficient.gibibits, Unit.gibibits)
+        val mebibits = UnitInformationStorage(Symbol.mebibits, Coefficient.mebibits, Unit.mebibits)
+        val kibibits = UnitInformationStorage(Symbol.kibibits, Coefficient.kibibits, Unit.kibibits)
     }
 
     override fun baseUnit() = bits

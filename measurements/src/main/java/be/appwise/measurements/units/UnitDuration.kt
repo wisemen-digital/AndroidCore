@@ -1,28 +1,35 @@
 package be.appwise.measurements.units
 
+import android.icu.util.MeasureUnit
+import android.icu.util.TimeUnit
+import android.os.Build
+import androidx.annotation.RequiresApi
 import be.appwise.measurements.converters.UnitConverter
 import be.appwise.measurements.converters.UnitConverterLinear
+import be.appwise.measurements.isAtLeastO
 
-class UnitDuration(symbol: String, converter: UnitConverter) : Dimension(symbol, converter) {
+class UnitDuration(symbol: String, converter: UnitConverter, measureUnit: MeasureUnit? = null) : Dimension(symbol, converter, measureUnit) {
 
     private constructor(symbol: String, coefficient: Double) : this(symbol, UnitConverterLinear(coefficient))
 
+    private constructor(symbol: String, coefficient: Double, measureUnit: MeasureUnit?) : this(symbol, UnitConverterLinear(coefficient), measureUnit)
+
     private object Symbol {
-        const val Seconds = "s"
-        const val Minutes = "m"
-        const val Hours = "h"
+        const val seconds = "s"
+        const val minutes = "m"
+        const val hours = "h"
     }
 
     private object Coefficient {
-        const val Seconds = 1.0
-        const val Minutes = 60.0
-        const val Hours = 3600.0
+        const val seconds = 1.0
+        const val minutes = 60.0
+        const val hours = 3600.0
     }
 
     companion object {
-        val seconds: UnitDuration = UnitDuration(Symbol.Seconds, Coefficient.Seconds)
-        val minutes: UnitDuration = UnitDuration(Symbol.Minutes, Coefficient.Minutes)
-        val hours: UnitDuration = UnitDuration(Symbol.Hours, Coefficient.Hours)
+        val seconds: UnitDuration = UnitDuration(Symbol.seconds, Coefficient.seconds)
+        val minutes: UnitDuration = UnitDuration(Symbol.minutes, Coefficient.minutes)
+        val hours: UnitDuration = UnitDuration(Symbol.hours, Coefficient.hours)
     }
 
     override fun baseUnit(): UnitDuration {

@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toStartOf="@id/vSecondDividertitle"
         app:layout_constraintStart_toEndOf="@id/vFirstDividerTitle"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Unit Length" />
+        tools:text="Same unit type addition" />
 
     <View
         android:id="@+id/vSecondDividertitle"
@@ -46,12 +46,14 @@
         app:layout_constraintTop_toTopOf="@id/tvUnitTitle" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilUnitValue"
+        android:id="@+id/tilFromUnitValue"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:hint="Value of the unit"
+        app:layout_constraintEnd_toStartOf="@id/tilToUnitValue"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvUnitTitle">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -62,34 +64,50 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilToUnitValue"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:hint="Value of the unit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tilFromUnitValue"
+        app:layout_constraintTop_toBottomOf="@id/tvUnitTitle">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:selectAllOnFocus="true" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tvCalculation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@id/tilFromUnit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tilFromUnitValue"
+        tools:text="+" />
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilFromUnit"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="12dp"
         android:hint="From Unit"
         app:layout_constraintEnd_toStartOf="@id/tilToUnit"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tilUnitValue">
+        app:layout_constraintTop_toBottomOf="@id/tilFromUnitValue">
 
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none" />
-
     </com.google.android.material.textfield.TextInputLayout>
-
-    <ImageView
-        android:id="@+id/ivConvert"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_chevron_right"
-        app:layout_constraintBottom_toBottomOf="@id/tilFromUnit"
-        app:layout_constraintEnd_toStartOf="@id/tilToUnit"
-        app:layout_constraintStart_toEndOf="@id/tilFromUnit"
-        app:layout_constraintTop_toTopOf="@id/tilFromUnit"
-        app:tint="@color/white_50" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilToUnit"
@@ -97,11 +115,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="12dp"
         android:hint="To Unit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tilFromUnit"
-        app:layout_constraintTop_toBottomOf="@id/tilUnitValue">
+        app:layout_constraintTop_toBottomOf="@id/tilFromUnitValue">
 
         <AutoCompleteTextView
             android:layout_width="match_parent"
@@ -109,6 +126,15 @@
             android:inputType="none" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/swToggle"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginHorizontal="@dimen/spacing_normal_16dp"
+        android:layout_marginTop="8dp"
+        android:text="Convert to starting unit?"
+        app:layout_constraintTop_toBottomOf="@id/tilToUnit" />
 
     <TextView
         android:id="@+id/tvResult"
@@ -117,5 +143,5 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
         android:textAppearance="?textAppearanceBody2"
-        app:layout_constraintTop_toBottomOf="@id/tilToUnit" />
+        app:layout_constraintTop_toBottomOf="@id/swToggle" />
 </merge>
