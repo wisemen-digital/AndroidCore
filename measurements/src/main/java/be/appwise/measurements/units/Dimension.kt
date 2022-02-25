@@ -1,8 +1,11 @@
 package be.appwise.measurements.units
 
+import android.icu.util.MeasureUnit
 import be.appwise.measurements.converters.UnitConverter
 
-open class Dimension(var symbol: String, var converter: UnitConverter) : Unit(symbol) {
+open class Dimension(var symbol: String, var converter: UnitConverter, var measureUnit: MeasureUnit? = null) : Unit(symbol) {
+
+    companion object;
 
     open fun baseUnit(): Dimension {
         throw Exception("*** You must override baseUnit in your class to define its base unit.")

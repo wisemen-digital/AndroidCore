@@ -3,12 +3,11 @@ package com.example.coredemo.ui.main
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import be.appwise.core.extensions.fragment.snackBar
+import androidx.navigation.fragment.findNavController
 import be.appwise.core.extensions.view.setupRecyclerView
 import be.appwise.core.ui.base.BaseBindingVMFragment
 import com.example.coredemo.R
 import com.example.coredemo.databinding.FragmentMainBinding
-import com.google.android.material.snackbar.Snackbar
 
 class MainFragment : BaseBindingVMFragment<FragmentMainBinding>() {
 
@@ -17,9 +16,17 @@ class MainFragment : BaseBindingVMFragment<FragmentMainBinding>() {
 
     private val contentItemAdapter by lazy {
         ContentItemAdapter {
-            //TODO: do something with the result... probably navigate to a new fragment to showcase something
-            Snackbar.make(requireView(), it.name, Snackbar.LENGTH_SHORT).show()
+            handleNavigationToContent(it)
         }
+    }
+
+    private fun handleNavigationToContent(it: ContentItem) {
+        when (it.id) {
+            ContentItem.measurementConversion -> MainFragmentDirections.actionMainFragmentToMeasurementsFragment()
+            ContentItem.measurementCalculation -> MainFragmentDirections.actionMainFragmentToMeasureCalculationFragment()
+//            ContentItem.emptyRecyclerView -> {}
+            else -> null
+        }?.run(findNavController()::navigate)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

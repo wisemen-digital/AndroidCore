@@ -20,6 +20,7 @@
         <item name="colorError">@color/red_600</item>
         <!--"On" colors define how text, icons and strokes are colored in relation to the surface-->
         <!--on which they appear.-->
+        <item name="android:textColorPrimary">@color/white_50</item>
         <item name="colorOnPrimary">@color/gray20</item>
         <item name="colorOnSecondary">@color/black_900</item>
         <item name="colorOnBackground">@color/white_50</item>
@@ -31,7 +32,8 @@
         <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.Surface</item>
     </style>
 
-    <style name="Base.Theme.MaterialThemeBuilder" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <!-- Because both the day and night theme are darkish, we don't need to use the `DayNight` variant-->
+    <style name="Base.Theme.MaterialThemeBuilder" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:statusBarColor" tools:ignore="NewApi">?attr/colorSurface</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>

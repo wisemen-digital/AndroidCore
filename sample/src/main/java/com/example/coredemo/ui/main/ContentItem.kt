@@ -7,4 +7,10 @@ data class ContentItem(val id: Int, val name: String, val desc: String) {
     constructor(id: Int, name: String) : this(id, name, "") {
         isSection = true
     }
+
+    companion object {
+        const val measurementConversion = 10
+        const val measurementCalculation = 11
+        const val emptyRecyclerView = 20
+    }
 }

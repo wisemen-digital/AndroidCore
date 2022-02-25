@@ -23,7 +23,6 @@
             android:layout_centerHorizontal="true"
             android:text="@{contentItem.name}"
             android:textAppearance="?textAppearanceHeadline6"
-            android:textColor="@color/white_50"
             tools:text="Large Text" />
 
     </RelativeLayout>
