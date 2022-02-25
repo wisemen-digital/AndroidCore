@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import be.appwise.core.util.SingleLiveEvent
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 
@@ -25,14 +26,10 @@ open class BaseViewModel : ViewModel() {
         _loading.postValue(loading)
     }
 
-    private suspend fun showLoading(onSuccess: suspend () -> Unit) {
+    fun launchAndLoad(block: suspend CoroutineScope.() -> Unit) = vmScope.launch {
         isLoading(true)
-        onSuccess()
+        block()
         isLoading(false)
-    }
-
-    fun launchAndLoad(onSuccess: suspend () -> Unit) = vmScope.launch {
-        showLoading(onSuccess)
     }
 
     private fun setDefaultExceptionHandler(onError: (error: Throwable) -> Unit = {}) {
