@@ -11,7 +11,10 @@ val UnitEnergy.Companion.list
         joules,
         kilocalories,
         calories,
-        kilowattHours
+        gigawattHours,
+        megawattHours,
+        kilowattHours,
+        wattHours
     )
 
 val Dimension.Companion.list

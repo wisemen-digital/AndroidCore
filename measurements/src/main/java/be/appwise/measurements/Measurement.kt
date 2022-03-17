@@ -5,6 +5,7 @@ import android.icu.util.Measure
 import android.os.Build
 import androidx.annotation.RequiresApi
 import be.appwise.measurements.units.Dimension
+import be.appwise.measurements.units.UnitEnergy
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.util.*
@@ -14,6 +15,8 @@ import kotlin.math.absoluteValue
 // https://github.com/apple/swift-corelibs-foundation/blob/main/Sources/Foundation/Unit.swift
 // https://github.com/apple/swift-corelibs-foundation/blob/main/Sources/Foundation/Measurement.swift
 class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
+
+    companion object;
 
     var unit: UnitType = unit
         private set
@@ -191,3 +194,5 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
         return "\"measurement\": {\"value\": \"$value\", \"symbol\": \"${unit.symbol}\"}"
     }
 }
+
+val Measurement<UnitEnergy>.valueAsFloat get() = value.toFloat()
