@@ -3,17 +3,36 @@ package be.appwise.core.extensions.activity
 import android.Manifest
 import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.util.DisplayMetrics
+import android.view.View
 import android.widget.EditText
+import androidx.annotation.ColorRes
 import androidx.annotation.RequiresPermission
+import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import be.appwise.core.extensions.snackBar
+import be.appwise.core.extensions.makeSnackBar
 
-@Deprecated("This is not the desired way to show/style a Snackbar, theming is easier to do globally in the themes.xml")
+@Deprecated("This is not the desired way to show/style a Snackbar, theming is easier to do globally in the themes.xml (by changing 'surfaceColor'). Use 'snackbar(message, view, textColor)' for better results")
 fun Activity.snackBar(message: String, textColor: Int = android.R.color.white, viewID: Int = android.R.id.content) =
-    snackBar(findViewById(viewID), message, textColor).show()
+    snackBar(message, findViewById(viewID), textColor)
+
+fun Activity.snackBar(message: String, viewID: View = findViewById(android.R.id.content), @ColorRes textColor: Int? = null) =
+    makeSnackBar(message, viewID, textColor).show()
+
+fun Activity.hasPermission(permission: String): Boolean {
+    return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+}
+
+fun Activity.allPermissionsGranted(permissions: ArrayList<String>): Boolean {
+    // Will map over each permission and check if it was granted
+    // Only distinct values will be kept.
+    return permissions.map {
+        ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
+    }.distinct().contains(false)
+}
 
 //keyboard management
 fun Activity.openKeyBoard(edittext: EditText) {

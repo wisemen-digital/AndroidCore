@@ -1,6 +1,7 @@
 package be.appwise.measurements
 
 import android.icu.text.MeasureFormat
+import android.icu.text.NumberFormat
 import android.icu.util.Measure
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -181,7 +182,16 @@ class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    fun format(measureFormat: MeasureFormat = MeasureFormat.getInstance(Locale.getDefault(), MeasureFormat.FormatWidth.SHORT)): String {
+    private fun defaultFormat(): MeasureFormat {
+        val nFormat = NumberFormat.getNumberInstance(Locale.getDefault()).apply {
+            maximumFractionDigits = 2
+        }
+        return MeasureFormat.getInstance(Locale.getDefault(), MeasureFormat.FormatWidth.SHORT, nFormat)
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun format(measureFormat: MeasureFormat = defaultFormat()): String {
         if (unit.measureUnit == null) {
             return formattedDescription()
         }
