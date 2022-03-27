@@ -8,15 +8,15 @@ import android.widget.EditText
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import be.appwise.core.extensions.makeSnackBar
+import be.appwise.core.extensions.makeSnackbar
 
-@Deprecated("This is not the desired way to show/style a Snackbar, theming is easier to do globally in the themes.xml (by changing 'surfaceColor'). Use 'snackbar(message, view, textColor)' for better results")
+@Deprecated("This is not the desired way to show/style a Snackbar, theming is easier to do globally in the themes.xml (by changing 'surfaceColor'). Use 'showSnackbar(message, view, textColor)' for better results")
 fun Fragment.snackBar(message: String, textColor: Int = android.R.color.white, viewID: Int = android.R.id.content) {
-    snackBar(message, requireView(), textColor)
+    showSnackBar(message, requireView(), textColor)
 }
 
-fun Fragment.snackBar(message: String, viewID: View = requireView(), @ColorRes textColor: Int? = null) {
-    makeSnackBar(message, viewID, textColor).show()
+fun Fragment.showSnackBar(message: String, view: View = requireView(), @ColorRes textColor: Int? = null) {
+    makeSnackbar(message, view, textColor).show()
 }
 
 fun Fragment.hasPermission(permission: String): Boolean {

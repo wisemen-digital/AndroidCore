@@ -120,7 +120,7 @@ fun Activity.startIntentTelephone(phoneNumber: String) {
         startActivity(Intent.createChooser(intent, "Select an app"))
     } catch (e: java.lang.Exception) {
         e.printStackTrace()
-        snackBar("It seems like your device is unable to make any calls")
+        showSnackbar("It seems like your device is unable to make any calls")
     }
 }
 
@@ -138,7 +138,7 @@ fun Activity.startIntentMail(email: String) {
         startActivity(Intent.createChooser(intent, "Select an app"))
     } catch (ex: Exception) {
         ex.printStackTrace()
-        snackBar("It seems like your device is unable to make any calls")
+        showSnackbar("It seems like your device is unable to make any calls")
     }
 }
 

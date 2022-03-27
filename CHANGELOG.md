@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 This makes sure that errors in a coroutine in the `init{}` block can be handled as well
 
 ### Improvements
+- Changed the way we provide a function to create/show a default snackbar.
 
 ## [1.1.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.2.0)
 

@@ -13,14 +13,14 @@ import androidx.annotation.RequiresPermission
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import be.appwise.core.extensions.makeSnackBar
+import be.appwise.core.extensions.makeSnackbar
 
-@Deprecated("This is not the desired way to show/style a Snackbar, theming is easier to do globally in the themes.xml (by changing 'surfaceColor'). Use 'snackbar(message, view, textColor)' for better results")
-fun Activity.snackBar(message: String, textColor: Int = android.R.color.white, viewID: Int = android.R.id.content) =
-    snackBar(message, findViewById(viewID), textColor)
+@Deprecated("This is not the desired way to show/style a Snackbar, theming is easier to do globally in the themes.xml (by changing 'surfaceColor'). Use 'showSnackbar(message, view, textColor)' for better results")
+fun Activity.snackbar(message: String, textColor: Int = android.R.color.white, viewID: Int = android.R.id.content) =
+    showSnackbar(message, findViewById(viewID), textColor)
 
-fun Activity.snackBar(message: String, viewID: View = findViewById(android.R.id.content), @ColorRes textColor: Int? = null) =
-    makeSnackBar(message, viewID, textColor).show()
+fun Activity.showSnackbar(message: String, view: View = findViewById(android.R.id.content), @ColorRes textColor: Int? = null) =
+    makeSnackbar(message, view, textColor).show()
 
 fun Activity.hasPermission(permission: String): Boolean {
     return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
