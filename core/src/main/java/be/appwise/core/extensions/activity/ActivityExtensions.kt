@@ -20,7 +20,7 @@ fun Activity.snackbar(message: String, textColor: Int = android.R.color.white, v
     showSnackbar(message, findViewById(viewID), textColor)
 
 fun Activity.showSnackbar(message: String, view: View = findViewById(android.R.id.content), @ColorRes textColor: Int? = null) =
-    makeSnackbar(message, view, textColor).show()
+    makeSnackbar(view, message, textColor).show()
 
 fun Activity.hasPermission(permission: String): Boolean {
     return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED

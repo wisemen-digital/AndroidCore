@@ -16,7 +16,7 @@ fun Fragment.snackBar(message: String, textColor: Int = android.R.color.white, v
 }
 
 fun Fragment.showSnackBar(message: String, view: View = requireView(), @ColorRes textColor: Int? = null) {
-    makeSnackbar(message, view, textColor).show()
+    makeSnackbar(view, message, textColor).show()
 }
 
 fun Fragment.hasPermission(permission: String): Boolean {
