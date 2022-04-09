@@ -24,7 +24,7 @@ class MainFragment : BaseBindingVMFragment<FragmentMainBinding>() {
         when (it.id) {
             ContentItem.measurementConversion -> MainFragmentDirections.actionMainFragmentToMeasurementsFragment()
             ContentItem.measurementCalculation -> MainFragmentDirections.actionMainFragmentToMeasureCalculationFragment()
-//            ContentItem.emptyRecyclerView -> {}
+            ContentItem.emptyRecyclerView -> MainFragmentDirections.actionMainFragmentToStateRecyclerViewFragment()
             else -> null
         }?.run(findNavController()::navigate)
     }

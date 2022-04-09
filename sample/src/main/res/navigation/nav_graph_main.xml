@@ -7,14 +7,18 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.coredemo.ui.main.MainFragment"
-        android:label="MainFragment" >
+        android:label="MainFragment">
         <action
             android:id="@+id/action_mainFragment_to_measurementsFragment"
             app:destination="@id/measurementsFragment" />
         <action
             android:id="@+id/action_mainFragment_to_measureCalculationFragment"
             app:destination="@id/measureCalculationFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_stateRecyclerViewFragment"
+            app:destination="@id/stateRecyclerViewFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/measurementsFragment"
         android:name="com.example.coredemo.ui.measurements.conversion.MeasurementsFragment"
@@ -24,4 +28,10 @@
         android:id="@+id/measureCalculationFragment"
         android:name="com.example.coredemo.ui.measurements.calculations.MeasureCalculationFragment"
         android:label="MeasureCalculationFragment" />
+
+    <fragment
+        android:id="@+id/stateRecyclerViewFragment"
+        android:name="com.example.coredemo.ui.views.stateRecyclerView.StateRecyclerViewFragment"
+        android:label="StateRecyclerViewFragment" />
+
 </navigation>
