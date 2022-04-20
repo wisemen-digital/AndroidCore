@@ -1,14 +1,12 @@
 package be.appwise.core.ui.base
 
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import be.appwise.core.R
-import be.appwise.core.extensions.activity.snackBar
+import be.appwise.core.extensions.activity.showSnackbar
 import com.orhanobut.logger.Logger
 
 open class BaseActivity : AppCompatActivity() {
@@ -51,7 +49,7 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     open fun onError(throwable: Throwable) {
-        snackBar(throwable.message ?: getString(R.string.error_default))
+        showSnackbar(throwable.message ?: getString(R.string.error_default))
         Logger.t("BaseActivity").e(throwable, throwable.message ?: getString(R.string.error_default))
     }
 }

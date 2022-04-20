@@ -1,8 +1,6 @@
 package be.appwise.core.ui.base
 
 import android.content.Intent
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.view.Menu
 import androidx.annotation.DrawableRes
@@ -13,7 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import be.appwise.core.R
-import be.appwise.core.extensions.fragment.snackBar
+import be.appwise.core.extensions.fragment.showSnackBar
 import com.orhanobut.logger.Logger
 
 open class BaseFragment : Fragment() {
@@ -83,7 +81,7 @@ open class BaseFragment : Fragment() {
     }
 
     open fun onError(throwable: Throwable) {
-        snackBar(throwable.message ?: getString(R.string.error_default))
+        showSnackBar(throwable.message ?: getString(R.string.error_default))
         Logger.t("BaseFragment").e(throwable, throwable.message ?: getString(R.string.error_default))
     }
 }
