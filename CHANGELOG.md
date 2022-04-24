@@ -4,9 +4,21 @@ All notable changes to this project will be documented in this file.
 
 ## [Master](https://github.com/appwise-labs/AndroidCore)
 
-### Custom Views
+### New Features
+
+### Bug Fixes
 
 ### Breaking
+
+### Custom Views
+
+### Improvements
+
+
+## [1.3.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.3.0)
+
+### New Features
+- Created Measurement API to easily convert between units and also format the description with the correct Locale.
 
 ### Bug Fixes
 - Added `getConverterFactories()` to the `BaseRestClient` so we can reorder ConverterFactories if needed.
@@ -16,7 +28,7 @@ This makes sure that errors in a coroutine in the `init{}` block can be handled 
 ### Improvements
 - Changed the way we provide a function to create/show a default snackbar.
 
-## [1.1.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.2.0)
+## [1.2.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.2.0)
 
 ### Breaking
 - The signature of the `configureToolbar()` methods has been changed.
