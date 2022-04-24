@@ -16,11 +16,31 @@
         android:orientation="vertical"
         tools:context=".ui.views.stateRecyclerView.StateRecyclerViewFragment">
 
-        <be.appwise.emptyRecyclerView.ViewStateRecyclerView
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:layout_weight="1">
+
+            <be.appwise.emptyRecyclerView.ViewStateRecyclerView
+                android:id="@+id/rvItems"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/cpiLoading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminate="true" />
+
+            <TextView
+                android:id="@+id/tvEmpty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Empty List!!!" />
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,8 +48,8 @@
             android:orientation="vertical">
 
             <com.google.android.material.button.MaterialButton
-                android:layout_width="match_parent"
                 android:id="@+id/btnClear"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Clear" />
 
@@ -40,14 +60,14 @@
                 android:text="Add" />
 
             <com.google.android.material.button.MaterialButton
-                android:layout_width="match_parent"
                 android:id="@+id/btnError"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Error" />
 
             <com.google.android.material.button.MaterialButton
-                android:layout_width="match_parent"
                 android:id="@+id/btnLoading"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Loading" />
         </LinearLayout>

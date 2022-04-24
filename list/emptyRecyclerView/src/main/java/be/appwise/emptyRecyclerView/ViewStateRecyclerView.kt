@@ -93,6 +93,8 @@ class ViewStateRecyclerView @JvmOverloads constructor(
         }
     }
 
+    //TODO: create flag that should hide all other views when a load is happening!!
+
     private fun updateState() {
         when (state) {
             RecyclerViewState.LOADING -> {
