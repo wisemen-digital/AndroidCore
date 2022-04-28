@@ -26,12 +26,13 @@ fun Activity.hasPermission(permission: String): Boolean {
     return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 }
 
+@Suppress("SimplifyBooleanWithConstants")
 fun Activity.allPermissionsGranted(permissions: ArrayList<String>): Boolean {
     // Will map over each permission and check if it was granted
     // Only distinct values will be kept.
     return permissions.map {
         ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
-    }.all { true }
+    }.all { it == true } // This check actually needs to happen cannot be simplified to just `true`
 }
 
 //keyboard management
