@@ -22,7 +22,16 @@ dependencies {
 }
 ```
 
-Android Studio could prompt you with an error if you're building an app with this library as a dependeny. To fix that issue just add the next code snippet.
+Don't forget to also add the "navigation-safe-args" plugin to the project level build.gradle
+
+```groovy
+dependencies {
+  ...
+  classpath "androidx.navigation:navigation-safe-args-gradle-plugin:<Latest-Navigation-Version>"
+}
+```
+
+Android Studio could prompt you with an error if you're building an app with this library as a dependency. To fix that issue just add the next code snippet.
 
 ```
 packagingOptions {

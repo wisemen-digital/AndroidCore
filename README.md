@@ -44,6 +44,15 @@ The core can be added by using this dependency. It contains BaseClasses for View
 implementation 'com.github.appwise-labs.AndroidCore:core:<Latest-Version>'
 ```
 
+Don't forget to also add the "navigation-safe-args" plugin to the project level build.gradle
+
+```groovy
+dependencies {
+  ...
+  classpath "androidx.navigation:navigation-safe-args-gradle-plugin:<Latest-Navigation-Version>"
+}
+```
+
 ---
 
 ## Networking
@@ -66,6 +75,8 @@ With this Room module you will have access to a BaseRoomDao in which a lot of qu
 
 ```groovy
 implementation 'com.github.appwise-labs.AndroidCore:room:<Latest-Version>'
+
+kapt 'androidx.room:room-compiler:<Latest-Room-Version>'
 ```
 
 ---

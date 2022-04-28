@@ -31,7 +31,7 @@ fun Activity.allPermissionsGranted(permissions: ArrayList<String>): Boolean {
     // Only distinct values will be kept.
     return permissions.map {
         ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
-    }.distinct().contains(false)
+    }.all { true }
 }
 
 //keyboard management
