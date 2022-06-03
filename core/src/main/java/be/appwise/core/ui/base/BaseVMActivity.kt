@@ -15,11 +15,12 @@ abstract class BaseVMActivity : BaseActivity() {
      * you can even add a [ViewModelFactory] to it if needed.
      *
      *```kotlin
-     *     override val mViewModel: MainViewModel by viewModels() { getViewModelFactory() }
+     *     override val mViewModel: MainViewModel by viewModels() { viewModelFactory(MainViewModel(userId)) }
      * ```
      */
     protected abstract val mViewModel: BaseViewModel
 
+    @Deprecated("This function is actually not needed")
     protected open fun getViewModelFactory(): ViewModelProvider.NewInstanceFactory =
         ViewModelProvider.NewInstanceFactory()
 
