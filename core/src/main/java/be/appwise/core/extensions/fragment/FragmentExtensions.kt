@@ -22,13 +22,13 @@ fun Fragment.showSnackBar(message: String, view: View = requireView(), @ColorRes
 fun Fragment.hasPermission(permission: String): Boolean {
     return ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED
 }
-
+@Suppress("SimplifyBooleanWithConstants")
 fun Fragment.allPermissionsGranted(permissions: ArrayList<String>): Boolean {
     // Will map over each permission and check if it was granted
     // Only distinct values will be kept.
     return permissions.map {
         ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
-    }.distinct().contains(false)
+    }.all { it == true } // This check actually needs to happen cannot be simplified to just `true`
 }
 
 fun Fragment.openKeyBoard(editText: EditText) {

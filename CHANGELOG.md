@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 ### New Features
 
 ### Bug Fixes
+- Fixed issue where the `allPermissionsGranted` was a false positive
+
+### Documentation
+- Added required dependencies when importing Room or Core
 
 ### Breaking
 
