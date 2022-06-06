@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        appcompat_version = "1.4.1"
+        appcompat_version = "1.4.2"
         gson_version = "2.9.0"
         glide_version = "4.13.2"
         //TODO: update kotlin version when room 2.4.0 is in stable
