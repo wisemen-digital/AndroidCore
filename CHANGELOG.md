@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 ### Custom Views
 
 ### Improvements
+- Reworked the ViewModelExtensions a bit to add a general `viewModelFactory` function to the list. It accepts a ViewModel without any restrictions to the parameters. Also deprecated some functions.
 
 
 ## [1.3.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.3.0)

@@ -21,6 +21,7 @@ abstract class BaseVMFragment : BaseFragment() {
      */
     protected abstract val mViewModel: BaseViewModel
 
+    @Deprecated("This function is actually not needed")
     protected open fun getViewModelFactory(): ViewModelProvider.NewInstanceFactory =
         ViewModelProvider.NewInstanceFactory()
 
