@@ -55,7 +55,7 @@ class ViewStateRecyclerView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : RecyclerView(context, attrs, defStyleAttr) {
 
-    var state: RecyclerViewState? = RecyclerViewState.LOADING
+    var state: RecyclerViewState = RecyclerViewState.LOADING
         set(value) {
             field = value
             updateState()
@@ -96,20 +96,20 @@ class ViewStateRecyclerView @JvmOverloads constructor(
     private fun updateState() {
         when (state) {
             RecyclerViewState.LOADING -> {
-                loadingStateView?.visibility = View.VISIBLE
-                this@ViewStateRecyclerView.visibility = View.GONE
-                emptyStateView?.visibility = View.GONE
+                loadingStateView?.visibility = VISIBLE
+                this@ViewStateRecyclerView.visibility = GONE
+                emptyStateView?.visibility = GONE
             }
 
             RecyclerViewState.NORMAL -> {
-                loadingStateView?.visibility = View.GONE
-                this@ViewStateRecyclerView.visibility = View.VISIBLE
-                emptyStateView?.visibility = View.GONE
+                loadingStateView?.visibility = GONE
+                this@ViewStateRecyclerView.visibility = VISIBLE
+                emptyStateView?.visibility = GONE
             }
             RecyclerViewState.EMPTY -> {
-                loadingStateView?.visibility = View.GONE
-                this@ViewStateRecyclerView.visibility = View.GONE
-                emptyStateView?.visibility = View.VISIBLE
+                loadingStateView?.visibility = GONE
+                this@ViewStateRecyclerView.visibility = GONE
+                emptyStateView?.visibility = VISIBLE
             }
         }
     }
