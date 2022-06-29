@@ -97,7 +97,7 @@ dependencies {
     api 'joda-time:joda-time:2.10.14'
 
     // https://github.com/Ereza/CustomActivityOnCrash
-    implementation 'cat.ereza:customactivityoncrash:2.3.0'
+    implementation 'cat.ereza:customactivityoncrash:2.4.0'
 }
 
 afterEvaluate {
