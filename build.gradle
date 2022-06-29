@@ -4,7 +4,7 @@ buildscript {
         appcompat_version = "1.4.2"
         gson_version = "2.9.0"
         glide_version = "4.13.2"
-        kotlin_version = "1.6.21"
+        kotlin_version = "1.7.0"
         kotlinx_coroutines_version = "1.6.3"
         lifecycle_version = "2.4.1"
         material_dialogs_version = "3.3.0"
