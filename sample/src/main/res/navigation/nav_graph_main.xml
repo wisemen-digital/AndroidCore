@@ -1,27 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_main"
     app:startDestination="@id/mainFragment">
 
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.coredemo.ui.main.MainFragment"
-        android:label="MainFragment" >
+        android:label="MainFragment"
+        tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_mainFragment_to_measurementsFragment"
             app:destination="@id/measurementsFragment" />
         <action
             android:id="@+id/action_mainFragment_to_measureCalculationFragment"
             app:destination="@id/measureCalculationFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_networkingFragment"
+            app:destination="@id/networkingFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/measurementsFragment"
         android:name="com.example.coredemo.ui.measurements.conversion.MeasurementsFragment"
-        android:label="MeasurementsFragment" />
+        android:label="MeasurementsFragment"
+        tools:layout="@layout/fragment_measurements" />
 
     <fragment
         android:id="@+id/measureCalculationFragment"
         android:name="com.example.coredemo.ui.measurements.calculations.MeasureCalculationFragment"
-        android:label="MeasureCalculationFragment" />
+        android:label="MeasureCalculationFragment"
+        tools:layout="@layout/fragment_measure_calculation" />
+
+    <fragment
+        android:id="@+id/networkingFragment"
+        android:name="com.example.coredemo.ui.networking.NetworkingFragment"
+        android:label="NetworkingFragment"
+        tools:layout="@layout/fragment_networking" />
 </navigation>

@@ -55,6 +55,7 @@ object Networking {
         networkingFacade!!.logout()
     }
 
+    @Deprecated("This will be fazed out in favor of the newer way to handle network call errors.")
     fun parseError(response: Response<*>): ApiError {
         return networkingFacade!!.parseError(response)
     }
@@ -152,10 +153,12 @@ object Networking {
             allowedServices: ArrayList<String> = arrayListOf(),
             isLoggingEnabled: Boolean = true,
         ): Builder {
-            ProxyManNetworkDiscoveryManager.registerService(context,
+            ProxyManNetworkDiscoveryManager.registerService(
+                context,
                 deviceName,
                 allowedServices,
-                isLoggingEnabled)
+                isLoggingEnabled
+            )
             return this
         }
 
