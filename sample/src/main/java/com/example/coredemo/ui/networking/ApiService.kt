@@ -1,5 +1,6 @@
 package com.example.coredemo.ui.networking
 
+import be.appwise.networking.BaseResponse
 import com.haroldadmin.cnradapter.NetworkResponse
 import retrofit2.Call
 import retrofit2.http.GET
@@ -8,7 +9,7 @@ import retrofit2.http.Path
 interface ApiService {
 
     @GET("/pokemons")
-    suspend fun fetchPokemons(): NetworkResponse<List<PokemonResponse>, MyApiError>
+    suspend fun fetchPokemons(): BaseResponse<List<PokemonResponse>>
 
     @GET("/pokemons/{id}")
     fun fetchSpecificPokemonOld(
@@ -18,7 +19,7 @@ interface ApiService {
     @GET("/pokemons/{id}")
     suspend fun fetchSpecificPokemon(
         @Path("id") pokemonId: String
-    ): NetworkResponse<PokemonResponse, MyApiError>
+    ): BaseResponse<PokemonResponse>
 
     @GET("/pokemons/{id}/moves")
     suspend fun fetchMovesForPokemon(

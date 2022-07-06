@@ -4,6 +4,8 @@ import be.appwise.core.ui.base.BaseViewModel
 import be.appwise.networking.model.ApiError
 import com.haroldadmin.cnradapter.NetworkResponse
 
+typealias BaseResponse<T> = NetworkResponse<T, ApiError>
+
 fun <S : Any, E : ApiError> BaseViewModel.handleResponse(response: NetworkResponse<S, E>, shouldShowError: Boolean = true): S? {
     val throwable = when (response) {
         is NetworkResponse.Success -> return response.body
