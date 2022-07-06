@@ -21,7 +21,7 @@ interface BaseRepository {
                 if (response.isSuccessful) {
                     response.body()!!
                 } else {
-                    throw Exception(Networking.parseError(response).message)
+                    throw Exception(Networking.parseError(response).parseErrorMessage(response.code()))
                 }
             }
         } catch (ex: UnknownHostException) {

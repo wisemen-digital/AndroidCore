@@ -10,6 +10,9 @@ class MainViewModel : BaseViewModel() {
         ContentItem(ContentItem.measurementCalculation, "Calculations", "Calculating with different units"),
 
         ContentItem(2, "Views"),
-        ContentItem(ContentItem.emptyRecyclerView, "EmptyStateRecyclerView", "Showing different states depending on data in the adapter")
+        ContentItem(ContentItem.emptyRecyclerView, "EmptyStateRecyclerView", "Showing different states depending on data in the adapter"),
+
+        ContentItem(3, "Networking"),
+        ContentItem(ContentItem.networkingCalls, "Better response", "A new way of working with network responses")
     )
 }
