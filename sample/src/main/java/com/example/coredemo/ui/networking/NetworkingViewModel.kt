@@ -30,6 +30,8 @@ class NetworkingViewModel : BaseViewModel() {
         val poke = handleResponse(apiRepo.fetchSpecificPokemon(id))
         val moves = handleResponse(apiRepo.fetchMovesForPokemon(id))
 
+        delay(2000)
+
         poke?.let {
             it.moves = moves
             _pokemon.postValue(it)
