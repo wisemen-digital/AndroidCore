@@ -3,8 +3,8 @@ package com.example.coredemo.ui.networking
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import be.appwise.core.ui.base.BaseViewModel
+import be.appwise.networking.Networking
 import be.appwise.networking.handleResponse
-import com.haroldadmin.cnradapter.NetworkResponse
 import kotlinx.coroutines.delay
 
 class NetworkingViewModel : BaseViewModel() {
@@ -26,40 +26,22 @@ class NetworkingViewModel : BaseViewModel() {
         _pokemons.postValue(pokes ?: emptyList())
     }
 
-    fun fetchSpecificPokemon(id: String) = launchAndLoad {
-        val poke = handleResponse(apiRepo.fetchSpecificPokemon(id))
-        val moves = handleResponse(apiRepo.fetchMovesForPokemon(id))
+    // Will be called for Bulbasaur, Ivysaur and Venusaur
+    fun fetchSpecificPokemonOldWay(id: String) = launchAndLoad {
+        val moves = apiRepo.fetchMovesForPokemonOld(id)
+        delay(750)
+        val poke = apiRepo.fetchSpecificPokemonOld(id)
+        delay(750)
 
-        delay(2000)
-
-        poke?.let {
-            it.moves = moves
-            _pokemon.postValue(it)
-        }
+        _pokemon.postValue(poke.also { it.moves = moves })
     }
 
-    fun fetchSpecificPokemonWithDifferentHandler(id: String) = launchAndLoad {
-        val poke = when (val response = apiRepo.fetchSpecificPokemon(id)) {
-            is NetworkResponse.Success -> response.body
-            is NetworkResponse.ServerError -> {
-                setCoroutineException(Throwable(response.body?.parseErrorMessage(response.code)))
-                return@launchAndLoad
-            }
-            is NetworkResponse.NetworkError -> {
-                setCoroutineException(Throwable("Something went wrong, check if you have internet connection."))
-                return@launchAndLoad
-            }
-            is NetworkResponse.UnknownError -> {
-                setCoroutineException(Throwable("Something went wrong, please try again later."))
-                return@launchAndLoad
-            }
-        }
-
-        delay(2000)
-
+    // Will be called for Charmander, Charmeleon and Charizard
+    fun fetchSpecificPokemon(id: String) = launchAndLoad {
         val moves = handleResponse(apiRepo.fetchMovesForPokemon(id))
-
-        delay(2000)
+        delay(750)
+        val poke = handleResponse(apiRepo.fetchSpecificPokemon(id)) ?: PokemonResponse()
+        delay(750)
 
         poke.let {
             it.moves = moves
@@ -67,10 +49,26 @@ class NetworkingViewModel : BaseViewModel() {
         }
     }
 
-    fun fetchSpecificPokemonOldWay(id: String) = launchAndLoad {
-        val poke = apiRepo.fetchSpecificPokemonOld(id)
+    // Will be called for Squirtle, Wartortle and Blastoise
+    fun fetchSpecificPokemonWithDifferentHandler(id: String) = launchAndLoad {
         val moves = handleResponse(apiRepo.fetchMovesForPokemon(id))
 
-        _pokemon.postValue(poke.also { it.moves = moves })
+        delay(750)
+
+        val response = apiRepo.fetchSpecificPokemon(id)
+        val poke = when {
+            response.isSuccessful -> response.body()
+            else -> {
+                setCoroutineException(Throwable(Networking.parseError(response).parseErrorMessage(response.code())))
+                null
+            }
+        } ?: PokemonResponse()
+
+        delay(750)
+
+        poke.let {
+            it.moves = moves
+            _pokemon.postValue(it)
+        }
     }
 }

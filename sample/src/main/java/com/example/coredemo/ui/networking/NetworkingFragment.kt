@@ -17,14 +17,14 @@ class NetworkingFragment : BaseBindingVMFragment<FragmentNetworkingBinding>() {
     private val pokemonAdapter by lazy {
         PokemonAdapter {
             when (it.id) {
-                in arrayOf("5", "6", "8", "9") -> {
-                    mViewModel.fetchSpecificPokemonWithDifferentHandler(it.id)
-                }
-                in arrayOf("1", "2") -> {
+                in arrayOf("1", "2", "3") -> {
                     mViewModel.fetchSpecificPokemonOldWay(it.id)
                 }
-                else -> {
+                in arrayOf("4", "5", "6") -> {
                     mViewModel.fetchSpecificPokemon(it.id)
+                }
+                else -> {
+                    mViewModel.fetchSpecificPokemonWithDifferentHandler(it.id)
                 }
             }
         }

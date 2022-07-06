@@ -50,8 +50,6 @@ dependencies {
 
     api "com.squareup.okhttp3:okhttp:$okhttp_version"
     api "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
-
-    api "com.github.haroldadmin:NetworkResponseAdapter:5.0.0"
 }
 
 task sourceJar(type: Jar) {

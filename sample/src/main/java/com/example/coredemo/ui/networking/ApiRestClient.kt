@@ -3,10 +3,8 @@ package com.example.coredemo.ui.networking
 import be.appwise.networking.base.BaseRestClient
 import com.appham.mockinizer.RequestFilter
 import com.appham.mockinizer.mockinize
-import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
-import retrofit2.Retrofit
 
 object ApiRestClient : BaseRestClient() {
 
@@ -17,19 +15,13 @@ object ApiRestClient : BaseRestClient() {
         getRetrofit.create(ApiService::class.java)
     }
 
-    override fun createRetrofit(baseUrl: String): Retrofit {
-        return super.createRetrofit(baseUrl).newBuilder()
-            .addCallAdapterFactory(NetworkResponseAdapterFactory())
-            .build()
-    }
-
     override fun createHttpClient(): OkHttpClient {
         return super.createHttpClient().newBuilder()
             .mockinize(mocks)
             .build()
     }
 
-    private val mocks: Map<RequestFilter, MockResponse> = mapOf(
+    private val pokemons: Map<RequestFilter, MockResponse> = mapOf(
         RequestFilter("/pokemons") to MockResponse().let {
             it.setResponseCode(200)
             it.setBody(
@@ -47,7 +39,7 @@ object ApiRestClient : BaseRestClient() {
                         },
                         {
                             "id":"3",
-                            "name":"Venasaur",
+                            "name":"Venusaur",
                             "icon": "https://serebii.net/pokedex-swsh/icon/003.png"
                         },
                         {
@@ -84,23 +76,26 @@ object ApiRestClient : BaseRestClient() {
                 """.trimIndent()
             )
         },
+    )
+
+    private val pokemonDetails: Map<RequestFilter, MockResponse> = mapOf(
         RequestFilter("/pokemons/1") to MockResponse().let {
-            it.setResponseCode(400)
-            it.setBody(
-                """
-                    { "exception":"someException", "message":"someMessage"}
-                """.trimIndent()
-            )
-        },
-        RequestFilter("/pokemons/2") to MockResponse().let {
             it.setResponseCode(200)
             it.setBody(
                 """
                     {
-                        "id":"2",
-                        "name":"Ivysaur",
+                        "id":"1",
+                        "name":"Bulbasaur",
                         "type_1":"Grass"
                     }
+                """.trimIndent()
+            )
+        },
+        RequestFilter("/pokemons/2") to MockResponse().let {
+            it.setResponseCode(400)
+            it.setBody(
+                """
+                    { "exception":"someException", "message":"Wrong pokemon"}
                 """.trimIndent()
             )
         },
@@ -128,6 +123,26 @@ object ApiRestClient : BaseRestClient() {
                 """.trimIndent()
             )
         },
+        RequestFilter("/pokemons/5") to MockResponse().let {
+            it.setResponseCode(400)
+            it.setBody(
+                """
+                    { "exception":"someException", "message":"Wrong pokemon"}
+                """.trimIndent()
+            )
+        },
+        RequestFilter("/pokemons/6") to MockResponse().let {
+            it.setResponseCode(200)
+            it.setBody(
+                """
+                    {
+                        "id":"6",
+                        "name":"Charizard",
+                        "type_1":"Dragon"
+                    }
+                """.trimIndent()
+            )
+        },
         RequestFilter("/pokemons/7") to MockResponse().let {
             it.setResponseCode(200)
             it.setBody(
@@ -140,6 +155,29 @@ object ApiRestClient : BaseRestClient() {
                 """.trimIndent()
             )
         },
+        RequestFilter("/pokemons/8") to MockResponse().let {
+            it.setResponseCode(400)
+            it.setBody(
+                """
+                    { "exception":"someException", "message":"Wrong pokemon"}
+                """.trimIndent()
+            )
+        },
+        RequestFilter("/pokemons/9") to MockResponse().let {
+            it.setResponseCode(200)
+            it.setBody(
+                """
+                    {
+                        "id":"9",
+                        "name":"Blastoise",
+                        "type_1":"Canon"
+                    }
+                """.trimIndent()
+            )
+        }
+    )
+
+    private val pokemonMoves: Map<RequestFilter, MockResponse> = mapOf(
         RequestFilter("/pokemons/1/moves") to MockResponse().let {
             it.setResponseCode(200)
             it.setBody(
@@ -165,6 +203,46 @@ object ApiRestClient : BaseRestClient() {
             )
         },
         RequestFilter("/pokemons/3/moves") to MockResponse().let {
+            it.setResponseCode(400)
+            it.setBody(
+                """
+                    { "exception":"someException", "message":"Wrong moves"}
+                """.trimIndent()
+            )
+        },
+        RequestFilter("/pokemons/4/moves") to MockResponse().let {
+            it.setResponseCode(200)
+            it.setBody(
+                """
+                    [
+                        "Tackle",
+                        "Quick Attack",
+                        "Ember"
+                    ]
+                """.trimIndent()
+            )
+        },
+        RequestFilter("/pokemons/5/moves") to MockResponse().let {
+            it.setResponseCode(200)
+            it.setBody(
+                """
+                    [
+                        "Tackle",
+                        "Fire Spin",
+                        "Leech Seed"
+                    ]
+                """.trimIndent()
+            )
+        },
+        RequestFilter("/pokemons/6/moves") to MockResponse().let {
+            it.setResponseCode(400)
+            it.setBody(
+                """
+                    { "exception":"someException", "message":"Wrong moves"}
+                """.trimIndent()
+            )
+        },
+        RequestFilter("/pokemons/7/moves") to MockResponse().let {
             it.setResponseCode(200)
             it.setBody(
                 """
@@ -176,13 +254,27 @@ object ApiRestClient : BaseRestClient() {
                 """.trimIndent()
             )
         },
-        RequestFilter("/pokemons/4/moves") to MockResponse().let {
+        RequestFilter("/pokemons/8/moves") to MockResponse().let {
+            it.setResponseCode(200)
+            it.setBody(
+                """
+                    [
+                        "Sun Beam",
+                        "Grass Whip",
+                        "Leech Seed"
+                    ]
+                """.trimIndent()
+            )
+        },
+        RequestFilter("/pokemons/9/moves") to MockResponse().let {
             it.setResponseCode(400)
             it.setBody(
                 """
-                    { "exception":"someException", "message":"someMessage"}
+                    { "exception":"someException", "message":"Wrong moves"}
                 """.trimIndent()
             )
         }
     )
+
+    private val mocks: Map<RequestFilter, MockResponse> = pokemons + pokemonDetails + pokemonMoves
 }

@@ -21,6 +21,10 @@ object ApiRepo : BaseRepository {
         // TODO: can be used to save to Room or do something else!!
     }
 
+    suspend fun fetchMovesForPokemonOld(id: String) = doCall(apiService.fetchMovesForPokemonOld(id)).also {
+        // TODO: can be used to save to Room or do something else!!
+    }
+
     suspend fun fetchMovesForPokemon(id: String) = apiService.fetchMovesForPokemon(id).handleSuccessAndReturnResponse {
         // TODO: can be used to save to Room or do something else!!
     }
