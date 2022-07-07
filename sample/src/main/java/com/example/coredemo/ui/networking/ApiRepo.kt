@@ -21,6 +21,10 @@ object ApiRepo : BaseRepository {
         // TODO: can be used to save to Room or do something else!!
     }
 
+    suspend fun fetchSpecificPokemonNewWrapper(id: String) = safeApiCall({ apiService.fetchSpecificPokemonNewWrapper(id) }) {
+        // TODO: can be used to save to Room or do something else!!
+    }
+
     suspend fun fetchMovesForPokemonOld(id: String) = doCall(apiService.fetchMovesForPokemonOld(id)).also {
         // TODO: can be used to save to Room or do something else!!
     }
@@ -28,5 +32,16 @@ object ApiRepo : BaseRepository {
     suspend fun fetchMovesForPokemon(id: String) = apiService.fetchMovesForPokemon(id).handleSuccessAndReturnResponse {
         // TODO: can be used to save to Room or do something else!!
     }
+
+    suspend fun fetchMovesForPokemonNewWrapper(id: String) = safeApiCall({ apiService.fetchMovesForPokemonNewWrapper(id) }) {
+        // TODO: can be used to save to Room or do something else!!
+    }
+
+    /**
+     * Can be overridden to use a different subclass of ApiError
+     */
+//    override fun parseError(response: Response<*>): ApiError? {
+//        return Gson().fromJson(response.errorBody()?.string() ?: "{}", MyApiError::class.java)
+//    }
 }
 

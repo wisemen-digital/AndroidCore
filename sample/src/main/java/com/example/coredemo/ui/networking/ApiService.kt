@@ -20,6 +20,11 @@ interface ApiService {
         @Path("id") pokemonId: String
     ): Response<PokemonResponse>
 
+    @GET("/pokemons/{id}")
+    suspend fun fetchSpecificPokemonNewWrapper(
+        @Path("id") pokemonId: String
+    ): Response<PokemonResponse>
+
     @GET("/pokemons/{id}/moves")
     fun fetchMovesForPokemonOld(
         @Path("id") pokemonId: String
@@ -27,6 +32,11 @@ interface ApiService {
 
     @GET("/pokemons/{id}/moves")
     suspend fun fetchMovesForPokemon(
+        @Path("id") pokemonId: String
+    ): Response<List<String>>
+
+    @GET("/pokemons/{id}/moves")
+    suspend fun fetchMovesForPokemonNewWrapper(
         @Path("id") pokemonId: String
     ): Response<List<String>>
 }

@@ -26,7 +26,6 @@ interface BaseNetworkingListeners {
      * In case you need to customize the entire error handling you can override this function
      * in your implementation of the RestClient
      */
-    @Deprecated("This will be fazed out in favor of the newer way to handle network call errors.")
     fun parseError(response: retrofit2.Response<*>) = ApiError(
         when (response.code()) {
             500 -> Networking.getContext().getString(R.string.internal_server_error)

@@ -1,8 +1,22 @@
 package be.appwise.networking
 
 import be.appwise.core.ui.base.BaseViewModel
+import be.appwise.networking.model.ApiError
 import retrofit2.Response
 
+fun <S : Any> BaseViewModel.handleCoreResponse(response: CoreResponse<S>, shouldShowError: Boolean = true): S? {
+    val throwable = when (response) {
+        is CoreResponse.GenericError -> Throwable(response.error?.parseErrorMessage(response.response?.code()))
+        is CoreResponse.NetworkError -> Throwable("Something went wrong, please try again later!")
+        is CoreResponse.Success -> return response.body
+    }
+
+    if (shouldShowError) {
+        setCoroutineException(throwable)
+    }
+
+    return null
+}
 
 fun <S : Any> BaseViewModel.handleResponse(response: Response<S>, shouldShowError: Boolean = true): S? {
     if (response.isSuccessful) {
@@ -25,6 +39,16 @@ suspend fun <S : Any> Response<S>.handleSuccessAndReturnResponse(onSuccess: susp
 
     return response
 }
+
+sealed interface CoreResponse<out S> {
+    data class Success<out S>(val body: S, val response: Response<*>) : CoreResponse<S>
+
+    sealed interface Error : CoreResponse<Nothing>
+
+    data class GenericError(val response: Response<*>? = null, val error: ApiError? = null) : Error
+    object NetworkError : Error
+}
+
 
 //typealias BaseResponse<T> = NetworkResponse<T, ApiError>
 //
