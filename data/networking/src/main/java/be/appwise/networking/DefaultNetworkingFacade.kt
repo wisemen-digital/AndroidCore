@@ -2,7 +2,7 @@ package be.appwise.networking
 
 import be.appwise.networking.base.BaseNetworkingListeners
 import be.appwise.networking.model.AccessToken
-import be.appwise.networking.model.ApiError
+import be.appwise.networking.model.BaseApiError
 import be.appwise.networking.util.HawkUtils
 import retrofit2.Response
 
@@ -41,7 +41,7 @@ class DefaultNetworkingFacade(networkingBuilder: Networking.Builder) :
         listener.logout()
     }
 
-    override fun parseError(response: Response<*>): ApiError {
+    override fun parseError(response: Response<*>): BaseApiError {
         return listener.parseError(response)
     }
 }

@@ -11,6 +11,7 @@ import be.appwise.networking.interceptors.HeaderInterceptor
 import be.appwise.networking.model.AccessToken
 import be.appwise.networking.proxyman.ProxyManInterceptor
 import com.google.gson.Gson
+import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -138,6 +139,8 @@ abstract class BaseRestClient {
         getConverterFactories().forEach {
             builder.addConverterFactory(it)
         }
+
+        builder.addCallAdapterFactory(NetworkResponseAdapterFactory())
 
         return builder.build()
     }

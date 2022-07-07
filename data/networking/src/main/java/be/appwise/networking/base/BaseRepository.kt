@@ -4,6 +4,7 @@ import be.appwise.networking.CoreResponse
 import be.appwise.networking.Networking
 import be.appwise.networking.R
 import be.appwise.networking.model.ApiError
+import be.appwise.networking.model.BaseApiError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
@@ -84,7 +85,7 @@ interface BaseRepository {
     /**
      * Uses the [Networking.parseError] by default, can be overridden in the Repo if you need anything special.
      */
-    fun parseError(response: Response<*>): ApiError? {
+    fun parseError(response: Response<*>): BaseApiError? {
         return try {
             Networking.parseError(response)
         } catch (e: Exception) {

@@ -86,6 +86,21 @@ object ApiRestClient : BaseRestClient() {
                             "id":"12",
                             "name":"Butterfree",
                             "icon": "https://serebii.net/pokedex-swsh/icon/012.png"
+                        },
+                        {
+                            "id":"13",
+                            "name":"Weedle",
+                            "icon": "https://serebii.net/pokedex-swsh/icon/013.png"
+                        },
+                        {
+                            "id":"14",
+                            "name":"Kakuna",
+                            "icon": "https://serebii.net/pokedex-swsh/icon/014.png"
+                        },
+                        {
+                            "id":"15",
+                            "name":"Beedrill",
+                            "icon": "https://serebii.net/pokedex-swsh/icon/015.png"
                         }
                     ]
                 """.trimIndent()
@@ -221,6 +236,38 @@ object ApiRestClient : BaseRestClient() {
                     }
                 """.trimIndent()
             )
+        },
+        RequestFilter("/pokemons/13") to MockResponse().let {
+            it.setResponseCode(200)
+            it.setBody(
+                """
+                    {
+                        "id":"13",
+                        "name":"Weedle",
+                        "type_1":"Bug"
+                    }
+                """.trimIndent()
+            )
+        },
+        RequestFilter("/pokemons/14") to MockResponse().let {
+            it.setResponseCode(400)
+            it.setBody(
+                """
+                    { "exception":"someException", "message":"Wrong pokemon"}
+                """.trimIndent()
+            )
+        },
+        RequestFilter("/pokemons/15") to MockResponse().let {
+            it.setResponseCode(200)
+            it.setBody(
+                """
+                    {
+                        "id":"15",
+                        "name":"Beedrill",
+                        "type_1":"Bug"
+                    }
+                """.trimIndent()
+            )
         }
     )
 
@@ -344,6 +391,36 @@ object ApiRestClient : BaseRestClient() {
             )
         },
         RequestFilter("/pokemons/12/moves") to MockResponse().let {
+            it.setResponseCode(400)
+            it.setBody(
+                """
+                    { "exception":"someException", "message":"Wrong moves"}
+                """.trimIndent()
+            )
+        },
+        RequestFilter("/pokemons/13/moves") to MockResponse().let {
+            it.setResponseCode(200)
+            it.setBody(
+                """
+                    [
+                        "Tackle",
+                        "String Shot"
+                    ]
+                """.trimIndent()
+            )
+        },
+        RequestFilter("/pokemons/14/moves") to MockResponse().let {
+            it.setResponseCode(200)
+            it.setBody(
+                """
+                    [
+                        "Tackle",
+                        "Harden"
+                    ]
+                """.trimIndent()
+            )
+        },
+        RequestFilter("/pokemons/15/moves") to MockResponse().let {
             it.setResponseCode(400)
             it.setBody(
                 """

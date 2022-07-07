@@ -4,7 +4,7 @@ import android.content.Context
 import be.appwise.networking.bagel.BagelNetworkDiscoveryManager
 import be.appwise.networking.base.BaseNetworkingListeners
 import be.appwise.networking.model.AccessToken
-import be.appwise.networking.model.ApiError
+import be.appwise.networking.model.BaseApiError
 import be.appwise.networking.proxyman.ProxyManNetworkDiscoveryManager
 import retrofit2.Response
 
@@ -55,7 +55,7 @@ object Networking {
         networkingFacade!!.logout()
     }
 
-    fun parseError(response: Response<*>): ApiError {
+    fun parseError(response: Response<*>): BaseApiError {
         return networkingFacade!!.parseError(response)
     }
 

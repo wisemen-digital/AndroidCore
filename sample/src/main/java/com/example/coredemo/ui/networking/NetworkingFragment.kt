@@ -26,8 +26,11 @@ class NetworkingFragment : BaseBindingVMFragment<FragmentNetworkingBinding>() {
                 in arrayOf("7", "8", "9") -> {
                     mViewModel.fetchSpecificPokemonWithDifferentHandler(it.id)
                 }
-                else -> {
+                in arrayOf("10", "11", "12") -> {
                     mViewModel.fetchSpecificPokemonWithNewWrapper(it.id)
+                }
+                else -> {
+                    mViewModel.fetchSpecificPokemonFactory(it.id)
                 }
             }
         }

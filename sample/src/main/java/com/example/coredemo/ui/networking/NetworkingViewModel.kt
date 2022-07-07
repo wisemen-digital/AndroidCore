@@ -83,4 +83,13 @@ class NetworkingViewModel : BaseViewModel() {
 
         updatePokemon(poke, moves)
     }
+
+    fun fetchSpecificPokemonFactory(id: String) = launchAndLoad {
+        val moves = handleResponse(apiRepo.fetchMovesForPokemonFactory(id))
+        delay(750)
+        val poke = handleResponse(apiRepo.fetchSpecificPokemonFactory(id)) ?: PokemonResponse()
+        delay(750)
+
+        updatePokemon(poke, moves)
+    }
 }
