@@ -6,6 +6,7 @@ import be.appwise.core.ui.base.BaseViewModel
 import be.appwise.networking.Networking
 import be.appwise.networking.handleCoreResponse
 import be.appwise.networking.handleResponse
+import com.haroldadmin.cnradapter.NetworkResponse
 import kotlinx.coroutines.delay
 
 class NetworkingViewModel : BaseViewModel() {
@@ -35,6 +36,7 @@ class NetworkingViewModel : BaseViewModel() {
     }
 
     // Will be called for Bulbasaur, Ivysaur and Venusaur
+    // The old way of doing things
     fun fetchSpecificPokemonOldWay(id: String) = launchAndLoad {
         val moves = apiRepo.fetchMovesForPokemonOld(id)
         delay(750)
@@ -45,6 +47,7 @@ class NetworkingViewModel : BaseViewModel() {
     }
 
     // Will be called for Charmander, Charmeleon and Charizard
+    // Working with the default Response wrapper of Retrofit itself
     fun fetchSpecificPokemon(id: String) = launchAndLoad {
         val moves = handleResponse(apiRepo.fetchMovesForPokemon(id))
         delay(750)
@@ -55,6 +58,7 @@ class NetworkingViewModel : BaseViewModel() {
     }
 
     // Will be called for Squirtle, Wartortle and Blastoise
+    // Working with the default Response wrapper of Retrofit itself
     fun fetchSpecificPokemonWithDifferentHandler(id: String) = launchAndLoad {
         val moves = handleResponse(apiRepo.fetchMovesForPokemon(id))
 
@@ -74,6 +78,8 @@ class NetworkingViewModel : BaseViewModel() {
         updatePokemon(poke, moves)
     }
 
+    // Will be called for Caterpie, Metapod and Butterfree
+    // Working with our own Custom wrapper
     fun fetchSpecificPokemonWithNewWrapper(id: String) = launchAndLoad {
         val moves = handleCoreResponse(apiRepo.fetchMovesForPokemonNewWrapper(id))
         delay(750)
@@ -84,6 +90,8 @@ class NetworkingViewModel : BaseViewModel() {
         updatePokemon(poke, moves)
     }
 
+    // Will be called for Weedle, Kakuna, Beedrill
+    // Working with the CallAdapterFactory response wrapper
     fun fetchSpecificPokemonFactory(id: String) = launchAndLoad {
         val moves = handleResponse(apiRepo.fetchMovesForPokemonFactory(id))
         delay(750)

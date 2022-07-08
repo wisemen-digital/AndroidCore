@@ -35,14 +35,14 @@ interface BaseRepository {
         }
     }
 
-    suspend fun <T : Any> safeApiCall(apiCall: suspend () -> Response<T>, onSuccess: () -> Unit = {}): CoreResponse<T> {
+    suspend fun <T : Any> safeApiCall(apiCall: suspend () -> Response<T>, onSuccess: (T) -> Unit = {}): CoreResponse<T> {
         return try {
             val response = apiCall.invoke()
 
             if (response.isSuccessful) {
                 parseSuccessfulResponse(response).also {
                     if (it is CoreResponse.Success) {
-                        onSuccess()
+                        onSuccess(it.body)
                     }
                 }
             } else {

@@ -31,7 +31,7 @@ interface ApiService {
     suspend fun fetchMovesForPokemon(
         @Path("id") pokemonId: String
     ): Response<List<String>>
-    
+
     @GET("/pokemons/{id}")
     suspend fun fetchSpecificPokemonFactory(
         @Path("id") pokemonId: String

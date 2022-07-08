@@ -14,6 +14,7 @@ object ApiRepo : BaseRepository {
     }
 
 
+    // <editor-fold desc="The old way of doing things">
     suspend fun fetchMovesForPokemonOld(id: String) = doCall(apiService.fetchMovesForPokemonOld(id)).also {
         // TODO: can be used to save to Room or do something else!!
     }
@@ -21,7 +22,9 @@ object ApiRepo : BaseRepository {
     suspend fun fetchSpecificPokemonOld(id: String) = doCall(apiService.fetchSpecificPokemonOld(id)).also {
         // TODO: can be used to save to Room
     }
+    // </editor-fold>
 
+    // <editor-fold desc="Working with the default Response wrapper of Retrofit itself">
     suspend fun fetchSpecificPokemon(id: String) = apiService.fetchSpecificPokemon(id).handleSuccessAndReturnResponse {
         // TODO: can be used to save to Room or do something else!!
     }
@@ -29,7 +32,9 @@ object ApiRepo : BaseRepository {
     suspend fun fetchMovesForPokemon(id: String) = apiService.fetchMovesForPokemon(id).handleSuccessAndReturnResponse {
         // TODO: can be used to save to Room or do something else!!
     }
+    // </editor-fold>
 
+    // <editor-fold desc="Working with our own Custom wrapper">
     suspend fun fetchSpecificPokemonNewWrapper(id: String) = safeApiCall({ apiService.fetchSpecificPokemon(id) }) {
         // TODO: can be used to save to Room or do something else!!
     }
@@ -37,7 +42,9 @@ object ApiRepo : BaseRepository {
     suspend fun fetchMovesForPokemonNewWrapper(id: String) = safeApiCall({ apiService.fetchMovesForPokemon(id) }) {
         // TODO: can be used to save to Room or do something else!!
     }
+    // </editor-fold>
 
+    // <editor-fold desc="Working with the CallAdapterFactory response wrapper">
     suspend fun fetchSpecificPokemonFactory(id: String) = apiService.fetchSpecificPokemonFactory(id).handleSuccessAndReturnResponse {
         // TODO: can be used to save to Room or do something else!!
     }
@@ -45,9 +52,10 @@ object ApiRepo : BaseRepository {
     suspend fun fetchMovesForPokemonFactory(id: String) = apiService.fetchMovesForPokemonFactory(id).handleSuccessAndReturnResponse {
         // TODO: can be used to save to Room or do something else!!
     }
+    // </editor-fold>
 
     /**
-     * Can be overridden to use a different subclass of ApiError
+     * Can be overridden to use a different subclass of ApiError, will not be used by the CallAdapterFactory-wrapper option
      */
 //    override fun parseError(response: Response<*>): ApiError? {
 //        return Gson().fromJson(response.errorBody()?.string() ?: "{}", MyApiError::class.java)
