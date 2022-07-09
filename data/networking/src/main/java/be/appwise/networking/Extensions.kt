@@ -59,7 +59,7 @@ suspend fun <S : Any> Response<S>.handleSuccessAndReturnResponse(onSuccess: susp
 // <editor-fold desc="Working with a CallAdapterFactory which wraps the response automatically">
 typealias BaseResponse<T> = NetworkResponse<T, ApiError>
 
-suspend fun <S : Any, E : BaseApiError> BaseViewModel.handleResponse(response: NetworkResponse<S, E>, shouldShowError: Boolean = true, shouldBlock: Boolean = true): S? {
+fun <S : Any, E : BaseApiError> BaseViewModel.handleResponse(response: NetworkResponse<S, E>, shouldShowError: Boolean = true, shouldBlock: Boolean = true): S? {
     val throwable = when (response) {
         is NetworkResponse.Success -> return response.body
         is NetworkResponse.ServerError -> Throwable(response.body?.parseErrorMessage(response.code))
@@ -69,7 +69,7 @@ suspend fun <S : Any, E : BaseApiError> BaseViewModel.handleResponse(response: N
 
     //TODO: is this the standard? That a call should block everything else?
     if (shouldBlock) {
-        throw Exception(throwable)
+        throw throwable
     }
 
     if (shouldShowError) {
