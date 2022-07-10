@@ -10,8 +10,8 @@ import be.appwise.networking.interceptors.Authenticator
 import be.appwise.networking.interceptors.HeaderInterceptor
 import be.appwise.networking.model.AccessToken
 import be.appwise.networking.proxyman.ProxyManInterceptor
+import be.appwise.networking.responseAdapter.NetworkResponseAdapterFactory
 import com.google.gson.Gson
-import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

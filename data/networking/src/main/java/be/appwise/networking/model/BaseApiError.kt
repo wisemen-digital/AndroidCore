@@ -1,18 +1,21 @@
 package be.appwise.networking.model
 
-data class ApiError(override val message: String) : BaseApiError
+data class ApiError(override val message: String, override var responseCode: Int?) : BaseApiError {
+    override fun toString() = asString
+}
 
 interface BaseApiError {
 
     val message: String
+    var responseCode: Int?
 
     /**
      * Can be overridden to parse it any other way..
      * Not every api returns just a message, so the message is optional.
-     * the [parseErrorMessage] is a placeholder so this base error class has a default way to show the error.
+     * [asString] is a placeholder so this base error class has a default way to show the error.
      */
-    fun parseErrorMessage(responseCode: Int? = null) =
-        responseCode?.let {
+    val asString
+        get() = responseCode?.let {
             "$responseCode: $message"
         } ?: run {
             message

@@ -55,6 +55,7 @@ object Networking {
         networkingFacade!!.logout()
     }
 
+    @Deprecated("This will be fazed out in favor of the newer way to handle network call errors.")
     fun parseError(response: Response<*>): BaseApiError {
         return networkingFacade!!.parseError(response)
     }

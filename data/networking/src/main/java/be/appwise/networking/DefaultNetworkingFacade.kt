@@ -41,6 +41,7 @@ class DefaultNetworkingFacade(networkingBuilder: Networking.Builder) :
         listener.logout()
     }
 
+    @Deprecated("This will be fazed out in favor of the newer way to handle network call errors.")
     override fun parseError(response: Response<*>): BaseApiError {
         return listener.parseError(response)
     }
