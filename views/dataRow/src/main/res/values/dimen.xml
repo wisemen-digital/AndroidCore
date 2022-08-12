@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dr_default_box_stroke_width">1dp</dimen>
+    <dimen name="dr_default_content_padding">16dp</dimen>
+    <dimen name="edr_default_vertical_content_padding">8dp</dimen>
+    <dimen name="edr_default_horizontal_content_padding">16dp</dimen>
+    <dimen name="edr_default_edit_box_content_padding">8dp</dimen>
+
+    <dimen name="tdr_default_vertical_content_padding">12dp</dimen>
+    <dimen name="tdr_default_horizontal_content_padding">16dp</dimen>
+
+</resources>

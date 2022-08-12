@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- This can be declared in your AppTheme to have an app-wide style for every DataRow-->
+    <attr name="dataRowStyle" format="reference" />
+    <attr name="editableDataRowStyle" format="reference" />
+    <attr name="toggleDataRowStyle" format="reference" />
+
+    <declare-styleable name="BaseDataRow">
+        <attr name="labelText" format="string" />
+        <attr name="subtitleText" format="string" />
+
+        <!-- TextAppearance of the hint. -->
+        <attr name="labelTextAppearance" format="reference" />
+        <!-- Text color of the label. If set, this takes precedence over labelTextAppearance. -->
+        <attr name="labelTextColor" format="color" />
+
+        <!-- TextAppearance of the subtitle. -->
+        <attr name="subtitleTextAppearance" format="reference" />
+        <!-- Text color of the subtitle. If set, this takes precedence over subtitleTextAppearance. -->
+        <attr name="subtitleTextColor" format="color" />
+
+        <!-- TextAppearance of the subtitle. -->
+        <attr name="errorTextAppearance" format="reference" />
+        <!-- Text color of the subtitle. If set, this takes precedence over subtitleTextAppearance. -->
+        <attr name="errorTextColor" format="color" />
+
+        <!-- The value to use to give the content an all around padding -->
+        <attr name="paddingContent" format="dimension" />
+        <!-- The value to use to give the content an horizontal padding -->
+        <attr name="paddingContentHorizontal" format="dimension" />
+        <!-- The value to use to give the content a vertical padding -->
+        <attr name="paddingContentVertical" format="dimension" />
+
+        <!-- The value to use for the elevation of the box -->
+        <attr name="boxElevation" format="dimension" />
+
+        <!-- The value to use for every corner of the box. -->
+        <attr name="boxCornerRadius" format="dimension" />
+        <!-- The value to use for the box's top start corner radius. -->
+        <attr name="boxCornerRadiusTopStart" format="dimension" />
+        <!-- The value to use for the box's top end corner radius. -->
+        <attr name="boxCornerRadiusTopEnd" format="dimension" />
+        <!-- The value to use for the box's bottom start corner radius. -->
+        <attr name="boxCornerRadiusBottomStart" format="dimension" />
+        <!-- The value to use for the box's bottom end corner radius. -->
+        <attr name="boxCornerRadiusBottomEnd" format="dimension" />
+
+        <!-- Ripple color for the button. This may be a color state list, if the desired ripple color
+             should be stateful. Attribute type definition is in resources package. -->
+        <attr name="rippleColor" />
+
+        <!-- The color to use for the box's stroke. -->
+        <attr name="boxStrokeColor" format="color" />
+        <!-- The color to use for the box's stroke when an error is being displayed.
+             If not set, it defaults to errorTextColor. -->
+        <attr name="boxStrokeErrorColor" format="color" />
+        <!-- The color to use for the box's background color.
+             If a non-stateful color resource is specified, default colors will be used for the hover
+             and disabled states.  -->
+        <attr name="boxBackgroundColor" format="color" />
+        <!-- The value to use for the box's stroke. -->
+        <attr name="boxStrokeWidth" format="dimension" />
+
+        <attr name="showBoxError" format="boolean" />
+
+    </declare-styleable>
+
+    <!-- All these attributes are possible to override -->
+    <declare-styleable name="DataRow">
+        <attr name="valueText" format="string" />
+        <attr name="hintText" format="string" />
+
+        <attr name="showArrow" format="boolean" />
+
+        <!-- TextAppearance of the hint. -->
+        <attr name="hintTextAppearance" format="reference" />
+        <!-- Text color of the hint. If set, this takes precedence over hintTextAppearance. -->
+        <attr name="hintTextColor" format="color" />
+
+        <!-- TextAppearance of the value. -->
+        <attr name="valueTextAppearance" format="reference" />
+        <!-- Text color of the value. If set, this takes precedence over valueTextAppearance. -->
+        <attr name="valueTextColor" format="color" />
+
+        <attr name="showBoxError" />
+
+    </declare-styleable>
+
+
+    <!-- All these attributes are possible to override -->
+    <declare-styleable name="EditableDataRow">
+        <attr name="valueText" />
+        <attr name="hintText" />
+        <attr name="prefixText" />
+        <attr name="suffixText" />
+
+        <!-- Text color of the hint. If set, this takes precedence over hintTextAppearance. -->
+        <attr name="hintTextColor" />
+
+        <!-- TextAppearance of the value. -->
+        <attr name="valueTextAppearance" />
+        <!-- Text color of the value. If set, this takes precedence over valueTextAppearance. -->
+        <attr name="valueTextColor" />
+
+        <!-- TextAppearance of the prefix. -->
+        <attr name="prefixTextAppearance" />
+        <!-- Text color of the prefix. If set, this takes precedence over prefixTextAppearance. -->
+        <attr name="prefixTextColor" />
+
+        <!-- TextAppearance of the suffix. -->
+        <attr name="suffixTextAppearance" />
+        <!-- Text color of the suffix. If set, this takes precedence over suffixTextAppearance. -->
+        <attr name="suffixTextColor" />
+        <!-- The width of the suffix TextView so multiple EditableDataRows in a list will have the same appearance. -->
+        <attr name="suffixWidth" format="dimension" />
+
+        <attr name="android:inputType" />
+
+        <!-- The value to use to give the content an all around padding -->
+        <attr name="paddingContent" />
+        <!-- The value to use to give the content an horizontal padding -->
+        <attr name="paddingContentHorizontal" />
+        <!-- The value to use to give the content a vertical padding -->
+        <attr name="paddingContentVertical" />
+
+        <!-- The value to use to give the content an all around padding -->
+        <attr name="editBoxPaddingContent" format="dimension" />
+        <!-- The value to use to give the content an horizontal padding -->
+        <attr name="editBoxPaddingContentHorizontal" format="dimension" />
+        <!-- The value to use to give the content a vertical padding -->
+        <attr name="editBoxPaddingContentVertical" format="dimension" />
+
+        <!-- The value to use for the elevation of the box -->
+        <attr name="editBoxElevation" format="dimension" />
+
+        <!-- The value to use for every corner of the box. -->
+        <attr name="editBoxCornerRadius" format="dimension" />
+        <!-- The value to use for the box's top start corner radius. -->
+        <attr name="editBoxCornerRadiusTopStart" format="dimension" />
+        <!-- The value to use for the box's top end corner radius. -->
+        <attr name="editBoxCornerRadiusTopEnd" format="dimension" />
+        <!-- The value to use for the box's bottom start corner radius. -->
+        <attr name="editBoxCornerRadiusBottomStart" format="dimension" />
+        <!-- The value to use for the box's bottom end corner radius. -->
+        <attr name="editBoxCornerRadiusBottomEnd" format="dimension" />
+
+        <!-- The color to use for the box's stroke. -->
+        <attr name="editBoxStrokeColor" format="color" />
+        <!-- The color to use for the box's stroke when an error is being displayed.
+             If not set, it defaults to errorTextColor. -->
+        <attr name="editBoxStrokeErrorColor" format="color" />
+        <!-- The color to use for the box's background color.
+             If a non-stateful color resource is specified, default colors will be used for the hover
+             and disabled states.  -->
+        <attr name="editBoxBackgroundColor" format="color" />
+        <!-- The value to use for the box's stroke. -->
+        <attr name="editBoxStrokeWidth" format="dimension" />
+
+        <attr name="showErrorStrokeOnEditBox" format="boolean" />
+
+        <!-- Standard gravity constant that a child supplies to its parent.
+     Defines how the child view should be positioned, on both the X and Y axes, within its enclosing layout. -->
+        <attr name="editBoxGravity" format="integer">
+            <!-- Push object to the top of its container, not changing its size. -->
+            <flag name="top" value="0x30" />
+            <!-- Push object to the bottom of its container, not changing its size. -->
+            <flag name="bottom" value="0x50" />
+            <!-- Push object to the left of its container, not changing its size. -->
+            <flag name="left" value="0x03" />
+            <!-- Push object to the right of its container, not changing its size. -->
+            <flag name="right" value="0x05" />
+            <!-- Place object in the vertical center of its container, not changing its size. -->
+            <flag name="center_vertical" value="0x10" />
+            <!-- Grow the vertical size of the object if needed so it completely fills its container. -->
+            <flag name="fill_vertical" value="0x70" />
+            <!-- Place object in the horizontal center of its container, not changing its size. -->
+            <flag name="center_horizontal" value="0x01" />
+            <!-- Grow the horizontal size of the object if needed so it completely fills its container. -->
+            <flag name="fill_horizontal" value="0x07" />
+            <!-- Place the object in the center of its container in both the vertical and horizontal axis, not changing its size. -->
+            <flag name="center" value="0x11" />
+            <!-- Grow the horizontal and vertical size of the object if needed so it completely fills its container. -->
+            <flag name="fill" value="0x77" />
+            <!-- Additional option that can be set to have the top and/or bottom edges of
+                 the child clipped to its container's bounds.
+                 The clip will be based on the vertical gravity: a top gravity will clip the bottom
+                 edge, a bottom gravity will clip the top edge, and neither will clip both edges. -->
+            <flag name="clip_vertical" value="0x80" />
+            <!-- Additional option that can be set to have the left and/or right edges of
+                 the child clipped to its container's bounds.
+                 The clip will be based on the horizontal gravity: a left gravity will clip the right
+                 edge, a right gravity will clip the left edge, and neither will clip both edges. -->
+            <flag name="clip_horizontal" value="0x08" />
+            <!-- Push object to the beginning of its container, not changing its size. -->
+            <flag name="start" value="0x00800003" />
+            <!-- Push object to the end of its container, not changing its size. -->
+            <flag name="end" value="0x00800005" />
+        </attr>
+
+        <attr name="showBoxError" />
+
+    </declare-styleable>
+
+    <!-- All these attributes are possible to override -->
+    <declare-styleable name="ToggleDataRow">
+
+        <attr name="android:checked" />
+
+        <!-- The value to use to give the content an all around padding -->
+        <attr name="paddingContent" />
+        <!-- The value to use to give the content an horizontal padding -->
+        <attr name="paddingContentHorizontal" />
+        <!-- The value to use to give the content a vertical padding -->
+        <attr name="paddingContentVertical" />
+
+        <attr name="showBoxError" />
+
+    </declare-styleable>
+
+</resources>

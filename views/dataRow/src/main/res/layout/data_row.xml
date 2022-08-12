@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--TODO still something wrong with the layout when both TextViews are longer... maybe take a look at FlexBox?                 app:layout_constraintWidth_max="75dp"-->
+        <!--Or maybe try and do something with the Flow (Helper) -> is something like flex but for ConstraintLayout https://bignerdranch.com/blog/constraintlayout-flow-simple-grid-building-without-nested-layouts/-->
+        <TextView
+            android:id="@+id/tvLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toStartOf="@id/tvContent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_min="75dp"
+            tools:text="Longest view ever just because we can and we have to test things!!" />
+
+        <TextView
+            android:id="@+id/tvContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:maxLines="1"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toStartOf="@id/ivArrow"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toEndOf="@id/tvLabel"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginEnd="4dp"
+            tools:text="What is this answer (value) so long for, is this some kind of test?"
+            tools:textColor="@android:color/holo_red_dark"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/tvLabel"
+            tools:text="Wanneer onvoldoende tijd geregistreerd is, nieuwe taak aangemaakt, updates over taken, en veel meer dan dta wij kunnen bedenken!!" />
+
+        <!--TODO: extract arrow tint to a theme attribute?-->
+        <ImageView
+            android:id="@+id/ivArrow"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_arrow_right"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/tvLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvLabel"
+            app:tint="#C0C8C9"
+            tools:tint="#000" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tvError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:text="A value is required" />
+</LinearLayout>
