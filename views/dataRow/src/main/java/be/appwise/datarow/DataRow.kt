@@ -2,6 +2,7 @@ package be.appwise.datarow
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.text.Spanned
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.TextView
@@ -176,4 +177,20 @@ fun setText(view: DataRow, @StringRes labelText: Int) {
     if (oldVal == text) return
 
     view.labelText = text
+}
+
+//TODO: still to be tested on every DataRow!!!
+@BindingAdapter("app:labelText")
+fun setText(view: BaseDataRow, text: CharSequence?) {
+    val textView = view.findViewById<TextView>(R.id.tvLabel)
+    val oldText = textView.text
+    if (text === oldText || text == null && oldText.isEmpty()) {
+        return
+    }
+    if (text is Spanned) {
+        if (text == oldText) {
+            return  // No change in the spans, so don't set anything.
+        }
+    }
+    textView.text = text
 }
