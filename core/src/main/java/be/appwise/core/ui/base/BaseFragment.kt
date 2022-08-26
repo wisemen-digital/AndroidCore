@@ -63,11 +63,13 @@ open class BaseFragment : Fragment() {
     fun tintMenuIcons(menu: Menu, color: Int) {
         for (i in 0 until menu.size()) {
             val item = menu.getItem(i)
-            val wrapDrawable = DrawableCompat.wrap(
-                item.icon
-            )
-            DrawableCompat.setTint(wrapDrawable, color)
-            item.icon = wrapDrawable
+            item.icon?.let {
+                val wrapDrawable = DrawableCompat.wrap(
+                    it
+                )
+                DrawableCompat.setTint(wrapDrawable, color)
+                item.icon = wrapDrawable
+            }
         }
     }
 
