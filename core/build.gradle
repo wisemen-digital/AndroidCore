@@ -7,13 +7,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 31
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 33
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -94,7 +92,7 @@ dependencies {
     api "com.afollestad.material-dialogs:datetime:$material_dialogs_version"
 
     // Time manipulation for Java 7
-    api 'joda-time:joda-time:2.10.14'
+    api 'joda-time:joda-time:2.11.0'
 
     // https://github.com/Ereza/CustomActivityOnCrash
     implementation 'cat.ereza:customactivityoncrash:2.4.0'

@@ -111,6 +111,7 @@ class ViewStateRecyclerView @JvmOverloads constructor(
                 this@ViewStateRecyclerView.visibility = View.GONE
                 emptyStateView?.visibility = View.VISIBLE
             }
+            else -> {}
         }
     }
 
