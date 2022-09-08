@@ -1,6 +1,5 @@
 package be.appwise.core.ui.base
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import androidx.annotation.DrawableRes
@@ -21,14 +20,6 @@ open class BaseFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         parentActivity = requireActivity() as AppCompatActivity
-    }
-
-    //TODO: test what this should be for!!!
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        for (fragment in childFragmentManager.fragments) {
-            fragment.onActivityResult(requestCode, resultCode, data)
-        }
     }
 
     /**
@@ -72,11 +63,13 @@ open class BaseFragment : Fragment() {
     fun tintMenuIcons(menu: Menu, color: Int) {
         for (i in 0 until menu.size()) {
             val item = menu.getItem(i)
-            val wrapDrawable = DrawableCompat.wrap(
-                item.icon
-            )
-            DrawableCompat.setTint(wrapDrawable, color)
-            item.icon = wrapDrawable
+            item.icon?.let {
+                val wrapDrawable = DrawableCompat.wrap(
+                    it
+                )
+                DrawableCompat.setTint(wrapDrawable, color)
+                item.icon = wrapDrawable
+            }
         }
     }
 
