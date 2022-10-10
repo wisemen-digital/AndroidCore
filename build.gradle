@@ -3,7 +3,7 @@ buildscript {
     ext {
         appcompat_version = "1.5.0"
         gson_version = "2.9.1"
-        glide_version = "4.13.2"
+        glide_version = "4.14.2"
         kotlin_version = "1.7.10"
         kotlinx_coroutines_version = "1.6.4"
         lifecycle_version = "2.5.1"
