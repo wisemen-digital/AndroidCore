@@ -70,7 +70,9 @@
         <attr name="valueText" format="string" />
         <attr name="hintText" format="string" />
 
-        <attr name="showArrow" format="boolean" />
+        <attr name="showEndDrawable" format="boolean" />
+        <attr name="endDrawableTint" format="color|reference" />
+        <attr name="endDrawable" format="reference" />
 
         <!-- TextAppearance of the hint. -->
         <attr name="hintTextAppearance" format="reference" />

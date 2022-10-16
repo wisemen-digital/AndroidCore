@@ -55,17 +55,15 @@
             tools:text="Wanneer onvoldoende tijd geregistreerd is, nieuwe taak aangemaakt, updates over taken, en veel meer dan dta wij kunnen bedenken!!" />
 
         <!--TODO: extract arrow tint to a theme attribute?-->
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivArrow"
             android:layout_width="14dp"
             android:layout_height="14dp"
-            android:src="@drawable/ic_arrow_right"
+            tools:src="@drawable/ic_arrow_right"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/tvLabel"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvLabel"
-            app:tint="#C0C8C9"
-            tools:tint="#000" />
+            app:layout_constraintTop_toTopOf="@+id/tvLabel" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView

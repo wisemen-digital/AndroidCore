@@ -43,7 +43,7 @@
     <!-- ========================================================= -->
     <style name="Widget.Core.DataRow" parent="Widget.Core.BaseDataRow">
 
-        <item name="showArrow">false</item>
+        <item name="showEndDrawable">false</item>
 
         <item name="valueTextAppearance">@style/TextAppearance.DataRow.Value</item>
         <item name="hintTextAppearance">@style/TextAppearance.DataRow.Base</item>
@@ -57,7 +57,8 @@
         <item name="enforceMaterialTheme">false</item>
         <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents</item>
 
-        <item name="showArrow">true</item>
+        <item name="showEndDrawable">true</item>
+        <item name="endDrawable">@drawable/ic_arrow_right</item>
 
         <item name="valueTextAppearance">?attr/textAppearanceSubtitle1</item>
         <item name="hintTextAppearance">?attr/textAppearanceSubtitle1</item>
@@ -89,13 +90,15 @@
     </style>
 
     <style name="Widget.DataRow.Navigation" parent="Base.Widget.Core.DataRow">
-        <item name="showArrow">true</item>
+        <item name="showEndDrawable">true</item>
+        <item name="endDrawable">@drawable/ic_arrow_right</item>
+
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
     </style>
 
     <style name="Widget.DataRow.Information" parent="Base.Widget.Core.DataRow">
-        <item name="showArrow">false</item>
+        <item name="showEndDrawable">false</item>
         <item name="android:clickable">false</item>
         <item name="android:focusable">false</item>
     </style>

@@ -2,19 +2,20 @@ package be.appwise.datarow
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.drawable.Drawable
 import android.text.Spanned
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 
 
 @Suppress("MemberVisibilityCanBePrivate")
 class DataRow @JvmOverloads constructor(
-    ctx: Context,
-    attributeSet: AttributeSet? = null,
+    ctx: Context, attributeSet: AttributeSet? = null,
     // you could also pass in "0" for "defStyleAttr" if you don't need any default values or anything
     defStyleAttr: Int = R.attr.dataRowStyle
 ) : BaseDataRow(ctx, attributeSet, defStyleAttr) {
@@ -31,10 +32,22 @@ class DataRow @JvmOverloads constructor(
     /**
      * Controls whether the end Arrow should be shown or not
      */
-    var showArrow: Boolean = false
+    var showEndDrawable: Boolean = false
         set(value) {
             field = value
             updateArrowVisibility()
+        }
+
+    var endDrawable: Drawable? = null
+        set(value) {
+            field = value
+            ivArrow.setImageDrawable(value)
+        }
+
+    var endDrawableTint: ColorStateList? = null
+        set(value) {
+            field = value
+            if (value != null) ivArrow.imageTintList = value
         }
 
     // <editor-fold desc="Texts">
@@ -93,14 +106,14 @@ class DataRow @JvmOverloads constructor(
 
         // get all attributes that would be needed
         context.obtainStyledAttributes(
-            attributeSet,
-            R.styleable.DataRow,
-            R.attr.dataRowStyle, // Could be "0" if this would not be used
+            attributeSet, R.styleable.DataRow, R.attr.dataRowStyle, // Could be "0" if this would not be used
             DEF_STYLE_RES
         ).let { a ->
 
             // <editor-fold desc="Get all attributes">
-            showArrow = a.getBoolean(R.styleable.DataRow_showArrow, false)
+            showEndDrawable = a.getBoolean(R.styleable.DataRow_showEndDrawable, false)
+            endDrawable = a.getDrawable(R.styleable.DataRow_endDrawable) ?: ContextCompat.getDrawable(context, R.drawable.ic_arrow_right)
+            endDrawableTint = a.getColorStateList(R.styleable.DataRow_endDrawableTint)
             valueText = a.getString(R.styleable.DataRow_valueText) ?: ""
             hintText = a.getString(R.styleable.DataRow_hintText) ?: ""
             // </editor-fold>
@@ -132,7 +145,7 @@ class DataRow @JvmOverloads constructor(
     }
 
     private fun updateArrowVisibility() {
-        ivArrow.visibility = if (showArrow) VISIBLE else GONE
+        ivArrow.visibility = if (showEndDrawable) VISIBLE else GONE
     }
 
     /**
