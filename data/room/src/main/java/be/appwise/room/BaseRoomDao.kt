@@ -102,30 +102,14 @@ abstract class BaseRoomDao<T : BaseEntity>(private val tableName: String) {
      *  @param excludedIds the ids to be excluded from the removal
      *  @return a list of the inserted ID's
      */
-    suspend fun insertManyDeleteOthers(entities: List<T>, excludedIds: List<Any>): List<Long> {
-        var ids = entities.joinToString { "\'${it.id}\'" }
-
-        if (ids.isNotEmpty() && excludedIds.isNotEmpty())
-            ids += ","
-
-        if (excludedIds.isNotEmpty())
-            ids += excludedIds.joinToString { "\'$it\'" }
+    suspend fun insertManyDeleteOthers(entities: List<T>, excludedIds: List<Any> = emptyList()): List<Long> {
+        val completeList = entities.map { it.id } + excludedIds
+        val ids = completeList.joinToString { "\'$it\'" }
 
         val query = SimpleSQLiteQuery("DELETE FROM $tableName WHERE $idColumnInfo NOT IN($ids);")
         deleteAllExceptIds(query)
 
         return insertMany(entities)
-    }
-
-    /**
-     *  Deletes all entities that are not inside the provided list and insert / replace the entities
-     *  inside the list
-     *
-     *  @param entities the list of objects that needs to be inserted
-     *  @return a list of the inserted ID's
-     */
-    suspend fun insertManyDeleteOthers(entities: List<T>): List<Long> {
-        return insertManyDeleteOthers(entities, emptyList())
     }
 
     /**
