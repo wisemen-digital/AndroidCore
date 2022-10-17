@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.annotation.StyleRes
 import androidx.core.view.isVisible
+import androidx.core.widget.TextViewCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
@@ -307,7 +308,7 @@ class EditableDataRow @JvmOverloads constructor(
      */
     private fun updateValueEditTextAppearance() {
         if (valueTextAppearance != INVALID_INT) {
-            etValue.setTextAppearance(valueTextAppearance)
+            TextViewCompat.setTextAppearance(etValue, valueTextAppearance)
         }
         valueTextColor?.let(etValue::setTextColor)
     }
