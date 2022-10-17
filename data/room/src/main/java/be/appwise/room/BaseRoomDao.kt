@@ -1,6 +1,11 @@
 package be.appwise.room
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.RawQuery
+import androidx.room.Update
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
 
@@ -24,7 +29,7 @@ abstract class BaseRoomDao<T : BaseEntity>(private val tableName: String) {
      *  @return the ID of the inserted entity
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insert(entity: T) : Long
+    abstract suspend fun insert(entity: T): Long
 
     /**
      *  Inserts multiple entity objects in the database.
@@ -34,7 +39,7 @@ abstract class BaseRoomDao<T : BaseEntity>(private val tableName: String) {
      *  @return a list of ID's from the inserted entities
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insertMany(entities: List<T>) : List<Long>
+    abstract suspend fun insertMany(entities: List<T>): List<Long>
 
     /**
      *  Updates an entity object in the database.
@@ -75,13 +80,13 @@ abstract class BaseRoomDao<T : BaseEntity>(private val tableName: String) {
     abstract suspend fun deleteMany(entities: List<T>)
 
     @RawQuery
-    protected abstract suspend fun deleteAllExceptIds(query: SupportSQLiteQuery) : Int
+    protected abstract suspend fun deleteAllExceptIds(query: SupportSQLiteQuery): Int
 
     @RawQuery
-    protected abstract suspend fun deleteAllFromTable(query: SupportSQLiteQuery) : Int
+    protected abstract suspend fun deleteAllFromTable(query: SupportSQLiteQuery): Int
 
     @RawQuery
-    protected abstract suspend fun deleteById(query: SupportSQLiteQuery) : Int
+    protected abstract suspend fun deleteById(query: SupportSQLiteQuery): Int
 
     @RawQuery
     protected abstract suspend fun findMultipleEntities(query: SupportSQLiteQuery): List<T>?
@@ -91,13 +96,15 @@ abstract class BaseRoomDao<T : BaseEntity>(private val tableName: String) {
 
     /**
      *  Deletes all entities that are not inside the provided list and insert / replace the entities
-     *  inside the list
+     *  inside the list with the exclusion of the provided [excludedIds].
      *
      *  @param entities the list of objects that needs to be inserted
+     *  @param excludedIds the ids to be excluded from the removal
      *  @return a list of the inserted ID's
      */
-    suspend fun insertManyDeleteOthers(entities: List<T>) : List<Long> {
-        val ids = entities.joinToString { "\'${it.id}\'" }
+    suspend fun insertManyDeleteOthers(entities: List<T>, excludedIds: List<Any> = emptyList()): List<Long> {
+        val completeList = entities.map { it.id } + excludedIds
+        val ids = completeList.joinToString { "\'$it\'" }
 
         val query = SimpleSQLiteQuery("DELETE FROM $tableName WHERE $idColumnInfo NOT IN($ids);")
         deleteAllExceptIds(query)

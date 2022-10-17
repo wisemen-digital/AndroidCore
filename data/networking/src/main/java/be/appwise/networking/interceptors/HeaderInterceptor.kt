@@ -2,6 +2,8 @@ package be.appwise.networking.interceptors
 
 import android.content.res.Resources
 import android.os.Build
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import be.appwise.networking.NetworkConstants
 import be.appwise.networking.Networking
 import okhttp3.Interceptor
@@ -21,7 +23,9 @@ class HeaderInterceptor(
 
         Locale.getDefault()
         val systemConfiguration = Resources.getSystem().configuration
-        val locale = if (Build.VERSION.SDK_INT >= 24) systemConfiguration.locales.get(0) else Locale.getDefault()
+        val applicationLocales = AppCompatDelegate.getApplicationLocales()
+        val inAppLocale = if(applicationLocales != LocaleListCompat.getEmptyLocaleList()) applicationLocales.get(0) else null
+        val locale = inAppLocale ?: if (Build.VERSION.SDK_INT >= 24) systemConfiguration.locales.get(0) else Locale.getDefault()
         val languageCode = locale.language
 
         val requestBuilder = request.newBuilder()
