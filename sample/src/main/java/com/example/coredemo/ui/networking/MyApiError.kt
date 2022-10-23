@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName
 
 data class MyApiError(
     @SerializedName("message", alternate = ["message2"])
-    override var message: String = "",
-    override var responseCode: Int?,
+    override var description: String = "",
+    override var status: Int?,
     val exception: String = ""
 ) : BaseApiError {
     override fun toString() = asString

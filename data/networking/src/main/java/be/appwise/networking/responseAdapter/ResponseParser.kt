@@ -48,7 +48,7 @@ private fun <S, E> parseUnsuccessfulResponse(
         val convertedBody = errorConverter.convert(errorBody)
 
         if (convertedBody is BaseApiError) {
-            convertedBody.responseCode = response.code()
+            convertedBody.status = response.code()
         }
 
         NetworkResponse.ServerError(convertedBody, response)
