@@ -31,7 +31,7 @@ object Networking {
 
     fun getAccessToken() = networkingFacade!!.getAccessToken()
 
-    fun saveAccessToken(accessToken: AccessToken) = networkingFacade!!.saveAccessToken(accessToken)
+    fun saveAccessToken(accessToken: AccessToken?) = networkingFacade!!.saveAccessToken(accessToken)
 
     fun getClientIdValue() = networkingFacade!!.clientId
 

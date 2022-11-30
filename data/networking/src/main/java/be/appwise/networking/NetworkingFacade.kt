@@ -16,7 +16,7 @@ interface NetworkingFacade {
     val context: Context
 
     fun getAccessToken(): AccessToken?
-    fun saveAccessToken(accessToken: AccessToken)
+    fun saveAccessToken(accessToken: AccessToken?)
     fun isLoggedIn(): Boolean
     fun logout()
 
@@ -45,7 +45,7 @@ interface NetworkingFacade {
             throw Exception("Initialize Networking in Application class first")
         }
 
-        override fun saveAccessToken(accessToken: AccessToken) {
+        override fun saveAccessToken(accessToken: AccessToken?) {
             throw Exception("Initialize Networking in Application class first")
         }
 

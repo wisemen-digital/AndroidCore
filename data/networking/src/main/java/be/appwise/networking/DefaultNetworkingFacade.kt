@@ -29,7 +29,7 @@ class DefaultNetworkingFacade(networkingBuilder: Networking.Builder) :
 
     override fun getAccessToken() = HawkUtils.hawkAccessToken
 
-    override fun saveAccessToken(accessToken: AccessToken) {
+    override fun saveAccessToken(accessToken: AccessToken?) {
         HawkUtils.hawkAccessToken = accessToken
     }
 

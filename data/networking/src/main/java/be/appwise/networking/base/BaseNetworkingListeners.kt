@@ -89,6 +89,8 @@ interface BaseNetworkingListeners {
      * ```
      */
     fun logout() {
+        Networking.saveAccessToken(null)
+
         // Using packageName for this so the application can differentiate between a develop, staging or production build and won't ask the user which to use
         val errorActivity = Intent("${Networking.getPackageName()}.logout")
         errorActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
