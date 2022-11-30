@@ -1,8 +1,6 @@
 package be.appwise.networking.model
 
 data class ApiError(
-    val statusCode: Int? = null,
-    val code: Int? = null,
     override val error: String? = null,
     override var status: Int? = null,
     override val error_description: String? = null,

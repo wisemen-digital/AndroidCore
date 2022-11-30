@@ -28,6 +28,7 @@ interface BaseNetworkingListeners {
      */
     @Deprecated("This will be fazed out in favor of the newer way to handle network call errors.")
     fun parseError(response: retrofit2.Response<*>) = ApiError(
+        message =
         when (response.code()) {
             500 -> Networking.getContext().getString(R.string.internal_server_error)
             404 -> Networking.getContext().getString(R.string.network_error)
@@ -40,7 +41,7 @@ interface BaseNetworkingListeners {
                     else -> "Something went wrong with parsing error"
                 }
             }
-        }, response.code()
+        }, status = response.code()
     )
 
     private fun manageJsonObjectFormat(hashMap: JsonObject): String {

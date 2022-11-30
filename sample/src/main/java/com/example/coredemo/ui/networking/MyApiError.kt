@@ -1,13 +1,14 @@
 package com.example.coredemo.ui.networking
 
 import be.appwise.networking.model.BaseApiError
-import com.google.gson.annotations.SerializedName
+import be.appwise.networking.model.BaseErrorBody
 
 data class MyApiError(
-    @SerializedName("message", alternate = ["message2"])
-    override var description: String = "",
     override var status: Int?,
-    val exception: String = ""
+    override val error: String?,
+    override val error_description: String?,
+    override val message: String?,
+    override val errors: List<BaseErrorBody>?
 ) : BaseApiError {
     override fun toString() = asString
 }
