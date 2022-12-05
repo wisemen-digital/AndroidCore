@@ -48,7 +48,7 @@ class ProxyManInterceptor : Interceptor {
         try {
             val response = chain.proceed(request)
             //update message with response data and send it to ProxyMan
-            trafficPackage.updateWithReponseData(response)
+            trafficPackage.updateWithResponseData(response)
             return response
 
         }

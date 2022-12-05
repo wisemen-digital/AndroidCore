@@ -6,7 +6,6 @@ import android.provider.Settings
 import android.util.Base64
 import androidx.core.graphics.drawable.toBitmap
 import java.io.ByteArrayOutputStream
-import java.lang.Exception
 import java.nio.charset.StandardCharsets
 
 /**
@@ -19,11 +18,11 @@ import java.nio.charset.StandardCharsets
  * @property icon is the base64 value of the launcher icon for your project/app
  * @constructor Creates an empty group.
  */
-
-class ConnectionPackage() : Data {
+@Suppress("MemberVisibilityCanBePrivate")
+class ConnectionPackage : Data {
     private val device: Device = Device.current
     val project = Project.current
-    private val icon : String = getBase64Data()
+    private val icon: String = getBase64Data()
 
     /**
      * @return The Base64 data for the app's launcher icon
@@ -43,51 +42,53 @@ class ConnectionPackage() : Data {
  * A package format that is used to give Proxyman all the needed information to show the request and response data of 1 api call.
  *
  * @property request holds all request data off the network call
- * @property error holds all error data if their is an api error or if their is a Android specific errorr
- * @property response holds the reponse code and headers
+ * @property error holds all error data if their is an api error or if their is a Android specific error
+ * @property response holds the response code and headers
  * @property responseBodyData holds a bytearray representing the response body data
  * @property packageType is the type of the package. Is a filter in the Proxyman client. Only http at the moment.
  * @property startAt Time when the request was sent (in seconds).
  * @property endAt Time when response was received (in seconds).
  * @constructor Creates a TrafficPackage.
  */
+@Suppress("MemberVisibilityCanBePrivate")
 class TrafficPackage(
-    var id: String,
-    var request: Request,
+    val id: String,
+    val request: Request,
     var error: CustomError? = null,
     var response: Response? = null,
     var responseBodyData: ByteArray? = null,
-    var packageType: PackageType = PackageType.http,
-    var startAt: Double,
+    val packageType: PackageType = PackageType.Http,
+    val startAt: Double,
     var endAt: Double? = null
 ) : Data {
-    //startat and endat are fractional seconds
+    //startAt and endAt are fractional seconds
     enum class PackageType {
-        http,
-        websocket;
+        Http,
+        Websocket;
     }
 
     /**
      * @return if the responsebody is to large to send
      */
-    private fun isLargeResponseBody()  = responseBodyData?.count() ?: 0 > ProxyManNetworkDiscoveryManager.MaximumSizePackage
+    private fun isLargeResponseBody() = (responseBodyData?.count() ?: 0) > ProxyManNetworkDiscoveryManager.MaximumSizePackage
+
     /**
      * @return if the requestbody is to large to send
      */
-    private fun isLargeRequestBody()  = request.body?.count() ?: 0 > ProxyManNetworkDiscoveryManager.MaximumSizePackage
+    private fun isLargeRequestBody() = (request.body?.count() ?: 0) > ProxyManNetworkDiscoveryManager.MaximumSizePackage
 
     /**
      * updates the [TrafficPackage.error] of existing TrafficPackage with [exception]
      */
-    fun updateWithCustomError(exception: Exception){
-        this.error = CustomError(exception.hashCode(),exception.localizedMessage ?: "No error message")
+    fun updateWithCustomError(exception: Exception) {
+        this.error = CustomError(exception.hashCode(), exception.localizedMessage ?: "No error message")
     }
 
     /**
      * updates the [TrafficPackage.responseBodyData] of existing TrafficPackage with [response]
      * updates the [TrafficPackage.endAt] with the [response]'s receivedResponseAtMillis
      */
-    fun updateWithReponseData(response: okhttp3.Response) {
+    fun updateWithResponseData(response: okhttp3.Response) {
         val responseHeaders = response.headers.map { Header(it.first, it.second) }
         val proxyManResponse = Response(response.code, responseHeaders.toTypedArray())
         this.response = proxyManResponse
@@ -96,7 +97,7 @@ class TrafficPackage(
         val source = responseBody?.source()
         source?.let {
             source.request(Long.MAX_VALUE) // Buffer the entire body.
-            val buffer = source.buffer()
+            val buffer = source.buffer
             this.responseBodyData = buffer.copy().readString(StandardCharsets.UTF_8).toByteArray()
         }
         this.endAt = response.receivedResponseAtMillis.div(1000.0)
@@ -108,7 +109,7 @@ class TrafficPackage(
      * Base64 encodes all nested fields with types [Data] and [ByteArray].
      * When the [responseBodyData] or the [request] are too big we replace them with "<Skip Large Response Body>"
      */
-    override fun toData() = run {
+    override fun toData(): String = run {
         if (isLargeResponseBody())
             this.responseBodyData = "<Skip Large Response Body>".toByteArray()
         if (isLargeRequestBody())
@@ -119,29 +120,34 @@ class TrafficPackage(
 
 /**
  * The app that is sending the request and response data to Proxyman
- * @param name name of the project
- * @param bundleIdentifier package name of the project
+ * @property name name of the project
+ * @property bundleIdentifier package name of the project
  **/
 
 class Project {
     companion object {
         val current = Project()
     }
+
     val name: String = ProxyManNetworkDiscoveryManager.getAppContext().applicationInfo.loadLabel(ProxyManNetworkDiscoveryManager.getAppContext().packageManager).toString()
     val bundleIdentifier: String = ProxyManNetworkDiscoveryManager.getAppContext().packageName
 }
 
 /**
  * The device/service that is sending the request and response data to Proxyman
- * @param name name of the device
- * @param model the model of the device , is used by Proxyman as readable/visible identifier for this device
+ * @property name name of the device
+ * @property model the model of the device , is used by Proxyman as readable/visible identifier for this device
  **/
 class Device {
     companion object {
         val current = Device()
     }
-    var name: String = ProxyManNetworkDiscoveryManager.getDeviceName() ?: Settings.Secure.getString(ProxyManNetworkDiscoveryManager.getAppContext().contentResolver, "bluetooth_name")
-    val model: String = name + " (API " + Build.VERSION.SDK_INT+")"
+
+    var name: String =
+        ProxyManNetworkDiscoveryManager.getDeviceName() ?: Settings.System.getString(ProxyManNetworkDiscoveryManager.getAppContext().contentResolver, "bluetooth_name")
+        ?: Settings.Secure.getString(ProxyManNetworkDiscoveryManager.getAppContext().contentResolver, "bluetooth_name") ?: Settings.System.getString(ProxyManNetworkDiscoveryManager.getAppContext().contentResolver, "device_name")
+        ?: "${Build.DEVICE} ${Build.MODEL}"
+    val model: String = name + " (API " + Build.VERSION.SDK_INT + ")"
 }
 
 /**
@@ -157,17 +163,18 @@ class CustomError(val code: Int, val message: String)
  * The request of the networking call that's being sent to ProxyMan
  *
  * @property url url of the call
- * @property message method of the network call POST , GET , PUT
+ * @property method method of the network call POST , GET , PUT
  * @property headers the request headers
  * @property body the request body
  * @constructor Creates an request.
  **/
+@Suppress("MemberVisibilityCanBePrivate")
 class Request(
-    var url: String,
-    var method: String,
-    var headers: Array<Header>,
+    val url: String,
+    val method: String,
+    val headers: Array<Header>,
     var body: ByteArray?
-){
+) {
     /**
      * Replaces the request body with the bytearray for the string "<Skip Large Request Body>"
      * */
@@ -175,22 +182,25 @@ class Request(
         body = "<Skip Large Request Body>".toByteArray()
     }
 }
+
 /**
- * The reponse of the networking call that's being sent to ProxyMan
+ * The response of the networking call that's being sent to ProxyMan
  *
- * @property url code of the networking call 200,404,401,500,...
+ * @property statusCode code of the networking call 200,404,401,500,...
  * @property headers the response headers , list of *headers*
  * @constructor Creates an response.
  **/
-class Response(var statusCode: Int, var headers: Array<Header>)
+@Suppress("MemberVisibilityCanBePrivate")
+class Response(val statusCode: Int, val headers: Array<Header>)
 
 /**
  * @property key key / name of the header e.g. Accept-language
  * @property value value of the header e.g. nl
  * @constructor Creates an empty group.
  */
-class Header(var key: String, var value: String)
+@Suppress("MemberVisibilityCanBePrivate")
+class Header(val key: String, val value: String)
 
 interface Data {
-    fun toData() = ProxyManNetworkDiscoveryManager.proxyManGson.toJson(this)
+    fun toData(): String = ProxyManNetworkDiscoveryManager.proxyManGson.toJson(this)
 }
