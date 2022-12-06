@@ -216,9 +216,13 @@ internal object ProxyManNetworkDiscoveryManager {
     private var services = HashMap<String, Socket>()
 
     private fun initializeServerSocket(serviceName: String, host: InetAddress, port: Int) {
-        // Initialize a server socket on the next available port.
-        services[serviceName] = Socket(host, port)
-        sendAppData()
+        try {
+            // Initialize a server socket on the next available port.
+            services[serviceName] = Socket(host, port)
+            sendAppData()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private var mIsRegistered = false
