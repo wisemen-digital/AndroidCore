@@ -2,7 +2,7 @@ package be.appwise.networking
 
 import android.content.Context
 import be.appwise.networking.model.AccessToken
-import be.appwise.networking.model.ApiError
+import be.appwise.networking.model.BaseApiError
 import retrofit2.Response
 
 interface NetworkingFacade {
@@ -16,10 +16,12 @@ interface NetworkingFacade {
     val context: Context
 
     fun getAccessToken(): AccessToken?
-    fun saveAccessToken(accessToken: AccessToken)
+    fun saveAccessToken(accessToken: AccessToken?)
     fun isLoggedIn(): Boolean
     fun logout()
-    fun parseError(response: Response<*>): ApiError
+
+    @Deprecated("This will be fazed out in favor of the newer way to handle network call errors.")
+    fun parseError(response: Response<*>): BaseApiError
 
     class EmptyNetworkingFacade : NetworkingFacade {
         override val appName: String
@@ -43,7 +45,7 @@ interface NetworkingFacade {
             throw Exception("Initialize Networking in Application class first")
         }
 
-        override fun saveAccessToken(accessToken: AccessToken) {
+        override fun saveAccessToken(accessToken: AccessToken?) {
             throw Exception("Initialize Networking in Application class first")
         }
 
@@ -55,7 +57,8 @@ interface NetworkingFacade {
             throw Exception("Unable to logout, Networking hasn't been able to build")
         }
 
-        override fun parseError(response: Response<*>): ApiError {
+        @Deprecated("This will be fazed out in favor of the newer way to handle network call errors.")
+        override fun parseError(response: Response<*>): BaseApiError {
             throw Exception("Initialize Networking in Application class first")
         }
     }

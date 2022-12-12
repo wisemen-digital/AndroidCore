@@ -2,7 +2,7 @@ package be.appwise.networking
 
 import be.appwise.networking.base.BaseNetworkingListeners
 import be.appwise.networking.model.AccessToken
-import be.appwise.networking.model.ApiError
+import be.appwise.networking.model.BaseApiError
 import be.appwise.networking.util.HawkUtils
 import retrofit2.Response
 
@@ -29,7 +29,7 @@ class DefaultNetworkingFacade(networkingBuilder: Networking.Builder) :
 
     override fun getAccessToken() = HawkUtils.hawkAccessToken
 
-    override fun saveAccessToken(accessToken: AccessToken) {
+    override fun saveAccessToken(accessToken: AccessToken?) {
         HawkUtils.hawkAccessToken = accessToken
     }
 
@@ -41,7 +41,8 @@ class DefaultNetworkingFacade(networkingBuilder: Networking.Builder) :
         listener.logout()
     }
 
-    override fun parseError(response: Response<*>): ApiError {
+    @Deprecated("This will be fazed out in favor of the newer way to handle network call errors.")
+    override fun parseError(response: Response<*>): BaseApiError {
         return listener.parseError(response)
     }
 }

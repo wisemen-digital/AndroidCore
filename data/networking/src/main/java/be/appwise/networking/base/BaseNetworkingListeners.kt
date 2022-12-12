@@ -26,8 +26,10 @@ interface BaseNetworkingListeners {
      * In case you need to customize the entire error handling you can override this function
      * in your implementation of the RestClient
      */
-    fun parseError(response: retrofit2.Response<*>) = ApiError().apply {
-        message = when (response.code()) {
+    @Deprecated("This will be fazed out in favor of the newer way to handle network call errors.")
+    fun parseError(response: retrofit2.Response<*>) = ApiError(
+        message =
+        when (response.code()) {
             500 -> Networking.getContext().getString(R.string.internal_server_error)
             404 -> Networking.getContext().getString(R.string.network_error)
             /*400 -> Networking.getContext().getString(R.string.login_error)*/
@@ -39,8 +41,8 @@ interface BaseNetworkingListeners {
                     else -> "Something went wrong with parsing error"
                 }
             }
-        }
-    }
+        }, status = response.code()
+    )
 
     private fun manageJsonObjectFormat(hashMap: JsonObject): String {
         if (hashMap.has("errors")) {
@@ -88,6 +90,8 @@ interface BaseNetworkingListeners {
      * ```
      */
     fun logout() {
+        Networking.saveAccessToken(null)
+
         // Using packageName for this so the application can differentiate between a develop, staging or production build and won't ask the user which to use
         val errorActivity = Intent("${Networking.getPackageName()}.logout")
         errorActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK

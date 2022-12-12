@@ -4,7 +4,7 @@ import android.content.Context
 import be.appwise.networking.bagel.BagelNetworkDiscoveryManager
 import be.appwise.networking.base.BaseNetworkingListeners
 import be.appwise.networking.model.AccessToken
-import be.appwise.networking.model.ApiError
+import be.appwise.networking.model.BaseApiError
 import be.appwise.networking.proxyman.ProxyManNetworkDiscoveryManager
 import retrofit2.Response
 
@@ -31,7 +31,7 @@ object Networking {
 
     fun getAccessToken() = networkingFacade!!.getAccessToken()
 
-    fun saveAccessToken(accessToken: AccessToken) = networkingFacade!!.saveAccessToken(accessToken)
+    fun saveAccessToken(accessToken: AccessToken?) = networkingFacade!!.saveAccessToken(accessToken)
 
     fun getClientIdValue() = networkingFacade!!.clientId
 
@@ -55,7 +55,8 @@ object Networking {
         networkingFacade!!.logout()
     }
 
-    fun parseError(response: Response<*>): ApiError {
+    @Deprecated("This will be fazed out in favor of the newer way to handle network call errors.")
+    fun parseError(response: Response<*>): BaseApiError {
         return networkingFacade!!.parseError(response)
     }
 
@@ -152,10 +153,12 @@ object Networking {
             allowedServices: ArrayList<String> = arrayListOf(),
             isLoggingEnabled: Boolean = true,
         ): Builder {
-            ProxyManNetworkDiscoveryManager.registerService(context,
+            ProxyManNetworkDiscoveryManager.registerService(
+                context,
                 deviceName,
                 allowedServices,
-                isLoggingEnabled)
+                isLoggingEnabled
+            )
             return this
         }
 

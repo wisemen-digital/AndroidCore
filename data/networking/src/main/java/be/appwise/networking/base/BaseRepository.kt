@@ -2,9 +2,11 @@ package be.appwise.networking.base
 
 import be.appwise.networking.Networking
 import be.appwise.networking.R
+import be.appwise.networking.model.BaseApiError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
+import retrofit2.Response
 import java.net.UnknownHostException
 
 interface BaseRepository {
@@ -14,6 +16,7 @@ interface BaseRepository {
      * @param call Retrofit call
      * @return Type returned by the network call
      */
+    @Deprecated("This will be fazed out in favor of the newer way to handle network call errors.")
     suspend fun <T : Any> doCall(call: Call<T>): T {
         return try {
             withContext(Dispatchers.IO) {
@@ -21,11 +24,23 @@ interface BaseRepository {
                 if (response.isSuccessful) {
                     response.body()!!
                 } else {
-                    throw Exception(Networking.parseError(response).message)
+                    throw Exception(parseError(response)?.toString())
                 }
             }
         } catch (ex: UnknownHostException) {
             throw Exception(Networking.getContext().getString(R.string.internet_connection_error))
+        }
+    }
+
+    /**
+     * Uses the [Networking.parseError] by default, can be overridden in the Repo if you need anything special.
+     */
+    @Deprecated("This will be fazed out in favor of the newer way to handle network call errors.")
+    fun parseError(response: Response<*>): BaseApiError? {
+        return try {
+            Networking.parseError(response)
+        } catch (e: Exception) {
+            null
         }
     }
 }

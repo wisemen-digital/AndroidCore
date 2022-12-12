@@ -47,6 +47,9 @@ dependencies {
     implementation project(path: ':list:emptyRecyclerView')
     implementation project(path: ':measurements')
 
+    implementation "com.squareup.okhttp3:mockwebserver:4.9.1"
+    implementation "com.github.donfuxx:Mockinizer:1.6.0"
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
