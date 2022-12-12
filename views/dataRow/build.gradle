@@ -1,21 +1,21 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'androidx.navigation.safeargs.kotlin'
+    id 'maven-publish'
 }
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 32
 
     defaultConfig {
-        applicationId "com.example.coredemo"
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -40,19 +40,28 @@ android {
 
 dependencies {
     implementation project(path: ':core')
-    implementation project(path: ':data:realm')
-    implementation project(path: ':data:room')
-    implementation project(path: ':data:networking')
-    implementation project(path: ':data:paging')
-    implementation project(path: ':list:emptyRecyclerView')
-    implementation project(path: ':measurements')
-    implementation project(path: ':views:dataRow')
-
-    implementation "com.squareup.okhttp3:mockwebserver:4.9.1"
-    implementation "com.github.donfuxx:Mockinizer:1.6.0"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
+}
+
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "sources"
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'com.github.appwise-labs'
+
+                artifact(sourceJar)
+            }
+        }
+    }
 }

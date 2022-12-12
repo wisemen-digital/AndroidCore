@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## [Master](https://github.com/appwise-labs/AndroidCore)
 
 ### New Features
+- Added DataRow (+ extras) to the project.
 
 ### Bug Fixes
 - Fixed issue where the `allPermissionsGranted` was a false positive
@@ -15,6 +16,7 @@ All notable changes to this project will be documented in this file.
 ### Breaking
 
 ### Custom Views
+- Added DataRow (+ extras) to the project.
 
 ### Improvements
 - Reworked the ViewModelExtensions a bit to add a general `viewModelFactory` function to the list. It accepts a ViewModel without any restrictions to the parameters. Also deprecated some functions.

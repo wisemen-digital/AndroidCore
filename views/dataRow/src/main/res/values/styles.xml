@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ========================================================= -->
+    <!-- ========================================================= -->
+    <!-- DataRow -->
+    <!-- ========================================================= -->
+    <!-- ========================================================= -->
+    <style name="Widget.Core.BaseDataRow" parent="android:Widget">
+        <item name="enforceTextAppearance">false</item>
+        <item name="enforceMaterialTheme">false</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents</item>
+
+
+        <!--<item name="hintText">This is a hint</item>-->
+        <!--<item name="valueText">Value for whatever reason</item>-->
+        <!--<item name="labelText">Label, for life!!!</item>-->
+        <!--<item name="subtitleText">Wanneer onvoldoende tijd geregistreerd is, nieuwe taak aangemaakt, updates over taken, en veel meer dan dta wij kunnen bedenken!!</item>-->
+
+        <item name="labelTextAppearance">@style/TextAppearance.DataRow.Base</item>
+        <item name="errorTextAppearance">@style/TextAppearance.DataRow.Error</item>
+
+        <item name="labelTextColor">@null</item>
+        <item name="subtitleTextColor">@null</item>
+
+        <item name="paddingContent">@dimen/dr_default_content_padding</item>
+
+        <item name="boxStrokeErrorColor">?attr/colorError</item>
+        <item name="boxElevation">@dimen/mtrl_card_elevation</item>
+        <item name="boxCornerRadius">@dimen/mtrl_card_corner_radius</item>
+        <item name="rippleColor">@color/mtrl_card_view_ripple</item>
+        <item name="boxBackgroundColor">?attr/colorSurface</item>
+
+        <item name="showBoxError">true</item>
+
+    </style>
+
+
+    <!-- ========================================================= -->
+    <!-- ========================================================= -->
+    <!-- DataRow -->
+    <!-- ========================================================= -->
+    <!-- ========================================================= -->
+    <style name="Widget.Core.DataRow" parent="Widget.Core.BaseDataRow">
+
+        <item name="showEndDrawable">false</item>
+
+        <item name="valueTextAppearance">@style/TextAppearance.DataRow.Value</item>
+        <item name="hintTextAppearance">@style/TextAppearance.DataRow.Base</item>
+
+        <item name="hintTextColor">@null</item>
+        <item name="valueTextColor">@null</item>
+    </style>
+
+    <style name="Base.Widget.Core.DataRow" parent="Widget.Core.DataRow">
+        <item name="enforceTextAppearance">false</item>
+        <item name="enforceMaterialTheme">false</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents</item>
+
+        <item name="showEndDrawable">true</item>
+        <item name="endDrawable">@drawable/ic_arrow_right</item>
+
+        <item name="valueTextAppearance">?attr/textAppearanceSubtitle1</item>
+        <item name="hintTextAppearance">?attr/textAppearanceSubtitle1</item>
+        <item name="labelTextAppearance">?attr/textAppearanceSubtitle1</item>
+        <item name="errorTextAppearance">?attr/textAppearanceCaption</item>
+
+        <item name="hintTextColor">?android:attr/textColorHint</item>
+        <item name="valueTextColor">@null</item>
+        <item name="labelTextColor">@null</item>
+        <item name="subtitleTextColor">?android:attr/textColorHint</item>
+        <item name="errorTextColor">?attr/colorError</item>
+
+        <item name="boxBackgroundColor">?attr/colorSurface</item>
+    </style>
+
+    <style name="TextAppearance.DataRow.Base" parent="TextAppearance.AppCompat.Body1" />
+
+    <style name="TextAppearance.DataRow.Error" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textColor">@color/design_default_color_error</item>
+    </style>
+
+    <style name="TextAppearance.DataRow.Value" parent="TextAppearance.DataRow.Base">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Widget.DataRow.Flat" parent="Base.Widget.Core.DataRow">
+        <item name="boxElevation">0dp</item>
+        <item name="boxCornerRadius">0dp</item>
+    </style>
+
+    <style name="Widget.DataRow.Navigation" parent="Base.Widget.Core.DataRow">
+        <item name="showEndDrawable">true</item>
+        <item name="endDrawable">@drawable/ic_arrow_right</item>
+
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="Widget.DataRow.Information" parent="Base.Widget.Core.DataRow">
+        <item name="showEndDrawable">false</item>
+        <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
+    </style>
+
+    <!-- ========================================================= -->
+    <!-- ========================================================= -->
+    <!-- Everything EditableDataRow -->
+    <!-- ========================================================= -->
+    <!-- ========================================================= -->
+    <style name="Widget.Core.EditableDataRow" parent="Widget.Core.BaseDataRow">
+
+        <item name="valueTextAppearance">@style/TextAppearance.DataRow.Base</item>
+        <item name="hintTextAppearance">@style/TextAppearance.DataRow.Base</item>
+        <item name="prefixTextAppearance">@style/TextAppearance.DataRow.Base</item>
+        <item name="suffixTextAppearance">@style/TextAppearance.DataRow.Base</item>
+
+        <item name="hintTextColor">@null</item>
+        <item name="valueTextColor">@null</item>
+        <item name="prefixTextColor">@null</item>
+        <item name="suffixTextColor">@null</item>
+
+        <item name="boxBackgroundColor">?attr/colorSurface</item>
+        <item name="editBoxBackgroundColor">@color/mtrl_filled_background_color</item>
+
+        <item name="paddingContentHorizontal">@dimen/edr_default_horizontal_content_padding</item>
+        <item name="paddingContentVertical">@dimen/edr_default_vertical_content_padding</item>
+        <item name="editBoxPaddingContent">@dimen/edr_default_edit_box_content_padding</item>
+
+        <item name="editBoxStrokeErrorColor">?attr/colorError</item>
+        <item name="editBoxElevation">0dp</item>
+        <item name="editBoxCornerRadius">@dimen/mtrl_card_corner_radius</item>
+
+        <item name="android:inputType">text</item>
+        <item name="editBoxGravity">center</item>
+
+        <item name="showErrorStrokeOnEditBox">true</item>
+        <item name="showBoxError">false</item>
+    </style>
+
+    <style name="Base.Widget.Core.EditableDataRow" parent="Widget.Core.EditableDataRow">
+
+        <item name="enforceTextAppearance">false</item>
+        <item name="enforceMaterialTheme">false</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents</item>
+
+        <item name="valueTextAppearance">?attr/textAppearanceSubtitle1</item>
+        <item name="hintTextAppearance">?attr/textAppearanceSubtitle1</item>
+        <item name="labelTextAppearance">?attr/textAppearanceSubtitle1</item>
+        <item name="errorTextAppearance">?attr/textAppearanceCaption</item>
+        <item name="prefixTextAppearance">?attr/textAppearanceSubtitle1</item>
+        <item name="suffixTextAppearance">?attr/textAppearanceSubtitle1</item>
+
+        <item name="hintTextColor">?android:attr/textColorHint</item>
+        <item name="valueTextColor">@null</item>
+        <item name="labelTextColor">@null</item>
+        <item name="subtitleTextColor">?android:attr/textColorHint</item>
+        <item name="errorTextColor">?attr/colorError</item>
+        <item name="prefixTextColor">@null</item>
+        <item name="suffixTextColor">@null</item>
+
+    </style>
+
+    <!-- ========================================================= -->
+    <!-- ========================================================= -->
+    <!-- Everything ToggleDataRow -->
+    <!-- ========================================================= -->
+    <!-- ========================================================= -->
+    <style name="Widget.Core.ToggleDataRow" parent="Widget.Core.BaseDataRow">
+        <item name="paddingContentHorizontal">@dimen/tdr_default_horizontal_content_padding</item>
+        <item name="paddingContentVertical">@dimen/tdr_default_vertical_content_padding</item>
+    </style>
+
+    <style name="Base.Widget.Core.ToggleDataRow" parent="Widget.Core.ToggleDataRow">
+        <item name="enforceTextAppearance">false</item>
+        <item name="enforceMaterialTheme">false</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents</item>
+
+        <item name="labelTextAppearance">?attr/textAppearanceSubtitle1</item>
+        <item name="errorTextAppearance">?attr/textAppearanceCaption</item>
+        <item name="labelTextColor">@null</item>
+        <item name="subtitleTextColor">?android:attr/textColorHint</item>
+        <item name="errorTextColor">?attr/colorError</item>
+
+    </style>
+
+</resources>

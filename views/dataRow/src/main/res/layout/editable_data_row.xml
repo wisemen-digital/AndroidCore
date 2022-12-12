@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@id/etValue"
+            app:layout_constraintEnd_toStartOf="@id/tvPrefix"
+            app:layout_constraintHorizontal_weight="0.7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Longest view ever just because we can and we have to test things!!" />
+
+        <TextView
+            android:id="@+id/tvPrefix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/etValue"
+            app:layout_constraintEnd_toStartOf="@id/etValue"
+            app:layout_constraintStart_toEndOf="@id/tvLabel"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="€"
+            tools:visibility="visible" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:paddingHorizontal="8dp"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            app:layout_constraintEnd_toStartOf="@id/tvSuffix"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintStart_toEndOf="@id/tvPrefix"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="#31000000"
+            tools:gravity="center"
+            tools:hint="0"
+            tools:padding="8dp" />
+
+        <TextView
+            android:id="@+id/tvSuffix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/etValue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/etValue"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="kW"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/etValue"
+            tools:text="Wanneer onvoldoende tijd geregistreerd is, nieuwe taak aangemaakt, updates over taken, en veel meer dan dta wij kunnen bedenken!!" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tvError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:text="A value is required" />
+</LinearLayout>
