@@ -5,10 +5,28 @@ All notable changes to this project will be documented in this file.
 ## [Master](https://github.com/appwise-labs/AndroidCore)
 
 ### New Features
+
+### Bug Fixes
+
+### Documentation
+
+### Breaking
+
+### Custom Views
+
+### Improvements
+
+
+
+## [1.4.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.4.0)
+
+### New Features
 - Added DataRow (+ extras) to the project.
+- Added a new way to do our Network calls. Errors can now be handled on a 'per call' basis instead of just a flat-out exception. The old way is still available for older projects.
 
 ### Bug Fixes
 - Fixed issue where the `allPermissionsGranted` was a false positive
+- Fixed some crashes for ProxyMan so the app won't crash when it's run on an emulator or a ProxyMan client cannot be found anymore.
 
 ### Documentation
 - Added required dependencies when importing Room or Core
