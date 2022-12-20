@@ -36,12 +36,7 @@ interface BaseApiError {
      * Not every api returns just a message, so the message is optional.
      * [asString] is a placeholder so this base error class has a default way to show the error.
      */
-    val asString
-        get() = status?.let {
-            "$status: $errorText"
-        } ?: run {
-            errorText ?: ""
-        }
+    val asString get() = errorText ?: ""
 
     val errorText get() = message ?: error_description ?: errorsAsMessage
 
