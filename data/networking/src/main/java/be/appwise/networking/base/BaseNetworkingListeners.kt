@@ -31,9 +31,9 @@ interface BaseNetworkingListeners {
         message =
         when (response.code()) {
             500 -> Networking.getContext().getString(R.string.internal_server_error)
-            404 -> Networking.getContext().getString(R.string.network_error)
-            /*400 -> Networking.getContext().getString(R.string.login_error)*/
-            401 -> Networking.getContext().getString(R.string.login_error)
+//            404 -> Networking.getContext().getString(R.string.network_error)
+//            /*400 -> Networking.getContext().getString(R.string.login_error)*/
+//            401 -> Networking.getContext().getString(R.string.login_error)
             else -> {
                 when (val errorJson = Gson().fromJson(response.errorBody()?.string() ?: "{}", JsonElement::class.java)) {
                     is JsonArray -> manageJsonArrayFormat(errorJson)
