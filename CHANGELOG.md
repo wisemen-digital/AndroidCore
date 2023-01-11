@@ -15,6 +15,11 @@ All notable changes to this project will be documented in this file.
 ### Custom Views
 
 ### Improvements
+
+
+## [1.4.1](https://github.com/appwise-labs/AndroidCore/releases/tag/1.4.1)
+
+### Improvements
 - Removed the deprecation warnings of the `doCall` function as this must still be backwards compatible.
 
 
