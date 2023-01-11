@@ -16,7 +16,6 @@ interface BaseRepository {
      * @param call Retrofit call
      * @return Type returned by the network call
      */
-    @Deprecated("This will be fazed out in favor of the newer way to handle network call errors.")
     suspend fun <T : Any> doCall(call: Call<T>): T {
         return try {
             withContext(Dispatchers.IO) {
@@ -35,7 +34,6 @@ interface BaseRepository {
     /**
      * Uses the [Networking.parseError] by default, can be overridden in the Repo if you need anything special.
      */
-    @Deprecated("This will be fazed out in favor of the newer way to handle network call errors.")
     fun parseError(response: Response<*>): BaseApiError? {
         return try {
             Networking.parseError(response)

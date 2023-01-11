@@ -20,7 +20,6 @@ interface NetworkingFacade {
     fun isLoggedIn(): Boolean
     fun logout()
 
-    @Deprecated("This will be fazed out in favor of the newer way to handle network call errors.")
     fun parseError(response: Response<*>): BaseApiError
 
     class EmptyNetworkingFacade : NetworkingFacade {
@@ -57,7 +56,6 @@ interface NetworkingFacade {
             throw Exception("Unable to logout, Networking hasn't been able to build")
         }
 
-        @Deprecated("This will be fazed out in favor of the newer way to handle network call errors.")
         override fun parseError(response: Response<*>): BaseApiError {
             throw Exception("Initialize Networking in Application class first")
         }
