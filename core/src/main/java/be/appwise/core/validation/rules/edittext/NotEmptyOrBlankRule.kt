@@ -1,9 +1,11 @@
 package be.appwise.core.validation.rules.edittext
 
-class NotEmptyRule(
+import android.widget.EditText
+
+class NotEmptyOrBlankRule<T: EditText>(
     val message: String = "This field cannot be empty"
-) : EditTextRule(message) {
+) : EditTextRule<T>(message) {
     override val textValidationRule = { text: String ->
-        text.isNotEmpty()
+        text.isNotEmpty() && text.isNotBlank()
     }
 }

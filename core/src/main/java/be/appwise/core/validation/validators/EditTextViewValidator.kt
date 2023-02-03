@@ -8,10 +8,10 @@ import be.appwise.core.validation.ValidationResult
  * @param view the [EditText] to validate
  * @param rulesBuilder the rules to validate the [EditText] with
  */
-class EditTextViewValidator(
-    view: EditText,
-    rulesBuilder: ViewValidator<EditText>.() -> Unit
-) : ViewValidator<EditText>(view, rulesBuilder) {
+class EditTextViewValidator<T: EditText>(
+    view: T,
+    rulesBuilder: ViewValidator<T>.() -> Unit
+) : ViewValidator<T>(view, rulesBuilder) {
 
     /**
      * This implementation of the validate function will validate the view based on the rules that are added to this validator.
