@@ -8,10 +8,10 @@ import be.appwise.core.validation.rules.ViewRule
  * @property errorMessage the error message to show when the rule is not valid
  * @property textValidationRule the rule to validate the text of the [EditText] with
  */
-open class EditTextRule(
+open class EditTextRule<T: EditText>(
     override val errorMessage: String,
     open val textValidationRule: (String) -> Boolean = { true }
-) : ViewRule<EditText>() {
+) : ViewRule<T>() {
 
     /**
      * The validation rule for the [EditText] that passes the text of the [EditText] to the [textValidationRule]
