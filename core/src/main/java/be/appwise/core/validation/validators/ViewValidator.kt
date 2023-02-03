@@ -1,10 +1,11 @@
 package be.appwise.core.validation.validators
 
+import android.view.View
 import be.appwise.core.validation.IValidator
 import be.appwise.core.validation.ValidationResult
 import be.appwise.core.validation.rules.ViewRule
 
-open class ViewValidator<T>(
+open class ViewValidator<T : View>(
     val view: T,
     rulesBuilder: (ViewValidator<T>).() -> Unit
 ) : IValidator {
