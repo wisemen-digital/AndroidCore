@@ -1,4 +1,4 @@
-package com.eevee.app.validators.sandbox.rules
+package be.appwise.core.validation.rules.edittext
 
 class NotEmptyRule(
     val message: String = "This field cannot be empty"

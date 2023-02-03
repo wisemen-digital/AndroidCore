@@ -1,4 +1,4 @@
-package com.eevee.app.validators.sandbox.rules
+package be.appwise.core.validation.rules.edittext
 
 class EmailRule(
     val message: String = "This field must be a valid email"
