@@ -2,9 +2,9 @@ package be.appwise.core.validation.rules.edittext
 
 import android.widget.EditText
 
-class ValidIbanRule(
+class ValidIbanRule<T: EditText>(
     val message: String = "This is not a valid iban"
-) : EditTextRule<EditText>(message) {
+) : EditTextRule<T>(message) {
     override val textValidationRule = { text: String ->
         isIbanValid(text)
     }
