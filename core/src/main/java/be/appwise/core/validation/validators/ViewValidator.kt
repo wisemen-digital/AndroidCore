@@ -1,8 +1,8 @@
 package be.appwise.core.validation.validators
 
-import com.eevee.app.validators.sandbox.IValidator
-import com.eevee.app.validators.sandbox.ValidationResult
-import com.eevee.app.validators.sandbox.rules.ViewRule
+import be.appwise.core.validation.IValidator
+import be.appwise.core.validation.ValidationResult
+import be.appwise.core.validation.rules.ViewRule
 
 open class ViewValidator<T>(
     val view: T,
@@ -15,7 +15,7 @@ open class ViewValidator<T>(
         rulesBuilder()
     }
 
-    override fun validate(showErrors: Boolean): ValidationResult {
+    override fun validate(handleError: Boolean): ValidationResult {
         val validationResult = rules.foldRight(ValidationResult.Valid as ValidationResult) { rule, acc ->
             val isValid = rule.validationRule(view)
             val result = if (isValid) ValidationResult.Valid else ValidationResult.Invalid(setOf(rule.errorMessage))

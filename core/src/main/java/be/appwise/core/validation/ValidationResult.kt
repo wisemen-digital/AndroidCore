@@ -1,4 +1,4 @@
-package com.eevee.app.validators.sandbox
+package be.appwise.core.validation
 
 sealed class ValidationResult {
 

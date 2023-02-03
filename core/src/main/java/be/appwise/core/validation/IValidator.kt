@@ -1,5 +1,5 @@
-package com.eevee.app.validators.sandbox
+package be.appwise.core.validation
 
 interface IValidator {
-    fun validate(showErrors: Boolean = false): ValidationResult
+    fun validate(handleError: Boolean = false): ValidationResult
 }

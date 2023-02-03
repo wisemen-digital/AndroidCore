@@ -1,7 +1,7 @@
 package be.appwise.core.validation.rules.edittext
 
 import android.widget.EditText
-import com.eevee.app.validators.sandbox.rules.ViewRule
+import be.appwise.core.validation.rules.ViewRule
 
 open class EditTextRule(
     override val errorMessage: String,

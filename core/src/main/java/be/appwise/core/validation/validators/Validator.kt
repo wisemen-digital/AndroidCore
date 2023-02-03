@@ -1,13 +1,13 @@
 package be.appwise.core.validation.validators
 
-import com.eevee.app.validators.sandbox.IValidator
-import com.eevee.app.validators.sandbox.ValidationResult
+import be.appwise.core.validation.IValidator
+import be.appwise.core.validation.ValidationResult
 
 class Validator(
     val message: String? = null,
     val validateImpl: () -> Boolean
 ) : IValidator {
-    override fun validate(showErrors: Boolean): ValidationResult {
+    override fun validate(handleError: Boolean): ValidationResult {
         return if (validateImpl()) {
             ValidationResult.Valid
         } else {
