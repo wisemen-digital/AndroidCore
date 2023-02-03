@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_mainFragment_to_networkingFragment"
             app:destination="@id/networkingFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_validationFragment"
+            app:destination="@id/validationFragment" />
     </fragment>
 
     <fragment
@@ -38,4 +41,9 @@
         android:name="com.example.coredemo.ui.networking.NetworkingFragment"
         android:label="NetworkingFragment"
         tools:layout="@layout/fragment_networking" />
+    <fragment
+        android:id="@+id/validationFragment"
+        android:name="com.example.coredemo.ui.validation.ValidationFragment"
+        android:label="ValidationFragment"
+        tools:layout="@layout/fragment_validation"/>
 </navigation>
