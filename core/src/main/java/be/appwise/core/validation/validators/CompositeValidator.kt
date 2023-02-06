@@ -49,6 +49,7 @@ class CompositeValidator(
      */
     fun add(validator: IValidator) {
         validators.add(validator)
+        validate()
     }
 
     /**
@@ -57,6 +58,7 @@ class CompositeValidator(
      */
     fun remove(validator: IValidator) {
         validators.remove(validator)
+        validate()
     }
 
     /**
@@ -64,6 +66,7 @@ class CompositeValidator(
      */
     fun clear() {
         validators.clear()
+        validate()
     }
 
 }

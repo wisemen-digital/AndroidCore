@@ -1,6 +1,7 @@
 package com.example.coredemo.ui.validation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import be.appwise.core.ui.base.BaseBindingVMFragment
@@ -30,5 +31,8 @@ class ValidationFragment : BaseBindingVMFragment<FragmentValidationBinding>() {
         mBinding.viewModel = mViewModel
 
         initCompositeValidation()
+        mViewModel.validator.validResultLive.observe(viewLifecycleOwner) {
+            Log.d("ValidationFragment", "onViewCreated: $it")
+        }
     }
 }
