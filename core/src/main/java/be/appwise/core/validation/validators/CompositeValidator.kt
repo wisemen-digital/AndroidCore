@@ -36,7 +36,7 @@ class CompositeValidator(
      */
     override fun validate(handleError: Boolean): ValidationResult {
         return validators.foldRight(ValidationResult.Valid as ValidationResult) { iValidator, acc ->
-            val result = iValidator.validate()
+            val result = iValidator.validate(handleError)
             return@foldRight acc combine result
         }.also {
             _validResultLive.postValue(it)
