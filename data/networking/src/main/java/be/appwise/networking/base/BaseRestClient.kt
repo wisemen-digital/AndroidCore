@@ -268,4 +268,10 @@ abstract class BaseRestClient {
     protected open fun getGson(): Gson {
         return Gson()
     }
+
+    /**
+     * Can be used to get the service in a more generic way.
+     */
+    inline fun <reified T> getService(): T = lazy { getRetrofit.create(T::class.java) }.value
+
 }

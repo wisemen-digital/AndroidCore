@@ -17,7 +17,7 @@ open class BaseViewModel : ViewModel() {
     private val _coroutineException = SingleLiveEvent<Throwable?>()
     val coroutineException: LiveData<Throwable?> = _coroutineException
     fun setCoroutineException(exception: Throwable?) {
-        _coroutineException.value = exception
+        _coroutineException.postValue(exception)
     }
 
     private val _loading = MutableLiveData<Boolean>().apply { value = false }

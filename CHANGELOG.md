@@ -17,6 +17,23 @@ All notable changes to this project will be documented in this file.
 ### Improvements
 
 
+## [1.4.2](https://github.com/appwise-labs/AndroidCore/releases/tag/1.4.2)
+
+### New Features
+
+### Bug Fixes
+- Fixed thread bug for the coroutine exception
+
+### Documentation
+
+### Breaking
+
+### Custom Views
+
+### Improvements
+- Created a function to get a service in a more generic way for the networking client
+- A status code can now be found when an Api Error occurs.
+
 ## [1.4.1](https://github.com/appwise-labs/AndroidCore/releases/tag/1.4.1)
 
 ### Improvements

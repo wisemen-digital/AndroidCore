@@ -23,7 +23,7 @@ interface BaseRepository {
                 if (response.isSuccessful) {
                     response.body()!!
                 } else {
-                    throw Exception(parseError(response)?.toString())
+                    throw ApiException(response.code(), parseError(response)?.toString() ?: "")
                 }
             }
         } catch (ex: UnknownHostException) {
@@ -42,3 +42,5 @@ interface BaseRepository {
         }
     }
 }
+
+class ApiException(val errorCode: Int, message: String) : Exception(message)
