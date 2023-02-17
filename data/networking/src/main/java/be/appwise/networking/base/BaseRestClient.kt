@@ -59,7 +59,8 @@ abstract class BaseRestClient {
      * - The Authenticator is only active when the [BaseRestClient.protectedClient] flag is true.
      * - When the flag [BaseRestClient.enableBagelInterceptor] is set to true,
      *      the [BagelInterceptor] will be added and all calls (request and responses) can be found in Bagel
-     *
+     * - When the flag [BaseRestClient.enableProxyManInterceptor] is set to true,
+     *      the [ProxyManInterceptor] will be added and all calls (request and responses) can be found in Proxyman.
      * In any case, this function can be overridden to add something specific to the whole configuration, or simply to override everything.
      * If you want to add something to it, you can do so by using the [OkHttpClient.newBuilder].
      *
@@ -84,6 +85,7 @@ abstract class BaseRestClient {
         if (protectedClient) {
             builder.authenticator(Authenticator { onRefreshToken(it) })
         }
+
         //add it behind all the rest so we can send all the response/request data
         if (enableBagelInterceptor())
             builder.addInterceptor(getBagelInterceptor())
@@ -172,7 +174,7 @@ abstract class BaseRestClient {
      */
     protected open fun getHttpLoggingInterceptor() = HttpLoggingInterceptor().apply {
         level =
-            if (enableBagelInterceptor()) {
+            if (enableBagelInterceptor() || enableProxyManInterceptor()) {
                 HttpLoggingInterceptor.Level.BASIC
             } else {
                 HttpLoggingInterceptor.Level.BODY
@@ -194,6 +196,7 @@ abstract class BaseRestClient {
     /**
      * Get the default [BagelInterceptor].
      */
+    @Deprecated("Please start using Proxyman instead of Bagel")
     protected fun getBagelInterceptor(): BagelInterceptor {
         val deviceName = Settings.Secure.getString(Networking.getContext().contentResolver, NetworkConstants.BAGEL_INTERCEPTOR_DEVICE_BLUETOOTH_NAME)
             ?: Settings.Global.getString(Networking.getContext().contentResolver, NetworkConstants.BAGEL_INTERCEPTOR_DEVICE_NAME)
@@ -228,6 +231,7 @@ abstract class BaseRestClient {
      * Can be moved to [Networking] so you can enable/disable it for all clients.
      * Maybe also limit it to DEBUG builds in future
      */
+    @Deprecated("Please start using Proxyman instead of Bagel")
     protected open fun enableBagelInterceptor() = false
 
     /**
@@ -271,7 +275,9 @@ abstract class BaseRestClient {
 
     /**
      * Can be used to get the service in a more generic way.
+     *
+     * Do mind that your service needs to extend the `BaseService` interface.
      */
-    inline fun <reified T> getService(): T = lazy { getRetrofit.create(T::class.java) }.value
+    inline fun <reified T: BaseService> getService(): T = lazy { getRetrofit.create(T::class.java) }.value
 
 }

@@ -15,7 +15,9 @@ All notable changes to this project will be documented in this file.
 ### Custom Views
 
 ### Improvements
-
+- The generic function to get a service is limited to extensions of `BaseService`.
+- Deprecated everything regarding Bagel, instead Proxyman is the next successor.
+- Updated some dependencies!
 
 ## [1.4.2](https://github.com/appwise-labs/AndroidCore/releases/tag/1.4.2)
 

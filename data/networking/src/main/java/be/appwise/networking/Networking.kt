@@ -141,6 +141,7 @@ object Networking {
             return networkingListeners
         }
 
+        @Deprecated("Please start using Proxyman instead of Bagel")
         fun registerBagelService(context: Context): Builder {
             BagelNetworkDiscoveryManager.registerService(context)
             return this
