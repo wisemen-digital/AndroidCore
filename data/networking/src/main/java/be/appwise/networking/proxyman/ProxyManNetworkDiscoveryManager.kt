@@ -16,9 +16,10 @@ import java.net.Socket
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.util.*
+import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.zip.GZIPOutputStream
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 internal object ProxyManNetworkDiscoveryManager {
 
@@ -93,9 +94,13 @@ internal object ProxyManNetworkDiscoveryManager {
 
     private lateinit var mAppContext: Context
     private var mDeviceName: String? = null
+    private var pendingServices = ConcurrentLinkedQueue<NsdServiceInfo>()
+    private var resolveListenerBusy = AtomicBoolean(false)
     private lateinit var mAllowedServices: ArrayList<String>
     private var mIsLoggingEnabled: Boolean = true
     private const val maxPendingItem = 30
+    private var resolvedServicesMap = HashMap<String, Socket>()
+    var resolvedServices: MutableMap<String, Socket> = Collections.synchronizedMap(resolvedServicesMap)
 
     fun getAppContext() = mAppContext
     fun getDeviceName() = mDeviceName
@@ -119,6 +124,8 @@ internal object ProxyManNetworkDiscoveryManager {
         }
     }
 
+    private val mResolveListener = ProxyManResolveListener()
+
     private class ProxyManResolveListener : NsdManager.ResolveListener {
 
         private lateinit var mService: NsdServiceInfo
@@ -126,23 +133,27 @@ internal object ProxyManNetworkDiscoveryManager {
         override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
             // Called when the resolve fails. Use the error code to debug.
             Logger.e("Resolve failed: $errorCode")
+            resolveNextInQueue()
         }
 
         override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
             showDebugMessage("Resolve Succeeded. $serviceInfo")
-            val serviceName: String = serviceInfo.serviceName
-            if (serviceName == mServiceName) {
-                showDebugMessage("Same IP.")
-                return
-            }
-            mService = serviceInfo
-            val port: Int = serviceInfo.port
-            val host: InetAddress = serviceInfo.host
-
-            initializeServerSocket(serviceName, host, port)
+            initializeServerSocket(serviceInfo)
+            resolveNextInQueue()
         }
     }
 
+    private fun resolveNextInQueue(){
+        val nextNsdService = pendingServices.poll()
+        if (nextNsdService != null) {
+            // There was one. Send to be resolved.
+            nsdManager?.resolveService(nextNsdService, mResolveListener)
+        }
+        else {
+            // There was no pending service. Release the flag
+            resolveListenerBusy.set(false)
+        }
+    }
 
     private fun showDebugMessage(debugMessage: String) {
         if (mIsLoggingEnabled)
@@ -170,9 +181,7 @@ internal object ProxyManNetworkDiscoveryManager {
         override fun onServiceFound(service: NsdServiceInfo) {
             // A service was found! Do something with it.
             showDebugMessage("discovery success $service")
-            val isProxymanService =
-                if (mAllowedServices.isEmpty()) service.serviceName.contains("Proxyman-") else service.serviceName.substringAfter(
-                    "Proxyman-").toLowerCase(Locale.ROOT) in mAllowedServices
+            val isProxymanService = if (mAllowedServices.isEmpty()) service.serviceName.contains("Proxyman-") else service.serviceName.substringAfter("Proxyman-").toLowerCase(Locale.ROOT) in mAllowedServices
             when {
                 service.serviceType != SERVICE_TYPE -> // Service type is the string containing the protocol and
                     // transport layer for this service.
@@ -180,11 +189,17 @@ internal object ProxyManNetworkDiscoveryManager {
                 service.serviceName == mServiceName ->  // The name of the service tells the user what they'd be
                     showDebugMessage("Same machine: $mServiceName")
 
-                isProxymanService ->
-                    nsdManager?.resolveService(
-                        service,
-                        ProxyManResolveListener()
-                    )
+                isProxymanService -> {
+                    if (resolveListenerBusy.compareAndSet(false, true)) {
+                        nsdManager?.resolveService(
+                            service,
+                            mResolveListener
+                        )
+                    }
+                    else{
+                        pendingServices.add(service)
+                    }
+                }
 
             }
         }
@@ -192,9 +207,23 @@ internal object ProxyManNetworkDiscoveryManager {
         override fun onServiceLost(service: NsdServiceInfo) {
             // When the network service is no longer available.
             // Internal bookkeeping code goes here.
-            services.remove(service.serviceName)
-            showErrorMessage("service lost: $service remaining sockets : ${services.size}")
+            // If the lost service was in the queue of pending services, remove it
 
+            val iterator = pendingServices.iterator()
+            while (iterator.hasNext()) {
+                if (iterator.next().serviceName == service.serviceName)
+                    iterator.remove()
+            }
+
+            // If the lost service was in the list of resolved services, remove it
+            synchronized(resolvedServices) {
+                val resolvedIterator = resolvedServices.iterator()
+                while (resolvedIterator.hasNext()) {
+                    if (resolvedIterator.next().key == service.serviceName)
+                        resolvedIterator.remove()
+                }
+            }
+            showErrorMessage("service lost: $service remaining sockets : ${resolvedServices.size}")
         }
 
         override fun onDiscoveryStopped(serviceType: String) {
@@ -213,14 +242,21 @@ internal object ProxyManNetworkDiscoveryManager {
         }
     }
 
-    private var services = HashMap<String, Socket>()
 
-    private fun initializeServerSocket(serviceName: String, host: InetAddress, port: Int) {
+    private fun initializeServerSocket(serviceInfo: NsdServiceInfo) {
+        val serviceName: String = serviceInfo.serviceName
+        if (serviceName == mServiceName) {
+            showDebugMessage("Same IP.")
+            return
+        }
+        val port: Int = serviceInfo.port
+        val host: InetAddress = serviceInfo.host
         try {
             // Initialize a server socket on the next available port.
-            services[serviceName] = Socket(host, port)
-            sendAppData()
+            resolvedServices[serviceName] = Socket(host, port)
+            sendConnectionData()
         } catch (e: Exception) {
+            showErrorMessage("Proxyman initializeserversocker : socket couldn't be initialized for $mServiceName wit host $host and port : $port closed")
             e.printStackTrace()
         }
     }
@@ -231,14 +267,13 @@ internal object ProxyManNetworkDiscoveryManager {
     fun send(proxymanRequestMessage: Message) {
         if (mIsRegistered) {
             //other error messages -> maybe not initialized / registerservice not called
-            with(services.iterator()) {
+            with(resolvedServices.iterator()) {
                 forEach { service ->
                     val socket = service.value
                     try {
                         showDebugMessage("send message with type ${proxymanRequestMessage.messageType}")
                         val outPutStream = socket.getOutputStream()
-                        val encodedMessage = gzip(proxyManGson.toJson(proxymanRequestMessage))
-                            ?: proxyManGson.toJson(proxymanRequestMessage).toByteArray()
+                        val encodedMessage = gzip(proxyManGson.toJson(proxymanRequestMessage)) ?: proxyManGson.toJson(proxymanRequestMessage).toByteArray()
                         val output = ByteArrayOutputStream()
                         output.write(encodedMessage.size.toLong().toByteArray())
                         output.write(encodedMessage)
@@ -249,7 +284,7 @@ internal object ProxyManNetworkDiscoveryManager {
                         addMessageToPendingPackages(proxymanRequestMessage)
                     }
                 }
-                if (services.isEmpty()) {
+                if (resolvedServices.isEmpty()) {
                     showDebugMessage("Proxyman MESSAGE NOT SENT : no sockets found")
                     addMessageToPendingPackages(proxymanRequestMessage)
                 }
@@ -302,7 +337,7 @@ internal object ProxyManNetworkDiscoveryManager {
         }
     }
 
-    private fun sendAppData() {
+    private fun sendConnectionData() {
         //send app data (calls are sorted beneath it)
         val connectionMessage = Message.buildConnectionMessage(
             Configuration.default().id,
