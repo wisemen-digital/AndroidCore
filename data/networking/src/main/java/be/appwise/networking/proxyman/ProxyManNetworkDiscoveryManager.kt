@@ -101,6 +101,8 @@ internal object ProxyManNetworkDiscoveryManager {
     private const val maxPendingItem = 30
     private var resolvedServicesMap = HashMap<String, Socket>()
     var resolvedServices: MutableMap<String, Socket> = Collections.synchronizedMap(resolvedServicesMap)
+    private var mIsRegistered = false
+    private var pendingPackages = ConcurrentLinkedQueue<Message>()
 
     fun getAppContext() = mAppContext
     fun getDeviceName() = mDeviceName
@@ -261,9 +263,6 @@ internal object ProxyManNetworkDiscoveryManager {
         }
     }
 
-    private var mIsRegistered = false
-    private var pendingPackages = arrayListOf<Message>()
-
     fun send(proxymanRequestMessage: Message) {
         if (mIsRegistered) {
             //other error messages -> maybe not initialized / registerservice not called
@@ -330,8 +329,9 @@ internal object ProxyManNetworkDiscoveryManager {
         if (pendingPackages.isEmpty()) return
         showDebugMessage("[Proxyman PoC] Flush ${pendingPackages.count()} items")
         GlobalScope.launch(Dispatchers.IO) {
-            pendingPackages.listIterator().forEach {
-                send(it)
+            val pendingPackagesIterator = pendingPackages.iterator()
+            while (pendingPackagesIterator.hasNext()) {
+                send(pendingPackagesIterator.next())
             }
             pendingPackages.clear()
         }
@@ -343,7 +343,7 @@ internal object ProxyManNetworkDiscoveryManager {
             Configuration.default().id,
             ConnectionPackage()
         )
-        pendingPackages.add(0, connectionMessage)
+        pendingPackages.add(connectionMessage)
         flushAllPendingIfNeeded()
     }
 
