@@ -12,6 +12,7 @@ import java.net.Socket
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
+@Deprecated("Please start using Proxyman instead of Bagel")
 object BagelNetworkDiscoveryManager {
     private const val SERVICE_TYPE: String = "_Bagel._tcp."
     private const val TAG = "BagelDiscoveryManager"

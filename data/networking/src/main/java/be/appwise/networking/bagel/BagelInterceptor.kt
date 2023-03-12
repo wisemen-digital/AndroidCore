@@ -3,6 +3,7 @@ package be.appwise.networking.bagel
 import okhttp3.Interceptor
 import okhttp3.Response
 
+@Deprecated("Please start using Proxyman instead of Bagel")
 class BagelInterceptor(private val applicationId: String,private val deviceId : String, private val deviceName : String, private val deviceDescription : String) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
