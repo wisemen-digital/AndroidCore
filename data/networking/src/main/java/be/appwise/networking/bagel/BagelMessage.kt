@@ -9,6 +9,7 @@ import okio.Buffer
 import java.nio.charset.StandardCharsets
 import java.util.*
 
+@Deprecated("Please start using Proxyman instead of Bagel")
 class BagelMessage {
     lateinit var device: Device
     lateinit var packetId: String

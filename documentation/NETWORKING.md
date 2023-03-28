@@ -29,7 +29,7 @@ In order to use all functionality of the `Networking` module it is necessary to 
 ```kotlin
 
 Networking.Builder()
-    .registerBagelService(this)
+    .registerProxymanService(this)
     .setPackageName(packageName)
     .setAppName(getString(R.string.app_name))
     .setVersionCode(BuildConfig.VERSION_CODE.toString())
