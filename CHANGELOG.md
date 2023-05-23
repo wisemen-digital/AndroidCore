@@ -11,9 +11,18 @@ All notable changes to this project will be documented in this file.
 ### Documentation
 
 ### Breaking
-- Deprecating the Measurement API in favor of a [standalone API](https://github.com/appwise-labs/Measurements)
 
 ### Custom Views
+
+### Improvements
+
+## [1.4.4](https://github.com/appwise-labs/AndroidCore/releases/tag/1.4.4)
+
+### New Features
+- Introduced in 1.4.3 is the Validator functionality for the standard XML layouts but also for the Compose layouts.
+
+### Breaking
+- Deprecating the Measurement API in favor of a [standalone API](https://github.com/appwise-labs/Measurements)
 
 ### Improvements
 - The generic function to get a service is limited to extensions of `BaseService`.
