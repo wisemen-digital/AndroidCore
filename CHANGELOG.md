@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 ### Documentation
 
 ### Breaking
+- Deprecating the Measurement API in favor of a [standalone API](https://github.com/appwise-labs/Measurements)
 
 ### Custom Views
 
@@ -18,6 +19,7 @@ All notable changes to this project will be documented in this file.
 - The generic function to get a service is limited to extensions of `BaseService`.
 - Deprecated everything regarding Bagel, instead Proxyman is the next successor.
 - Updated some dependencies!
+- Improved the inner workings of Proxyman so multiple connections won't make the adapter crash.
 
 ## [1.4.2](https://github.com/appwise-labs/AndroidCore/releases/tag/1.4.2)
 

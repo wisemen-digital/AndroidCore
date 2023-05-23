@@ -15,6 +15,7 @@ import kotlin.math.absoluteValue
 // Based this complete thing on swift
 // https://github.com/apple/swift-corelibs-foundation/blob/main/Sources/Foundation/Unit.swift
 // https://github.com/apple/swift-corelibs-foundation/blob/main/Sources/Foundation/Measurement.swift
+@Deprecated("This library is being deprecated and will be replaced by a stand-alone Measurement API library")
 class Measurement<UnitType : Dimension>(var value: Double, unit: UnitType) {
 
     companion object;
