@@ -16,10 +16,8 @@ All notable changes to this project will be documented in this file.
 
 ### Improvements
 
-## [1.4.4](https://github.com/appwise-labs/AndroidCore/releases/tag/1.4.4)
 
-### New Features
-- Introduced in 1.4.3 is the Validator functionality for the standard XML layouts but also for the Compose layouts.
+## [1.4.4](https://github.com/appwise-labs/AndroidCore/releases/tag/1.4.4)
 
 ### Breaking
 - Deprecating the Measurement API in favor of a [standalone API](https://github.com/appwise-labs/Measurements)
@@ -30,6 +28,13 @@ All notable changes to this project will be documented in this file.
 - Updated some dependencies!
 - Improved the inner workings of Proxyman so multiple connections won't make the adapter crash.
 
+
+## [1.4.3](https://github.com/appwise-labs/AndroidCore/releases/tag/1.4.3)
+
+### New Features
+- Added new functionality in the way of Validators, which can be used in Activities, Fragments and Compose. These can be used to validate certain forms of input fields, switches and many more.
+
+
 ## [1.4.2](https://github.com/appwise-labs/AndroidCore/releases/tag/1.4.2)
 
 ### New Features
@@ -37,15 +42,10 @@ All notable changes to this project will be documented in this file.
 ### Bug Fixes
 - Fixed thread bug for the coroutine exception
 
-### Documentation
-
-### Breaking
-
-### Custom Views
-
 ### Improvements
 - Created a function to get a service in a more generic way for the networking client
 - A status code can now be found when an Api Error occurs.
+
 
 ## [1.4.1](https://github.com/appwise-labs/AndroidCore/releases/tag/1.4.1)
 
@@ -65,8 +65,6 @@ All notable changes to this project will be documented in this file.
 
 ### Documentation
 - Added required dependencies when importing Room or Core
-
-### Breaking
 
 ### Custom Views
 - Added DataRow (+ extras) to the project.
