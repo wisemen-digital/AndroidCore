@@ -1,4 +1,4 @@
-package be.appwise.networking.proxyman
+package be.appwise.proxyman
 
 import okhttp3.Interceptor
 import okhttp3.Response

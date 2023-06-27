@@ -1,10 +1,9 @@
-package be.appwise.networking.proxyman
+package be.appwise.proxyman
 
 import android.util.Base64
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
-
 
 class Base64TypeAdapter : TypeAdapter<Data?>() {
     override fun write(out: JsonWriter, value: Data?) {

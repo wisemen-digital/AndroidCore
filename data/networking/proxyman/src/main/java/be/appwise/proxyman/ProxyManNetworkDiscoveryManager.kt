@@ -1,4 +1,4 @@
-package be.appwise.networking.proxyman
+package be.appwise.proxyman
 
 import android.content.Context
 import android.net.nsd.NsdManager
@@ -21,8 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.zip.GZIPOutputStream
 import kotlin.collections.ArrayList
 
-internal object ProxyManNetworkDiscoveryManager {
-
+object ProxyManNetworkDiscoveryManager {
 
     /**
      * Discovery Manager that manages connecting , disconnecting with Proxyman services.

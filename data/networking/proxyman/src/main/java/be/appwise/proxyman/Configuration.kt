@@ -1,4 +1,4 @@
-package be.appwise.networking.proxyman
+package be.appwise.proxyman
 
 class Configuration(
     var projectName: String,

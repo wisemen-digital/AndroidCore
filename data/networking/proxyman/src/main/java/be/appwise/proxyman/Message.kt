@@ -1,4 +1,4 @@
-package be.appwise.networking.proxyman
+package be.appwise.proxyman
 
 
 /**
@@ -10,8 +10,6 @@ class Message(
     val buildVersion: String = "0.9.0",
     var content: Data?
 ) {
-
-
 
     companion object {
         fun buildConnectionMessage(id: String, item: ConnectionPackage): Message {

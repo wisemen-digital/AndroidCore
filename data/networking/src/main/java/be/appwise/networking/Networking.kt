@@ -5,7 +5,7 @@ import be.appwise.networking.bagel.BagelNetworkDiscoveryManager
 import be.appwise.networking.base.BaseNetworkingListeners
 import be.appwise.networking.model.AccessToken
 import be.appwise.networking.model.BaseApiError
-import be.appwise.networking.proxyman.ProxyManNetworkDiscoveryManager
+import be.appwise.proxyman.ProxyManNetworkDiscoveryManager
 import retrofit2.Response
 
 object Networking {

@@ -1,4 +1,4 @@
-package be.appwise.networking.proxyman
+package be.appwise.proxyman
 
 import android.graphics.Bitmap
 import android.os.Build
