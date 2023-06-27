@@ -94,11 +94,7 @@ interface BaseNetworkingListeners {
         // Using packageName for this so the application can differentiate between a develop, staging or production build and won't ask the user which to use
         val errorActivity = Intent("${Networking.getPackageName()}.logout")
         errorActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PendingIntent.getActivity(Networking.getContext(), 22, errorActivity, PendingIntent.FLAG_IMMUTABLE)
-        } else {
-            PendingIntent.getActivity(Networking.getContext(), 22, errorActivity, 0)
-        }
+        val pendingIntent =   PendingIntent.getActivity(Networking.getContext(), 22, errorActivity, PendingIntent.FLAG_IMMUTABLE)
 
         extraLogoutStep()
 
