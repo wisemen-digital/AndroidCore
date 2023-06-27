@@ -6,12 +6,14 @@ import android.graphics.PorterDuff
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.LayoutInflater
+import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import be.appwise.core.R
 import be.appwise.core.extensions.libraries.loadCircle
 import be.appwise.core.extensions.libraries.loadFileCircle
-import kotlinx.android.synthetic.main.initials_imageview.view.*
+//import kotlinx.android.synthetic.main.initials_imageview.view.*
 import java.io.File
 
 class InitialsImageView : RelativeLayout {
@@ -28,7 +30,7 @@ class InitialsImageView : RelativeLayout {
                 setCircleColor(color)
 
                 val textSize = getDimensionPixelSize(R.styleable.InitialsImageView_android_textSize, -1)
-                tvInitials.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize.toFloat())
+                findViewById<TextView>(R.id.tvInitials).setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize.toFloat())
 
                 val textColor = getResourceId(R.styleable.InitialsImageView_android_textColor, android.R.color.white)
                 setTextColor(textColor)
@@ -40,11 +42,11 @@ class InitialsImageView : RelativeLayout {
     }
 
     fun setCircleColor(color : Int){
-        ivInitialCircle.setColorFilter(ContextCompat.getColor(context, color), PorterDuff.Mode.SRC_IN)
+        findViewById<ImageView>(R.id.ivInitialCircle).setColorFilter(ContextCompat.getColor(context, color), PorterDuff.Mode.SRC_IN)
     }
 
     fun setTextColor(color : Int){
-        tvInitials.setTextColor(ContextCompat.getColor(context,color))
+        findViewById<TextView>(R.id.tvInitials).setTextColor(ContextCompat.getColor(context,color))
     }
     constructor(context: Context) : super(context) {
         init()
@@ -73,14 +75,14 @@ class InitialsImageView : RelativeLayout {
     }
 
     private fun setInitials(initials: String) {
-        tvInitials.text = initials
+        findViewById<TextView>(R.id.tvInitials).text = initials
     }
 
     fun loadPicture(url: String?) {
-        ivPicture.loadCircle(url)
+        findViewById<ImageView>(R.id.ivPicture).loadCircle(url)
     }
 
     fun loadFile(file : File){
-        ivPicture.loadFileCircle(file)
+        findViewById<ImageView>(R.id.ivPicture).loadFileCircle(file)
     }
 }

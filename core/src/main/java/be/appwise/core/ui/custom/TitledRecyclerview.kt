@@ -4,6 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.getResourceIdOrThrow
 import androidx.core.view.isVisible
@@ -12,7 +15,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import be.appwise.core.R
-import kotlinx.android.synthetic.main.titled_recyclerview.view.*
 
 class TitledRecyclerview @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null,
@@ -22,10 +24,10 @@ class TitledRecyclerview @JvmOverloads constructor(
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.titled_recyclerview, this, true)
-        ivAction.setOnClickListener {
+        findViewById<ImageView>(R.id.ivAction).setOnClickListener {
             mActionListener?.onAction()
         }
-        tvAction.setOnClickListener {
+        findViewById<TextView>(R.id.tvAction).setOnClickListener {
             mActionListener?.onAction()
         }
         attrs?.let {
@@ -34,25 +36,25 @@ class TitledRecyclerview @JvmOverloads constructor(
                 val title = getString(R.styleable.TitledRecyclerview_title)
                 setTitle(title)
                 val primaryEmptyText = getString(R.styleable.TitledRecyclerview_emptyTextTitle)
-                tvEmptyTextTitle.text = primaryEmptyText
+                findViewById<TextView>(R.id.tvEmptyTextTitle).text = primaryEmptyText
                 val secondaryEmptyText =
                     getString(R.styleable.TitledRecyclerview_emptyTextDescription)
-                tvEmptyTextDescription.text = secondaryEmptyText
+                findViewById<TextView>(R.id.tvEmptyTextDescription).text = secondaryEmptyText
                 val emptyIcon = getResourceId(R.styleable.TitledRecyclerview_emptyIcon, -1)
                 if (emptyIcon != -1)
-                    ivEmptyIcon.setImageResource(emptyIcon)
-                ivEmptyIcon.isVisible = emptyIcon != -1
+                    findViewById<ImageView>(R.id.ivEmptyIcon).setImageResource(emptyIcon)
+                findViewById<ImageView>(R.id.ivEmptyIcon).isVisible = emptyIcon != -1
 
                 try {
                     val actionIcon = getResourceIdOrThrow(R.styleable.TitledRecyclerview_actionIcon)
-                    ivAction.setImageResource(actionIcon)
+                    findViewById<ImageView>(R.id.ivAction).setImageResource(actionIcon)
                 } catch (ex: Exception) {
                 }
 
                 val actionText = getString(R.styleable.TitledRecyclerview_actionText)
-                tvAction.text = actionText
-                tvAction.isVisible = !actionText.isNullOrEmpty()
-                ivAction.isVisible = actionText.isNullOrEmpty()
+                findViewById<TextView>(R.id.tvAction).text = actionText
+                findViewById<TextView>(R.id.tvAction).isVisible = !actionText.isNullOrEmpty()
+                findViewById<ImageView>(R.id.ivAction).isVisible = actionText.isNullOrEmpty()
                 /* val textSize = getDimensionPixelSize(R.styleable.InitialsImageView_android_textSize, -1)
                  tvInitials.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize.toFloat())
                  val textColor = getResourceId(R.styleable.InitialsImageView_android_textColor, android.R.color.white)
@@ -87,13 +89,13 @@ class TitledRecyclerview @JvmOverloads constructor(
         titledRecyclerViewAdapter: TitledRecyclerViewAdapter<LT, VH>,
         layoutManager: RecyclerView.LayoutManager
     ) {
-        rvItems.adapter = titledRecyclerViewAdapter
-        rvItems.layoutManager = layoutManager
+        findViewById<RecyclerView>(R.id.rvItems).adapter = titledRecyclerViewAdapter
+        findViewById<RecyclerView>(R.id.rvItems).layoutManager = layoutManager
         liveData.observe(owner, Observer {
             val list = converter(it)
             titledRecyclerViewAdapter.updateData(list)
-            rvItems.visibility = if (list.isEmpty()) View.GONE else View.VISIBLE
-            llEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
+            findViewById<RecyclerView>(R.id.rvItems).visibility = if (list.isEmpty()) View.GONE else View.VISIBLE
+            findViewById<LinearLayout>(R.id.llEmpty).visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
         })
     }
 
@@ -103,17 +105,17 @@ class TitledRecyclerview @JvmOverloads constructor(
         titledRecyclerViewAdapter: TitledRecyclerViewAdapter<LT, VH>,
         layoutManager: RecyclerView.LayoutManager
     ) {
-        rvItems.adapter = titledRecyclerViewAdapter
-        rvItems.layoutManager = layoutManager
+        findViewById<RecyclerView>(R.id.rvItems).adapter = titledRecyclerViewAdapter
+        findViewById<RecyclerView>(R.id.rvItems).layoutManager = layoutManager
         liveData.observe(owner, Observer {
             titledRecyclerViewAdapter.updateData(it)
-            rvItems.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
-            llEmpty.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+            findViewById<RecyclerView>(R.id.rvItems).visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+            findViewById<LinearLayout>(R.id.llEmpty).visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
         })
     }
 
     fun setTitle(title: String?) {
-        tvTitle.text = title
+        findViewById<TextView>(R.id.tvTitle).text = title
     }
 
     private var mActionListener: ActionListener? = null

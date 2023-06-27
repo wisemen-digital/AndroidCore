@@ -6,11 +6,9 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintLayout
 import be.appwise.core.R
 import be.appwise.core.databinding.NumberStepperBinding
 import be.appwise.core.extensions.view.optionalCallbacks
-import kotlinx.android.synthetic.main.number_stepper.view.*
 
 /**
  * A viewgroup containing a label [tvLabel] , minus button [ivMinus] , plus button [ivPlus] and a inputfield for a value [etValue]

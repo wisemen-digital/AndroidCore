@@ -25,11 +25,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 
     buildFeatures {
@@ -41,7 +41,6 @@ android {
 
 dependencies {
     implementation project(path: ':core')
-    implementation project(path: ':data:realm')
     implementation project(path: ':data:room')
     implementation project(path: ':data:networking')
     implementation project(path: ':data:paging')
