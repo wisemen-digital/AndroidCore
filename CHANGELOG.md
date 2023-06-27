@@ -17,6 +17,17 @@ All notable changes to this project will be documented in this file.
 ### Improvements
 
 
+## [1.4.5](https://github.com/appwise-labs/AndroidCore/releases/tag/1.4.5)
+
+### Documentation
+- Added documentation for the new way we should do Networking calls.
+
+### Breaking
+- Realm has been removed from the dependencies
+- JavaVersion 17 is being used now, this might affect your project. If issues arise, please try to upgrade the project itself to use JavaVersion 17.
+- Android Gradle Plugin (AGP) has been updated to 8.0.x. This might break your project.
+
+
 ## [1.4.4](https://github.com/appwise-labs/AndroidCore/releases/tag/1.4.4)
 
 ### Breaking
