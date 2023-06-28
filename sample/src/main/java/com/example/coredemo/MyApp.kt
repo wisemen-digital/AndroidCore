@@ -21,14 +21,13 @@ class MyApp : Application() {
     }
 
     private fun initCore() {
-        CoreApp.init(this)
-            .apply {
-                if (BuildConfig.DEBUG) {
-                    initializeErrorActivity(true)
-                }
+        CoreApp.init {
+            if (BuildConfig.DEBUG) {
+                initializeErrorActivity(true)
             }
-            .initializeLogger(getString(R.string.app_name), BuildConfig.DEBUG)
-            .build()
+
+            initializeLogger(getString(R.string.app_name), BuildConfig.DEBUG)
+        }
     }
 
     private fun initNetworking() {
