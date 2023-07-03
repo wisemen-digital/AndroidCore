@@ -5,7 +5,7 @@ buildscript {
         gson_version = "2.10.1"
         glide_version = "4.15.1"
         kotlin_version = "1.8.21"
-        kotlinx_coroutines_version = "1.6.4"
+        kotlinx_coroutines_version = "1.7.2"
         lifecycle_version = "2.6.1"
         material_dialogs_version = "3.3.0"
         nav_version = "2.6.0"
