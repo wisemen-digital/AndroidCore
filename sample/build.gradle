@@ -48,7 +48,7 @@ dependencies {
     implementation project(path: ':measurements')
     implementation project(path: ':views:dataRow')
 
-    implementation "com.squareup.okhttp3:mockwebserver:4.10.0"
+    implementation "com.squareup.okhttp3:mockwebserver:4.11.0"
     implementation "com.github.donfuxx:Mockinizer:1.6.0"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
