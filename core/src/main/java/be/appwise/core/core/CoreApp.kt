@@ -16,6 +16,12 @@ object CoreApp {
             .build()
     }
 
+    /**
+     * Initialize the object with the Android Start Up library using the [CoreInitializer]
+     *
+     * @param context The context provided by the initializer
+     * @return [CoreApp] The initialized object
+     */
     internal fun initialize(context: Context): CoreApp {
         appContext = context
 
