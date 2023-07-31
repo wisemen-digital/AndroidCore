@@ -1,41 +1,44 @@
 package be.appwise.networking
 
 import android.content.Context
-import be.appwise.networking.bagel.BagelNetworkDiscoveryManager
-import be.appwise.networking.base.BaseNetworkingListeners
 import be.appwise.networking.model.AccessToken
 import be.appwise.networking.model.BaseApiError
-import be.appwise.proxyman.ProxyManNetworkDiscoveryManager
 import retrofit2.Response
 
 object Networking {
-    private var networkingFacade: NetworkingFacade? =
-        NetworkingFacade.EmptyNetworkingFacade()
+    @Volatile
+    internal lateinit var appContext: Context
+    private lateinit var networkingBuilder: NetworkingBuilder
 
-    internal fun build(networkingBuilder: Builder) {
-        networkingFacade =
-            DefaultNetworkingFacade(networkingBuilder)
+    fun initialize(context: Context): Networking {
+        appContext = context
+        return this
     }
 
-    internal fun getContext() = networkingFacade!!.context
+    fun init(function: NetworkingBuilder.() -> Unit) {
+        networkingBuilder = NetworkingBuilder().apply(function)
+        NetworkingBuilder().apply(function).build()
+    }
 
-    fun getAppName() = networkingFacade!!.appName
+    internal fun getContext() = appContext
 
-    fun getVersionName() = networkingFacade!!.versionName
+    fun getAppName() = networkingBuilder.appName
 
-    fun getVersionCode() = networkingFacade!!.versionCode
+    fun getVersionName() = networkingBuilder.versionName
 
-    fun getApiVersion() = networkingFacade!!.apiVersion
+    fun getVersionCode() = networkingBuilder.versionCode
 
-    fun getPackageName() = networkingFacade!!.packageName
+    fun getApiVersion() = networkingBuilder.apiVersion
 
-    fun getAccessToken() = networkingFacade!!.getAccessToken()
+    fun getPackageName() = networkingBuilder.packageName
 
-    fun saveAccessToken(accessToken: AccessToken?) = networkingFacade!!.saveAccessToken(accessToken)
+    fun getAccessToken() = networkingBuilder.getAccessToken()
 
-    fun getClientIdValue() = networkingFacade!!.clientId
+    fun saveAccessToken(accessToken: AccessToken?) = networkingBuilder.saveAccessToken(accessToken)
 
-    fun getClientSecretValue() = networkingFacade!!.clientSecret
+    fun getClientIdValue() = networkingBuilder.clientId
+
+    fun getClientSecretValue() = networkingBuilder.clientSecret
 
     /**
      * This logout function can be used to cleanup any resources the app is using.
@@ -52,118 +55,10 @@ object Networking {
      * ```
      */
     fun logout() {
-        networkingFacade!!.logout()
+        networkingBuilder.logout()
     }
 
     fun parseError(response: Response<*>): BaseApiError {
-        return networkingFacade!!.parseError(response)
-    }
-
-    class Builder(internal val context: Context) {
-        private var packageName: String = ""
-        private var clientSecretValue = ""
-        private var clientIdValue = ""
-        private var appName = ""
-        private var versionName = ""
-        private var versionCode = ""
-        private var apiVersion = ""
-        private var networkingListeners = BaseNetworkingListeners.DEFAULT
-
-        fun setPackageName(packageName: String): Builder {
-            this.packageName = packageName
-            return this
-        }
-
-        internal fun getPackageName(): String {
-            return packageName
-        }
-
-        fun setClientSecretValue(clientSecretValue: String): Builder {
-            this.clientSecretValue = clientSecretValue
-            return this
-        }
-
-        internal fun getClientSecretValue(): String {
-            return clientSecretValue
-        }
-
-        fun setClientIdValue(clientIdValue: String): Builder {
-            this.clientIdValue = clientIdValue
-            return this
-        }
-
-        internal fun getClientIdValue(): String {
-            return clientIdValue
-        }
-
-        fun setAppName(appName: String): Builder {
-            this.appName = appName
-            return this
-        }
-
-        internal fun getAppName(): String {
-            return appName
-        }
-
-        fun setVersionName(versionName: String): Builder {
-            this.versionName = versionName
-            return this
-        }
-
-        internal fun getVersionName(): String {
-            return versionName
-        }
-
-        fun setVersionCode(versionCode: String): Builder {
-            this.versionCode = versionCode
-            return this
-        }
-
-        internal fun getVersionCode(): String {
-            return versionCode
-        }
-
-        fun setApiVersion(apiVersion: String): Builder {
-            this.apiVersion = apiVersion
-            return this
-        }
-
-        internal fun getApiVersion(): String {
-            return apiVersion
-        }
-
-        fun setNetworkingListeners(customNetworkingListeners: BaseNetworkingListeners): Builder {
-            this.networkingListeners = customNetworkingListeners
-            return this
-        }
-
-        internal fun getNetworkingListeners(): BaseNetworkingListeners {
-            return networkingListeners
-        }
-
-        @Deprecated("Please start using Proxyman instead of Bagel")
-        fun registerBagelService(context: Context): Builder {
-            BagelNetworkDiscoveryManager.registerService(context)
-            return this
-        }
-
-        fun registerProxymanService(
-            context: Context,
-            deviceName: String? = null,
-            allowedServices: ArrayList<String> = arrayListOf(),
-            isLoggingEnabled: Boolean = true,
-        ): Builder {
-            ProxyManNetworkDiscoveryManager.registerService(
-                context,
-                deviceName,
-                allowedServices,
-                isLoggingEnabled
-            )
-            return this
-        }
-
-        fun build() {
-            build(this)
-        }
+        return networkingBuilder.parseError(response)
     }
 }

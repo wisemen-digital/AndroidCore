@@ -3,15 +3,16 @@
 
     <application>
         <activity
-                android:name="cat.ereza.customactivityoncrash.activity.DefaultErrorActivity"
-                android:process=":error_activity"/>
+            android:name="cat.ereza.customactivityoncrash.activity.DefaultErrorActivity"
+            android:process=":error_activity" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="merge">
-            <meta-data  android:name="be.appwise.core.core.CoreInitializer"
+            <meta-data
+                android:name="be.appwise.core.core.CoreInitializer"
                 android:value="androidx.startup" />
         </provider>
 

@@ -1,6 +1,7 @@
 package com.example.coredemo
 
 import android.app.Application
+import androidx.multidex.BuildConfig
 import be.appwise.core.core.CoreApp
 import be.appwise.networking.Networking
 
@@ -31,16 +32,16 @@ class MyApp : Application() {
     }
 
     private fun initNetworking() {
-        Networking.Builder(this)
-            .setPackageName(packageName)
-            .setAppName(getString(R.string.app_name))
-            .setVersionCode(BuildConfig.VERSION_CODE.toString())
-            .setVersionName(BuildConfig.VERSION_NAME)
-            .apply {
+        Networking.initialize(this)
+        Networking.init {
+            setAppName(getString(R.string.app_name))
+            setVersionCode(BuildConfig.VERSION_CODE.toString())
+            setVersionName(BuildConfig.VERSION_NAME)
+            apply {
                 if (BuildConfig.DEBUG && resources.getBoolean(R.bool.enableProxyman)) {
-                    registerProxymanService(context = this@MyApp)
+                    registerProxymanService(this@MyApp)
                 }
             }
-            .build()
+        }
     }
 }
