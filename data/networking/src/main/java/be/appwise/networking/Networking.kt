@@ -10,7 +10,14 @@ object Networking {
     internal lateinit var appContext: Context
     private lateinit var networkingBuilder: NetworkingBuilder
 
-    fun initialize(context: Context): Networking {
+
+    /**
+     * Initialize the object with the Android Start Up library using the [NetworkingInitializer]
+     *
+     * @param context The context provided by the initializer
+     * @return [Networking] The initialized object
+     */
+    internal fun initialize(context: Context): Networking {
         appContext = context
         return this
     }

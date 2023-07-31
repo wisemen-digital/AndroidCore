@@ -32,7 +32,6 @@ class MyApp : Application() {
     }
 
     private fun initNetworking() {
-        Networking.initialize(this)
         Networking.init {
             setAppName(getString(R.string.app_name))
             setVersionCode(BuildConfig.VERSION_CODE.toString())
