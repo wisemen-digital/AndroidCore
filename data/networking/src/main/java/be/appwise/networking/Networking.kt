@@ -22,9 +22,8 @@ object Networking {
         return this
     }
 
-    fun init(function: NetworkingBuilder.() -> Unit) {
-        networkingBuilder = NetworkingBuilder().apply(function)
-        NetworkingBuilder().apply(function).build()
+    fun init(newNetworkingBuilder: NetworkingBuilder) {
+        networkingBuilder = newNetworkingBuilder
     }
 
     internal fun getContext() = appContext

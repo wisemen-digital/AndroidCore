@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.multidex.BuildConfig
 import be.appwise.core.core.CoreApp
 import be.appwise.networking.Networking
+import be.appwise.networking.NetworkingBuilder
 
 class MyApp : Application() {
 
@@ -32,15 +33,16 @@ class MyApp : Application() {
     }
 
     private fun initNetworking() {
-        Networking.init {
-            setAppName(getString(R.string.app_name))
-            setVersionCode(BuildConfig.VERSION_CODE.toString())
-            setVersionName(BuildConfig.VERSION_NAME)
-            apply {
+        Networking.init(
+            NetworkingBuilder(
+                appName = getString(R.string.app_name),
+                versionCode = BuildConfig.VERSION_CODE.toString(),
+                versionName = BuildConfig.VERSION_NAME
+            ).apply {
                 if (BuildConfig.DEBUG && resources.getBoolean(R.bool.enableProxyman)) {
                     registerProxymanService(this@MyApp)
                 }
             }
-        }
+        )
     }
 }
