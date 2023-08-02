@@ -3,7 +3,6 @@ pluginManagement {
         google()
         gradlePluginPortal()
         mavenCentral()
-        jcenter() // this is still needed for the current Realm version
         maven("https://plugins.gradle.org/m2/")
     }
 
@@ -19,7 +18,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        jcenter() // this is still needed for the current Realm version
         maven("https://jitpack.io")
     }
 }
