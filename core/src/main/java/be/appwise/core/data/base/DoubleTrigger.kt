@@ -28,11 +28,13 @@ import androidx.lifecycle.MediatorLiveData
  * @param <B> Type of second LiveData field to listen to
  * @param a First LiveData field to listen to
  * @param b Second LiveData field to listen to
+ * @param defaultA The default value for {@param a} when it's value is not set
+ * @param defaultA The default value for {@param b} when it's value is not set
  */
 
-class DoubleTrigger<A, B>(a: LiveData<A>, b: LiveData<B>) : MediatorLiveData<Pair<A?, B?>>() {
+class DoubleTrigger<A, B>(a: LiveData<A>, b: LiveData<B>, defaultA: A? = null, defaultB: B? = null) : MediatorLiveData<Pair<A?, B?>>() {
     init {
-        addSource(a) { value = it to b.value }
-        addSource(b) { value = a.value to it }
+        addSource(a) { value = it to (b.value ?: defaultB) }
+        addSource(b) { value = (a.value ?: defaultA) to it }
     }
 }

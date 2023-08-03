@@ -45,7 +45,6 @@ dependencies {
     implementation project(path: ':data:networking')
     implementation project(path: ':data:paging')
     implementation project(path: ':list:emptyRecyclerView')
-    implementation project(path: ':measurements')
     implementation project(path: ':views:dataRow')
 
     implementation "com.squareup.okhttp3:mockwebserver:$okhttp_version"

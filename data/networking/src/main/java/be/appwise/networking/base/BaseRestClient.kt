@@ -9,7 +9,7 @@ import be.appwise.networking.bagel.BagelInterceptor
 import be.appwise.networking.interceptors.Authenticator
 import be.appwise.networking.interceptors.HeaderInterceptor
 import be.appwise.networking.model.AccessToken
-import be.appwise.networking.proxyman.ProxyManInterceptor
+import be.appwise.proxyman.ProxyManInterceptor
 import be.appwise.networking.responseAdapter.NetworkResponseAdapterFactory
 import com.google.gson.Gson
 import okhttp3.Interceptor
@@ -92,7 +92,7 @@ abstract class BaseRestClient {
 
         //add it behind all the rest so we can send all the response/request data
         if (enableProxyManInterceptor())
-            builder.addInterceptor(ProxyManInterceptor())
+            builder.addInterceptor(be.appwise.proxyman.ProxyManInterceptor())
 
         return builder.build()
     }
