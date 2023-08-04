@@ -28,10 +28,15 @@ object Networking {
 
     fun init(
         newNetworkingConfig: NetworkingConfig,
-        newNetworkingListeners: BaseNetworkingListeners = BaseNetworkingListeners.DEFAULT
+        newNetworkingListeners: BaseNetworkingListeners = BaseNetworkingListeners.DEFAULT,
+        proxyManConfig: ProxyManConfig
     ) {
         networkingConfig = newNetworkingConfig
         networkingListeners = newNetworkingListeners
+
+        if (proxyManConfig.enabled) {
+            registerProxymanService(appContext, proxyManConfig)
+        }
     }
 
     internal fun getContext() = appContext
@@ -80,15 +85,13 @@ object Networking {
 
     fun registerProxymanService(
         context: Context,
-        deviceName: String? = null,
-        allowedServices: ArrayList<String> = arrayListOf(),
-        isLoggingEnabled: Boolean = true
+        proxyManConfig: ProxyManConfig
     ) {
         ProxyManNetworkDiscoveryManager.registerService(
             context,
-            deviceName,
-            allowedServices,
-            isLoggingEnabled
+            proxyManConfig.deviceName,
+            proxyManConfig.allowedServices,
+            proxyManConfig.isLoggingEnabled
         )
     }
 }
