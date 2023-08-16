@@ -1,14 +1,18 @@
 package be.appwise.networking
 
 import android.content.Context
+import be.appwise.networking.base.BaseNetworkingListeners
 import be.appwise.networking.model.AccessToken
 import be.appwise.networking.model.BaseApiError
+import be.appwise.networking.util.HawkUtils
+import be.appwise.proxyman.ProxyManNetworkDiscoveryManager
 import retrofit2.Response
 
 object Networking {
     @Volatile
     internal lateinit var appContext: Context
-    private lateinit var networkingBuilder: NetworkingBuilder
+    private lateinit var networkingConfig: NetworkingConfig
+    private lateinit var networkingListeners: BaseNetworkingListeners
 
 
     /**
@@ -22,29 +26,40 @@ object Networking {
         return this
     }
 
-    fun init(newNetworkingBuilder: NetworkingBuilder) {
-        networkingBuilder = newNetworkingBuilder
+    fun init(
+        newNetworkingConfig: NetworkingConfig,
+        newNetworkingListeners: BaseNetworkingListeners = BaseNetworkingListeners.DEFAULT,
+        proxyManConfig: ProxyManConfig
+    ) {
+        networkingConfig = newNetworkingConfig
+        networkingListeners = newNetworkingListeners
+
+        if (proxyManConfig.enabled) {
+            registerProxymanService(appContext, proxyManConfig)
+        }
     }
 
     internal fun getContext() = appContext
 
-    fun getAppName() = networkingBuilder.appName
+    fun getAppName() = networkingConfig.appName
 
-    fun getVersionName() = networkingBuilder.versionName
+    fun getVersionName() = networkingConfig.versionName
 
-    fun getVersionCode() = networkingBuilder.versionCode
+    fun getVersionCode() = networkingConfig.versionCode
 
-    fun getApiVersion() = networkingBuilder.apiVersion
+    fun getApiVersion() = networkingConfig.apiVersion
 
-    fun getPackageName() = networkingBuilder.packageName
+    fun getPackageName() = networkingConfig.packageName
 
-    fun getAccessToken() = networkingBuilder.getAccessToken()
+    fun getClientIdValue() = networkingConfig.clientId
 
-    fun saveAccessToken(accessToken: AccessToken?) = networkingBuilder.saveAccessToken(accessToken)
+    fun getClientSecretValue() = networkingConfig.clientSecret
 
-    fun getClientIdValue() = networkingBuilder.clientId
+    fun getAccessToken() = HawkUtils.hawkAccessToken
 
-    fun getClientSecretValue() = networkingBuilder.clientSecret
+    fun saveAccessToken(accessToken: AccessToken?) {
+        HawkUtils.hawkAccessToken = accessToken
+    }
 
     /**
      * This logout function can be used to cleanup any resources the app is using.
@@ -61,10 +76,22 @@ object Networking {
      * ```
      */
     fun logout() {
-        networkingBuilder.logout()
+        networkingListeners.logout()
     }
 
     fun parseError(response: Response<*>): BaseApiError {
-        return networkingBuilder.parseError(response)
+        return networkingListeners.parseError(response)
+    }
+
+    fun registerProxymanService(
+        context: Context,
+        proxyManConfig: ProxyManConfig
+    ) {
+        ProxyManNetworkDiscoveryManager.registerService(
+            context,
+            proxyManConfig.deviceName,
+            proxyManConfig.allowedServices,
+            proxyManConfig.isLoggingEnabled
+        )
     }
 }

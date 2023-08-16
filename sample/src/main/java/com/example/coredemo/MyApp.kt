@@ -1,10 +1,13 @@
 package com.example.coredemo
 
 import android.app.Application
-import androidx.multidex.BuildConfig
 import be.appwise.core.core.CoreApp
 import be.appwise.networking.Networking
-import be.appwise.networking.NetworkingBuilder
+import be.appwise.networking.NetworkingConfig
+import be.appwise.networking.ProxyManConfig
+import be.appwise.networking.base.BaseNetworkingListeners
+import be.appwise.networking.model.ApiError
+import retrofit2.Response
 
 class MyApp : Application() {
 
@@ -33,16 +36,30 @@ class MyApp : Application() {
     }
 
     private fun initNetworking() {
-        Networking.init(
-            NetworkingBuilder(
-                appName = getString(R.string.app_name),
-                versionCode = BuildConfig.VERSION_CODE.toString(),
-                versionName = BuildConfig.VERSION_NAME
-            ).apply {
-                if (BuildConfig.DEBUG && resources.getBoolean(R.bool.enableProxyman)) {
-                    registerProxymanService(this@MyApp)
-                }
-            }
+        val networkingConfig = NetworkingConfig(
+            appName = getString(R.string.app_name),
+            versionCode = BuildConfig.VERSION_CODE.toString(),
+            versionName = BuildConfig.VERSION_NAME
         )
+
+        val proxyManConfig = ProxyManConfig(
+            enabled = BuildConfig.DEBUG && resources.getBoolean(R.bool.enableProxyman)
+        )
+
+        Networking.init(networkingConfig, NetworkingListeners(), proxyManConfig)
+    }
+}
+
+class NetworkingListeners: BaseNetworkingListeners {
+    override fun logout() {
+        return super.logout()
+    }
+
+    override fun parseError(response: Response<*>): ApiError {
+        return super.parseError(response)
+    }
+
+    override fun extraLogoutStep() {
+        super.extraLogoutStep()
     }
 }
