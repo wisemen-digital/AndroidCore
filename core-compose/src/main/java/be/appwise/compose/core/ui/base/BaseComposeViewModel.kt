@@ -1,4 +1,4 @@
-package com.tomtruyen.twodimensional.core.compose.ui.base
+package be.appwise.compose.core.ui.base
 
 import be.appwise.core.ui.base.BaseViewModel
 import kotlinx.coroutines.channels.Channel
