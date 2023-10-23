@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.tomtruyen.twodimensional.core.compose"
+    namespace = "be.appwise.compose.core"
     compileSdk = 34
 
     defaultConfig {
