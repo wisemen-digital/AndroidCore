@@ -6,13 +6,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 
-abstract class BaseComposeViewModel<NavigationType, UIState, UIEvent>: BaseViewModel() {
+abstract class BaseComposeViewModel<NavigationType, UIState, UIAction, UIEvent>: BaseViewModel() {
     private val _uiState = MutableStateFlow<UIState?>(null)
     val uiState = _uiState.asStateFlow()
 
     private val _navigation = Channel<NavigationType>()
     val navigation = _navigation.receiveAsFlow()
 
+    abstract fun onUIAction(action: UIAction)
     abstract fun onUIEvent(event: UIEvent)
 
     fun updateUIState(state: UIState) {
