@@ -7,9 +7,9 @@ pluginManagement {
     }
 
     plugins {
-
         id("com.android.application").version("8.0.1")
         id("com.android.library").version("8.0.1")
+        id("com.google.devtools.ksp").version("1.9.10-1.0.13")
     }
 }
 
