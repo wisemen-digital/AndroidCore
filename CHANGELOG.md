@@ -16,6 +16,12 @@ All notable changes to this project will be documented in this file.
 
 ### Improvements
 
+## [2.0.0](https://github.com/appwise-labs/AndroidCore/releases/tag/2.0.0)
+
+### New Features
+- Added our initial Jetpack Compose Component Library
+  - Including Buttons, CheckBoxes and TextFields
+
 
 ## [1.4.5](https://github.com/appwise-labs/AndroidCore/releases/tag/1.4.5)
 
