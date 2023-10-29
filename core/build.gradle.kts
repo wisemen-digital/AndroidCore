@@ -1,13 +1,15 @@
 plugins {
-    id("com.android.library")
     kotlin("android")
     kotlin("kapt")
     `maven-publish`
+
+    id("com.android.library")
+    id("com.google.devtools.ksp")
 }
 
 android {
-
     compileSdk = 34
+
     defaultConfig {
         minSdk = 21
 
@@ -31,26 +33,28 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlinOptions {
         jvmTarget = "17"
     }
+
     namespace = "be.appwise.core"
 }
 
 dependencies {
-    implementation("androidx.startup:startup-runtime:1.1.1")
+    implementation(libs.startup.runtime)
 
-    testImplementation("io.mockk:mockk:1.13.4")
+    testImplementation(libs.mockk)
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.ext)
     androidTestImplementation(libs.test.runner)
     androidTestImplementation(libs.espresso.core)
     api(libs.core.ktx)
 
-    api("androidx.multidex:multidex:2.0.1")
+    api(libs.multidex)
 
     //Kotlin reflect
-    api(libs.kotlin.reflect) //TODO: what does this thing do??
+    api(libs.kotlin.reflect)
 
     //ViewModel
     api(libs.lifecycle.viewmodel.ktx)
@@ -60,12 +64,12 @@ dependencies {
     //AndroidX Support libraries
     api(libs.appcompat)
     api(libs.material)
-    api("androidx.constraintlayout:constraintlayout:2.1.4")
-    api("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    api(libs.constraintlayout)
+    api(libs.swiperefreshlayout)
 
     //coroutines
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-android")
+    api(libs.kotlinx.coroutines.core)
+    api(libs.kotlinx.coroutines.android)
 
     // navigation components
     api(libs.navigation.fragment.ktx)
@@ -75,27 +79,27 @@ dependencies {
     api(libs.gson)
 
     // logger (https://github.com/orhanobut/logger)
-    api("com.orhanobut:logger:2.2.0")
+    api(libs.logger)
 
     // Hawk (https://github.com/orhanobut/hawk)
-    api("com.orhanobut:hawk:2.0.1")
+    api(libs.hawk)
 
     //open image chooser
-    api("com.github.jkwiecien:EasyImage:3.2.0")
+    api(libs.easyimage)
 
     //image loading/caching
     api(libs.glide.glide)
-    kapt(libs.glide.compiler)
+    ksp(libs.glide.compiler)
 
     //dialogs
     api(libs.material.dialogs.core)
     api(libs.material.dialogs.datetime)
 
     // Time manipulation for Java 7
-    api("joda-time:joda-time:2.12.2")
+    api(libs.joda.time)
 
     // https://github.com/Ereza/CustomActivityOnCrash
-    implementation("cat.ereza:customactivityoncrash:2.4.0")
+    implementation(libs.customactivityoncrash)
 }
 
 val sourceJar: Task by tasks.creating(Jar::class) {

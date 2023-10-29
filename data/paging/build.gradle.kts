@@ -1,14 +1,14 @@
 plugins {
-    id("com.android.library")
     kotlin("android")
-    kotlin("kapt")
     `maven-publish`
+
+    id("com.android.library")
+    id("com.google.devtools.ksp")
 }
 
 group = "com.github.appwise-labs"
 
 android {
-
     compileSdk = 34
 
     defaultConfig {
@@ -19,7 +19,7 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
+        release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
@@ -29,9 +29,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlinOptions {
         jvmTarget = "17"
     }
+
     namespace = "be.appwise.paging"
 }
 
@@ -41,9 +43,9 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
 
-    api("androidx.paging:paging-runtime-ktx:3.1.1")
+    api(libs.paging.runtime)
 
-    kapt(libs.room.compiler)
+    ksp(libs.glide.compiler)
 }
 
 val sourceJar by tasks.creating(Jar::class) {

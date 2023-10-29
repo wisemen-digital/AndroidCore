@@ -1,12 +1,11 @@
 plugins {
-    id("com.android.library")
     kotlin("android")
-    kotlin("kapt")
     `maven-publish`
+
+    id("com.android.library")
 }
 
 android {
-
     compileSdk = 34
 
     defaultConfig {
@@ -17,7 +16,7 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
+        release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
@@ -27,9 +26,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlinOptions {
         jvmTarget = "17"
     }
+
     namespace = "be.appwise.datarow"
 }
 

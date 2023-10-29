@@ -1,14 +1,15 @@
 plugins {
-    id("com.android.library")
     kotlin("android")
     kotlin("kapt")
     `maven-publish`
+
+    id("com.android.library")
+    id("com.google.devtools.ksp")
 }
 
 group = "com.github.appwise-labs"
 
 android {
-
     compileSdk = 34
 
     defaultConfig {
@@ -19,7 +20,7 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
+        release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
@@ -43,7 +44,7 @@ dependencies {
 
     // Room Database
     api(libs.room.runtime)
-    kapt(libs.room.compiler)
+    ksp(libs.room.compiler)
 
     // optional - Kotlin Extensions and Coroutines support for Room
     api(libs.room.ktx)
