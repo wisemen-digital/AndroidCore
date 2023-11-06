@@ -11,12 +11,15 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -26,8 +29,9 @@ object Buttons {
         text: String,
         modifier: Modifier = Modifier,
         enabled: Boolean = true,
-        contentColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onPrimary,
-        containerColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.primary,
+        contentColor: Color = MaterialTheme.colorScheme.onPrimary,
+        containerColor: Color = MaterialTheme.colorScheme.primary,
+        style: TextStyle = LocalTextStyle.current,
         onClick: () -> Unit = {}
     ) {
         Button(
@@ -40,7 +44,10 @@ object Buttons {
                 contentColor = contentColor
             )
         ) {
-            Text(text = text)
+            Text(
+                text = text,
+                style = style
+            )
         }
     }
 
@@ -49,6 +56,9 @@ object Buttons {
         text: String,
         modifier: Modifier = Modifier,
         enabled: Boolean = true,
+        contentColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
+        containerColor: Color = MaterialTheme.colorScheme.secondaryContainer,
+        style: TextStyle = LocalTextStyle.current,
         onClick: () -> Unit = {}
     ) {
         Button(
@@ -57,11 +67,14 @@ object Buttons {
             modifier = modifier,
             shape = RoundedCornerShape(5.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                containerColor = containerColor,
+                contentColor = contentColor
             )
         ) {
-            Text(text = text)
+            Text(
+                text = text,
+                style = style
+            )
         }
     }
 
@@ -70,6 +83,9 @@ object Buttons {
         text: String,
         modifier: Modifier = Modifier,
         enabled: Boolean = true,
+        contentColor: Color = MaterialTheme.colorScheme.onTertiaryContainer,
+        containerColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
+        style: TextStyle = LocalTextStyle.current,
         onClick: () -> Unit = {}
     ) {
         Button(
@@ -78,14 +94,17 @@ object Buttons {
             enabled = enabled,
             shape = RoundedCornerShape(5.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor =MaterialTheme.colorScheme.tertiaryContainer,
-                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                disabledContentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(0.4f)
+                containerColor = containerColor,
+                contentColor = contentColor,
+                disabledContentColor = contentColor,
+                disabledContainerColor = containerColor.copy(0.4f)
             )
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = text)
+                Text(
+                    text = text,
+                    style = style
+                )
                 Icon(imageVector = Icons.Filled.KeyboardArrowRight, contentDescription = null)
             }
         }
@@ -96,6 +115,9 @@ object Buttons {
         text: String,
         modifier: Modifier = Modifier,
         enabled: Boolean = true,
+        contentColor: Color = MaterialTheme.colorScheme.error,
+        containerColor: Color = MaterialTheme.colorScheme.errorContainer,
+        style: TextStyle = LocalTextStyle.current,
         onClick: () -> Unit = {}
     ) {
         OutlinedButton(
@@ -103,13 +125,16 @@ object Buttons {
             enabled = enabled,
             modifier = modifier,
             shape = RoundedCornerShape(5.dp),
-            colors = ButtonDefaults.outlinedButtonColors(
-                contentColor = MaterialTheme.colorScheme.error,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = containerColor,
+                contentColor = contentColor
             ),
             border = BorderStroke(1.dp,MaterialTheme.colorScheme.primary)
         ) {
-            Text(text = text)
-
+            Text(
+                text = text,
+                style=style
+            )
         }
     }
 }
