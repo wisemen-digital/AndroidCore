@@ -1,4 +1,4 @@
-package com.wiselab.ui
+package be.appwise.ui
 
 import android.app.DatePickerDialog
 import android.icu.util.Calendar

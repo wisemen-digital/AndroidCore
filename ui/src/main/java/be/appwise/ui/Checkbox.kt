@@ -1,4 +1,4 @@
-package com.wiselab.ui
+package be.appwise.ui
 
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxColors

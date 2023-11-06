@@ -1,4 +1,4 @@
-package com.wiselab.ui
+package be.appwise.ui
 
 import org.junit.Test
 
