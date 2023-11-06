@@ -552,7 +552,7 @@ fun Message(
                 text = message,
                 color = if (isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onPrimary,
 
-            )
+                )
         }
     }
 }
@@ -613,94 +613,94 @@ fun EditTextPreview() {
     val label: String = "Label here"
     val placeholder: String = "Type here ..."
 
-        Column(modifier = Modifier.padding(5.dp)) {
-            EditText(
-                label = label,
-                input = "",
-                placeholder = placeholder,
-                trailingIcon = {
-                    IconButton(onClick = { }) {
-                        Icon(
-                            imageVector = Icons.Filled.Clear,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
-                })
-            EditText(
-                label = label, input = "", placeholder = placeholder, trailingIcon = {
-                    IconButton(onClick = { }) {
-                        Icon(
-                            imageVector = Icons.Filled.Clear,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
-                }, message = "Message"
-            )
-            EditText(
-                label = label,
-                input = "",
-                isError = true,
-                placeholder = placeholder,
-                trailingIcon = {
-                    IconButton(onClick = { }) {
-                        Icon(
-                            imageVector = Icons.Filled.Clear,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
-                },
-                message = "Message"
-            )
-
-            EditText(label = label,
-                input = password,
-                onInputChange = { password = it },
-                placeholder = placeholder,
-                isPassword = true,
-                trailingIcon = {
-                    IconButton(onClick = { }) {
-                        Icon(
-                            imageVector = Icons.Filled.Clear,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
-                })
-
-            EditTextDate(
-                label = label,
-                value = date,
-                placeholder = "../../....",
-                onChange = { date = it },
-                trailingIcon = {
+    Column(modifier = Modifier.padding(5.dp)) {
+        EditText(
+            label = label,
+            input = "",
+            placeholder = placeholder,
+            trailingIcon = {
+                IconButton(onClick = { }) {
                     Icon(
-                        imageVector = Icons.Outlined.DateRange,
+                        imageVector = Icons.Filled.Clear,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
-            )
+            })
+        EditText(
+            label = label, input = "", placeholder = placeholder, trailingIcon = {
+                IconButton(onClick = { }) {
+                    Icon(
+                        imageVector = Icons.Filled.Clear,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+            }, message = "Message"
+        )
+        EditText(
+            label = label,
+            input = "",
+            isError = true,
+            placeholder = placeholder,
+            trailingIcon = {
+                IconButton(onClick = { }) {
+                    Icon(
+                        imageVector = Icons.Filled.Clear,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+            },
+            message = "Message"
+        )
 
-            EditTextSlider(
-                label = label,
-                isRequired = true,
-                value = slider,
-                onValueChange = { slider = it }
-            )
+        EditText(label = label,
+            input = password,
+            onInputChange = { password = it },
+            placeholder = placeholder,
+            isPassword = true,
+            trailingIcon = {
+                IconButton(onClick = { }) {
+                    Icon(
+                        imageVector = Icons.Filled.Clear,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+            })
 
-            EditTextRadioButton(
-                values = listOf<String>("Test", "Test2"),
-                label = label,
-                isRequired = true,
-            )
+        EditTextDate(
+            label = label,
+            value = date,
+            placeholder = "../../....",
+            onChange = { date = it },
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Outlined.DateRange,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        )
 
-            EditTextCheckbox(
-                values = listOf<String>("Test", "Test2"),
-                label = label
-            )
+        EditTextSlider(
+            label = label,
+            isRequired = true,
+            value = slider,
+            onValueChange = { slider = it }
+        )
+
+        EditTextRadioButton(
+            values = listOf<String>("Test", "Test2"),
+            label = label,
+            isRequired = true,
+        )
+
+        EditTextCheckbox(
+            values = listOf<String>("Test", "Test2"),
+            label = label
+        )
 
 //            EditText(
 //                input = "",
