@@ -12,9 +12,6 @@ import be.appwise.core.extensions.activity.showSnackbar
 import com.orhanobut.logger.Logger
 
 open class BaseActivity : AppCompatActivity() {
-    @ColorRes
-    protected open val statusBarColor: Int = android.R.color.white
-
     /**
      * A default implementation to configure a toolbar
      * Included is an implementation to handle the onClick on the back icon.

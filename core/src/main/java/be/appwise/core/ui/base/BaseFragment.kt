@@ -22,9 +22,6 @@ open class BaseFragment : Fragment() {
 
     lateinit var parentActivity: AppCompatActivity
 
-    @ColorRes
-    protected open val statusBarColor: Int = android.R.color.white
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         parentActivity = requireActivity() as AppCompatActivity
