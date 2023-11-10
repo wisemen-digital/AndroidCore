@@ -1,15 +1,20 @@
 package be.appwise.core.ui.base
 
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import be.appwise.core.R
 import be.appwise.core.extensions.activity.showSnackbar
 import com.orhanobut.logger.Logger
 
 open class BaseActivity : AppCompatActivity() {
+    @ColorRes
+    protected open val statusBarColor: Int = android.R.color.white
+
     /**
      * A default implementation to configure a toolbar
      * Included is an implementation to handle the onClick on the back icon.
@@ -51,5 +56,10 @@ open class BaseActivity : AppCompatActivity() {
     open fun onError(throwable: Throwable) {
         showSnackbar(throwable.message ?: getString(R.string.error_default))
         Logger.t("BaseActivity").e(throwable, throwable.message ?: getString(R.string.error_default))
+    }
+
+    fun setStatusBarColor(@ColorRes statusBarColor: Int, isDarkMode: Boolean = false) {
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = !isDarkMode
+        window.statusBarColor = ContextCompat.getColor(this, statusBarColor)
     }
 }
