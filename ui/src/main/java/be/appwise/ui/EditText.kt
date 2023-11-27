@@ -129,6 +129,7 @@ fun EditText(
         disabledIndicatorColor = Color.Transparent,
         cursorColor = MaterialTheme.colorScheme.primary
     ),
+    shape: Shape = RoundedCornerShape(10.dp)
 ) {
 
     Column(modifier = modifier) {
@@ -149,7 +150,7 @@ fun EditText(
             isError = isError,
             trailingIcon = trailingIcon,
             leadingIcon = leadingIcon,
-            shape = RoundedCornerShape(10.dp),
+            shape = shape,
             singleLine = singleLine,
             modifier = Modifier.fillMaxWidth())
         Message(message = message, icon = icon, isError = isError)
