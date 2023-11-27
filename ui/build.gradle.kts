@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.material.icons.extended)
+    debugImplementation(libs.compose.ui.tooling)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.ext)
