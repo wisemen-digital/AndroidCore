@@ -25,6 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.ErrorOutline
+import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -52,12 +53,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -360,6 +359,12 @@ fun EditTextCheckbox(
     message: String = "",
     icon: ImageVector = Icons.Outlined.ErrorOutline,
     isRequired: Boolean = false,
+    shape: Shape = RoundedCornerShape(10.dp),
+    backgroundColor: Color = Color.Gray,
+    checkboxColors: CheckboxColors = CheckboxDefaults.colors(
+        checkedColor = MaterialTheme.colorScheme.primary,
+        uncheckedColor = Color.Black
+    )
 ) {
 
     val map = remember {
@@ -377,21 +382,17 @@ fun EditTextCheckbox(
                     modifier = modifier
                         .fillMaxWidth()
                         .padding(bottom = 5.dp)
-                        .background(color = Color.Gray, shape = RoundedCornerShape(10.dp)),
+                        .background(color = backgroundColor, shape = shape),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     CheckBox(
                         enabled = checkbox.value,
-                        colors = CheckboxDefaults.colors(
-                            checkedColor = MaterialTheme.colorScheme.primary,
-                            uncheckedColor = Color.Black
-                        ),
+                        colors = checkboxColors,
                         onCheckChanged = {
                             map[checkbox.key] = !checkbox.value
                             onCheckChanged(map.filter { it.value }.keys)
                         },
-
-                        )
+                    )
                     Text(checkbox.key)
                 }
             }
@@ -557,8 +558,6 @@ fun Message(
         }
     }
 }
-
-
 
 
 @Preview(showBackground = true)
