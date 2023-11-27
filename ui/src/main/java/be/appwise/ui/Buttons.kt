@@ -71,6 +71,8 @@ object Buttons {
         containerColor: Color = MaterialTheme.colorScheme.secondaryContainer,
         style: TextStyle = LocalTextStyle.current,
         buttonShape: Shape = RoundedCornerShape(5.dp),
+        leading: (@Composable () -> Unit) = { },
+        trailing: (@Composable () -> Unit) = { },
         onClick: () -> Unit = {}
     ) {
         Button(
@@ -83,10 +85,16 @@ object Buttons {
                 contentColor = contentColor
             )
         ) {
-            Text(
-                text = text,
-                style = style
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                leading()
+                Text(
+                    text = text,
+                    style = style
+                )
+                trailing()
+            }
         }
     }
 
@@ -99,6 +107,8 @@ object Buttons {
         containerColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
         style: TextStyle = LocalTextStyle.current,
         buttonShape: Shape = RoundedCornerShape(5.dp),
+        leading: (@Composable () -> Unit) = { },
+        trailing: (@Composable () -> Unit) = { },
         onClick: () -> Unit = {}
     ) {
         Button(
@@ -113,12 +123,15 @@ object Buttons {
                 disabledContainerColor = containerColor.copy(0.4f)
             )
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                leading()
                 Text(
                     text = text,
                     style = style
                 )
-                Icon(imageVector = Icons.Filled.KeyboardArrowRight, contentDescription = null)
+                trailing()
             }
         }
     }
@@ -132,6 +145,8 @@ object Buttons {
         containerColor: Color = MaterialTheme.colorScheme.errorContainer,
         style: TextStyle = LocalTextStyle.current,
         buttonShape: Shape = RoundedCornerShape(5.dp),
+        leading: (@Composable () -> Unit) = { },
+        trailing: (@Composable () -> Unit) = { },
         onClick: () -> Unit = {}
     ) {
         OutlinedButton(
@@ -145,10 +160,16 @@ object Buttons {
             ),
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
         ) {
-            Text(
-                text = text,
-                style = style
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                leading()
+                Text(
+                    text = text,
+                    style = style
+                )
+                trailing()
+            }
         }
     }
 }
