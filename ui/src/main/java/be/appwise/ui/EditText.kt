@@ -210,7 +210,9 @@ fun EditTextSlider(
         0.6f to MaterialTheme.colorScheme.primary,
         1f to MaterialTheme.colorScheme.primary,
     ),
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    backgroundColor: Color = Color.Gray,
+    shape: Shape = RoundedCornerShape(10.dp)
 ) {
 
     Column {
@@ -219,7 +221,7 @@ fun EditTextSlider(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = Color.Gray, shape = RoundedCornerShape(10.dp)),
+                .background(color = backgroundColor, shape = shape),
             contentAlignment = Alignment.Center
         ) {
             Slider(value = value,
