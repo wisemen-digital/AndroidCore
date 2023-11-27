@@ -66,40 +66,41 @@ import be.appwise.visualtransformation.creditCardTransformation
 /**
  *
  * Text fields based on Outlined Text Field with more options and default styling
+ * @param modifier the [Modifier] to be applied to this text field
  * @param input the input text to be shown in the text field
  * @param onInputChange the callback that is triggered when the input service updates the text. An
  * updated text comes as a parameter of the callback
- * @param modifier the [Modifier] to be applied to this text field
- * @param enabled controls the enabled state of this text field. When `false`, this component will
- * not respond to user input, and it will appear visually disabled and disabled to accessibility
- * services.
  * @param label the optional label to be displayed above the text field container.
  * @param placeholder the optional placeholder to be displayed when the text field is in focus and
  * the input text is empty.
- * @param leadingIcon the optional leading icon to be displayed at the beginning of the text field
- * container, a composable is expected here.
+ * @param message the optional error/info message. The message is shown underneath the text field,
+ * when isError is true this message will be an error message and shown in ErrorColor from the appTheme.
+ * @param icon the optional icon to be displayed in front of the message or error message. Default value is Icons.Outlined.ErrorOutLine.
+ * @param isPassword when `true`, this text field will make the input shown as *****.
+ * @param isCreditCard when `true`, the input will automatically refactor the input to the credit card format `1111.2222.3333.4444`
  * @param trailingIcon the optional trailing icon to be displayed at the end of the text field
  * container, a composable is expected here.
- * @param isError indicates if the text field's current value is in error. If set to true, the
- * label, border and trailing icon by default will be displayed in error color
+ * @param leadingIcon the optional leading icon to be displayed at the beginning of the text field
+ * container, a composable is expected here.
  * @param keyboardOptions software keyboard options that contains configuration such as
  * [KeyboardType] and [ImeAction]
  * @param keyboardActions when the input service emits an IME action, the corresponding callback
  * is called. Note that this IME action may be different from what you specified in
  * [KeyboardOptions.imeAction]
- * @param singleLine when `true`, this text field becomes a single horizontally scrolling text field
- * instead of wrapping onto multiple lines. The keyboard will be informed to not show the return key
  * as the [ImeAction]. Note that [maxLines] parameter will be ignored as the maxLines attribute will
  * be automatically set to 1.
+ * @param isRequired when `true`, the input will show a * behind the label in the Red color.
+ * @param enabled controls the enabled state of this text field. When `false`, this component will
+ * not respond to user input, and it will appear visually disabled and disabled to accessibility
+ * services.
+ * @param isError indicates if the text field's current value is in error. If set to true, the
+ * label, border and trailing icon by default will be displayed in error color
+ * @param singleLine when `true`, this text field becomes a single horizontally scrolling text field
+ * instead of wrapping onto multiple lines. The keyboard will be informed to not show the return key
  * @param colors [TextFieldColors] that will be used to resolve the colors used for this text field
  * in different states. See [TextFieldDefaults.outlinedTextFieldColors].
- * @param isPassword when `true`, this text field will make the input shown as *****.
- * @param isCreditCard when `true`, the input will automatically refactor the input to the credit card format `1111.2222.3333.4444`
- * @param isRequired when `true`, the input will show a * behind the label in the Red color.
- * @param icon the optional icon to be displayed in front of the message or error message. Default value is Icons.Outlined.ErrorOutLine.
- * @param message the optional error/info message. The message is shown underneath the text field,
- * when isError is true this message will be an error message and shown in ErrorColor from the appTheme.
- */
+ * @param shape this will determine the shape of the EditText field. Default is the shape rounded with a value of 10dp
+*/
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditText(
@@ -186,6 +187,8 @@ fun EditText(
  * @param message the optional error/info message. The message is shown underneath the text field,
  * when isError is true this message will be an error message and shown in ErrorColor from the appTheme.
  * @param isRequired when `true`, the input will show a * behind the label in the Red color.
+ * @param backgroundColor this will be used to resolve the background color of the whole element.
+ * @param shape this will determine the shape of the EditTextSlider field. Default is the shape rounded with a value of 10dp
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -350,7 +353,9 @@ fun EditTextRadioButton(
  * when isError is true this message will be an error message and shown in ErrorColor from the appTheme.
  * @param isRequired when `true`, the input will show a * behind the label in the Red color.
  * @param label the optional label to be displayed above the text field container.
- *
+ * @param shape this will determine the shape of the EditText field. Default is the shape rounded with a value of 10dp
+ * @param backgroundColor this will be used to resolve the background color of the whole element.
+ * @param checkboxColors represent the colors of the checkbox in different states.
  */
 
 @Composable
@@ -673,30 +678,6 @@ fun EditTextPreview() {
             values = listOf<String>("Test", "Test2"),
             label = label
         )
-
-//            EditText(
-//                input = "",
-//                label = label,
-//                placeholder = "0000.0000.0000.0000",
-//                leadingIcon = {
-//                    Icon(
-//                        painter = painterResource(id = R.drawable.visa_logo),
-//                        contentDescription = null
-//                    )
-//                })
-//            EditText(
-//                input = visa,
-//                onInputChange = { visa = it },
-//                label = label,
-//                placeholder = "0000.0000.0000.0000",
-//                isCreditCard = true,
-//                leadingIcon = {
-//                    Icon(
-//                        painter = painterResource(id = R.drawable.visa_logo),
-//                        contentDescription = null
-//                    )
-//                })
-
 
     }
 }
