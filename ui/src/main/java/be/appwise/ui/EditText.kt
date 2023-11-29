@@ -283,7 +283,8 @@ fun EditTextSlider(
  * when isError is true this message will be an error message and shown in ErrorColor from the appTheme.
  * @param isRequired when `true`, the input will show a * behind the label in the Red color.
  * @param label the optional label to be displayed above the text field container.
- *
+ * @param backgroundColor this will be used to resolve the background color of the whole element.
+ * @param shape this will determine the shape of the EditTextSlider field. Default is the shape rounded with a value of 10dp
  */
 
 @Composable
@@ -296,7 +297,9 @@ fun EditTextRadioButton(
     icon: ImageVector = Icons.Outlined.ErrorOutline,
     isRequired: Boolean = false,
     colors: RadioButtonColors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colorScheme.primary),
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    backgroundColor: Color = Color.Gray,
+    shape: Shape = RoundedCornerShape(10.dp)
 ) {
 
     val map = remember {
@@ -314,7 +317,7 @@ fun EditTextRadioButton(
                     modifier = modifier
                         .fillMaxWidth()
                         .padding(bottom = 5.dp)
-                        .background(color = Color.Gray, shape = RoundedCornerShape(10.dp)),
+                        .background(color = backgroundColor, shape = shape),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
