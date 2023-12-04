@@ -108,6 +108,18 @@ fun Calendar(
     val pagerState = rememberPagerState(monthsInPast.toInt())
     val coroutineScope = rememberCoroutineScope()
 
+    fun toNextMonth() {
+        coroutineScope.launch {
+            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+        }
+    }
+
+    fun toPrevMonth() {
+        coroutineScope.launch {
+            pagerState.animateScrollToPage(pagerState.currentPage - 1)
+        }
+    }
+
     Column {
 
         HorizontalPager(
