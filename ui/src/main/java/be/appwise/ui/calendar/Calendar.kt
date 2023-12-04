@@ -1,10 +1,7 @@
 package be.appwise.ui.calendar
 
-import android.content.ContentValues.TAG
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -15,7 +12,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -30,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import be.appwise.util.extensions.capitalize
+import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.WeekFields
@@ -88,9 +86,9 @@ fun Calendar(
         LocalContext.current.resources.configuration.locales.get(
             0
         )
-    ).firstDayOfWeek
+    ).firstDayOfWeek,
 
-) {
+    ) {
 
     val resources = LocalContext.current.resources
     val locale = resources.configuration.locales.get(0)
@@ -108,12 +106,46 @@ fun Calendar(
     }
 
     val pagerState = rememberPagerState(monthsInPast.toInt())
+    val coroutineScope = rememberCoroutineScope()
 
     Column {
 
-        HorizontalPager(state = pagerState, pageCount = listMonths.size, verticalAlignment = Alignment.Top) { index ->
+        HorizontalPager(
+            state = pagerState,
+            pageCount = listMonths.size,
+            verticalAlignment = Alignment.Top
+        ) { index ->
 
             val pagerYearMonth = now.minusMonths(monthsInPast - index)
+            val showMonthDialog = remember { mutableStateOf(false) }
+            val showYearDialog = remember { mutableStateOf(false) }
+
+            if (showMonthDialog.value) {
+                monthDialog(
+                    locale = locale,
+                    currentMonth = pagerYearMonth.month,
+                    onMonthClick = {
+                        val move = it.value - pagerYearMonth.monthValue
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(pagerState.currentPage + move)
+                        }
+                    },
+                    onDismiss = { showMonthDialog.value = !showMonthDialog.value })
+            }
+
+            if (showYearDialog.value) {
+                yearDialog(
+                    currentYear = pagerYearMonth.year,
+                    monthsInFuture = monthsInFuture,
+                    monthsInPast = monthsInPast,
+                    onYearClick = {
+                        val move = it - pagerYearMonth.year
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(pagerState.currentPage + (move * 12))
+                        }
+                    },
+                    onDismiss = { showYearDialog.value = !showYearDialog.value })
+            }
 
             Column(
                 modifier = Modifier
@@ -125,7 +157,10 @@ fun Calendar(
                         modifier = Modifier
                             .padding(start = 16.dp)
                             .padding(end = 4.dp)
-                            .alignByBaseline(),
+                            .alignByBaseline()
+                            .clickable {
+                                showMonthDialog.value = !showMonthDialog.value
+                            },
                         text = pagerYearMonth.month.getDisplayName(
                             dateTimeFormat.FULL,
                             locale
@@ -134,7 +169,10 @@ fun Calendar(
                     )
                     Text(
                         modifier = Modifier
-                            .alignByBaseline(),
+                            .alignByBaseline()
+                            .clickable {
+                                showYearDialog.value = !showYearDialog.value
+                            },
                         text = pagerYearMonth.year.toString(),
                         style = textStyleYear
                     )
@@ -178,14 +216,11 @@ fun Calendar(
                         val eventsOfDay = getEventsOfDay(events, date)
 
                         Box(
-                            modifier = Modifier.clickable {
-                                onClickAction()
-                                clickedDate.value = date
-                                Log.d(
-                                    TAG,
-                                    "Calendar: ${clickedDate.value} -- $index -- $item"
-                                )
-                            }
+                            modifier = Modifier
+                                .clickable {
+                                    onClickAction()
+                                    clickedDate.value = date
+                                }
                         ) {
 
                             if (clickedDate.value == date) {
@@ -210,7 +245,6 @@ fun Calendar(
                             }
 
                             if (eventsOfDay.isNotEmpty()) {
-                                Log.d(TAG, "SHOW: ")
                                 singleEventIndicatorComp()
                             }
 
@@ -222,7 +256,7 @@ fun Calendar(
                             ) {
                                 Row(
                                     modifier = Modifier
-                                        .padding(bottom = 4.dp)
+                                        .padding(bottom = 5.dp)
                                 ) {
 
                                     eventsOfDay.forEach { event ->
@@ -244,14 +278,12 @@ fun Calendar(
 @Composable
 fun CalendarPreview() {
 
-
     val events = listOf(
         Event(LocalDate.now(), name = "test Event", color = Color.Red),
         Event(LocalDate.now(), name = "test Event", color = Color.Green),
         Event(LocalDate.now().plusDays(2), name = "test Event", color = Color.Green),
         Event(LocalDate.now().plusDays(8), name = "test Event", color = Color.Green),
     )
-
 
     Calendar(
         onClickAction = {},
@@ -289,7 +321,7 @@ fun CalendarPreview() {
             Box(
                 modifier = Modifier
                     .padding(horizontal = 1.dp)
-                    .size(6.dp)
+                    .size(5.dp)
                     .clip(CircleShape)
                     .background(it.color)
             )
@@ -303,7 +335,6 @@ fun CalendarPreview() {
         },
         events = events
     )
-
 }
 
 data class Event(
@@ -342,9 +373,6 @@ fun setup(startDate: LocalDate, endDate: LocalDate, firstDayOfWeek: DayOfWeek): 
             daysPrevMonth =
                 prevMonth.lengthOfMonth() - (firstDayOfMonth - 2)..prevMonth.lengthOfMonth()
         }
-
-        Log.d(TAG, "setup: $daysPrevMonth")
-
 
         if (lastDayOfMonth != 7) {
             daysNextMonth =
