@@ -3,25 +3,18 @@ package be.appwise.calendar
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -29,20 +22,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import be.appwise.calendar.data.IEvent
+import be.appwise.ui.DefaultCalendarStyle
 import be.appwise.util.extensions.capitalize
+import be.appwise.util.extensions.eventsOfDay
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.WeekFields
+import be.appwise.ui.TextStyle as defaultTextStyle
 import java.time.format.TextStyle as dateTimeFormat
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -50,44 +44,32 @@ import java.time.format.TextStyle as dateTimeFormat
 @Composable
 fun Calendar(
     onClickAction: () -> Unit = {},
-    onClickComp: (@Composable (text: String) -> Unit) = { },
-    currentDayComp: (@Composable (text: String) -> Unit) = { },
-    eventIndicatorComp: (@Composable (event: Event) -> Unit) = { },
-    singleEventIndicatorComp: (@Composable () -> Unit) = { },
-    events: List<Event> = emptyList<Event>(),
-    textStyleMonth: TextStyle = TextStyle(
-        color = Color.Black,
-        fontSize = 35.sp,
-        fontWeight = FontWeight.W700,
-        lineHeight = 42.64.sp,
-        letterSpacing = 0.39.sp
-    ),
-    textStyleYear: TextStyle = TextStyle(
-        color = Color.Gray,
-        fontSize = 16.sp,
-        fontWeight = FontWeight.W400,
-        lineHeight = 42.64.sp,
-        letterSpacing = 0.39.sp
-    ),
-    textStyleDaysOverview: TextStyle = TextStyle(
-        color = Color.Black,
-        fontSize = 12.sp,
-        fontWeight = FontWeight.W600,
-        lineHeight = 14.32.sp
-    ),
-    textStyleDays: TextStyle = TextStyle(
-        color = Color.Black,
-        fontSize = 12.sp,
-        lineHeight = 14.32.sp
-    ),
-    monthsInPast: Long = 120L,
-    monthsInFuture: Long = 120L,
+    onClickComp: (@Composable (text: String) -> Unit) = { DefaultCalendarStyle.Clicked(day = it) },
+    currentDayComp: (@Composable (text: String) -> Unit) = { DefaultCalendarStyle.Today(day = it) },
+    eventIndicatorComp: (@Composable (eventPreview: IEvent) -> Unit) = {
+        DefaultCalendarStyle.EventIndicator(
+            event = it
+        )
+    },
+    singleEventIndicatorComp: (@Composable () -> Unit) = { DefaultCalendarStyle.SingleEventIndicator() },
+    eventPreviews: List<EventPreview> = emptyList<EventPreview>(),
+    textStyleMonth: TextStyle = defaultTextStyle.Month,
+    textStyleYear: TextStyle = defaultTextStyle.Year,
+    textStyleDaysOverview: TextStyle = defaultTextStyle.OverviewDay,
+    textStyleDays: TextStyle = defaultTextStyle.Day,
+    dayComp: @Composable (text: String, color:Color) -> Unit = { text, color ->
+        DefaultCalendarStyle.Day(
+            day = text,
+            style = textStyleDays,
+            color = color
+        )
+    },
+    monthsInPast: Long = 120,
+    monthsInFuture: Long = 120,
     weekStartsOn: DayOfWeek = WeekFields.of(
         LocalContext.current.resources.configuration.locales[0]
     ).firstDayOfWeek,
-
-    ) {
-
+) {
     val resources = LocalContext.current.resources
     val locale = resources.configuration.locales[0]
 
@@ -208,73 +190,56 @@ fun Calendar(
                         )
 
                     }
-                    itemsIndexed(listMonths[index]) { index, item ->
+                    itemsIndexed(listMonths[index]) { index, day ->
 
-                        val date: LocalDate
-                        var dayStyling = textStyleDays
+                        val lengthPrevMonth = pagerYearMonth.minusMonths(1).month.maxLength()
+                        val lengthThisMonth = pagerYearMonth.month.maxLength()
+                        val lengthWeek = 7
 
-                        if (index <= 7 && item > (pagerYearMonth.minusMonths(1).month.maxLength() - 7)) {
-                            date = pagerYearMonth.minusMonths(1L).withDayOfMonth(item)
-                            dayStyling = textStyleDays.copy(color = textStyleDays.color.copy(0.4f))
-                        } else if (index > (pagerYearMonth.month.maxLength() - 7) && item < 7) {
-                            date = pagerYearMonth.plusMonths(1L).withDayOfMonth(item)
-                            dayStyling = textStyleDays.copy(color = textStyleDays.color.copy(0.4f))
-                        } else {
-                            date = pagerYearMonth.withDayOfMonth(item)
+                        val date: LocalDate = when {
+                            (index <= lengthWeek && day > lengthPrevMonth - lengthWeek) -> {
+                                pagerYearMonth.minusMonths(
+                                    1
+                                ).withDayOfMonth(day)
+                            }
+
+                            (index > lengthThisMonth && day < lengthWeek) -> {
+                                pagerYearMonth.plusMonths(
+                                    1
+                                ).withDayOfMonth(day)
+                            }
+
+                            else -> pagerYearMonth.withDayOfMonth(day)
                         }
 
-                        val eventsOfDay = getEventsOfDay(events, date)
-
-                        Box(
-                            modifier = Modifier
-                                .clickable {
-                                    onClickAction()
-                                    clickedDate.value = date
-                                }
-                        ) {
-
-                            if (clickedDate.value == date) {
-                                onClickComp(item.toString())
-                            } else if (now == date) {
-                                currentDayComp(item.toString())
-                            } else {
-                                Box(
-                                    modifier = Modifier
-                                        .aspectRatio(1f)
-                                        .background(Color.Transparent, RoundedCornerShape(7.dp)),
-                                    contentAlignment = Alignment.Center,
-                                ) {
-                                    Text(
-                                        modifier = Modifier
-                                            .fillMaxWidth(),
-                                        text = item.toString(),
-                                        style = dayStyling,
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
+                        val color: Color = when {
+                            (index <= lengthWeek && day > lengthPrevMonth - lengthWeek) -> {
+                                textStyleDays.color.copy(0.4f)
                             }
-
-                            if (eventsOfDay.isNotEmpty()) {
-                                singleEventIndicatorComp()
+                            (index >= lengthThisMonth && day < lengthWeek) -> {
+                                textStyleDays.color.copy(0.4f)
                             }
+                            else -> textStyleDays.color
 
-                            Box(
-                                modifier = Modifier
-                                    .aspectRatio(1f)
-                                    .background(Color.Transparent, RoundedCornerShape(7.dp)),
-                                contentAlignment = Alignment.BottomCenter,
-                            ) {
-                                Row(
-                                    modifier = Modifier
-                                        .padding(bottom = 5.dp)
-                                ) {
-
-                                    eventsOfDay.forEach { event ->
-                                        eventIndicatorComp(event)
-                                    }
-                                }
-                            }
                         }
+
+                        dayInCalendar(
+                            onClickAction = {
+                                onClickAction()
+                                clickedDate.value = date
+                            },
+                            date = date,
+                            clickedDate = clickedDate.value,
+                            now = now,
+                            onClickComp = onClickComp,
+                            currentDayComp = currentDayComp,
+                            dayComp = dayComp,
+                            eventIndicatorComp = eventIndicatorComp,
+                            singleEventIndicatorComp = singleEventIndicatorComp,
+                            day = day,
+                            eventsOfDay = eventPreviews.eventsOfDay(date),
+                            otherColor = color
+                        )
                     }
                 }
             }
@@ -288,77 +253,27 @@ fun Calendar(
 @Composable
 fun CalendarPreview() {
 
-    val events = listOf(
-        Event(LocalDate.now(), name = "test Event", color = Color.Red),
-        Event(LocalDate.now(), name = "test Event", color = Color.Green),
-        Event(LocalDate.now().plusDays(2), name = "test Event", color = Color.Green),
-        Event(LocalDate.now().plusDays(8), name = "test Event", color = Color.Green),
+    val eventPreviews = listOf(
+        EventPreview(LocalDate.now(), color = Color.Red),
+        EventPreview(LocalDate.now(), color = Color.Green),
+        EventPreview(LocalDate.now().plusDays(2), color = Color.Green),
+        EventPreview(LocalDate.now().plusDays(8), color = Color.Green),
     )
 
     Calendar(
         onClickAction = {},
-        onClickComp = {
-            Box(
-                modifier = Modifier
-                    .aspectRatio(1f)
-                    .background(Color.Green.copy(0.2f), RoundedCornerShape(7.dp)),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    text = it,
-                    textAlign = TextAlign.Center
-                )
-            }
-        },
-        currentDayComp = {
-            Box(
-                modifier = Modifier
-                    .aspectRatio(1f)
-                    .background(Color.Red.copy(0.2f), RoundedCornerShape(7.dp)),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    text = it,
-                    textAlign = TextAlign.Center
-                )
-            }
-        },
-        eventIndicatorComp = {
-            Box(
-                modifier = Modifier
-                    .padding(horizontal = 1.dp)
-                    .size(5.dp)
-                    .clip(CircleShape)
-                    .background(it.color)
-            )
-        },
-        singleEventIndicatorComp = {
-            Box(
-                modifier = Modifier
-                    .aspectRatio(1f)
-                    .border(1.dp, Color.Gray, RoundedCornerShape(7.dp)),
-            )
-        },
-        events = events
+        onClickComp = { DefaultCalendarStyle.Clicked(day = it) },
+        currentDayComp = { DefaultCalendarStyle.Today(day = it) },
+        eventIndicatorComp = { DefaultCalendarStyle.EventIndicator(it) },
+        singleEventIndicatorComp = { DefaultCalendarStyle.SingleEventIndicator() },
+        eventPreviews = eventPreviews
     )
 }
 
-data class Event(
+data class EventPreview(
     override val startDate: LocalDate,
-    override val name: String,
     override val color: Color
 ) : IEvent
-
-
-fun getEventsOfDay(list: List<Event>, date: LocalDate): List<Event> {
-    return list.filter { item ->
-        item.startDate == date
-    }
-}
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun setup(startDate: LocalDate, endDate: LocalDate, firstDayOfWeek: DayOfWeek): List<List<Int>> {
