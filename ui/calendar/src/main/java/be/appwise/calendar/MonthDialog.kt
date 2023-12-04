@@ -1,4 +1,4 @@
-package be.appwise.ui.calendar
+package be.appwise.calendar
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -10,23 +10,39 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import be.appwise.util.extensions.capitalize
+import java.time.LocalDate
+import java.time.Month
+import java.time.format.TextStyle
+import java.util.Locale
+
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+fun monthDialogPreview() {
+    val resources = LocalContext.current.resources
+    val locale = resources.configuration.locales.get(0)
+    monthDialog(locale, Month.DECEMBER)
+}
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun yearDialog(
-    currentYear: Int,
-    monthsInPast: Long,
-    monthsInFuture: Long,
-    onYearClick: (year: Int) -> Unit = {},
+fun monthDialog(
+    locale: Locale,
+    currentMonth: Month,
+    onMonthClick: (month: Month) -> Unit = {},
     onDismiss: () -> Unit = {}
 ) {
-    val years = (currentYear - (monthsInPast.toInt()/12) ..currentYear + (monthsInFuture.toInt()/12)).toList()
+    val months = (1..12).toList()
+    val date = LocalDate.now()
 
     Dialog(
         onDismissRequest = { onDismiss() }
@@ -36,22 +52,22 @@ fun yearDialog(
                 .background(Color.White)
                 .padding(8.dp),
         ) {
-            years.forEach {
+            months.forEach {
                 Text(
                     modifier = Modifier.clickable {
-                        onYearClick(it)
+                        onMonthClick(Month.of(it))
                         onDismiss()
                     },
-                    text = it.toString(),
-                    style = if (it == currentYear)
-                        TextStyle(
+                    text = date.withMonth(it).month.getDisplayName(TextStyle.FULL, locale).capitalize(),
+                    style = if (date.withMonth(it).month == currentMonth)
+                        androidx.compose.ui.text.TextStyle(
                             color = Color.Black,
                             fontWeight = FontWeight.W700,
                             fontSize = 24.sp,
                             lineHeight = 14.32.sp
                         )
                     else
-                        TextStyle(
+                        androidx.compose.ui.text.TextStyle(
                             color = Color.Black,
                             fontSize = 24.sp,
                             lineHeight = 14.32.sp

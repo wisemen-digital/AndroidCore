@@ -1,4 +1,4 @@
-package be.appwise.ui.calendar
+package be.appwise.calendar
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -83,15 +83,13 @@ fun Calendar(
     monthsInPast: Long = 120L,
     monthsInFuture: Long = 120L,
     weekStartsOn: DayOfWeek = WeekFields.of(
-        LocalContext.current.resources.configuration.locales.get(
-            0
-        )
+        LocalContext.current.resources.configuration.locales[0]
     ).firstDayOfWeek,
 
     ) {
 
     val resources = LocalContext.current.resources
-    val locale = resources.configuration.locales.get(0)
+    val locale = resources.configuration.locales[0]
 
     val now = LocalDate.now()
 

@@ -1,4 +1,4 @@
-package be.appwise.ui.calendar
+package be.appwise.calendar
 
 import androidx.compose.ui.graphics.Color
 import java.time.LocalDate
