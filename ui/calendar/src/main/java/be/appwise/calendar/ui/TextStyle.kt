@@ -1,4 +1,4 @@
-package be.appwise.ui
+package be.appwise.calendar.ui
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle

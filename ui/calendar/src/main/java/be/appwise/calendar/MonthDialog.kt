@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import be.appwise.util.extensions.capitalize
+import be.appwise.calendar.util.extensions.capitalize
 import java.time.LocalDate
 import java.time.Month
 import java.time.format.TextStyle

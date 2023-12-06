@@ -16,9 +16,11 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -32,15 +34,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import be.appwise.calendar.data.IEvent
 import be.appwise.calendar.data.IType
-import be.appwise.ui.DefaultCalendarStyle
-import be.appwise.util.extensions.allTypes
-import be.appwise.util.extensions.capitalize
-import be.appwise.util.extensions.eventsOfDay
+import be.appwise.calendar.ui.DefaultCalendarStyle
+import be.appwise.calendar.util.extensions.allTypes
+import be.appwise.calendar.util.extensions.capitalize
+import be.appwise.calendar.util.extensions.eventsOfDay
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.WeekFields
-import be.appwise.ui.TextStyle as defaultTextStyle
+import be.appwise.calendar.ui.TextStyle as defaultTextStyle
 import java.time.format.TextStyle as dateTimeFormat
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
@@ -77,6 +79,7 @@ fun Calendar(
         WeekFields.of(
             LocalContext.current.resources.configuration.locales[0]
         ).firstDayOfWeek,
+    calendarState: PagerState = rememberPagerState(monthsInPast.toInt())
 ) {
     val resources = LocalContext.current.resources
     val locale = resources.configuration.locales[0]
@@ -93,31 +96,17 @@ fun Calendar(
         mutableStateOf(LocalDate.now())
     }
 
-    val pagerState = rememberPagerState(monthsInPast.toInt())
+
     val coroutineScope = rememberCoroutineScope()
 
-    fun toNextMonth() {
-        coroutineScope.launch {
-            pagerState.animateScrollToPage(pagerState.currentPage + 1)
-        }
-    }
-
-    fun toPrevMonth() {
-        coroutineScope.launch {
-            pagerState.animateScrollToPage(pagerState.currentPage - 1)
-        }
-    }
-
-    fun toToday() {
-        coroutineScope.launch {
-            pagerState.animateScrollToPage(monthsInPast.toInt())
-        }
+    LaunchedEffect(monthsInPast) {
+        calendarState.scrollToPage(monthsInPast.toInt())
     }
 
     Column {
 
         HorizontalPager(
-            state = pagerState,
+            state = calendarState,
             pageCount = listMonths.size,
             verticalAlignment = Alignment.Top
         ) { index ->
@@ -133,7 +122,7 @@ fun Calendar(
                     onMonthClick = {
                         val move = it.value - pagerYearMonth.monthValue
                         coroutineScope.launch {
-                            pagerState.animateScrollToPage(pagerState.currentPage + move)
+                            calendarState.animateScrollToPage(calendarState.currentPage + move)
                         }
                     },
                     onDismiss = { showMonthDialog.value = !showMonthDialog.value })
@@ -147,7 +136,7 @@ fun Calendar(
                     onYearClick = {
                         val move = it - pagerYearMonth.year
                         coroutineScope.launch {
-                            pagerState.animateScrollToPage(pagerState.currentPage + (move * 12))
+                            calendarState.animateScrollToPage(calendarState.currentPage + (move * 12))
                         }
                     },
                     onDismiss = { showYearDialog.value = !showYearDialog.value })
@@ -271,8 +260,11 @@ fun Calendar(
             }
         }
     }
+
 }
 
+
+@OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
@@ -296,7 +288,8 @@ fun CalendarPreview() {
         eventIndicatorComp = { DefaultCalendarStyle.EventIndicator(it.type) },
         singleEventIndicatorComp = { DefaultCalendarStyle.SingleEventIndicator() },
         events = eventPreviews,
-        legendColumns = 2
+        legendColumns = 2,
+        calendarState = rememberPagerState(1)
     )
 }
 
