@@ -1,13 +1,13 @@
 package be.appwise.calendar
 
-import android.content.ContentValues.TAG
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,7 +31,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import be.appwise.calendar.data.IEvent
+import be.appwise.calendar.data.IType
 import be.appwise.ui.DefaultCalendarStyle
+import be.appwise.util.extensions.allTypes
 import be.appwise.util.extensions.capitalize
 import be.appwise.util.extensions.eventsOfDay
 import kotlinx.coroutines.launch
@@ -41,7 +43,7 @@ import java.time.temporal.WeekFields
 import be.appwise.ui.TextStyle as defaultTextStyle
 import java.time.format.TextStyle as dateTimeFormat
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Calendar(
@@ -50,11 +52,11 @@ fun Calendar(
     currentDayComp: (@Composable (text: String) -> Unit) = { DefaultCalendarStyle.Today(day = it) },
     eventIndicatorComp: (@Composable (eventPreview: IEvent) -> Unit) = {
         DefaultCalendarStyle.EventIndicator(
-            event = it
+            type = it.type
         )
     },
     singleEventIndicatorComp: (@Composable () -> Unit) = { DefaultCalendarStyle.SingleEventIndicator() },
-    eventPreviews: List<EventPreview> = emptyList<EventPreview>(),
+    events: List<IEvent> = emptyList(),
     textStyleMonth: TextStyle = defaultTextStyle.Month,
     textStyleYear: TextStyle = defaultTextStyle.Year,
     textStyleDaysOverview: TextStyle = defaultTextStyle.OverviewDay,
@@ -66,6 +68,8 @@ fun Calendar(
             color = color
         )
     },
+    legendItemComp: (@Composable (type: IType) -> Unit) = { DefaultCalendarStyle.LegendItem(it) },
+    legendColumns: Int = 99,
     monthsInPast: Long = 120,
     monthsInFuture: Long = 120,
     weekStartsOn: DayOfWeek =
@@ -101,6 +105,12 @@ fun Calendar(
     fun toPrevMonth() {
         coroutineScope.launch {
             pagerState.animateScrollToPage(pagerState.currentPage - 1)
+        }
+    }
+
+    fun toToday() {
+        coroutineScope.launch {
+            pagerState.animateScrollToPage(monthsInPast.toInt())
         }
     }
 
@@ -243,43 +253,62 @@ fun Calendar(
                             eventIndicatorComp = eventIndicatorComp,
                             singleEventIndicatorComp = singleEventIndicatorComp,
                             day = day,
-                            eventsOfDay = eventPreviews.eventsOfDay(date),
+                            eventsOfDay = events.eventsOfDay(date),
                             otherColor = color
                         )
                     }
                 }
             }
         }
+
+        FlowRow(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(5.dp),
+            maxItemsInEachRow = legendColumns
+        ) {
+            events.allTypes().forEach { type ->
+                legendItemComp(type)
+            }
+        }
     }
 }
-
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun CalendarPreview() {
+    val nationalType = TypePreview("Nationale activiteit", Color.Yellow)
+    val localeType = TypePreview("Lokale Activiteit", Color.Black)
+    val test = TypePreview("activiteit", Color.Green)
+    val test2 = TypePreview("test Activiteit", Color.Blue)
 
     val eventPreviews = listOf(
-        EventPreview(LocalDate.now(), color = Color.Red),
-        EventPreview(LocalDate.now(), color = Color.Green),
-        EventPreview(LocalDate.now().plusDays(2), color = Color.Green),
-        EventPreview(LocalDate.now().plusDays(8), color = Color.Green),
+        EventPreview(LocalDate.now(), type = nationalType),
+        EventPreview(LocalDate.now(), type = localeType),
+        EventPreview(LocalDate.now().plusDays(2), type = test),
+        EventPreview(LocalDate.now().plusDays(8), type = test2),
     )
 
     Calendar(
         onClickAction = {},
         onClickComp = { DefaultCalendarStyle.Clicked(day = it) },
         currentDayComp = { DefaultCalendarStyle.Today(day = it) },
-        eventIndicatorComp = { DefaultCalendarStyle.EventIndicator(it) },
+        eventIndicatorComp = { DefaultCalendarStyle.EventIndicator(it.type) },
         singleEventIndicatorComp = { DefaultCalendarStyle.SingleEventIndicator() },
-        eventPreviews = eventPreviews
+        events = eventPreviews,
+        legendColumns = 2
     )
 }
 
 data class EventPreview(
     override val startDate: LocalDate,
-    override val color: Color
+    override val type: IType,
 ) : IEvent
+
+data class TypePreview(
+    override val name: String,
+    override val color: Color
+) : IType
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun setup(startDate: LocalDate, endDate: LocalDate, firstDayOfWeek: DayOfWeek): List<List<Int>> {
