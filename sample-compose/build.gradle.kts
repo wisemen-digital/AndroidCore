@@ -42,6 +42,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":ui"))
+    implementation(project(":ui:calendar"))
+
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
