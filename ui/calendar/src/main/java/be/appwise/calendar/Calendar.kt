@@ -1,6 +1,8 @@
 package be.appwise.calendar
 
+import android.content.ContentValues.TAG
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
@@ -57,7 +59,7 @@ fun Calendar(
     textStyleYear: TextStyle = defaultTextStyle.Year,
     textStyleDaysOverview: TextStyle = defaultTextStyle.OverviewDay,
     textStyleDays: TextStyle = defaultTextStyle.Day,
-    dayComp: @Composable (text: String, color:Color) -> Unit = { text, color ->
+    dayComp: @Composable (text: String, color: Color) -> Unit = { text, color ->
         DefaultCalendarStyle.Day(
             day = text,
             style = textStyleDays,
@@ -66,9 +68,11 @@ fun Calendar(
     },
     monthsInPast: Long = 120,
     monthsInFuture: Long = 120,
-    weekStartsOn: DayOfWeek = WeekFields.of(
-        LocalContext.current.resources.configuration.locales[0]
-    ).firstDayOfWeek,
+    weekStartsOn: DayOfWeek =
+//        DayOfWeek.SUNDAY, // Manually put start of week on Sunday, cant change this on oneplus 8 pro
+        WeekFields.of(
+            LocalContext.current.resources.configuration.locales[0]
+        ).firstDayOfWeek,
 ) {
     val resources = LocalContext.current.resources
     val locale = resources.configuration.locales[0]
@@ -216,9 +220,11 @@ fun Calendar(
                             (index <= lengthWeek && day > lengthPrevMonth - lengthWeek) -> {
                                 textStyleDays.color.copy(0.4f)
                             }
+
                             (index >= lengthThisMonth && day < lengthWeek) -> {
                                 textStyleDays.color.copy(0.4f)
                             }
+
                             else -> textStyleDays.color
 
                         }
@@ -286,22 +292,27 @@ fun setup(startDate: LocalDate, endDate: LocalDate, firstDayOfWeek: DayOfWeek): 
 
         val prevMonth = current.minusMonths(1L)
 
+        val startWeekOffset = when (firstDayOfWeek) {
+            DayOfWeek.MONDAY -> 0
+            DayOfWeek.SUNDAY -> 1
+            else -> 0
+        }
+
         val firstDayOfMonth = current.withDayOfMonth(1).dayOfWeek.value
         val lastDayOfMonth = current.withDayOfMonth(current.lengthOfMonth()).dayOfWeek.value
-
         var daysPrevMonth = IntRange.EMPTY
         var daysNextMonth = IntRange.EMPTY
 
         val days = (1..current.lengthOfMonth()).toList()
 
-        if (firstDayOfMonth != 1) {
+        if (firstDayOfMonth != firstDayOfWeek.value) {
             daysPrevMonth =
-                prevMonth.lengthOfMonth() - (firstDayOfMonth - 2)..prevMonth.lengthOfMonth()
+                prevMonth.lengthOfMonth() - (firstDayOfMonth - (2 - startWeekOffset))..prevMonth.lengthOfMonth()
         }
 
-        if (lastDayOfMonth != 7) {
+        if (lastDayOfMonth != firstDayOfWeek.minus(1L).value) {
             daysNextMonth =
-                1..(7 - lastDayOfMonth)
+                1..(if (lastDayOfMonth == 7) 6 else 7 - lastDayOfMonth - startWeekOffset)
         }
 
         val fullMonth = daysPrevMonth + days + daysNextMonth
