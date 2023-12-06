@@ -55,7 +55,10 @@ fun OverviewCalendar() {
     var weekStartsOn by remember { mutableStateOf(DayOfWeek.SUNDAY) }
 
     Column {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier= Modifier.padding(horizontal= 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
                 modifier = Modifier
                     .weight(1f)
