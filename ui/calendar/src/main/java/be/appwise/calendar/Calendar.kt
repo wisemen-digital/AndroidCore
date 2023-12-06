@@ -57,7 +57,7 @@ fun Calendar(
             type = it.type
         )
     },
-    singleEventIndicatorComp: (@Composable () -> Unit) = { DefaultCalendarStyle.SingleEventIndicator() },
+    singleEventIndicatorComp: (@Composable () -> Unit) = {  },
     events: List<IEvent> = emptyList(),
     textStyleMonth: TextStyle = defaultTextStyle.Month,
     textStyleYear: TextStyle = defaultTextStyle.Year,
@@ -282,11 +282,6 @@ fun CalendarPreview() {
     )
 
     Calendar(
-        onClickAction = {},
-        onClickComp = { DefaultCalendarStyle.Clicked(day = it) },
-        currentDayComp = { DefaultCalendarStyle.Today(day = it) },
-        eventIndicatorComp = { DefaultCalendarStyle.EventIndicator(it.type) },
-        singleEventIndicatorComp = { DefaultCalendarStyle.SingleEventIndicator() },
         events = eventPreviews,
         legendColumns = 2,
         calendarState = rememberPagerState(1)
