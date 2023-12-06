@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "be.appwise.ui"
+    namespace = "be.appwise.ui.calendar"
     compileSdk = 34
 
     defaultConfig {

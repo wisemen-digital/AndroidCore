@@ -1,6 +1,8 @@
 package be.appwise.sample_compose.feature.overviewCalendar
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -9,8 +11,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ChevronLeft
+import androidx.compose.material.icons.outlined.ChevronRight
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,12 +28,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import be.appwise.calendar.Calendar
-import be.appwise.calendar.ui.DefaultCalendarStyle
+import be.appwise.calendar.data.IType
 import be.appwise.calendar.util.extensions.scrollToNextMonth
 import be.appwise.calendar.util.extensions.scrollToPrevMonth
 import be.appwise.calendar.util.extensions.scrollToToday
@@ -45,7 +55,7 @@ fun OverviewCalendar() {
     var weekStartsOn by remember { mutableStateOf(DayOfWeek.SUNDAY) }
 
     Column {
-        Row {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 modifier = Modifier
                     .weight(1f)
@@ -68,28 +78,24 @@ fun OverviewCalendar() {
                     .padding(horizontal = 5.dp),
                 text = "Switch Week starts on"
             )
-            Text(
-                modifier = Modifier
-                    .clickable {
-                        coroutineScope.launch {
-                            state.scrollToPrevMonth()
-                        }
+            IconButton(
+                onClick = {
+                    coroutineScope.launch {
+                        state.scrollToPrevMonth()
                     }
-                    .padding(horizontal = 5.dp),
-                text = "<"
-            )
-            Text(
-                modifier = Modifier
-                    .clickable {
-                        coroutineScope.launch {
-                            state.scrollToNextMonth()
-                        }
+                }
+            ) {
+                Image(imageVector = Icons.Outlined.ChevronLeft, contentDescription = "to next month")
+            }
+            IconButton(
+                onClick = {
+                    coroutineScope.launch {
+                        state.scrollToNextMonth()
                     }
-                    .padding(horizontal = 5.dp),
-                text = ">"
-            )
-
-
+                }
+            ){
+                Image(imageVector = Icons.Outlined.ChevronRight, contentDescription = "to next month")
+            }
         }
 
         Calendar(
@@ -109,10 +115,28 @@ fun OverviewCalendar() {
                     )
                 }
             },
-            onClickComp = {},
+            onClickComp = {
+                val brush = Brush.linearGradient(listOf(Color.Red, Color.Blue))
+                Box(
+                    modifier = Modifier
+                        .aspectRatio(1f)
+                        .border(1.dp, brush, RoundedCornerShape(7.dp)),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        text = it,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            },
+            eventIndicatorComp = { type ->
+                EventIndicator(type = type.type)
+            },
             legendItemComp = { type ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    DefaultCalendarStyle.EventIndicator(type = type)
+                    EventIndicator(type = type)
                     Text(
                         modifier = Modifier.padding(start = 4.dp),
                         text = type.name
@@ -127,6 +151,17 @@ fun OverviewCalendar() {
         )
     }
 
+}
+
+@Composable
+fun EventIndicator(type: IType) {
+    Box(
+        modifier = Modifier
+            .padding(horizontal = 1.dp)
+            .size(5.dp)
+            .clip(CutCornerShape(5.dp))
+            .background(type.color)
+    )
 }
 
 
