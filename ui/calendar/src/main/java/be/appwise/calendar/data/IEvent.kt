@@ -1,6 +1,5 @@
 package be.appwise.calendar.data
 
-import androidx.compose.ui.graphics.Color
 import java.time.LocalDate
 
 interface IEvent {
@@ -8,5 +7,4 @@ interface IEvent {
     val endDate: LocalDate
         get() = startDate
     val type: IType
-//    val color: Color
 }

@@ -3,7 +3,6 @@ package be.appwise.calendar
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,7 +17,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -260,12 +258,8 @@ fun Calendar(
                         )
                     }
                 }
-
-
             }
         }
-
-        //LEGEND
 
         FlowRow(
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -278,7 +272,6 @@ fun Calendar(
         }
     }
 }
-
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview

@@ -15,7 +15,7 @@ fun List<IEvent>.eventsOfDay(date: LocalDate): List<IEvent> {
 }
 
 fun List<IEvent>.allTypes(): List<IType> {
-    return this.distinctBy {event ->
+    return this.distinctBy { event ->
         event.type
     }.map { it.type }
 }
