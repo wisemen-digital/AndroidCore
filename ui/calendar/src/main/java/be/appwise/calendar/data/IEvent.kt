@@ -7,5 +7,6 @@ interface IEvent {
     val startDate: LocalDate
     val endDate: LocalDate
         get() = startDate
-    val color: Color
+    val type: IType
+//    val color: Color
 }
