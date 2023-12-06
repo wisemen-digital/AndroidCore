@@ -1,4 +1,4 @@
-package be.appwise.ui
+package be.appwise.calendar.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,7 +20,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import be.appwise.calendar.data.IType
-import be.appwise.util.extensions.capitalize
+import be.appwise.calendar.util.extensions.capitalize
 
 object DefaultCalendarStyle {
 
