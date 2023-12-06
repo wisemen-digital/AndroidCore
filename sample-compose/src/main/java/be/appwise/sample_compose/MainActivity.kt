@@ -1,4 +1,4 @@
-package com.wiselab.sample_compose
+package be.appwise.sample_compose
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.wiselab.sample_compose.ui.theme.CoreDemoTheme
+import be.appwise.sample_compose.ui.theme.CoreDemoTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
