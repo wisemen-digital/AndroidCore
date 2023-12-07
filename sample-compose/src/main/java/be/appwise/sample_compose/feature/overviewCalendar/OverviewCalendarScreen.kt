@@ -41,7 +41,7 @@ import be.appwise.calendar.util.extensions.scrollToPrevMonth
 import be.appwise.calendar.util.extensions.scrollToToday
 import be.appwise.sample_compose.data.entity.Event
 import be.appwise.sample_compose.data.mock.MOCK_EVENTS
-import be.appwise.sample_compose.ui.theme.CoreDemoTheme
+import com.example.compose.CoreDemoTheme
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 
@@ -56,7 +56,7 @@ fun OverviewCalendar() {
 
     Column {
         Row(
-            modifier= Modifier.padding(horizontal= 16.dp),
+            modifier = Modifier.padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -88,7 +88,10 @@ fun OverviewCalendar() {
                     }
                 }
             ) {
-                Image(imageVector = Icons.Outlined.ChevronLeft, contentDescription = "to next month")
+                Image(
+                    imageVector = Icons.Outlined.ChevronLeft,
+                    contentDescription = "to next month"
+                )
             }
             IconButton(
                 onClick = {
@@ -96,8 +99,11 @@ fun OverviewCalendar() {
                         state.scrollToNextMonth()
                     }
                 }
-            ){
-                Image(imageVector = Icons.Outlined.ChevronRight, contentDescription = "to next month")
+            ) {
+                Image(
+                    imageVector = Icons.Outlined.ChevronRight,
+                    contentDescription = "to next month"
+                )
             }
         }
 

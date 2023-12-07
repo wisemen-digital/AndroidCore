@@ -7,8 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import be.appwise.sample_compose.feature.overviewCalendar.OverviewCalendar
-import be.appwise.sample_compose.ui.theme.CoreDemoTheme
+import be.appwise.sample_compose.feature.overviewButtons.OverviewButtons
+import be.appwise.sample_compose.feature.overviewEditText.OverviewEditText
+import com.example.compose.CoreDemoTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +21,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    OverviewCalendar()
+//                    OverviewCalendar()
+//                    OverviewButtons()
+                    OverviewEditText()
                 }
             }
         }
