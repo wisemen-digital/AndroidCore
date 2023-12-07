@@ -100,7 +100,7 @@ import be.appwise.visualtransformation.creditCardTransformation
  * @param colors [TextFieldColors] that will be used to resolve the colors used for this text field
  * in different states. See [TextFieldDefaults.outlinedTextFieldColors].
  * @param shape this will determine the shape of the EditText field. Default is the shape rounded with a value of 10dp
-*/
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditText(
@@ -122,8 +122,6 @@ fun EditText(
     isError: Boolean = false,
     singleLine: Boolean = false,
     colors: TextFieldColors = TextFieldDefaults.textFieldColors(
-        placeholderColor = MaterialTheme.colorScheme.onPrimary.copy(0.4f),
-        containerColor = MaterialTheme.colorScheme.tertiary,
         unfocusedIndicatorColor = Color.Transparent,
         focusedIndicatorColor = MaterialTheme.colorScheme.primary,
         errorIndicatorColor = MaterialTheme.colorScheme.error,
@@ -215,7 +213,7 @@ fun EditTextSlider(
         1f to MaterialTheme.colorScheme.primary,
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    backgroundColor: Color = Color.Gray,
+    backgroundColor: Color = Color.Transparent,
     shape: Shape = RoundedCornerShape(10.dp)
 ) {
 
@@ -241,12 +239,11 @@ fun EditTextSlider(
                         ) {
                             Canvas(
                                 modifier = Modifier.size(20.dp),
-                                onDraw = { drawCircle(thumb) })
+                                onDraw = { if(enabled) drawCircle(thumb) })
                             Thumb(
                                 interactionSource = interactionSource
                             )
                         }
-
                     }
                 },
                 track = remember(colors, enabled) {
@@ -298,7 +295,7 @@ fun EditTextRadioButton(
     isRequired: Boolean = false,
     colors: RadioButtonColors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colorScheme.primary),
     enabled: Boolean = true,
-    backgroundColor: Color = Color.Gray,
+    backgroundColor: Color = Color.Transparent,
     shape: Shape = RoundedCornerShape(10.dp)
 ) {
 
@@ -371,7 +368,7 @@ fun EditTextCheckbox(
     icon: ImageVector = Icons.Outlined.ErrorOutline,
     isRequired: Boolean = false,
     shape: Shape = RoundedCornerShape(10.dp),
-    backgroundColor: Color = Color.Gray,
+    backgroundColor: Color = Color.Transparent,
     checkboxColors: CheckboxColors = CheckboxDefaults.colors(
         checkedColor = MaterialTheme.colorScheme.primary,
         uncheckedColor = Color.Black
@@ -453,8 +450,6 @@ fun EditTextDate(
     leadingIcon: @Composable (() -> Unit)? = null,
     isRequired: Boolean = false,
     colors: TextFieldColors = TextFieldDefaults.textFieldColors(
-        placeholderColor = MaterialTheme.colorScheme.onPrimary.copy(0.4f),
-        containerColor = Color.Gray,
         disabledIndicatorColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent,
         focusedIndicatorColor = MaterialTheme.colorScheme.primary,
@@ -535,7 +530,7 @@ fun Label(label: String, isRequired: Boolean = false) {
         Text(
             text = label,
             modifier = Modifier.padding(bottom = 5.dp),
-            color = MaterialTheme.colorScheme.onPrimary
+            color = MaterialTheme.colorScheme.onBackground
         )
         if (isRequired) {
             Text(
