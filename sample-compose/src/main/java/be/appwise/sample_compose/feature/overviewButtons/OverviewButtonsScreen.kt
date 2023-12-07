@@ -15,9 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import be.appwise.sample_compose.feature.navigation.MainNavGraph
 import be.appwise.ui.Buttons
 import com.example.compose.CoreDemoTheme
+import com.ramcosta.composedestinations.annotation.Destination
 
+@Destination
+@MainNavGraph
 @Composable
 fun OverviewButtons() {
     Column(
@@ -101,7 +105,6 @@ fun OverviewButtons() {
                 )
             }
         )
-
     }
 }
 

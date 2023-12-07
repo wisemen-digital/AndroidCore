@@ -76,14 +76,19 @@ fun Calendar(
     },
     legendItemComp: (@Composable (type: IType) -> Unit) = { DefaultCalendarStyle.LegendItem(it) },
     legendColumns: Int = 99,
-    monthsInPast: Long = 120,
-    monthsInFuture: Long = 120,
+    monthsInPast: Int = 120,
+    monthsInFuture: Int = 120,
     weekStartsOn: DayOfWeek =
 //        DayOfWeek.SUNDAY, // Manually put start of week on Sunday, cant change this on oneplus 8 pro
         WeekFields.of(
             LocalContext.current.resources.configuration.locales[0]
         ).firstDayOfWeek,
-    calendarState: PagerState = rememberPagerState(monthsInPast.toInt())
+    calendarState: PagerState = rememberPagerState(
+        initialPage = monthsInPast.toInt(),
+        initialPageOffsetFraction = 0f
+    ) {
+        monthsInPast + monthsInFuture + 1
+    }
 ) {
     val resources = LocalContext.current.resources
     val locale = resources.configuration.locales[0]
@@ -91,8 +96,8 @@ fun Calendar(
     val now = LocalDate.now()
 
     val listMonths = setup(
-        now.minusMonths(monthsInPast),
-        now.plusMonths(monthsInFuture),
+        now.minusMonths(monthsInPast.toLong()),
+        now.plusMonths(monthsInFuture.toLong()),
         weekStartsOn
     )
 
@@ -113,11 +118,10 @@ fun Calendar(
 
         HorizontalPager(
             state = calendarState,
-            pageCount = listMonths.size,
             verticalAlignment = Alignment.Top
         ) { index ->
 
-            val pagerYearMonth = now.minusMonths(monthsInPast - index)
+            val pagerYearMonth = now.minusMonths(monthsInPast.toLong() - index)
             val showMonthDialog = remember { mutableStateOf(false) }
             val showYearDialog = remember { mutableStateOf(false) }
 
@@ -137,8 +141,8 @@ fun Calendar(
             if (showYearDialog.value) {
                 yearDialog(
                     currentYear = pagerYearMonth.year,
-                    monthsInFuture = monthsInFuture,
-                    monthsInPast = monthsInPast,
+                    monthsInFuture = monthsInFuture.toLong(),
+                    monthsInPast = monthsInPast.toLong(),
                     onYearClick = {
                         val move = it - pagerYearMonth.year
                         coroutineScope.launch {
@@ -291,7 +295,12 @@ fun CalendarPreview() {
     Calendar(
         events = eventPreviews,
         legendColumns = 2,
-        calendarState = rememberPagerState(1)
+        calendarState = rememberPagerState(
+            initialPage = 1,
+            initialPageOffsetFraction = 0f
+        ) {
+            120
+        }
     )
 
 }

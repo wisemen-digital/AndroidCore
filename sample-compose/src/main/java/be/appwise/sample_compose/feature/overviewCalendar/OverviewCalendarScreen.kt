@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,17 +40,29 @@ import be.appwise.calendar.data.IType
 import be.appwise.calendar.util.extensions.scrollToNextMonth
 import be.appwise.calendar.util.extensions.scrollToPrevMonth
 import be.appwise.calendar.util.extensions.scrollToToday
+import be.appwise.sample_compose.R
 import be.appwise.sample_compose.data.entity.Event
 import be.appwise.sample_compose.data.mock.MOCK_EVENTS
+import be.appwise.sample_compose.feature.navigation.MainNavGraph
 import com.example.compose.CoreDemoTheme
+import com.ramcosta.composedestinations.annotation.Destination
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 
 @OptIn(ExperimentalFoundationApi::class)
+@Destination
+@MainNavGraph
 @Composable
 fun OverviewCalendar() {
 
-    val state = rememberPagerState()
+    val monthsInPast = 120
+
+    val state = rememberPagerState(
+        initialPage = monthsInPast,
+        initialPageOffsetFraction = 0f
+    ) {
+        (monthsInPast*2)+1
+    }
     val coroutineScope = rememberCoroutineScope()
 
     var weekStartsOn by remember { mutableStateOf(DayOfWeek.SUNDAY) }
@@ -67,7 +80,7 @@ fun OverviewCalendar() {
                             state.scrollToToday()
                         }
                     },
-                text = "Today"
+                text = stringResource(R.string.today)
             )
             Text(
                 modifier = Modifier
@@ -79,7 +92,7 @@ fun OverviewCalendar() {
                         }
                     }
                     .padding(horizontal = 5.dp),
-                text = "Switch Week starts on"
+                text = stringResource(R.string.switch_week_starts_on)
             )
             IconButton(
                 onClick = {
@@ -90,7 +103,7 @@ fun OverviewCalendar() {
             ) {
                 Image(
                     imageVector = Icons.Outlined.ChevronLeft,
-                    contentDescription = "to next month"
+                    contentDescription = stringResource(R.string.to_prev_month)
                 )
             }
             IconButton(
@@ -102,7 +115,7 @@ fun OverviewCalendar() {
             ) {
                 Image(
                     imageVector = Icons.Outlined.ChevronRight,
-                    contentDescription = "to next month"
+                    contentDescription = stringResource(R.string.to_next_month)
                 )
             }
         }
@@ -159,7 +172,6 @@ fun OverviewCalendar() {
             weekStartsOn = weekStartsOn
         )
     }
-
 }
 
 @Composable
@@ -172,7 +184,6 @@ fun EventIndicator(type: IType) {
             .background(type.color)
     )
 }
-
 
 @Preview
 @Composable

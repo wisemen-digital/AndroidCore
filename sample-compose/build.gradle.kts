@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     `maven-publish`
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -44,6 +45,7 @@ android {
 dependencies {
     implementation(project(":ui"))
     implementation(project(":ui:calendar"))
+    implementation(project(":core"))
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
@@ -55,6 +57,9 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.material.icons.extended)
     debugImplementation(libs.compose.ui.tooling)
+
+    implementation(libs.raamcosta.core)
+    ksp(libs.raamcosta)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.ext)

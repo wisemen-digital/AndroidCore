@@ -14,6 +14,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -23,14 +24,18 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import be.appwise.sample_compose.feature.navigation.MainNavGraph
 import be.appwise.ui.EditText
 import be.appwise.ui.EditTextCheckbox
 import be.appwise.ui.EditTextDate
 import be.appwise.ui.EditTextRadioButton
 import be.appwise.ui.EditTextSlider
 import com.example.compose.CoreDemoTheme
+import com.ramcosta.composedestinations.annotation.Destination
 import java.time.LocalDate
 
+@Destination
+@MainNavGraph
 @Composable
 fun OverviewEditText() {
     var basic by remember {
@@ -44,7 +49,7 @@ fun OverviewEditText() {
     }
 
     var slider by remember {
-        mutableStateOf(0f)
+        mutableFloatStateOf(0f)
     }
 
     var passwordVisibility by remember {
