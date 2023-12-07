@@ -1,8 +1,10 @@
 package be.appwise.calendar
 
+import android.content.res.Configuration
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +20,7 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -49,6 +52,7 @@ import java.time.format.TextStyle as dateTimeFormat
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Calendar(
+    modifier: Modifier = Modifier,
     onClickAction: () -> Unit = {},
     onClickComp: (@Composable (text: String) -> Unit) = { DefaultCalendarStyle.Clicked(day = it) },
     currentDayComp: (@Composable (text: String) -> Unit) = { DefaultCalendarStyle.Today(day = it) },
@@ -57,7 +61,7 @@ fun Calendar(
             type = it.type
         )
     },
-    singleEventIndicatorComp: (@Composable () -> Unit) = {  },
+    singleEventIndicatorComp: (@Composable () -> Unit) = { },
     events: List<IEvent> = emptyList(),
     textStyleMonth: TextStyle = defaultTextStyle.Month,
     textStyleYear: TextStyle = defaultTextStyle.Year,
@@ -103,7 +107,9 @@ fun Calendar(
         calendarState.scrollToPage(monthsInPast.toInt())
     }
 
-    Column {
+    Column(
+        modifier = modifier.background(MaterialTheme.colorScheme.background)
+    ) {
 
         HorizontalPager(
             state = calendarState,
@@ -160,7 +166,7 @@ fun Calendar(
                             dateTimeFormat.FULL,
                             locale
                         ).capitalize(),
-                        style = textStyleMonth
+                        style = textStyleMonth,
                     )
                     Text(
                         modifier = Modifier
@@ -169,7 +175,7 @@ fun Calendar(
                                 showYearDialog.value = !showYearDialog.value
                             },
                         text = pagerYearMonth.year.toString(),
-                        style = textStyleYear
+                        style = textStyleYear,
                     )
                 }
 
@@ -267,6 +273,7 @@ fun Calendar(
 @OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun CalendarPreview() {
     val nationalType = TypePreview("Nationale activiteit", Color.Yellow)
@@ -286,6 +293,7 @@ fun CalendarPreview() {
         legendColumns = 2,
         calendarState = rememberPagerState(1)
     )
+
 }
 
 data class EventPreview(
