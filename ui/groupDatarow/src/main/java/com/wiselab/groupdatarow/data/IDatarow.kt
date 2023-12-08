@@ -6,5 +6,5 @@ interface IDatarow {
     val title: String
     val value: String?
     val icon: ImageVector?
-    val onClick: () -> Unit?
+    val onClick: (() -> Unit)?
 }
