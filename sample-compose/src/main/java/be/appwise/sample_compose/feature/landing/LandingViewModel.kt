@@ -13,6 +13,7 @@ class LandingViewModel: BaseViewModel() {
             is LandingUiAction.ToButtons -> eventChannel.trySend(LandingUiEvent.NavigateToButtons)
             is LandingUiAction.ToCalendar -> eventChannel.trySend(LandingUiEvent.NavigateToCalendar)
             is LandingUiAction.ToEditText -> eventChannel.trySend(LandingUiEvent.NavigateToEditText)
+            is LandingUiAction.ToDatagroup -> eventChannel.trySend(LandingUiEvent.NavigateToDatagroup)
         }
     }
 }

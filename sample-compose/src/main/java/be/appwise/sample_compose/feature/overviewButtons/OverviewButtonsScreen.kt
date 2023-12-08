@@ -19,16 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import be.appwise.sample_compose.R
 import be.appwise.sample_compose.feature.destinations.LandingScreenDestination
-import be.appwise.sample_compose.feature.destinations.OverviewButtonsDestination
-import be.appwise.sample_compose.feature.destinations.OverviewCalendarDestination
-import be.appwise.sample_compose.feature.destinations.OverviewEditTextDestination
-import be.appwise.sample_compose.feature.landing.LandingScreenLayout
-import be.appwise.sample_compose.feature.landing.LandingUiAction
-import be.appwise.sample_compose.feature.landing.LandingUiEvent
-import be.appwise.sample_compose.feature.landing.LandingViewModel
 import be.appwise.sample_compose.feature.navigation.MainNavGraph
 import be.appwise.ui.Buttons
 import com.example.compose.CoreDemoTheme
@@ -144,7 +136,6 @@ fun OverviewButtons(
                 is OverviewButtonsUiEvent.NavigateBack -> navController.navigate(
                     LandingScreenDestination
                 )
-
             }
         }
     }
@@ -155,7 +146,6 @@ fun OverviewButtons(
 @Preview
 @Composable
 fun OverviewButtonsPreview() {
-
     CoreDemoTheme {
         OverviewButtonsLayout()
     }

@@ -45,7 +45,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import be.appwise.calendar.Calendar
 import be.appwise.calendar.data.IType
 import be.appwise.calendar.util.extensions.scrollToNextMonth
@@ -55,11 +54,7 @@ import be.appwise.sample_compose.R
 import be.appwise.sample_compose.data.entity.Event
 import be.appwise.sample_compose.data.mock.MOCK_EVENTS
 import be.appwise.sample_compose.feature.destinations.LandingScreenDestination
-import be.appwise.sample_compose.feature.landing.LandingUiAction
-import be.appwise.sample_compose.feature.landing.LandingViewModel
 import be.appwise.sample_compose.feature.navigation.MainNavGraph
-import be.appwise.sample_compose.feature.overviewButtons.OverviewButtonsLayout
-import be.appwise.sample_compose.feature.overviewButtons.OverviewButtonsUiEvent
 import be.appwise.sample_compose.util.extensions.scrollToNextYear
 import be.appwise.sample_compose.util.extensions.scrollToPrevYear
 import com.example.compose.CoreDemoTheme

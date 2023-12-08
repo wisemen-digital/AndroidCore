@@ -47,11 +47,13 @@ object DefaultDatarow {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .padding(vertical = 11.dp)
                 .clickable(enabled = datarow.onClick != null) {
                     datarow.onClick?.let { it() }
                 }
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 11.dp
+                )
         ) {
             Text(
                 modifier = Modifier.weight(1f),

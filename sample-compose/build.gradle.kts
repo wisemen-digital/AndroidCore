@@ -45,6 +45,7 @@ android {
 dependencies {
     implementation(project(":ui"))
     implementation(project(":ui:calendar"))
+    implementation(project(":ui:groupDatarow"))
     implementation(project(":core"))
 
     implementation(libs.core.ktx)
