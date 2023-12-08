@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ChevronRight
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.wiselab.groupdatarow.data.IDatarow
+import com.wiselab.groupdatarow.data.IDatarowComp
 import com.wiselab.groupdatarow.data.IDatarowGroup
 import com.wiselab.groupdatarow.ui.DefaultDatarow
 
@@ -28,7 +31,12 @@ import com.wiselab.groupdatarow.ui.DefaultDatarow
 fun Datagroup(
     datarowGroup: IDatarowGroup,
     divider: (@Composable () -> Unit) = { Divider() },
-    datarowComp: (@Composable (datarow: IDatarow) -> Unit) = {DefaultDatarow.Datarow(datarow = it)},
+    datarowComp: (@Composable (datarow: IDatarow) -> Unit) = {
+        when (it) {
+            is IDatarowComp -> DefaultDatarow.DatarowWithComp(datarow = it)
+            is IDatarow -> DefaultDatarow.Datarow(datarow = it)
+        }
+    },
     cardColors: CardColors = CardDefaults.cardColors(),
     cardShape: Shape = RoundedCornerShape(7.dp),
     textStyle: TextStyle = TextStyle(
@@ -47,14 +55,15 @@ fun Datagroup(
         )
 
         Card(
-            colors= cardColors,
+            colors = cardColors,
             shape = cardShape
         ) {
             Column {
                 for (datarow in datarowGroup.datarowList) {
+
                     datarowComp(datarow)
 
-                    if(datarowGroup.datarowList.last() != datarow){
+                    if (datarowGroup.datarowList.last() != datarow) {
                         divider()
                     }
                 }
@@ -71,8 +80,14 @@ fun DatarowPreview() {
     val datarowList = listOf<IDatarow>(
         GenericDatarowPreview("Algemene voorwaarden", icon = Icons.Outlined.ChevronRight) {},
         GenericDatarowPreview("Versie", "1.4.2"),
+        CustomDatarowPreview(
+            "Datarow with composable",
+            iconComp = {
+                Icon(imageVector = Icons.Outlined.Delete, contentDescription = null)
+            }
+        )
     )
-    
+
     val datarowGroup = DatarowGroupPreview("Over de app", datarowList)
 
     MaterialTheme {
@@ -87,7 +102,15 @@ data class GenericDatarowPreview(
     override val onClick: (() -> Unit)? = null
 ) : IDatarow
 
+data class CustomDatarowPreview(
+    override val title: String,
+    override val value: String? = null,
+    override val iconComp: @Composable() (() -> Unit)? = null,
+    override val onClick: (() -> Unit)? = null,
+    override val icon: ImageVector? = null
+) : IDatarowComp
+
 data class DatarowGroupPreview(
     override val title: String,
     override val datarowList: List<IDatarow>
-):IDatarowGroup
+) : IDatarowGroup

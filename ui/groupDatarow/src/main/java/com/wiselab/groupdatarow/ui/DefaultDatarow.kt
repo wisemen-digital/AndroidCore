@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.wiselab.groupdatarow.data.IDatarow
+import com.wiselab.groupdatarow.data.IDatarowComp
 
 
 object DefaultDatarow {
@@ -37,6 +38,34 @@ object DefaultDatarow {
 
             if(datarow.icon != null && datarow.onClick != null){
                 datarow.icon?.let { Icon(imageVector = it, contentDescription = null) }
+            }
+        }
+    }
+
+    @Composable
+    fun DatarowWithComp(datarow: IDatarowComp) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .padding(vertical = 11.dp)
+                .clickable(enabled = datarow.onClick != null) {
+                    datarow.onClick?.let { it() }
+                }
+        ) {
+            Text(
+                modifier = Modifier.weight(1f),
+                text = datarow.title
+            )
+            datarow.value?.let {
+                Text(
+                    modifier = Modifier.padding(horizontal = 12.dp),
+                    text = it
+                )
+            }
+
+            if(datarow.iconComp != null){
+                datarow.iconComp?.let { it() }
             }
         }
     }
