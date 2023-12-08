@@ -16,11 +16,17 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.ChevronLeft
 import androidx.compose.material.icons.outlined.ChevronRight
+import androidx.compose.material.icons.outlined.KeyboardDoubleArrowLeft
+import androidx.compose.material.icons.outlined.KeyboardDoubleArrowRight
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,9 +38,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import be.appwise.calendar.Calendar
 import be.appwise.calendar.data.IType
 import be.appwise.calendar.util.extensions.scrollToNextMonth
@@ -43,17 +54,23 @@ import be.appwise.calendar.util.extensions.scrollToToday
 import be.appwise.sample_compose.R
 import be.appwise.sample_compose.data.entity.Event
 import be.appwise.sample_compose.data.mock.MOCK_EVENTS
+import be.appwise.sample_compose.feature.destinations.LandingScreenDestination
+import be.appwise.sample_compose.feature.landing.LandingUiAction
+import be.appwise.sample_compose.feature.landing.LandingViewModel
 import be.appwise.sample_compose.feature.navigation.MainNavGraph
+import be.appwise.sample_compose.feature.overviewButtons.OverviewButtonsLayout
+import be.appwise.sample_compose.feature.overviewButtons.OverviewButtonsUiEvent
+import be.appwise.sample_compose.util.extensions.scrollToNextYear
+import be.appwise.sample_compose.util.extensions.scrollToPrevYear
 import com.example.compose.CoreDemoTheme
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.navigate
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 
 @OptIn(ExperimentalFoundationApi::class)
-@Destination
-@MainNavGraph
 @Composable
-fun OverviewCalendar() {
+fun OverviewCalendarLayout(onAction: (OverviewCalendarUiAction) -> Unit = {}) {
 
     val monthsInPast = 120
 
@@ -67,7 +84,40 @@ fun OverviewCalendar() {
 
     var weekStartsOn by remember { mutableStateOf(DayOfWeek.SUNDAY) }
 
+    val month = TextStyle(
+        fontSize = 35.sp,
+        color = MaterialTheme.colorScheme.primary,
+        fontWeight = FontWeight.W700,
+        lineHeight = 42.64.sp,
+        letterSpacing = 0.39.sp
+    )
+
+    val year = TextStyle(
+        fontSize = 16.sp,
+        color = MaterialTheme.colorScheme.secondary,
+        fontWeight = FontWeight.W400,
+        lineHeight = 42.64.sp,
+        letterSpacing = 0.39.sp
+    )
+
+    val overviewDay = TextStyle(
+        fontSize = 12.sp,
+        color = MaterialTheme.colorScheme.primary,
+        fontWeight = FontWeight.W600,
+        lineHeight = 14.32.sp
+    )
+
     Column {
+        IconButton(
+            onClick = {
+                onAction(OverviewCalendarUiAction.Back)
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.ArrowBack,
+                contentDescription = stringResource(R.string.to_prev_month)
+            )
+        }
         Row(
             modifier = Modifier.padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -97,6 +147,20 @@ fun OverviewCalendar() {
             IconButton(
                 onClick = {
                     coroutineScope.launch {
+                        state.scrollToPrevYear()
+                    }
+                }
+            ) {
+                Row {
+                    Image(
+                        imageVector = Icons.Outlined.KeyboardDoubleArrowLeft,
+                        contentDescription = stringResource(R.string.to_prev_month)
+                    )
+                }
+            }
+            IconButton(
+                onClick = {
+                    coroutineScope.launch {
                         state.scrollToPrevMonth()
                     }
                 }
@@ -118,10 +182,26 @@ fun OverviewCalendar() {
                     contentDescription = stringResource(R.string.to_next_month)
                 )
             }
+            IconButton(
+                onClick = {
+                    coroutineScope.launch {
+                        state.scrollToNextYear()
+                    }
+                }
+            ) {
+                Row {
+                    Image(
+                        imageVector = Icons.Outlined.KeyboardDoubleArrowRight,
+                        contentDescription = stringResource(R.string.to_next_month)
+                    )
+                }
+            }
         }
 
         Calendar(
-            singleEventIndicatorComp = {},
+            textStyleMonth = month,
+            textStyleYear= year,
+            textStyleDaysOverview = overviewDay,
             currentDayComp = {
                 Box(
                     modifier = Modifier
@@ -174,6 +254,27 @@ fun OverviewCalendar() {
     }
 }
 
+@Destination
+@MainNavGraph
+@Composable
+fun OverviewCalendar(
+    navController: NavController,
+    viewModel: OverviewCalendarViewModel = OverviewCalendarViewModel()
+) {
+    LaunchedEffect(viewModel) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is OverviewCalendarUiEvent.NavigateBack -> navController.navigate(
+                    LandingScreenDestination
+                )
+
+            }
+        }
+    }
+
+    OverviewCalendarLayout(onAction = viewModel::onAction)
+}
+
 @Composable
 fun EventIndicator(type: IType) {
     Box(
@@ -189,6 +290,6 @@ fun EventIndicator(type: IType) {
 @Composable
 fun OverviewCalendarPreview() {
     CoreDemoTheme {
-        OverviewCalendar()
+        OverviewCalendarLayout()
     }
 }

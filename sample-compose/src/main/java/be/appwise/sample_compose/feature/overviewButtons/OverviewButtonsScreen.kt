@@ -7,30 +7,53 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material.icons.outlined.ChevronLeft
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import be.appwise.sample_compose.R
+import be.appwise.sample_compose.feature.destinations.LandingScreenDestination
+import be.appwise.sample_compose.feature.destinations.OverviewButtonsDestination
+import be.appwise.sample_compose.feature.destinations.OverviewCalendarDestination
+import be.appwise.sample_compose.feature.destinations.OverviewEditTextDestination
+import be.appwise.sample_compose.feature.landing.LandingScreenLayout
+import be.appwise.sample_compose.feature.landing.LandingUiAction
+import be.appwise.sample_compose.feature.landing.LandingUiEvent
+import be.appwise.sample_compose.feature.landing.LandingViewModel
 import be.appwise.sample_compose.feature.navigation.MainNavGraph
 import be.appwise.ui.Buttons
 import com.example.compose.CoreDemoTheme
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.navigate
 
-@Destination
-@MainNavGraph
+
 @Composable
-fun OverviewButtons() {
+fun OverviewButtonsLayout(onAction: (OverviewButtonsUiAction) -> Unit = {}) {
     Column(
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        IconButton(
+            onClick = {
+                onAction(OverviewButtonsUiAction.Back)
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.ChevronLeft,
+                contentDescription = stringResource(R.string.to_prev_month)
+            )
+        }
         Buttons.Primary(
             modifier = Modifier.fillMaxWidth(),
             text = "Primary"
@@ -108,11 +131,32 @@ fun OverviewButtons() {
     }
 }
 
+@Destination
+@MainNavGraph
+@Composable
+fun OverviewButtons(
+    navController: NavController,
+    viewModel: OverviewButtonsViewModel = OverviewButtonsViewModel()
+) {
+    LaunchedEffect(viewModel) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is OverviewButtonsUiEvent.NavigateBack -> navController.navigate(
+                    LandingScreenDestination
+                )
+
+            }
+        }
+    }
+
+    OverviewButtonsLayout(onAction = viewModel::onAction)
+}
+
 @Preview
 @Composable
 fun OverviewButtonsPreview() {
 
     CoreDemoTheme {
-        OverviewButtons()
+        OverviewButtonsLayout()
     }
 }

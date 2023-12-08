@@ -105,7 +105,6 @@ fun Calendar(
         mutableStateOf(LocalDate.now())
     }
 
-
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(monthsInPast) {

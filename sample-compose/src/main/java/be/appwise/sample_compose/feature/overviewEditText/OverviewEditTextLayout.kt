@@ -8,23 +8,33 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ChevronLeft
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import be.appwise.sample_compose.R
+import be.appwise.sample_compose.feature.destinations.LandingScreenDestination
 import be.appwise.sample_compose.feature.navigation.MainNavGraph
+import be.appwise.sample_compose.feature.overviewCalendar.OverviewCalendarLayout
+import be.appwise.sample_compose.feature.overviewCalendar.OverviewCalendarUiAction
+import be.appwise.sample_compose.feature.overviewCalendar.OverviewCalendarUiEvent
+import be.appwise.sample_compose.feature.overviewCalendar.OverviewCalendarViewModel
 import be.appwise.ui.EditText
 import be.appwise.ui.EditTextCheckbox
 import be.appwise.ui.EditTextDate
@@ -32,12 +42,12 @@ import be.appwise.ui.EditTextRadioButton
 import be.appwise.ui.EditTextSlider
 import com.example.compose.CoreDemoTheme
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.navigate
 import java.time.LocalDate
 
-@Destination
-@MainNavGraph
+
 @Composable
-fun OverviewEditText() {
+fun OverviewEditTextLayout(onAction: (OverviewEditTextUiAction) -> Unit = {}) {
     var basic by remember {
         mutableStateOf("")
     }
@@ -65,8 +75,17 @@ fun OverviewEditText() {
             .fillMaxWidth()
             .verticalScroll(scroll),
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        IconButton(
+            onClick = {
+                onAction(OverviewEditTextUiAction.Back)
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.ChevronLeft,
+                contentDescription = stringResource(R.string.to_prev_month)
+            )
+        }
         EditText(
             input = basic,
             label = "Basic Edit Text that's required",
@@ -168,10 +187,31 @@ fun OverviewEditText() {
     }
 }
 
+@Destination
+@MainNavGraph
+@Composable
+fun OverviewEditText(
+    navController: NavController,
+    viewModel: OverviewEditTextViewModel = OverviewEditTextViewModel()
+) {
+    LaunchedEffect(viewModel) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is OverviewEditTextUiEvent.NavigateBack -> navController.navigate(
+                    LandingScreenDestination
+                )
+
+            }
+        }
+    }
+
+    OverviewEditTextLayout(onAction = viewModel::onAction)
+}
+
 @Preview
 @Composable
 fun OverviewEditTextPreview() {
     CoreDemoTheme {
-        OverviewEditText()
+        OverviewEditTextLayout()
     }
 }

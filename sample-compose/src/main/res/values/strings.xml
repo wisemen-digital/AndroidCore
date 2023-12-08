@@ -2,6 +2,6 @@
     <string name="app_name">Sample Compose</string>
     <string name="to_next_month">to next month</string>
     <string name="to_prev_month">to prev month</string>
-    <string name="switch_week_starts_on">Switch Week starts on</string>
+    <string name="switch_week_starts_on">Switch</string>
     <string name="today">Today</string>
 </resources>
