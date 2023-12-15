@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "be.appwise.ui"
+    namespace = "be.appwise.groupdatarow"
     compileSdk = 34
 
     defaultConfig {
@@ -24,16 +24,13 @@ android {
             )
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-
     kotlinOptions {
         jvmTarget = "17"
     }
-
     buildFeatures {
         compose = true
         buildConfig = true
@@ -52,11 +49,8 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.foundation)
     implementation(libs.material3)
     implementation(libs.material.icons.extended)
     debugImplementation(libs.compose.ui.tooling)
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.junit.ext)
-    androidTestImplementation(libs.espresso.core)
 }

@@ -1,18 +1,16 @@
 plugins {
-    id("com.android.library")
+    id("com.android.application")
     kotlin("android")
     `maven-publish`
+    id("com.google.devtools.ksp")
 }
 
 android {
-    namespace = "be.appwise.ui"
+    namespace = "be.appwise.sample_compose"
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 24
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
+        minSdk = 26
     }
 
     buildTypes {
@@ -45,6 +43,10 @@ android {
 }
 
 dependencies {
+    implementation(project(":ui"))
+    implementation(project(":ui:calendar"))
+    implementation(project(":core"))
+
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
@@ -55,6 +57,9 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.material.icons.extended)
     debugImplementation(libs.compose.ui.tooling)
+
+    implementation(libs.raamcosta.core)
+    ksp(libs.raamcosta)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.ext)
