@@ -1,16 +1,18 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     kotlin("android")
     `maven-publish`
-    id("com.google.devtools.ksp")
 }
 
 android {
-    namespace = "be.appwise.sample_compose"
+    namespace = "be.appwise.groupdatarow"
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 26
+        minSdk = 24
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -22,16 +24,13 @@ android {
             )
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-
     kotlinOptions {
         jvmTarget = "17"
     }
-
     buildFeatures {
         compose = true
         buildConfig = true
@@ -43,11 +42,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":ui"))
-    implementation(project(":ui:calendar"))
-    implementation(project(":ui:groupDatarow"))
-    implementation(project(":core"))
-
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
@@ -55,14 +49,8 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.foundation)
     implementation(libs.material3)
     implementation(libs.material.icons.extended)
     debugImplementation(libs.compose.ui.tooling)
-
-    implementation(libs.raamcosta.core)
-    ksp(libs.raamcosta)
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.junit.ext)
-    androidTestImplementation(libs.espresso.core)
 }

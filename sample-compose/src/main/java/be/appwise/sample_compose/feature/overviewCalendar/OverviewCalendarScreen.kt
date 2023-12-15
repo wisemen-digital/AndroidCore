@@ -1,7 +1,7 @@
 package be.appwise.sample_compose.feature.overviewCalendar
 
+import CoreDemoTheme
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -45,7 +45,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import be.appwise.calendar.Calendar
 import be.appwise.calendar.data.IType
 import be.appwise.calendar.util.extensions.scrollToNextMonth
@@ -55,14 +54,9 @@ import be.appwise.sample_compose.R
 import be.appwise.sample_compose.data.entity.Event
 import be.appwise.sample_compose.data.mock.MOCK_EVENTS
 import be.appwise.sample_compose.feature.destinations.LandingScreenDestination
-import be.appwise.sample_compose.feature.landing.LandingUiAction
-import be.appwise.sample_compose.feature.landing.LandingViewModel
 import be.appwise.sample_compose.feature.navigation.MainNavGraph
-import be.appwise.sample_compose.feature.overviewButtons.OverviewButtonsLayout
-import be.appwise.sample_compose.feature.overviewButtons.OverviewButtonsUiEvent
 import be.appwise.sample_compose.util.extensions.scrollToNextYear
 import be.appwise.sample_compose.util.extensions.scrollToPrevYear
-import com.example.compose.CoreDemoTheme
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.navigate
 import kotlinx.coroutines.launch
@@ -78,7 +72,7 @@ fun OverviewCalendarLayout(onAction: (OverviewCalendarUiAction) -> Unit = {}) {
         initialPage = monthsInPast,
         initialPageOffsetFraction = 0f
     ) {
-        (monthsInPast*2)+1
+        (monthsInPast * 2) + 1
     }
     val coroutineScope = rememberCoroutineScope()
 
@@ -115,7 +109,7 @@ fun OverviewCalendarLayout(onAction: (OverviewCalendarUiAction) -> Unit = {}) {
         ) {
             Icon(
                 imageVector = Icons.Outlined.ArrowBack,
-                contentDescription = stringResource(R.string.to_prev_month)
+                contentDescription = stringResource(R.string.back)
             )
         }
         Row(
@@ -152,9 +146,10 @@ fun OverviewCalendarLayout(onAction: (OverviewCalendarUiAction) -> Unit = {}) {
                 }
             ) {
                 Row {
-                    Image(
+                    Icon(
                         imageVector = Icons.Outlined.KeyboardDoubleArrowLeft,
-                        contentDescription = stringResource(R.string.to_prev_month)
+                        contentDescription = stringResource(R.string.to_prev_month),
+                        tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
             }
@@ -165,9 +160,10 @@ fun OverviewCalendarLayout(onAction: (OverviewCalendarUiAction) -> Unit = {}) {
                     }
                 }
             ) {
-                Image(
+                Icon(
                     imageVector = Icons.Outlined.ChevronLeft,
-                    contentDescription = stringResource(R.string.to_prev_month)
+                    contentDescription = stringResource(R.string.to_prev_month),
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
             IconButton(
@@ -177,9 +173,10 @@ fun OverviewCalendarLayout(onAction: (OverviewCalendarUiAction) -> Unit = {}) {
                     }
                 }
             ) {
-                Image(
+                Icon(
                     imageVector = Icons.Outlined.ChevronRight,
-                    contentDescription = stringResource(R.string.to_next_month)
+                    contentDescription = stringResource(R.string.to_next_month),
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
             IconButton(
@@ -190,9 +187,10 @@ fun OverviewCalendarLayout(onAction: (OverviewCalendarUiAction) -> Unit = {}) {
                 }
             ) {
                 Row {
-                    Image(
+                    Icon(
                         imageVector = Icons.Outlined.KeyboardDoubleArrowRight,
-                        contentDescription = stringResource(R.string.to_next_month)
+                        contentDescription = stringResource(R.string.to_next_month),
+                        tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
             }
@@ -200,7 +198,7 @@ fun OverviewCalendarLayout(onAction: (OverviewCalendarUiAction) -> Unit = {}) {
 
         Calendar(
             textStyleMonth = month,
-            textStyleYear= year,
+            textStyleYear = year,
             textStyleDaysOverview = overviewDay,
             currentDayComp = {
                 Box(

@@ -1,7 +1,9 @@
 package be.appwise.calendar
 
+import android.content.ContentValues.TAG
 import android.content.res.Configuration
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -226,15 +228,14 @@ fun Calendar(
 
                         val color: Color = when {
                             (index <= lengthWeek && day > lengthPrevMonth - lengthWeek) -> {
-                                textStyleDays.color.copy(0.4f)
+                                MaterialTheme.colorScheme.onBackground.copy(0.5f)
                             }
 
                             (index >= lengthThisMonth && day < lengthWeek) -> {
-                                textStyleDays.color.copy(0.4f)
+                                MaterialTheme.colorScheme.onBackground.copy(0.5f)
                             }
 
-                            else -> textStyleDays.color
-
+                            else -> MaterialTheme.colorScheme.onBackground
                         }
 
                         dayInCalendar(
@@ -291,17 +292,18 @@ fun CalendarPreview() {
         EventPreview(LocalDate.now().plusDays(8), type = test2),
     )
 
-    Calendar(
-        events = eventPreviews,
-        legendColumns = 2,
-        calendarState = rememberPagerState(
-            initialPage = 1,
-            initialPageOffsetFraction = 0f
-        ) {
-            120
-        }
-    )
-
+    MaterialTheme {
+        Calendar(
+            events = eventPreviews,
+            legendColumns = 2,
+            calendarState = rememberPagerState(
+                initialPage = 1,
+                initialPageOffsetFraction = 0f
+            ) {
+                120
+            }
+        )
+    }
 }
 
 data class EventPreview(

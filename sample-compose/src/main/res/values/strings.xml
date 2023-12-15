@@ -4,4 +4,5 @@
     <string name="to_prev_month">to prev month</string>
     <string name="switch_week_starts_on">Switch</string>
     <string name="today">Today</string>
+    <string name="back">back</string>
 </resources>

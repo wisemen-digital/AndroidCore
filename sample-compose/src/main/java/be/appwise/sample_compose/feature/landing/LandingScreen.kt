@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import be.appwise.sample_compose.feature.destinations.OverviewButtonsDestination
 import be.appwise.sample_compose.feature.destinations.OverviewCalendarDestination
+import be.appwise.sample_compose.feature.destinations.OverviewDatagroupDestination
 import be.appwise.sample_compose.feature.destinations.OverviewEditTextDestination
 import be.appwise.sample_compose.feature.navigation.MainNavGraph
 import be.appwise.ui.Buttons
@@ -42,7 +43,11 @@ fun LandingScreenLayout(onAction: (LandingUiAction) -> Unit = {}) {
             onClick = { onAction(LandingUiAction.ToCalendar) },
             text = "To Calendar"
         )
-
+        Buttons.Primary(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { onAction(LandingUiAction.ToDatagroup) },
+            text = "To Datagroup"
+        )
     }
 }
 
@@ -67,6 +72,9 @@ fun LandingScreen(
 
                 is LandingUiEvent.NavigateToEditText -> navController.navigate(
                     OverviewEditTextDestination
+                )
+                is LandingUiEvent.NavigateToDatagroup -> navController.navigate(
+                    OverviewDatagroupDestination
                 )
             }
         }
