@@ -1,5 +1,6 @@
 package be.appwise.sample_compose.feature.overviewDatagroup
 
+import CoreDemoTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,7 +25,6 @@ import be.appwise.sample_compose.data.entity.Datagroup
 import be.appwise.sample_compose.data.mock.MOCK_DATAGROUP
 import be.appwise.sample_compose.feature.destinations.LandingScreenDestination
 import be.appwise.sample_compose.feature.navigation.MainNavGraph
-import com.example.compose.CoreDemoTheme
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.navigate
 import com.wiselab.groupdatarow.Datagroup
@@ -64,7 +64,6 @@ fun OverviewDatagroupLayout(onAction: (OverviewDatagroupUiAction) -> Unit = {}) 
             ),
             cardShape = RoundedCornerShape(15.dp)
         )
-
     }
 }
 
@@ -81,7 +80,6 @@ fun OverviewDatagroup(
                 is OverviewDatagroupUiEvent.NavigateBack -> navController.navigate(
                     LandingScreenDestination
                 )
-
             }
         }
     }

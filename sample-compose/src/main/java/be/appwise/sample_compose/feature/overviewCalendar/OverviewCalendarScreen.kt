@@ -1,7 +1,7 @@
 package be.appwise.sample_compose.feature.overviewCalendar
 
+import CoreDemoTheme
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -57,7 +57,6 @@ import be.appwise.sample_compose.feature.destinations.LandingScreenDestination
 import be.appwise.sample_compose.feature.navigation.MainNavGraph
 import be.appwise.sample_compose.util.extensions.scrollToNextYear
 import be.appwise.sample_compose.util.extensions.scrollToPrevYear
-import com.example.compose.CoreDemoTheme
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.navigate
 import kotlinx.coroutines.launch
@@ -73,7 +72,7 @@ fun OverviewCalendarLayout(onAction: (OverviewCalendarUiAction) -> Unit = {}) {
         initialPage = monthsInPast,
         initialPageOffsetFraction = 0f
     ) {
-        (monthsInPast*2)+1
+        (monthsInPast * 2) + 1
     }
     val coroutineScope = rememberCoroutineScope()
 
@@ -110,7 +109,7 @@ fun OverviewCalendarLayout(onAction: (OverviewCalendarUiAction) -> Unit = {}) {
         ) {
             Icon(
                 imageVector = Icons.Outlined.ArrowBack,
-                contentDescription = stringResource(R.string.to_prev_month)
+                contentDescription = stringResource(R.string.back)
             )
         }
         Row(
@@ -147,9 +146,10 @@ fun OverviewCalendarLayout(onAction: (OverviewCalendarUiAction) -> Unit = {}) {
                 }
             ) {
                 Row {
-                    Image(
+                    Icon(
                         imageVector = Icons.Outlined.KeyboardDoubleArrowLeft,
-                        contentDescription = stringResource(R.string.to_prev_month)
+                        contentDescription = stringResource(R.string.to_prev_month),
+                        tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
             }
@@ -160,9 +160,10 @@ fun OverviewCalendarLayout(onAction: (OverviewCalendarUiAction) -> Unit = {}) {
                     }
                 }
             ) {
-                Image(
+                Icon(
                     imageVector = Icons.Outlined.ChevronLeft,
-                    contentDescription = stringResource(R.string.to_prev_month)
+                    contentDescription = stringResource(R.string.to_prev_month),
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
             IconButton(
@@ -172,9 +173,10 @@ fun OverviewCalendarLayout(onAction: (OverviewCalendarUiAction) -> Unit = {}) {
                     }
                 }
             ) {
-                Image(
+                Icon(
                     imageVector = Icons.Outlined.ChevronRight,
-                    contentDescription = stringResource(R.string.to_next_month)
+                    contentDescription = stringResource(R.string.to_next_month),
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
             IconButton(
@@ -185,9 +187,10 @@ fun OverviewCalendarLayout(onAction: (OverviewCalendarUiAction) -> Unit = {}) {
                 }
             ) {
                 Row {
-                    Image(
+                    Icon(
                         imageVector = Icons.Outlined.KeyboardDoubleArrowRight,
-                        contentDescription = stringResource(R.string.to_next_month)
+                        contentDescription = stringResource(R.string.to_next_month),
+                        tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
             }
@@ -195,7 +198,7 @@ fun OverviewCalendarLayout(onAction: (OverviewCalendarUiAction) -> Unit = {}) {
 
         Calendar(
             textStyleMonth = month,
-            textStyleYear= year,
+            textStyleYear = year,
             textStyleDaysOverview = overviewDay,
             currentDayComp = {
                 Box(
