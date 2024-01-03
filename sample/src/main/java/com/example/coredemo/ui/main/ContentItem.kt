@@ -9,8 +9,6 @@ data class ContentItem(val id: Int, val name: String, val desc: String) {
     }
 
     companion object {
-        const val measurementConversion = 10
-        const val measurementCalculation = 11
         const val emptyRecyclerView = 20
         const val networkingCalls = 30
         const val validation = 40
