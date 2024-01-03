@@ -34,10 +34,10 @@ import androidx.lifecycle.MediatorLiveData
  * @param defaultB The default value for {@param b} when it's value is not set
  * @param defaultC The default value for {@param c} when it's value is not set
  */
-class TripleTrigger<A, B,C>(a: LiveData<A>, b: LiveData<B>, c: LiveData<C>) : MediatorLiveData<Triple<A?, B?, C?>>() {
+class TripleTrigger<A, B,C>(a: LiveData<A>, b: LiveData<B>,c: LiveData<C>, defaultA : A?, defaultB : B?, defaultC : C?) : MediatorLiveData<Triple<A?, B?, C?>>() {
         init {
-            addSource(a) { value = Triple(it , b.value  , c.value ) }
-            addSource(b) { value = Triple(a.value  , it, c.value) }
-            addSource(c) { value = Triple(a.value,b.value , it) }
+            addSource(a) { value = Triple(it , b.value ?: defaultB , c.value ?: defaultC) }
+            addSource(b) { value = Triple((a.value ?: defaultA) , it, c.value ?: defaultC) }
+            addSource(c) { value = Triple(a.value ?: defaultA ,b.value ?: defaultB, it) }
         }
     }

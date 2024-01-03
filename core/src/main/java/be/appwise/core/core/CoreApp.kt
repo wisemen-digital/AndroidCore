@@ -1,23 +1,36 @@
 package be.appwise.core.core
 
 import android.content.Context
+import com.orhanobut.hawk.Hawk
 
 object CoreApp {
-    private var coreFacade: CoreFacade? = CoreFacade.EmptyCoreFacade()
 
-    @JvmStatic
-    fun init(context: Context): CoreBuilder {
-        coreFacade = null
-        return CoreBuilder(context).apply {
-            initializeHawk()
-        }
+    @Volatile
+    internal lateinit var appContext: Context
+
+    /***
+     * Initialize Hawk, This way you don't need to add the dependency to the 'real' application/project
+     */
+    private fun initializeHawk() {
+        Hawk.init(appContext)
+            .build()
     }
 
-    internal fun build(coreBuilder: CoreBuilder) {
-        coreFacade = DefaultCoreFacade(coreBuilder)
+    /**
+     * Initialize the object with the Android Start Up library using the [CoreInitializer]
+     *
+     * @param context The context provided by the initializer
+     * @return [CoreApp] The initialized object
+     */
+    internal fun initialize(context: Context): CoreApp {
+        appContext = context
+
+        initializeHawk()
+
+        return this
     }
 
-    internal fun getContext() : Context {
-        return coreFacade!!.getContext()
+    fun init(function: CoreBuilder.() -> Unit) {
+        CoreBuilder().apply(function).build()
     }
 }
