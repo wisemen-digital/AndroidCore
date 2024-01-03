@@ -11,30 +11,12 @@
         android:label="MainFragment"
         tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/action_mainFragment_to_measurementsFragment"
-            app:destination="@id/measurementsFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_measureCalculationFragment"
-            app:destination="@id/measureCalculationFragment" />
-        <action
             android:id="@+id/action_mainFragment_to_networkingFragment"
             app:destination="@id/networkingFragment" />
         <action
             android:id="@+id/action_mainFragment_to_validationFragment"
             app:destination="@id/validationFragment" />
     </fragment>
-
-    <fragment
-        android:id="@+id/measurementsFragment"
-        android:name="com.example.coredemo.ui.measurements.conversion.MeasurementsFragment"
-        android:label="MeasurementsFragment"
-        tools:layout="@layout/fragment_measurements" />
-
-    <fragment
-        android:id="@+id/measureCalculationFragment"
-        android:name="com.example.coredemo.ui.measurements.calculations.MeasureCalculationFragment"
-        android:label="MeasureCalculationFragment"
-        tools:layout="@layout/fragment_measure_calculation" />
 
     <fragment
         android:id="@+id/networkingFragment"
