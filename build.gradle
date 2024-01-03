@@ -6,12 +6,14 @@ buildscript {
         glide_version = "4.16.0"
         kotlin_version = "1.8.21"
         kotlinx_coroutines_version = "1.6.4"
+        kotlin_version = "1.9.0"
+        kotlinx_coroutines_version = "1.7.3"
         lifecycle_version = "2.6.1"
         material_dialogs_version = "3.3.0"
         nav_version = "2.6.0"
-        okhttp_version = "4.10.0"
+        okhttp_version = "4.11.0"
         retrofit_version = "2.9.0"
-        room_version = "2.5.0"
+        room_version = "2.5.2"
         material_version = "1.9.0"
         core_ktx_version = "1.10.1"
         junit_version = "4.13.2"
@@ -26,7 +28,7 @@ buildscript {
         maven { url 'https://plugins.gradle.org/m2/' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.0.2'
+        classpath 'com.android.tools.build:gradle:8.1.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
