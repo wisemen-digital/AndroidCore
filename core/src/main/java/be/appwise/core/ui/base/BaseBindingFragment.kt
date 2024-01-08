@@ -16,7 +16,7 @@ abstract class BaseBindingFragment<B : ViewDataBinding> : BaseFragment() {
     protected abstract fun getLayout(): Int
 
     /**
-     * Don't forget to add your variables to your binding layout
+     * Don't forget to  add your variables to your binding layout
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, getLayout(), container, false)
