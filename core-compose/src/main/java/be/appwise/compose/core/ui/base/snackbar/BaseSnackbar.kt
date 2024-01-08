@@ -1,6 +1,5 @@
 package be.appwise.compose.core.ui.base.snackbar
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,15 +11,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 
 @Composable
 fun BaseSnackbar(
-    icon: ImageVector? = null,
     message: String,
-    containerColor: Color
+    containerColor: Color,
+    icon: ImageVector? = null,
 ) {
     Snackbar(
         containerColor = containerColor,
