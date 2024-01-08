@@ -11,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import be.appwise.compose.core.ui.base.snackbar.BaseSnackbar
 import be.appwise.compose.core.ui.base.snackbar.Empty
@@ -32,7 +33,9 @@ open class BaseComposeViewModel: BaseViewModel() {
     }
 
     @Composable
-    fun createSnackBarHost() {
+    fun createSnackBarHost(
+        snackBar: (@Composable (message: String, containerColor: Color, icon: ImageVector?) -> Unit)? = null
+    ) {
         val snackBarHostState = remember {
             SnackbarHostState()
         }
@@ -49,12 +52,16 @@ open class BaseComposeViewModel: BaseViewModel() {
 
         SnackbarHost(hostState = snackBarHostState) { snackBarData ->
             AnimatedVisibility(visible = snackbarMessageState.isNotEmpty()) {
-                BaseSnackbar(
-                    snackbarMessageState.icon,
-                    snackBarData.visuals.message,
-                    containerColor = snackbarMessageState.containerColor
-                        ?: Color.Transparent
-                )
+                val icon = snackbarMessageState.icon
+                val message = snackBarData.visuals.message
+                val containerColor = snackbarMessageState.containerColor ?: Color.Transparent
+
+                snackBar?.invoke(message, containerColor, icon)
+                    ?: BaseSnackbar(
+                        icon = icon,
+                        message = message,
+                        containerColor = containerColor
+                    )
             }
         }
     }
