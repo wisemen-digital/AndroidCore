@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import be.appwise.core.util.SingleLiveEvent
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 
@@ -20,10 +22,10 @@ open class BaseViewModel : ViewModel() {
         _coroutineException.postValue(exception)
     }
 
-    private val _loading = MutableLiveData<Boolean>().apply { value = false }
-    val loading get() = _loading as LiveData<Boolean>
+    private val _loading = MutableStateFlow(false)
+    val loading = _loading.asStateFlow()
     fun isLoading(loading: Boolean) {
-        _loading.postValue(loading)
+        _loading.tryEmit(loading)
     }
 
     fun launchAndLoad(block: suspend CoroutineScope.() -> Unit) = vmScope.launch {
