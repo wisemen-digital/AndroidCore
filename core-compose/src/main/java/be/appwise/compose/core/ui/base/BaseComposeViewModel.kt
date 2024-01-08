@@ -32,40 +32,37 @@ open class BaseComposeViewModel: BaseViewModel() {
         }
     }
 
-    @Composable
-    fun createSnackBarHost(
-        snackBar: (@Composable (message: String, containerColor: Color, icon: ImageVector?) -> Unit)? = null
-    ) {
-        val snackBarHostState = remember {
-            SnackbarHostState()
-        }
-
-        val context = LocalContext.current
-
-        LaunchedEffect(key1 = snackbarMessageState) {
-            if (snackbarMessageState !is Empty) {
-                snackBarHostState.showSnackbar(snackbarMessageState.getMessage(context) ?: "Unknown error")
-                setCoroutineException(null)
-                snackbarMessageState = Empty
-            }
-        }
-
-        SnackbarHost(hostState = snackBarHostState) { snackBarData ->
-            AnimatedVisibility(visible = snackbarMessageState.isNotEmpty()) {
-                val icon = snackbarMessageState.icon
-                val message = snackBarData.visuals.message
-                val containerColor = snackbarMessageState.containerColor ?: Color.Transparent
-
-                snackBar?.invoke(message, containerColor, icon)
-                    ?: BaseSnackbar(
-                        icon = icon,
-                        message = message,
-                        containerColor = containerColor
-                    )
-            }
-        }
-    }
-
+//    @Composable
+//    fun createSnackBarHost() {
+//        val snackBarHostState = remember {
+//            SnackbarHostState()
+//        }
+//
+//        val context = LocalContext.current
+//
+//        LaunchedEffect(key1 = snackbarMessageState) {
+//            if (snackbarMessageState !is Empty) {
+//                snackBarHostState.showSnackbar(snackbarMessageState.getMessage(context) ?: "Unknown error")
+//                setCoroutineException(null)
+//                snackbarMessageState = Empty
+//            }
+//        }
+//
+//        SnackbarHost(hostState = snackBarHostState) { snackBarData ->
+//            AnimatedVisibility(visible = snackbarMessageState.isNotEmpty()) {
+//                val icon = snackbarMessageState.icon
+//                val message = snackBarData.visuals.message
+//                val containerColor = snackbarMessageState.containerColor ?: Color.Transparent
+//
+//                BaseSnackbar(
+//                        icon = icon,
+//                        message = message,
+//                        containerColor = containerColor
+//                    )
+//            }
+//        }
+//    }
+//
 
     fun showSnackbar(snackbarMessage: SnackbarMessage) = vmScope.launch {
         snackbarMessageState = snackbarMessage
