@@ -6,12 +6,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
-
     defaultConfig {
         applicationId "com.example.coredemo"
         minSdkVersion 21
-        targetSdkVersion 33
+        compileSdk 34
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
 
@@ -45,10 +44,9 @@ dependencies {
     implementation project(path: ':data:networking')
     implementation project(path: ':data:paging')
     implementation project(path: ':list:emptyRecyclerView')
-    implementation project(path: ':measurements')
     implementation project(path: ':views:dataRow')
 
-    implementation "com.squareup.okhttp3:mockwebserver:4.10.0"
+    implementation "com.squareup.okhttp3:mockwebserver:$okhttp_version"
     implementation "com.github.donfuxx:Mockinizer:1.6.0"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

@@ -86,6 +86,8 @@
 
         <attr name="showBoxError" />
 
+        <attr name="valueTextMaxLines" format="integer" />
+
     </declare-styleable>
 
 

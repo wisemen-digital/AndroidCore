@@ -1,17 +1,13 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'maven-publish'
 }
-
-group = 'com.github.appwise-labs'
 
 android {
     defaultConfig {
-        minSdkVersion 21
+        minSdk 21
         compileSdk 34
-        targetSdkVersion 34
+        targetSdk 34
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -30,39 +26,25 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
-    namespace 'be.appwise.room'
+    namespace 'be.appwise.proxyman'
 }
 
 dependencies {
+    implementation project(path: ':core')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
 
-    // Room Database
-    api "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+    //compress images for uploads
+    implementation 'id.zelory:compressor:3.0.1'
 
-    // optional - Kotlin Extensions and Coroutines support for Room
-    api "androidx.room:room-ktx:$room_version"
-}
+    //networking
+    implementation "com.squareup.retrofit2:converter-scalars:$retrofit_version"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
-task sourceJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-//    classifier "sources"
-}
-
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
-
-                groupId = 'com.github.appwise-labs'
-
-                artifact(sourceJar)
-            }
-        }
-    }
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 }

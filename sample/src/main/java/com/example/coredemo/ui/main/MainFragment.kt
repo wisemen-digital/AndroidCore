@@ -22,8 +22,6 @@ class MainFragment : BaseBindingVMFragment<FragmentMainBinding>() {
 
     private fun handleNavigationToContent(it: ContentItem) {
         when (it.id) {
-            ContentItem.measurementConversion -> MainFragmentDirections.actionMainFragmentToMeasurementsFragment()
-            ContentItem.measurementCalculation -> MainFragmentDirections.actionMainFragmentToMeasureCalculationFragment()
             ContentItem.networkingCalls -> MainFragmentDirections.actionMainFragmentToNetworkingFragment()
             ContentItem.validation -> MainFragmentDirections.actionMainFragmentToValidationFragment()
 //            ContentItem.emptyRecyclerView -> {}

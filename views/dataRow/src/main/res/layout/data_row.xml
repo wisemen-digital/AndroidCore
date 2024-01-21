@@ -35,13 +35,13 @@
             android:layout_marginHorizontal="10dp"
             android:ellipsize="end"
             android:gravity="end"
-            android:maxLines="1"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toStartOf="@id/ivArrow"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toEndOf="@id/tvLabel"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_goneMarginEnd="4dp"
+            tools:maxLines="1"
             tools:text="What is this answer (value) so long for, is this some kind of test?"
             tools:textColor="@android:color/holo_red_dark"
             tools:visibility="visible" />
@@ -59,11 +59,11 @@
             android:id="@+id/ivArrow"
             android:layout_width="14dp"
             android:layout_height="14dp"
-            tools:src="@drawable/ic_arrow_right"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/tvLabel"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvLabel" />
+            app:layout_constraintTop_toTopOf="@+id/tvLabel"
+            tools:src="@drawable/ic_arrow_right" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView

@@ -8,11 +8,10 @@ plugins {
 group = 'com.github.appwise-labs'
 
 android {
-    compileSdkVersion 33
-
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 33
+        compileSdk 34
+        targetSdkVersion 34
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -40,7 +39,7 @@ dependencies {
     implementation "androidx.core:core-ktx:$core_ktx_version"
     implementation "androidx.appcompat:appcompat:$appcompat_version"
 
-    api "androidx.paging:paging-runtime-ktx:3.1.1"
+    api "androidx.paging:paging-runtime-ktx:3.2.1"
 
     kapt "androidx.room:room-compiler:$room_version"
 }
