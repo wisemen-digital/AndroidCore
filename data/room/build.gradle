@@ -8,11 +8,10 @@ plugins {
 group = 'com.github.appwise-labs'
 
 android {
-    compileSdkVersion 33
-
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 33
+        compileSdk 34
+        targetSdkVersion 34
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"

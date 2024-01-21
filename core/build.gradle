@@ -6,11 +6,10 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
-
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 33
+        compileSdk 34
+        targetSdkVersion 34
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -44,7 +43,7 @@ dependencies {
 
     implementation "androidx.startup:startup-runtime:1.1.1"
 
-    testImplementation "io.mockk:mockk:1.13.4"
+    testImplementation "io.mockk:mockk:1.13.9"
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation "androidx.test:runner:$test_runner_version"
@@ -97,7 +96,7 @@ dependencies {
     api "com.afollestad.material-dialogs:datetime:$material_dialogs_version"
 
     // Time manipulation for Java 7
-    api 'joda-time:joda-time:2.12.5'
+    api 'joda-time:joda-time:2.12.6'
 
     // https://github.com/Ereza/CustomActivityOnCrash
     implementation 'cat.ereza:customactivityoncrash:2.4.0'

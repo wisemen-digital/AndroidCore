@@ -4,12 +4,10 @@ plugins {
 }
 
 android {
-    namespace 'be.appwise.proxyman'
-    compileSdk 33
-
     defaultConfig {
         minSdk 21
-        targetSdk 33
+        compileSdk 34
+        targetSdk 34
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -28,6 +26,7 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
+    namespace 'be.appwise.proxyman'
 }
 
 dependencies {
