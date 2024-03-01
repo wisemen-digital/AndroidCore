@@ -1,9 +1,0 @@
-rootProject.name = "CoreDemo"
-include ':sample'
-include ':core'
-include ':list:emptyRecyclerView'
-include ':data:networking'
-include ':data:room'
-include ':data:paging'
-include ':views:dataRow'
-include ':data:networking:proxyman'

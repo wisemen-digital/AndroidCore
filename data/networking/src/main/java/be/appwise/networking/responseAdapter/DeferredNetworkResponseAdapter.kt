@@ -1,6 +1,5 @@
 package be.appwise.networking.responseAdapter
 
-import be.appwise.networking.model.BaseApiError
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
