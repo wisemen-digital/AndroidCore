@@ -50,6 +50,12 @@ class DataRow @JvmOverloads constructor(
             if (value != null) ivArrow.imageTintList = value
         }
 
+    var valueTextMaxLines: Int = 1
+        set(value) {
+            field = value
+            tvContent.maxLines = value
+        }
+
     // <editor-fold desc="Texts">
     var valueText: String? = ""
         set(value) {
@@ -116,6 +122,7 @@ class DataRow @JvmOverloads constructor(
             endDrawableTint = a.getColorStateList(R.styleable.DataRow_endDrawableTint)
             valueText = a.getString(R.styleable.DataRow_valueText) ?: ""
             hintText = a.getString(R.styleable.DataRow_hintText) ?: ""
+            valueTextMaxLines = a.getInt(R.styleable.DataRow_valueTextMaxLines, 1)
             // </editor-fold>
 
             // <editor-fold desc="TextAppearances">
