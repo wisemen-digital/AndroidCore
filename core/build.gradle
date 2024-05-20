@@ -43,7 +43,7 @@ dependencies {
 
     implementation "androidx.startup:startup-runtime:1.1.1"
 
-    testImplementation "io.mockk:mockk:1.13.10"
+    testImplementation "io.mockk:mockk:1.13.11"
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation "androidx.test:runner:$test_runner_version"
