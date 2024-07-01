@@ -45,7 +45,7 @@ dependencies {
 
     testImplementation "io.mockk:mockk:1.13.11"
     testImplementation "junit:junit:$junit_version"
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation "androidx.test:runner:$test_runner_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
     api "androidx.core:core-ktx:$core_ktx_version"
