@@ -17,9 +17,8 @@ buildscript {
         material_version = "1.12.0"
         core_ktx_version = "1.13.1"
         junit_version = "4.13.2"
-        junit_ext_version = "1.1.5"
-        test_runner_version = "1.6.2"
-        espresso_core_version = "3.5.1"
+        junit_ext_version = "1.2.1"
+        espresso_core_version = "3.6.1"
     }
     repositories {
         google()
