@@ -19,7 +19,7 @@ buildscript {
         junit_version = "4.13.2"
         junit_ext_version = "1.2.1"
         test_runner_version = "1.5.2"
-        espresso_core_version = "3.5.1"
+        espresso_core_version = "3.6.1"
     }
     repositories {
         google()
