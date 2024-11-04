@@ -41,7 +41,7 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "androidx.startup:startup-runtime:1.1.1"
+    implementation "androidx.startup:startup-runtime:1.2.0"
 
     testImplementation "io.mockk:mockk:1.13.12"
     testImplementation "junit:junit:$junit_version"
