@@ -1,8 +1,8 @@
 [versions]
 kotlin = "2.1.0"
 ksp = "2.1.0-1.0.29"
+ktx = "2.8.6"
 gradle = "8.8.0"
-gradle-plugin = "8.8.0"
 hawk = "2.0.1"
 joda-time = "2.12.2"
 
@@ -39,7 +39,6 @@ material-dialogs = "3.3.0"
 zelory-compressor = "3.0.1"
 
 [libraries]
-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 hawk = { module = "com.orhanobut:hawk", version.ref = "hawk" }
 joda-time = { module = "joda-time:joda-time", version.ref = "joda-time" }
 
@@ -97,9 +96,11 @@ zelory-compressor = { module = "id.zelory:compressor", version.ref = "zelory-com
 
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "gradle-plugin" }
-android-library = { id = "com.android.library", version.ref = "gradle-plugin" }
+android-library = { id = "com.android.library", version.ref = "gradle" }
+android-application = { id = "com.android.application", version.ref = "gradle" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+navigation-safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "ktx" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 [bundles]
