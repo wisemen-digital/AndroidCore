@@ -182,7 +182,7 @@ object ProxyManNetworkDiscoveryManager {
         override fun onServiceFound(service: NsdServiceInfo) {
             // A service was found! Do something with it.
             showDebugMessage("discovery success $service")
-            val isProxymanService = if (mAllowedServices.isEmpty()) service.serviceName.contains("Proxyman-") else service.serviceName.substringAfter("Proxyman-").toLowerCase(Locale.ROOT) in mAllowedServices
+            val isProxymanService = if (mAllowedServices.isEmpty()) service.serviceName.contains("Proxyman-") else service.serviceName.substringAfter("Proxyman-").lowercase() in mAllowedServices
             when {
                 service.serviceType != SERVICE_TYPE -> // Service type is the string containing the protocol and
                     // transport layer for this service.

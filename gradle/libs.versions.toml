@@ -1,7 +1,8 @@
 [versions]
-kotlin = "1.9.10"
-gradle = "8.1.2"
-gradle-plugin = "8.2.0"
+kotlin = "2.1.0"
+ksp = "2.1.0-1.0.29"
+gradle = "8.8.0"
+gradle-plugin = "8.8.0"
 hawk = "2.0.1"
 joda-time = "2.12.2"
 
@@ -96,8 +97,9 @@ zelory-compressor = { module = "id.zelory:compressor", version.ref = "zelory-com
 
 
 [plugins]
+android-application = { id = "com.android.application", version.ref = "gradle-plugin" }
 android-library = { id = "com.android.library", version.ref = "gradle-plugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 [bundles]
