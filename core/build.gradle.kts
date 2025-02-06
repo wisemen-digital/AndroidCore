@@ -8,10 +8,10 @@ plugins {
 }
 
 android {
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -44,11 +44,9 @@ android {
 dependencies {
     implementation(libs.startup.runtime)
 
-    testImplementation(libs.mockk)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.junit.ext)
-    androidTestImplementation(libs.test.runner)
-    androidTestImplementation(libs.espresso.core)
+    // https://github.com/Ereza/CustomActivityOnCrash
+    implementation(libs.customactivityoncrash)
+
     api(libs.core.ktx)
 
     api(libs.multidex)
@@ -98,8 +96,11 @@ dependencies {
     // Time manipulation for Java 7
     api(libs.joda.time)
 
-    // https://github.com/Ereza/CustomActivityOnCrash
-    implementation(libs.customactivityoncrash)
+    testImplementation(libs.mockk)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.junit.ext)
+    androidTestImplementation(libs.test.runner)
+    androidTestImplementation(libs.espresso.core)
 }
 
 val sourceJar: Task by tasks.creating(Jar::class) {
