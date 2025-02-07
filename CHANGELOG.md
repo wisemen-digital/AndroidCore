@@ -16,6 +16,11 @@ All notable changes to this project will be documented in this file.
 
 ### Improvements
 
+## [1.5.1](https://github.com/appwise-labs/AndroidCore/releases/tag/1.5.1)
+
+### Breaking
+- Group id changed to wisemen-digital instead of appwise-labs
+
 
 ## [1.5.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.5.0)
 
