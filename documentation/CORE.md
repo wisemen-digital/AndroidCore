@@ -20,7 +20,7 @@ functions can be found.
 ```groovy
 dependencies {
     ...
-    implementation 'com.github.appwise-labs.AndroidCore:core:<Latest-Version>'
+    implementation 'com.github.wisemen-digital.AndroidCore:core:<Latest-Version>'
 }
 ```
 

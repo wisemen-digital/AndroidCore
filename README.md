@@ -20,7 +20,7 @@
 Using a version before v1.1.0 of this dependency can be used and will suffice, as it will already contain Networking, Room and the EmptyStateRecyclerView.
 
 ```groovy
-implementation 'com.github.appwise-labs:AndroidCore:<Latest-Version>'
+implementation 'com.github.wisemen-digital:AndroidCore:<Latest-Version>'
 ```
 
 ---
@@ -40,7 +40,7 @@ In the core module a lot of general extension functions can be found, as well as
 The core can be added by using this dependency. It contains BaseClasses for ViewModel, Fragments, and Activities. Also a lot of extension functions can be found.
 
 ```groovy
-implementation 'com.github.appwise-labs.AndroidCore:core:<Latest-Version>'
+implementation 'com.github.wisemen-digital.AndroidCore:core:<Latest-Version>'
 ```
 
 Don't forget to also add the "navigation-safe-args" plugin to the project level build.gradle
@@ -60,7 +60,7 @@ dependencies {
 Using this module will enable you to use the BaseRestClient object with some default values regarding the RestClient and Interceptors, a lot of which is costumizable.
 
 ```groovy
-implementation 'com.github.appwise-labs.AndroidCore:networking:<Latest-Version>'
+implementation 'com.github.wisemen-digital.AndroidCore:networking:<Latest-Version>'
 ```
 
 ---
@@ -72,7 +72,7 @@ implementation 'com.github.appwise-labs.AndroidCore:networking:<Latest-Version>'
 With this Room module you will have access to a BaseRoomDao in which a lot of queries are premade. The BaseRoomDao will expect a BaseEntity, so make sure that your Room Entity extends that.
 
 ```groovy
-implementation 'com.github.appwise-labs.AndroidCore:room:<Latest-Version>'
+implementation 'com.github.wisemen-digital.AndroidCore:room:<Latest-Version>'
 
 kapt 'androidx.room:room-compiler:<Latest-Room-Version>'
 ```
@@ -84,7 +84,7 @@ kapt 'androidx.room:room-compiler:<Latest-Room-Version>'
 [Paging Samples and Information](documentation/PAGING.md)
 
 ```groovy
-implementation 'com.github.appwise-labs.AndroidCore:paging:<Latest-Version>'
+implementation 'com.github.wisemen-digital.AndroidCore:paging:<Latest-Version>'
 ```
 
 ---
@@ -96,7 +96,7 @@ implementation 'com.github.appwise-labs.AndroidCore:paging:<Latest-Version>'
 This module contains a custom view extending from the RecyclerView which can handle different states like Loading, Normal, and Empty.
 
 ```groovy
-implementation 'com.github.appwise-labs.AndroidCore:emptyRecyclerView:<Latest-Version>'
+implementation 'com.github.wisemen-digital.AndroidCore:emptyRecyclerView:<Latest-Version>'
 ```
 
 ---
