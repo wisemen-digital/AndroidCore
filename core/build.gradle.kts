@@ -114,7 +114,7 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 from(components["release"])
 
-                groupId = "com.github.appwise-labs"
+                groupId = "com.github.wisemen-digital"
 
                 artifact(sourceJar)
             }

@@ -1,5 +1,6 @@
 plugins {
     kotlin("android")
+    `maven-publish`
 
     id("com.android.library")
 }
@@ -51,4 +52,23 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.ext)
     androidTestImplementation(libs.espresso.core)
+}
+
+val sourceJar by tasks.creating(Jar::class) {
+    from(android.sourceSets["main"].java.srcDirs)
+//    classifier("sources")
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                from(components["release"])
+
+                groupId = "com.github.wisemen-digital"
+
+                artifact(sourceJar)
+            }
+        }
+    }
 }

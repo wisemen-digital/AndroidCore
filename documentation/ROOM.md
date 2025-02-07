@@ -14,8 +14,7 @@ The `Room` module contains some base classes that will enable you to use a stand
 
 ```groovy
 dependencies {
-  ...
-  implementation 'com.github.appwise-labs.AndroidCore:room:<Latest-Version>'
+  implementation 'com.github.wisemen-digital.AndroidCore:room:<Latest-Version>'
 
   kapt "androidx.room:room-compiler:<Latest-Room-Version>"
 }
