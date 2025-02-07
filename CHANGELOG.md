@@ -17,6 +17,22 @@ All notable changes to this project will be documented in this file.
 ### Improvements
 
 
+## [1.5.0](https://github.com/appwise-labs/AndroidCore/releases/tag/1.5.0)
+
+### New Features
+- added error handling in the Networking layer so we can handle errors in a more structured way.
+- New error handling is integrated in the sample app.
+- Added a max lines parameter for the valueText of a datarow
+
+### Improvements
+- DSL manner to initialise the CoreApp functions instead of a builder pattern.
+- Gradle scripts to kotlin dsl with version catalog
+- Bumped all dependencies to the latest version
+
+### Breaking
+- Bagel has been removed from the dependencies
+
+
 ## [1.4.5](https://github.com/appwise-labs/AndroidCore/releases/tag/1.4.5)
 
 ### Documentation

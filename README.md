@@ -7,7 +7,6 @@
    1. [Core](#core)
    2. [Networking](#networking)
    3. [Room](#room)
-   4. [Realm](#realm)
    5. [Paging](#paging)
    6. [EmptyStateRecyclerView](#emptystaterecyclerview)
 3. [Contribution](#contribution)
@@ -48,7 +47,6 @@ Don't forget to also add the "navigation-safe-args" plugin to the project level 
 
 ```groovy
 dependencies {
-  ...
   classpath "androidx.navigation:navigation-safe-args-gradle-plugin:<Latest-Navigation-Version>"
 }
 ```
@@ -77,16 +75,6 @@ With this Room module you will have access to a BaseRoomDao in which a lot of qu
 implementation 'com.github.appwise-labs.AndroidCore:room:<Latest-Version>'
 
 kapt 'androidx.room:room-compiler:<Latest-Room-Version>'
-```
-
----
-
-## Realm
-
-[Realm Samples and Information](documentation/REALM.md)
-
-```groovy
-implementation 'com.github.appwise-labs.AndroidCore:realm:<Latest-Version>'
 ```
 
 ---

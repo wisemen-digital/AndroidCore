@@ -1,16 +1,12 @@
 package be.appwise.networking.base
 
-import android.os.Build
-import android.provider.Settings
 import android.util.Log
-import be.appwise.networking.NetworkConstants
 import be.appwise.networking.Networking
-import be.appwise.networking.bagel.BagelInterceptor
 import be.appwise.networking.interceptors.Authenticator
 import be.appwise.networking.interceptors.HeaderInterceptor
 import be.appwise.networking.model.AccessToken
-import be.appwise.networking.proxyman.ProxyManInterceptor
 import be.appwise.networking.responseAdapter.NetworkResponseAdapterFactory
+import be.appwise.proxyman.ProxyManInterceptor
 import com.google.gson.Gson
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -57,8 +53,6 @@ abstract class BaseRestClient {
      * Create a default HttpClient with a list of Interceptors added to it as well as an Authenticator.
      * - The list of Interceptors can be updated by overriding [BaseRestClient.getInterceptors].
      * - The Authenticator is only active when the [BaseRestClient.protectedClient] flag is true.
-     * - When the flag [BaseRestClient.enableBagelInterceptor] is set to true,
-     *      the [BagelInterceptor] will be added and all calls (request and responses) can be found in Bagel
      * - When the flag [BaseRestClient.enableProxyManInterceptor] is set to true,
      *      the [ProxyManInterceptor] will be added and all calls (request and responses) can be found in Proxyman.
      * In any case, this function can be overridden to add something specific to the whole configuration, or simply to override everything.
@@ -85,10 +79,6 @@ abstract class BaseRestClient {
         if (protectedClient) {
             builder.authenticator(Authenticator { onRefreshToken(it) })
         }
-
-        //add it behind all the rest so we can send all the response/request data
-        if (enableBagelInterceptor())
-            builder.addInterceptor(getBagelInterceptor())
 
         //add it behind all the rest so we can send all the response/request data
         if (enableProxyManInterceptor())
@@ -165,16 +155,14 @@ abstract class BaseRestClient {
         return mutableListOf(ScalarsConverterFactory.create(), getGsonFactory())
     }
 
-    //<editor-fold desc="Interceptors">
     /**
      * Get the default HttpLoggingInterceptor that is being used in almost every project
-     * In case Bagel is enabled for this RestClient, the logging for requests and responses will be at a bare minimum.
      *
      * Whenever you need to have project specific level or only want the logging enabled on DEBUG you can override the function.
      */
     protected open fun getHttpLoggingInterceptor() = HttpLoggingInterceptor().apply {
         level =
-            if (enableBagelInterceptor() || enableProxyManInterceptor()) {
+            if (enableProxyManInterceptor()) {
                 HttpLoggingInterceptor.Level.BASIC
             } else {
                 HttpLoggingInterceptor.Level.BODY
@@ -194,21 +182,6 @@ abstract class BaseRestClient {
     )
 
     /**
-     * Get the default [BagelInterceptor].
-     */
-    @Deprecated("Please start using Proxyman instead of Bagel")
-    protected fun getBagelInterceptor(): BagelInterceptor {
-        val deviceName = Settings.Secure.getString(Networking.getContext().contentResolver, NetworkConstants.BAGEL_INTERCEPTOR_DEVICE_BLUETOOTH_NAME)
-            ?: Settings.Global.getString(Networking.getContext().contentResolver, NetworkConstants.BAGEL_INTERCEPTOR_DEVICE_NAME)
-        return BagelInterceptor(
-            packageName,
-            Settings.Secure.getString(Networking.getContext().contentResolver, Settings.Secure.ANDROID_ID),
-            deviceName,
-            Build.MANUFACTURER + "," + Build.MODEL + "; Android/" + Build.VERSION.SDK_INT
-        )
-    }
-
-    /**
      * Get a default list of interceptors to be added to the restClient.
      *
      * In case a project specific order is needed this function can be
@@ -219,20 +192,6 @@ abstract class BaseRestClient {
             getHttpLoggingInterceptor(), getHeaderInterceptor()
         )
     }
-
-    /**
-     * Allows you to enable the Bagel interceptor for an instance of the [BaseRestClient]
-     *
-     * It will be added after all other interceptors so headers and other request/response data
-     * will be up to date when shown in Bagel
-     *
-     * Added it here so you can choose for each instance of a [BaseRestClient] if you wish to use it or not.
-     *
-     * Can be moved to [Networking] so you can enable/disable it for all clients.
-     * Maybe also limit it to DEBUG builds in future
-     */
-    @Deprecated("Please start using Proxyman instead of Bagel")
-    protected open fun enableBagelInterceptor() = false
 
     /**
      * Allows you to enable the ProxyMan interceptor for an instance of the [BaseRestClient]
