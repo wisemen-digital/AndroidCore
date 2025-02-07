@@ -4,6 +4,9 @@ pluginManagement {
         gradlePluginPortal()
         mavenCentral()
         maven("https://plugins.gradle.org/m2/")
+        maven("https://jitpack.io")
+        maven("https://maven.fabric.io/public")
+        maven("maven.google.com")
     }
 }
 
@@ -25,3 +28,4 @@ include(":data:room")
 include(":data:paging")
 include(":views:dataRow")
 include(":data:networking:proxyman")
+include(":core-compose")

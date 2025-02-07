@@ -5,10 +5,10 @@ plugins {
 }
 
 android {
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -36,11 +36,6 @@ android {
 dependencies {
     implementation(project(":core"))
 
-    implementation(libs.kotlin.stdlib)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.junit.ext)
-    androidTestImplementation(libs.espresso.core)
-
     //compress images for uploads
     implementation(libs.zelory.compressor)
 
@@ -51,4 +46,9 @@ dependencies {
 
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging.interceptor)
+
+    implementation(libs.kotlin.stdlib)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.junit.ext)
+    androidTestImplementation(libs.espresso.core)
 }

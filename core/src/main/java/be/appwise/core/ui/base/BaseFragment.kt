@@ -1,13 +1,18 @@
 package be.appwise.core.ui.base
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
+import android.view.View
+import android.view.ViewGroup
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import be.appwise.core.R
 import be.appwise.core.extensions.fragment.showSnackBar
@@ -76,5 +81,10 @@ open class BaseFragment : Fragment() {
     open fun onError(throwable: Throwable) {
         showSnackBar(throwable.message ?: getString(R.string.error_default))
         Logger.t("BaseFragment").e(throwable, throwable.message ?: getString(R.string.error_default))
+    }
+
+    fun setStatusBarColor(@ColorRes statusBarColor: Int, isDarkMode: Boolean = false) {
+        WindowInsetsControllerCompat(requireActivity().window, requireActivity().window.decorView).isAppearanceLightStatusBars = !isDarkMode
+        requireActivity().window.statusBarColor = ContextCompat.getColor(requireActivity(), statusBarColor)
     }
 }

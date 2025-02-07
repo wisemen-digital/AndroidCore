@@ -6,10 +6,10 @@ plugins {
 }
 
 android {
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -38,11 +38,6 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":data:networking:proxyman"))
 
-    implementation(libs.kotlin.stdlib)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.junit.ext)
-    androidTestImplementation(libs.espresso.core)
-
     //compress images for uploads
     implementation(libs.zelory.compressor)
 
@@ -53,6 +48,11 @@ dependencies {
 
     api(libs.okhttp)
     api(libs.okhttp.logging.interceptor)
+
+    implementation(libs.kotlin.stdlib)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.junit.ext)
+    androidTestImplementation(libs.espresso.core)
 }
 
 val sourceJar: Task by tasks.creating(Jar::class) {
