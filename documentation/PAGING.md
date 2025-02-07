@@ -12,8 +12,7 @@ The `Paging` module contains some base classes that will enable you to use a sta
 
 ```groovy
 dependencies {
-  ...
-  implementation 'com.github.appwise-labs.AndroidCore:paging:<Latest-Version>'
+  implementation 'com.github.wisemen-digital.AndroidCore:paging:<Latest-Version>'
 }
 ```
 

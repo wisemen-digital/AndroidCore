@@ -5,7 +5,7 @@ plugins {
     id("com.android.library")
 }
 
-group = "com.github.appwise-labs"
+group = "com.github.wisemen-digital"
 
 android {
     compileSdk = 35
@@ -54,7 +54,7 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 from(components["release"])
 
-                groupId = "com.github.appwise-labs"
+                groupId = "com.github.wisemen-digital"
 
                 artifact(sourceJar)
             }

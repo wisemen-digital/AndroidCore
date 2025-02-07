@@ -16,8 +16,7 @@ The `Networking` module contains base classes and extensions to add Networking (
 
 ```groovy
 dependencies {
-    ...
-    implementation 'com.github.appwise-labs.AndroidCore:networking:<Latest-Version>'
+    implementation 'com.github.wisemen-digital.AndroidCore:networking:<Latest-Version>'
 }
 ```
 
