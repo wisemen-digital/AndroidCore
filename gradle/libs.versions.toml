@@ -31,7 +31,7 @@ swiperefreshlayout = "1.1.0"
 test-runner = "1.6.2"
 espresso-core = "3.6.1"
 
-constraintlayout = "2.2.0"
+constraintlayout = "2.2.1"
 paging-runtime = "3.3.6"
 easyimage = "3.2.0"
 customactivityoncrash = "2.4.0"
