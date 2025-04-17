@@ -68,7 +68,7 @@ class Authenticator(
             Logger.t("Authenticator").i("[$threadId] Token needs refresh ($requestUrl). Token that failed: $failedToken")
 
             // check response count
-            if (responseCount(response) >= 1) {
+            if (responseCount(response) > 1) {
                 Logger.t("Authenticator").w("[$threadId] Retry limit (1 refresh attempt) reached for $requestUrl. Aborting refresh and logging out.")
                 Networking.logout()
                 return null
