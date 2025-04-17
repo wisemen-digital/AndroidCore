@@ -45,7 +45,7 @@ class Authenticator(
             // Get the current AccessToken, this might be different as the previous one because of the 'synchronized' method
             val newToken = Networking.getAccessToken()
 
-            Logger.t("Authenticator").d("Synchronized, request: $request, newtoken: $newToken")
+            Logger.t("Authenticator").d("Synchronized, request: $request, newtoken: ${newToken?.access_token}")
 
             // Check if the request was previously made as an authenticated request
             if (response.request.header(NetworkConstants.HEADER_KEY_AUTHORIZATION) != null) {
@@ -64,7 +64,7 @@ class Authenticator(
                 // In case this is the first time this line gets hit refresh the AccessToken
                 val updatedToken = onRefreshToken(newToken.refresh_token ?: "")
 
-                Logger.t("Authenticator").d("Updated token: $updatedToken")
+                Logger.t("Authenticator").d("Updated token: ${updatedToken?.access_token}")
 
                 if (updatedToken == null || NetworkingUtil.responseCount(response) >= 2) {
                     // refresh failed , maybe you can logout user
