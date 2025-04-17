@@ -5,22 +5,28 @@ import be.appwise.networking.Networking
 import be.appwise.networking.NetworkingUtil
 import be.appwise.networking.model.AccessToken
 import com.orhanobut.logger.Logger
+import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
 
-class Authenticator(private val onRefreshToken: (refreshToken: String) -> AccessToken?) :
-    Authenticator {
+class Authenticator(
+    private val onRefreshToken: (refreshToken: String) -> AccessToken?
+) : Authenticator {
     private var callsWithoutToken = 0
 
     override fun authenticate(route: Route?, response: Response): Request? {
         val request = response.request
+        Logger.t("Authenticator").d("Authenticate id: request: $request")
+
 
         // Get the current AccessToken
         val accessToken = Networking.getAccessToken()?.access_token
 
-        if (accessToken == null || accessToken.isNullOrEmpty()) {
+        Logger.t("Authenticator").d("Accesstoken for $request token: $accessToken")
+
+        if (accessToken == null || accessToken.isEmpty()) {
             // just try the call without
 
             //TODO: there is still something wrong with the way we handle this...
@@ -34,12 +40,14 @@ class Authenticator(private val onRefreshToken: (refreshToken: String) -> Access
         //
         // Look at http://tutorials.jenkov.com/java-concurrency/synchronized.html for more information
         synchronized(this) {
-            Logger.t("Authenticator").d("Synchronized")
+//            Logger.t("Authenticator").d("Synchronized, request: $request")
 
             // Get the current AccessToken, this might be different as the previous one because of the 'synchronized' method
             val newToken = Networking.getAccessToken()
 
-            // Check if the request made was previously made as an authenticated request
+            Logger.t("Authenticator").d("Synchronized, request: $request, newtoken: $newToken")
+
+            // Check if the request was previously made as an authenticated request
             if (response.request.header(NetworkConstants.HEADER_KEY_AUTHORIZATION) != null) {
                 // If the token has changed since the request was made, use the new token
                 if (newToken?.access_token != accessToken) {
@@ -55,6 +63,8 @@ class Authenticator(private val onRefreshToken: (refreshToken: String) -> Access
 
                 // In case this is the first time this line gets hit refresh the AccessToken
                 val updatedToken = onRefreshToken(newToken.refresh_token ?: "")
+
+                Logger.t("Authenticator").d("Updated token: $updatedToken")
 
                 if (updatedToken == null || NetworkingUtil.responseCount(response) >= 2) {
                     // refresh failed , maybe you can logout user
