@@ -36,6 +36,7 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding = true
+        buildConfig = true
     }
 
     namespace = "com.example.coredemo"
