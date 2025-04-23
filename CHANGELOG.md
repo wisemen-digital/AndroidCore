@@ -16,6 +16,17 @@ All notable changes to this project will be documented in this file.
 
 ### Improvements
 
+## [1.5.3](https://github.com/appwise-labs/AndroidCore/releases/tag/1.5.3)
+
+### Improvements
+- Networking refresh token calls are now done more efficiently. The refresh token call will only be done once when multiple calls return a 401.
+- Kotlin updated to 2.1.20
+
+## [1.5.2](https://github.com/appwise-labs/AndroidCore/releases/tag/1.5.2)
+
+### Bug Fixes
+- bugfix on the viewbinding of the datarow
+
 ## [1.5.1](https://github.com/appwise-labs/AndroidCore/releases/tag/1.5.1)
 
 ### Breaking
