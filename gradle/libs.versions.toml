@@ -15,7 +15,7 @@ junit-ext = "1.2.1"
 logger = "2.2.0"
 material3 = "1.3.2"
 mockinizer = "1.6.0"
-mockk = "1.14.0"
+mockk = "1.14.2"
 mockwebserver = "4.12.0"
 multidex = "2.0.1"
 
