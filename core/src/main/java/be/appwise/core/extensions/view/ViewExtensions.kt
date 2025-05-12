@@ -7,6 +7,8 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.core.graphics.createBitmap
 
 /**
  * Set view visibility to View.GONE
@@ -15,7 +17,7 @@ import android.view.ViewGroup
  * @param duration duration of the animation
  */
 fun View.hide(animated: Boolean = false, duration: Long = 350L) {
-    if(animated && visibility == View.VISIBLE){
+    if(animated && isVisible){
         alpha = 1f
         animate()
             .alphaBy(-1f)
@@ -35,7 +37,7 @@ fun View.hide(animated: Boolean = false, duration: Long = 350L) {
  * @param duration duration of the animation
  */
 fun View.invisible(animated: Boolean = false, duration: Long = 350L) {
-    if(animated && visibility == View.VISIBLE){
+    if(animated && isVisible){
         alpha = 1f
         animate()
             .alphaBy(-1f)
@@ -73,7 +75,7 @@ val View.asBitmap: Bitmap
         val measureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
         measure(measureSpec, measureSpec)
         layout(0, 0, measuredWidth, measuredHeight)
-        val output = Bitmap.createBitmap(measuredWidth, measuredHeight, Bitmap.Config.ARGB_8888)
+        val output = createBitmap(measuredWidth, measuredHeight)
         output.eraseColor(Color.TRANSPARENT)
         val canvas = Canvas(output)
         draw(canvas)

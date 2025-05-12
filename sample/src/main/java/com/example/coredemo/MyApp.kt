@@ -4,7 +4,6 @@ import android.app.Application
 import be.appwise.core.core.CoreApp
 import be.appwise.networking.Networking
 import be.appwise.networking.NetworkingConfig
-import be.appwise.networking.ProxyManConfig
 import be.appwise.networking.base.BaseNetworkingListeners
 
 class MyApp : Application() {
@@ -38,11 +37,7 @@ class MyApp : Application() {
             versionName = BuildConfig.VERSION_NAME
         )
 
-        val proxyManConfig = ProxyManConfig(
-            enabled = BuildConfig.DEBUG && resources.getBoolean(R.bool.enableProxyman)
-        )
-
-        Networking.init(networkingConfig, NetworkingListeners(), proxyManConfig)
+        Networking.init(networkingConfig, NetworkingListeners())
     }
 }
 

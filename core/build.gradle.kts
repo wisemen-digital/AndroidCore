@@ -47,8 +47,6 @@ android {
 dependencies {
     implementation(libs.startup.runtime)
 
-    implementation(libs.kotlin.logging.jvm)
-
     // https://github.com/Ereza/CustomActivityOnCrash
     implementation(libs.customactivityoncrash)
 

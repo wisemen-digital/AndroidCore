@@ -2,7 +2,6 @@
 compose-bom = "2025.05.00"
 
 kotlin = "2.1.20"
-kotlin-logging-jvm = "7.0.3"
 ksp = "2.1.20-2.0.1"
 
 ktx = "2.9.0"
@@ -51,7 +50,6 @@ joda-time = { module = "joda-time:joda-time", version.ref = "joda-time" }
 junit = { module = "junit:junit", version.ref = "junit" }
 junit-ext = { module = "androidx.test.ext:junit", version.ref = "junit-ext" }
 
-kotlin-logging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging-jvm" }
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 mockinizer = { module = "com.github.donfuxx:Mockinizer", version.ref = "mockinizer" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }

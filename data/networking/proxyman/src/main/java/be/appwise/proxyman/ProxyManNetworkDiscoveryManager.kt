@@ -3,9 +3,21 @@ package be.appwise.proxyman
 import android.content.Context
 import android.net.nsd.NsdManager
 import android.net.nsd.NsdServiceInfo
+import android.util.Log
+import be.appwise.proxyman.ProxyManNetworkDiscoveryManager.MaximumSizePackage
+import be.appwise.proxyman.ProxyManNetworkDiscoveryManager.SERVICE_TYPE
+import be.appwise.proxyman.ProxyManNetworkDiscoveryManager.TAG
+import be.appwise.proxyman.ProxyManNetworkDiscoveryManager.flushAllPendingIfNeeded
+import be.appwise.proxyman.ProxyManNetworkDiscoveryManager.mAllowedServices
+import be.appwise.proxyman.ProxyManNetworkDiscoveryManager.mAppContext
+import be.appwise.proxyman.ProxyManNetworkDiscoveryManager.mDeviceName
+import be.appwise.proxyman.ProxyManNetworkDiscoveryManager.mIsLoggingEnabled
+import be.appwise.proxyman.ProxyManNetworkDiscoveryManager.maxPendingItem
+import be.appwise.proxyman.ProxyManNetworkDiscoveryManager.nsdManager
+import be.appwise.proxyman.ProxyManNetworkDiscoveryManager.pendingPackages
+import be.appwise.proxyman.ProxyManNetworkDiscoveryManager.proxyManGson
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -19,9 +31,6 @@ import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.zip.GZIPOutputStream
-import kotlin.collections.ArrayList
-
-private val logger = KotlinLogging.logger {}
 
 object ProxyManNetworkDiscoveryManager {
 
@@ -135,7 +144,7 @@ object ProxyManNetworkDiscoveryManager {
 
         override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
             // Called when the resolve fails. Use the error code to debug.
-            logger.error { "Resolve failed: $errorCode" }
+            Log.e(TAG, "Resolve fai)d: $errorCode")
             resolveNextInQueue()
         }
 
@@ -160,17 +169,17 @@ object ProxyManNetworkDiscoveryManager {
 
     private fun showDebugMessage(debugMessage: String) {
         if (mIsLoggingEnabled)
-            logger.debug { debugMessage }
+            Log.d(TAG, debugMessage)
     }
 
     private fun showErrorMessage(debugMessage: String) {
         if (mIsLoggingEnabled)
-            logger.error { debugMessage }
+            Log.e(TAG, debugMessage)
     }
 
     private fun showInfoMessage(debugMessage: String) {
         if (mIsLoggingEnabled)
-            logger.info { debugMessage }
+            Log.i(TAG, debugMessage)
     }
 
     // Instantiate a new DiscoveryListener
