@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import be.appwise.core.R
 import be.appwise.core.extensions.fragment.showSnackBar
-import com.orhanobut.logger.Logger
+import io.github.oshai.kotlinlogging.KotlinLogging
+
+private val logger = KotlinLogging.logger {}
 
 open class BaseDialogFragment: DialogFragment() {
     lateinit var parentActivity: AppCompatActivity
@@ -17,6 +19,6 @@ open class BaseDialogFragment: DialogFragment() {
 
     open fun onError(throwable: Throwable) {
         showSnackBar(throwable.message ?: getString(R.string.error_default))
-        Logger.t("BaseDialogFragment").e(throwable, throwable.message ?: getString(R.string.error_default))
+        logger.error(throwable) { throwable.message ?: getString(R.string.error_default) }
     }
 }

@@ -1,12 +1,10 @@
 package be.appwise.core.extensions.activity
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.os.Build
 import android.util.Log
-import java.util.*
+import java.util.Calendar
 
 fun Activity.showDateTimePicker(currentTimeStamp: Long, useDate: (Long) -> Unit) {
     val currentDate = Calendar.getInstance().apply {
@@ -33,9 +31,5 @@ fun Activity.showDateTimePicker(currentTimeStamp: Long, useDate: (Long) -> Unit)
 }
 
 private fun checkWhichThemeToUse(): Int {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-        android.R.style.Theme_DeviceDefault_Light_Dialog_Alert
-    } else {
-        AlertDialog.THEME_DEVICE_DEFAULT_LIGHT
-    }
+    return android.R.style.Theme_DeviceDefault_Light_Dialog_Alert
 }

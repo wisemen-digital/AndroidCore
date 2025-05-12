@@ -28,8 +28,6 @@ class MyApp : Application() {
             if (BuildConfig.DEBUG) {
                 initializeErrorActivity(true)
             }
-
-            initializeLogger(getString(R.string.app_name), BuildConfig.DEBUG)
         }
     }
 

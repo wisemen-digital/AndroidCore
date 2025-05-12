@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 
@@ -86,7 +87,7 @@ fun View.setOnClickListenerWithDisableDelay(delay: Long = 500, onItemClickListen
         onItemClickListener()
 
         isEnabled = false
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             isEnabled = true
         }, delay)
     }

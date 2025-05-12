@@ -1,10 +1,7 @@
 package be.appwise.core.ui.base
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -16,7 +13,9 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import be.appwise.core.R
 import be.appwise.core.extensions.fragment.showSnackBar
-import com.orhanobut.logger.Logger
+import io.github.oshai.kotlinlogging.KotlinLogging
+
+private val logger = KotlinLogging.logger {}
 
 open class BaseFragment : Fragment() {
 
@@ -80,7 +79,7 @@ open class BaseFragment : Fragment() {
 
     open fun onError(throwable: Throwable) {
         showSnackBar(throwable.message ?: getString(R.string.error_default))
-        Logger.t("BaseFragment").e(throwable, throwable.message ?: getString(R.string.error_default))
+        logger.error(throwable) { throwable.message ?: getString(R.string.error_default) }
     }
 
     fun setStatusBarColor(@ColorRes statusBarColor: Int, isDarkMode: Boolean = false) {

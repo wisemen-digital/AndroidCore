@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.implementation
+
 plugins {
     kotlin("android")
     kotlin("kapt")
@@ -45,6 +47,8 @@ android {
 dependencies {
     implementation(libs.startup.runtime)
 
+    implementation(libs.kotlin.logging.jvm)
+
     // https://github.com/Ereza/CustomActivityOnCrash
     implementation(libs.customactivityoncrash)
 
@@ -76,9 +80,6 @@ dependencies {
 
     // gson (https://github.com/google/gson)
     api(libs.gson)
-
-    // logger (https://github.com/orhanobut/logger)
-    api(libs.logger)
 
     // Hawk (https://github.com/orhanobut/hawk)
     api(libs.hawk)

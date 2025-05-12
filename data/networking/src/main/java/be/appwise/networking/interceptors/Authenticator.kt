@@ -4,11 +4,13 @@ import be.appwise.networking.NetworkConstants
 import be.appwise.networking.Networking
 import be.appwise.networking.NetworkingUtil.responseCount
 import be.appwise.networking.model.AccessToken
-import com.orhanobut.logger.Logger
+import io.github.oshai.kotlinlogging.KotlinLogging
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
+
+private val logger = KotlinLogging.logger {}
 
 class Authenticator(
     private val onRefreshToken: (refreshToken: String) -> AccessToken?
@@ -23,7 +25,7 @@ class Authenticator(
     override fun authenticate(route: Route?, response: Response): Request? {
         val originalRequest = response.request
         val requestUrl = originalRequest.url
-        Logger.t("Authenticator").d("Authenticate triggered for $requestUrl")
+        logger.debug { "Authenticate triggered for $requestUrl" }
 
         val failedToken = extractBearerToken(
             originalRequest.header(NetworkConstants.HEADER_KEY_AUTHORIZATION)
@@ -45,7 +47,7 @@ class Authenticator(
         // Look at http://tutorials.jenkov.com/java-concurrency/synchronized.html for more information
         synchronized(this) {
             val threadId = Thread.currentThread().id
-            Logger.t("Authenticator").d("Synchronized [$threadId] Sync block entered for: $requestUrl")
+            logger.debug { "Synchronized [$threadId] Sync block entered for: $requestUrl" }
 
             val currentToken = Networking.getAccessToken()
             val currentAccessToken = currentToken?.access_token
@@ -55,7 +57,7 @@ class Authenticator(
 
             // If the token has changed since the request was made, use the new token
             if (currentAccessToken != failedToken) {
-                Logger.t("Authenticator").i("[$threadId] Token already refreshed by another thread ($requestUrl). Current: $currentAccessToken, Failed with: $failedToken. Retrying with current token.")
+                logger.info { "[$threadId] Token already refreshed by another thread ($requestUrl). Current: $currentAccessToken, Failed with: $failedToken. Retrying with current token." }
 
                 return originalRequest.newBuilder()
                     .header(
@@ -65,11 +67,11 @@ class Authenticator(
                     .build()
             }
 
-            Logger.t("Authenticator").i("[$threadId] Token needs refresh ($requestUrl). Token that failed: $failedToken")
+            logger.info { "[$threadId] Token needs refresh ($requestUrl). Token that failed: $failedToken" }
 
             // check response count
             if (responseCount(response) > 1) {
-                Logger.t("Authenticator").w("[$threadId] Retry limit (1 refresh attempt) reached for $requestUrl. Aborting refresh and logging out.")
+                logger.warn { "[$threadId] Retry limit (1 refresh attempt) reached for $requestUrl. Aborting refresh and logging out." }
                 Networking.logout()
                 return null
             }
@@ -77,7 +79,7 @@ class Authenticator(
             // check if we have a refresh token
             val refreshToken = currentToken.refresh_token
             if (refreshToken.isNullOrBlank()) {
-                Logger.t("Authenticator").e("[$threadId] No valid refresh token available for $requestUrl. Cannot refresh. Logging out.")
+                logger.error { "[$threadId] No valid refresh token available for $requestUrl. Cannot refresh. Logging out." }
                 Networking.logout()
                 return null
             }
@@ -89,11 +91,11 @@ class Authenticator(
                 // returning null is critical here , because if you do not return null
                 // it will try to refresh token continuously like 1000 times.
                 // also you can try 2-3-4 times by depending you before logging out your user
-                Logger.t("Authenticator").e("[$threadId] onRefreshToken failed for $requestUrl. Logging out.")
+                logger.error { "[$threadId] onRefreshToken failed for $requestUrl. Logging out." }
                 Networking.logout()
                 return null
             } else {
-                Logger.t("Authenticator").i("[$threadId] Refresh SUCCESS for $requestUrl. Saving new token: ${updatedToken.access_token}. Retrying request.")
+                logger.info { "[$threadId] Refresh SUCCESS for $requestUrl. Saving new token: ${updatedToken.access_token}. Retrying request." }
                 Networking.saveAccessToken(updatedToken)
 
                 // Retry the request with the new token

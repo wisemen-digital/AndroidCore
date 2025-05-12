@@ -5,7 +5,7 @@ import android.net.nsd.NsdManager
 import android.net.nsd.NsdServiceInfo
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.orhanobut.logger.Logger
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -20,6 +20,8 @@ import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.zip.GZIPOutputStream
 import kotlin.collections.ArrayList
+
+private val logger = KotlinLogging.logger {}
 
 object ProxyManNetworkDiscoveryManager {
 
@@ -133,7 +135,7 @@ object ProxyManNetworkDiscoveryManager {
 
         override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
             // Called when the resolve fails. Use the error code to debug.
-            Logger.e("Resolve failed: $errorCode")
+            logger.error { "Resolve failed: $errorCode" }
             resolveNextInQueue()
         }
 
@@ -158,17 +160,17 @@ object ProxyManNetworkDiscoveryManager {
 
     private fun showDebugMessage(debugMessage: String) {
         if (mIsLoggingEnabled)
-            Logger.t(TAG).d(debugMessage)
+            logger.debug { debugMessage }
     }
 
     private fun showErrorMessage(debugMessage: String) {
         if (mIsLoggingEnabled)
-            Logger.t(TAG).e(debugMessage)
+            logger.error { debugMessage }
     }
 
     private fun showInfoMessage(debugMessage: String) {
         if (mIsLoggingEnabled)
-            Logger.t(TAG).i(debugMessage)
+            logger.info { debugMessage }
     }
 
     // Instantiate a new DiscoveryListener

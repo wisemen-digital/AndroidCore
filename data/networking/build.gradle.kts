@@ -49,6 +49,8 @@ dependencies {
     api(libs.okhttp)
     api(libs.okhttp.logging.interceptor)
 
+    api(libs.kotlin.logging.jvm)
+
     implementation(libs.kotlin.stdlib)
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.ext)

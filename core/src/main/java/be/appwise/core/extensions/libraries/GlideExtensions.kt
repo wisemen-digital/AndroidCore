@@ -47,7 +47,6 @@ fun ImageView.loadFile(file: File?, cropOptions: RequestOptions = RequestOptions
 /**
  * loads image in view from file
  * @param file image file
- * @param cropOptions transformation of the image (default RequestOptions.circleCrop())
  * @param placeholder id of placeholder drawable
  */
 fun ImageView.loadFileCircle(file: File?, placeholder: Int = 0) {
@@ -82,12 +81,18 @@ fun ImageView.loadCircle(url: String?, placeholder: Int? = null) {
  * @see RoundedCorners
  */
 fun ImageView.loadRoundedCorners(url: String?, radius: Int = 10, placeholder: Int? = null) {
-    val roundedCorners = RoundedCorners((radius * resources.displayMetrics.density).toInt())
-    val cropOptions = RequestOptions().transforms(CenterCrop(), roundedCorners).apply{
-        placeholder?.let { placeholder(it) }
+    val pixelRadius = (radius * resources.displayMetrics.density).toInt()
+    val roundedCorners = RoundedCorners(pixelRadius)
+
+    var requestBuilder = Glide.with(this)
+        .load(url)
+        .transform(CenterCrop(), roundedCorners)
+
+    if (placeholder != null) {
+        requestBuilder = requestBuilder.placeholder(placeholder)
     }
 
-    load(url, cropOptions)
+    requestBuilder.into(this)
 }
 
 /**
