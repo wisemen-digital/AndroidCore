@@ -144,7 +144,7 @@ object ProxyManNetworkDiscoveryManager {
 
         override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
             // Called when the resolve fails. Use the error code to debug.
-            Log.e(TAG, "Resolve fai)d: $errorCode")
+            Log.e(TAG, "Resolve failed: $errorCode")
             resolveNextInQueue()
         }
 
