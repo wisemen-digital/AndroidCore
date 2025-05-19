@@ -1,10 +1,8 @@
 package be.appwise.core.ui.base
 
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -13,10 +11,11 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.get
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import be.appwise.core.R
 import be.appwise.core.extensions.fragment.showSnackBar
-import com.orhanobut.logger.Logger
 
 open class BaseFragment : Fragment() {
 
@@ -66,8 +65,8 @@ open class BaseFragment : Fragment() {
     }
 
     fun tintMenuIcons(menu: Menu, color: Int) {
-        for (i in 0 until menu.size()) {
-            val item = menu.getItem(i)
+        for (i in 0 until menu.size) {
+            val item = menu[i]
             item.icon?.let {
                 val wrapDrawable = DrawableCompat.wrap(
                     it
@@ -79,8 +78,9 @@ open class BaseFragment : Fragment() {
     }
 
     open fun onError(throwable: Throwable) {
-        showSnackBar(throwable.message ?: getString(R.string.error_default))
-        Logger.t("BaseFragment").e(throwable, throwable.message ?: getString(R.string.error_default))
+        val message = throwable.message ?: getString(R.string.error_default)
+        showSnackBar(message)
+        Log.e("BaseFragment", message, throwable)
     }
 
     fun setStatusBarColor(@ColorRes statusBarColor: Int, isDarkMode: Boolean = false) {

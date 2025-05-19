@@ -15,7 +15,7 @@ object ApiRestClient : BaseRestClient() {
         getRetrofit.create(ApiService::class.java)
     }
 
-    override fun enableProxyManInterceptor() = true
+    override fun enableProxyManInterceptor() = false
 
     override fun createHttpClient(): OkHttpClient {
         return super.createHttpClient().newBuilder()

@@ -29,12 +29,12 @@ object Networking {
     fun init(
         newNetworkingConfig: NetworkingConfig,
         newNetworkingListeners: BaseNetworkingListeners = BaseNetworkingListeners.DEFAULT,
-        proxyManConfig: ProxyManConfig
+        proxyManConfig: ProxyManConfig? = null
     ) {
         networkingConfig = newNetworkingConfig
         networkingListeners = newNetworkingListeners
 
-        if (proxyManConfig.enabled) {
+        if (proxyManConfig?.enabled == true) {
             registerProxymanService(appContext, proxyManConfig)
         }
     }
