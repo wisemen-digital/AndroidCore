@@ -5,6 +5,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.util.DisplayMetrics
 import android.view.View
 import android.widget.EditText
@@ -44,16 +46,38 @@ fun Activity.hideKeyboard() {
     WindowInsetsControllerCompat(window, window.decorView).hide(WindowInsetsCompat.Type.ime())
 }
 
-fun Activity.getDeviceWidth() = with(this) {
-    val displayMetrics = DisplayMetrics()
-    windowManager.defaultDisplay.getMetrics(displayMetrics)
-    displayMetrics.widthPixels
+/**
+ * Gets the device width in pixels, handling deprecation across different Android versions.
+ * On API 30+, uses WindowMetrics.bounds.width().
+ * On older APIs, uses Display.getMetrics().
+ */
+fun Activity.getDeviceWidth(): Int {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        windowManager.currentWindowMetrics.bounds.width()
+    } else {
+        @Suppress("DEPRECATION")
+        val displayMetrics = DisplayMetrics()
+        @Suppress("DEPRECATION")
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        displayMetrics.widthPixels
+    }
 }
 
-fun Activity.getDeviceHeight() = with(this) {
-    val displayMetrics = DisplayMetrics()
-    windowManager.defaultDisplay.getMetrics(displayMetrics)
-    displayMetrics.heightPixels
+/**
+ * Gets the device height in pixels, handling deprecation across different Android versions.
+ * On API 30+, uses WindowMetrics.bounds.height().
+ * On older APIs, uses Display.getMetrics().
+ */
+fun Activity.getDeviceHeight(): Int {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        windowManager.currentWindowMetrics.bounds.height()
+    } else {
+        @Suppress("DEPRECATION")
+        val displayMetrics = DisplayMetrics()
+        @Suppress("DEPRECATION")
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        displayMetrics.heightPixels
+    }
 }
 
 /**
@@ -65,6 +89,7 @@ fun Activity.getDeviceHeight() = with(this) {
 fun Activity.isNetworkAvailable(): Boolean {
     val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-    val activeNetworkInfo = connectivityManager.activeNetworkInfo
-    return activeNetworkInfo != null && activeNetworkInfo.isConnected
+    val network = connectivityManager.activeNetwork ?: return false
+    val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+    return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
 }

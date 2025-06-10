@@ -6,16 +6,14 @@ import be.appwise.core.core.CoreApp
 import com.orhanobut.hawk.Hawk
 
 class BaseApp: Application() {
-    fun init(appName: String) {
+    fun init() {
         Hawk.init(this).build()
 
-        initCore(appName)
+        initCore()
     }
 
-    private fun initCore(appName: String) {
+    private fun initCore() {
         CoreApp.init {
-            initializeLogger(appName, BuildConfig.DEBUG)
-
             if(BuildConfig.DEBUG) {
                 initializeErrorActivity(true)
             }

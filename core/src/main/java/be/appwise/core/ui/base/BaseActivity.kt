@@ -1,5 +1,6 @@
 package be.appwise.core.ui.base
 
+import android.util.Log
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -9,7 +10,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import be.appwise.core.R
 import be.appwise.core.extensions.activity.showSnackbar
-import com.orhanobut.logger.Logger
 
 open class BaseActivity : AppCompatActivity() {
     /**
@@ -52,9 +52,10 @@ open class BaseActivity : AppCompatActivity() {
 
     open fun onError(throwable: Throwable) {
         showSnackbar(throwable.message ?: getString(R.string.error_default))
-        Logger.t("BaseActivity").e(throwable, throwable.message ?: getString(R.string.error_default))
+        Log.e("BaseActivity", throwable.message ?: getString(R.string.error_default), throwable)
     }
 
+    @Deprecated("Draw proper background behind WindowInsets.Type.statusBars()} instead.")
     fun setStatusBarColor(@ColorRes statusBarColor: Int, isDarkMode: Boolean = false) {
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = !isDarkMode
         window.statusBarColor = ContextCompat.getColor(this, statusBarColor)
