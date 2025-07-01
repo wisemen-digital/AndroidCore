@@ -2,7 +2,7 @@
 compose-bom = "2025.06.00"
 
 ksp = "2.2.0-2.0.2"
-kotlin = "2.1.21"
+kotlin = "2.2.0"
 
 ktx = "2.9.0"
 gradle = "8.10.1"
