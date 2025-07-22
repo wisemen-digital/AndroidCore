@@ -22,7 +22,7 @@ gson = "2.13.1"
 room = "2.7.2"
 
 retrofit = "3.0.0"
-okhttp = "4.12.0"
+okhttp = "5.1.0"
 core-ktx = "1.16.0"
 material = "1.12.0"
 lifecycle = "2.9.2"
