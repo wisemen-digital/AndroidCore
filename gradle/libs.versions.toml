@@ -30,8 +30,9 @@ appcompat = "1.7.1"
 
 startup-runtime = "1.2.0"
 swiperefreshlayout = "1.1.0"
-test-runner = "1.6.2"
+test-runner = "1.7.0"
 espresso-core = "3.7.0"
+
 
 constraintlayout = "2.2.1"
 paging-runtime = "3.3.6"
