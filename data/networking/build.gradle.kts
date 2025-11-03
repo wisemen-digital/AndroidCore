@@ -38,6 +38,12 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":data:networking:proxyman"))
 
+    implementation(libs.hawk) {
+        exclude(group = "com.facebook.conceal", module = "conceal")
+    }
+
+    implementation("com.github.GundamD:conceal:v1.1.3-16kb-fixed-3")
+
     //compress images for uploads
     implementation(libs.zelory.compressor)
 

@@ -81,12 +81,11 @@ dependencies {
 
     // Hawk (https://github.com/orhanobut/hawk)
     // Exclude original Facebook Conceal due to 16KB page size incompatibility
-    api(libs.hawk) {
+    implementation(libs.hawk) {
         exclude(group = "com.facebook.conceal", module = "conceal")
     }
-    // Use 16KB-aligned Conceal with native libraries (from calm/hawk fork)
-    // Source: https://github.com/calm/hawk/tree/16kb-support/hawk/libs
-    api(files("libs/conceal-16kb.aar"))
+
+    implementation("com.github.GundamD:conceal:v1.1.3-16kb-fixed-3")
 
     //open image chooser
     api(libs.easyimage)

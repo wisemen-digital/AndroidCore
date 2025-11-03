@@ -2,7 +2,6 @@ package be.appwise.networking.base
 
 import android.app.PendingIntent
 import android.content.Intent
-import android.os.Build
 import be.appwise.networking.Networking
 import be.appwise.networking.R
 import be.appwise.networking.model.ApiError
