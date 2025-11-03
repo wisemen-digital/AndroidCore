@@ -1,5 +1,5 @@
 [versions]
-compose-bom = "2025.07.00"
+compose-bom = "2025.10.01"
 
 ksp = "2.3.0"
 kotlin = "2.2.20"
@@ -105,6 +105,7 @@ ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 
 zelory-compressor = { module = "id.zelory:compressor", version.ref = "zelory-compressor" }
 

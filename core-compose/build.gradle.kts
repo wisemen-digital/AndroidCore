@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling)
     implementation(libs.ui.tooling.preview)
+    implementation(libs.material.icons.extended)
     debugImplementation(libs.ui.test.manifest)
     implementation(libs.ui.test.junit4)
 }
