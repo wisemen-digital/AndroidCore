@@ -80,7 +80,12 @@ dependencies {
     api(libs.gson)
 
     // Hawk (https://github.com/orhanobut/hawk)
-    api(libs.hawk)
+    // Exclude original Facebook Conceal due to 16KB page size incompatibility
+    api(libs.hawk) {
+        exclude(group = "com.facebook.conceal", module = "conceal")
+    }
+    // Use 16KB-aligned Conceal fork from GundamD (https://github.com/GundamD/conceal)
+    api("com.github.GundamD:conceal:v1.1.3-16kb-fixed-3")
 
     //open image chooser
     api(libs.easyimage)
