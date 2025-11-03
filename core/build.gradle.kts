@@ -84,8 +84,9 @@ dependencies {
     api(libs.hawk) {
         exclude(group = "com.facebook.conceal", module = "conceal")
     }
-    // Use 16KB-aligned Conceal fork from GundamD (https://github.com/GundamD/conceal)
-    api("com.github.GundamD:conceal:v1.1.3-16kb-fixed-3")
+    // Use 16KB-aligned Conceal with native libraries (from calm/hawk fork)
+    // Source: https://github.com/calm/hawk/tree/16kb-support/hawk/libs
+    api(files("libs/conceal-16kb.aar"))
 
     //open image chooser
     api(libs.easyimage)
