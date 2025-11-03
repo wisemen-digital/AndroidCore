@@ -105,6 +105,7 @@ ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 
 zelory-compressor = { module = "id.zelory:compressor", version.ref = "zelory-compressor" }
 
