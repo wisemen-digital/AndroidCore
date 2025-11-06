@@ -28,6 +28,9 @@ local.properties
 build
 */production
 
+# Kotlin
+.kotlin/
+
 *.iml
 *.iws
 *.ipr
