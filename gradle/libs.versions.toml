@@ -5,7 +5,7 @@ ksp = "2.3.0"
 kotlin = "2.2.20"
 
 gradle = "8.13.0"
-ktx = "2.9.3"
+ktx = "2.9.6"
 hawk = "2.0.1"
 joda-time = "2.14.0"
 
