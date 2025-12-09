@@ -6,7 +6,6 @@ pluginManagement {
         maven("https://plugins.gradle.org/m2/")
         maven("https://jitpack.io")
         maven("https://maven.fabric.io/public")
-        maven("maven.google.com")
     }
 }
 
