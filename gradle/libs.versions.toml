@@ -19,7 +19,7 @@ mockwebserver = "5.3.0"
 multidex = "2.0.1"
 
 gson = "2.13.1"
-room = "2.8.3"
+room = "2.8.4"
 
 retrofit = "3.0.0"
 okhttp = "5.3.0"
